@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="/JS/api-client.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de emergencias - My Pet</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff7ed, #fef3c7);
+            padding: 30px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* ENCABEZADO */
+
+        .encabezado {
+            background: linear-gradient(135deg, #ff8a3d, #ffb347);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .logo {
+            font-size: 45px;
+        }
+
+        .encabezado h1 {
+            font-size: 32px;
+            margin: 8px 0;
+        }
+
+        .encabezado p {
+            font-size: 15px;
+        }
+
+        /* CONTENIDO */
+
+        .contenido {
+            background: white;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .seccion {
+            margin-bottom: 40px;
+        }
+
+        .titulo {
+            font-size: 22px;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* FORMULARIO */
+
+        .formulario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 7px;
+        }
+
+        .campo input,
+        .campo textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            background-color: #fafafa;
+        }
+
+        .campo textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .campo input:focus,
+        .campo textarea:focus {
+            border-color: #ff8a3d;
+            background-color: white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 138, 61, 0.12);
+        }
+
+        /* BOTONES */
+
+        .botones {
+            grid-column: 1 / 3;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        .btn-principal {
+            background: #ff8a3d;
+            color: white;
+        }
+
+        .btn-buscar {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        .btn-eliminar {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-secundario {
+            background: #777;
+            color: white;
+        }
+
+        /* BUSQUEDA */
+
+        .busqueda {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .busqueda input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        /* TABLA */
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin-top: 20px;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th {
+            background: #ff8a3d;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 11px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #fff7ed;
+        }
+
+        /* RESULTADO */
+
+        .resultado {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff7ed;
+            border-radius: 10px;
+            border-left: 4px solid #ff8a3d;
+            display: none;
+            overflow-x: auto;
+        }
+
+        /* MENSAJES */
+
+        .mensaje {
+            padding: 12px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .exito {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* PIE */
+
+        .pie {
+            background: #fafafa;
+            padding: 18px;
+            text-align: center;
+            color: #777;
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .botones {
+                grid-column: 1;
+            }
+
+            .busqueda {
+                flex-direction: column;
+            }
+
+            .encabezado h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- ENCABEZADO -->
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐾
+        </div>
+
+        <h1>
+            My Pet
+        </h1>
+
+        <p>
+            Gestión de emergencias
+        </p>
+
+    </div>
+
+
+    <div class="contenido">
+
+
+        <!-- REGISTRAR EMERGENCIA -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Registrar emergencia
+            </h2>
+
+
+            <form
+                id="formEmergencia"
+                class="formulario"
+            >
+
+                <div class="campo">
+
+                    <label for="tipoEmergencia">
+                        Tipo de emergencia
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tipoEmergencia"
+                        placeholder="Ingrese el tipo de emergencia"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idUsuario">
+                        ID del usuario
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuario"
+                        min="1"
+                        placeholder="Ingrese el ID del usuario"
+                        required
+                    >
+
+                </div>
+
+
+                <div
+                    class="campo"
+                    style="grid-column: 1 / 3;"
+                >
+
+                    <label for="descripcion">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcion"
+                        placeholder="Describa la emergencia"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                    >
+                        Registrar emergencia
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeRegistro"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- LISTAR EMERGENCIAS -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Emergencias registradas
+            </h2>
+
+
+            <button
+                onclick="listarEmergencias()"
+                class="btn-principal"
+            >
+                Listar emergencias
+            </button>
+
+
+            <button
+                onclick="ocultarTabla()"
+                class="btn-secundario"
+            >
+                Ocultar tabla
+            </button>
+
+
+            <div
+                id="listaEmergencias"
+                class="tabla-contenedor"
+            ></div>
+
+        </section>
+
+
+        <!-- BUSCAR POR USUARIO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Buscar emergencias por usuario
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idUsuarioBuscar"
+                    min="1"
+                    placeholder="Ingrese el ID del usuario"
+                >
+
+                <button
+                    onclick="buscarPorUsuario()"
+                    class="btn-buscar"
+                >
+                    Buscar
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultadoUsuario"
+                class="resultado"
+            ></div>
+
+        </section>
+
+
+        <!-- ACTUALIZAR EMERGENCIA -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Actualizar emergencia
+            </h2>
+
+
+            <form
+                id="formActualizar"
+                class="formulario"
+            >
+
+                <div class="campo">
+
+                    <label for="idActualizar">
+                        ID de la emergencia
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idActualizar"
+                        min="1"
+                        placeholder="Ingrese el ID"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idUsuarioActualizar">
+                        ID del usuario
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuarioActualizar"
+                        min="1"
+                        placeholder="Ingrese el ID del usuario"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="tipoEmergenciaActualizar">
+                        Nuevo tipo de emergencia
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tipoEmergenciaActualizar"
+                        placeholder="Ingrese el nuevo tipo"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="descripcionActualizar">
+                        Nueva descripción
+                    </label>
+
+                    <textarea
+                        id="descripcionActualizar"
+                        placeholder="Ingrese la nueva descripción"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-buscar"
+                    >
+                        Actualizar emergencia
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeActualizar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- ELIMINAR EMERGENCIA -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Eliminar emergencia
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idEliminar"
+                    min="1"
+                    placeholder="Ingrese el ID de la emergencia"
+                >
+
+                <button
+                    onclick="eliminarEmergencia()"
+                    class="btn-eliminar"
+                >
+                    Eliminar emergencia
+                </button>
+
+            </div>
+
+
+            <p
+                id="mensajeEliminar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+    </div>
+
+
+    <!-- PIE -->
+
+    <div class="pie">
+
+        My Pet © 2026 · Gestión de emergencias
+
+    </div>
+
+</div>
+
+
+<script>
+
+const URL_API =
+    "http://localhost:8082/api/emergencias";
+
+
+// ==========================================
+// REGISTRAR EMERGENCIA
+// POST /api/emergencias/guardar
+// ==========================================
+
+document
+    .getElementById("formEmergencia")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const emergencia = {
+
+            tipoEmergencia:
+                document.getElementById(
+                    "tipoEmergencia"
+                ).value,
+
+            descripcion:
+                document.getElementById(
+                    "descripcion"
+                ).value,
+
+            usuario: {
+
+                idUsuario:
+                    parseInt(
+                        document.getElementById(
+                            "idUsuario"
+                        ).value
+                    )
+
+            }
+
+        };
+
+
+        fetch(
+            URL_API + "/guardar",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(emergencia)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensaje => {
+
+                        throw new Error(
+                            mensaje ||
+                            "No fue posible registrar la emergencia."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Emergencia registrada correctamente. ID generado: "
+                + data.idEmergencia;
+
+
+            mensaje.className =
+                "mensaje exito";
+
+
+            document
+                .getElementById(
+                    "formEmergencia"
+                )
+                .reset();
+
+        })
+
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+});
+
+
+// ==========================================
+// LISTAR EMERGENCIAS
+// GET /api/emergencias/listar
+// ==========================================
+
+function listarEmergencias() {
+
+    const tabla =
+        document.getElementById(
+            "listaEmergencias"
+        );
+
+
+    fetch(
+        URL_API + "/listar"
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar las emergencias."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(emergencias => {
+
+        let contenido = "";
+
+
+        if (emergencias.length === 0) {
+
+            contenido =
+                "<p>No hay emergencias registradas.</p>";
+
+        }
+
+        else {
+
+            contenido = `
+
+                <table>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Tipo de emergencia</th>
+
+                        <th>Descripción</th>
+
+                        <th>Fecha</th>
+
+                        <th>ID usuario</th>
+
+                        <th>Nombre usuario</th>
+
+                    </tr>
+
+            `;
+
+
+            emergencias.forEach(emergencia => {
+
+                contenido += `
+
+                    <tr>
+
+                        <td>
+                            ${emergencia.idEmergencia}
+                        </td>
+
+                        <td>
+                            ${emergencia.tipoEmergencia || ""}
+                        </td>
+
+                        <td>
+                            ${emergencia.descripcion || ""}
+                        </td>
+
+                        <td>
+                            ${emergencia.fecha || ""}
+                        </td>
+
+                        <td>
+                            ${
+                                emergencia.usuario
+                                ? emergencia.usuario.idUsuario
+                                : ""
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                emergencia.usuario
+                                ? emergencia.usuario.nombre
+                                : ""
+                            }
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+
+            contenido += "</table>";
+
+        }
+
+
+        tabla.innerHTML =
+            contenido;
+
+
+        tabla.style.display =
+            "block";
+
+    })
+
+
+    .catch(error => {
+
+        tabla.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+
+        tabla.style.display =
+            "block";
+
+    });
+
+}
+
+
+// ==========================================
+// OCULTAR TABLA
+// ==========================================
+
+function ocultarTabla() {
+
+    document
+        .getElementById(
+            "listaEmergencias"
+        )
+        .style.display = "none";
+
+}
+
+
+// ==========================================
+// BUSCAR POR USUARIO
+// GET /api/emergencias/usuario/{idUsuario}
+// ==========================================
+
+function buscarPorUsuario() {
+
+    const id =
+        document.getElementById(
+            "idUsuarioBuscar"
+        ).value;
+
+
+    const resultado =
+        document.getElementById(
+            "resultadoUsuario"
+        );
+
+
+    if (!id) {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Ingrese el ID del usuario.</p>";
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/usuario/" + id
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar las emergencias del usuario."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(emergencias => {
+
+        resultado.style.display =
+            "block";
+
+
+        if (emergencias.length === 0) {
+
+            resultado.innerHTML =
+                "<p>El usuario no tiene emergencias registradas.</p>";
+
+            return;
+
+        }
+
+
+        let contenido = `
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Tipo</th>
+
+                    <th>Descripción</th>
+
+                    <th>Fecha</th>
+
+                </tr>
+
+        `;
+
+
+        emergencias.forEach(emergencia => {
+
+            contenido += `
+
+                <tr>
+
+                    <td>
+                        ${emergencia.idEmergencia}
+                    </td>
+
+                    <td>
+                        ${emergencia.tipoEmergencia || ""}
+                    </td>
+
+                    <td>
+                        ${emergencia.descripcion || ""}
+                    </td>
+
+                    <td>
+                        ${emergencia.fecha || ""}
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+        contenido += "</table>";
+
+
+        resultado.innerHTML =
+            contenido;
+
+    })
+
+
+    .catch(error => {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+    });
+
+}
+
+
+// ==========================================
+// ACTUALIZAR EMERGENCIA
+// PUT /api/emergencias/actualizar/{id}
+// ==========================================
+
+document
+    .getElementById("formActualizar")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const id =
+            document.getElementById(
+                "idActualizar"
+            ).value;
+
+
+        const emergencia = {
+
+            tipoEmergencia:
+                document.getElementById(
+                    "tipoEmergenciaActualizar"
+                ).value,
+
+            descripcion:
+                document.getElementById(
+                    "descripcionActualizar"
+                ).value,
+
+            usuario: {
+
+                idUsuario:
+                    parseInt(
+                        document.getElementById(
+                            "idUsuarioActualizar"
+                        ).value
+                    )
+
+            }
+
+        };
+
+
+        fetch(
+            URL_API + "/actualizar/" + id,
+            {
+
+                method: "PUT",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(emergencia)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensaje => {
+
+                        throw new Error(
+                            mensaje ||
+                            "No fue posible actualizar la emergencia."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeActualizar"
+                );
+
+
+            mensaje.textContent =
+                "Emergencia actualizada correctamente. ID: "
+                + data.idEmergencia;
+
+
+            mensaje.className =
+                "mensaje exito";
+
+
+            document
+                .getElementById(
+                    "formActualizar"
+                )
+                .reset();
+
+        })
+
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeActualizar"
+                );
+
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+});
+
+
+// ==========================================
+// ELIMINAR EMERGENCIA
+// DELETE /api/emergencias/eliminar/{id}
+// ==========================================
+
+function eliminarEmergencia() {
+
+    const id =
+        document.getElementById(
+            "idEliminar"
+        ).value;
+
+
+    const mensaje =
+        document.getElementById(
+            "mensajeEliminar"
+        );
+
+
+    if (!id) {
+
+        mensaje.textContent =
+            "Ingrese el ID de la emergencia.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "¿Está seguro de eliminar la emergencia con ID "
+            + id
+            + "?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/eliminar/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            return response.text()
+                .then(mensajeError => {
+
+                    throw new Error(
+                        mensajeError ||
+                        "No fue posible eliminar la emergencia."
+                    );
+
+                });
+
+        }
+
+        return response.text();
+
+    })
+
+
+    .then(data => {
+
+        mensaje.textContent =
+            data ||
+            "Emergencia eliminada correctamente.";
+
+
+        mensaje.className =
+            "mensaje exito";
+
+
+        document
+            .getElementById(
+                "idEliminar"
+            )
+            .value = "";
+
+    })
+
+
+    .catch(error => {
+
+        mensaje.textContent =
+            "Error: " + error.message;
+
+
+        mensaje.className =
+            "mensaje error";
+
+    });
+
+}
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const parametros = new URLSearchParams(window.location.search);
+    const idUsuario = parametros.get("idUsuario");
+    const campoUsuario = document.getElementById("idUsuario");
+    if (campoUsuario && idUsuario) campoUsuario.value = idUsuario;
+});
+</script>
+</body>
+
+</html>

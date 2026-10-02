@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <!-- Carga las funciones generales para las peticiones a la API. -->
+    <script src="/JS/api-client.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de administradores - My Pet</title>
+
+    <!--
+        Los estilos CSS se mantienen dentro de este archivo porque esta vista
+        tiene un diseño específico para la gestión de administradores.
+        Esto permite mantener todos los elementos visuales de la página
+        organizados en un mismo archivo y facilita su mantenimiento.
+    -->
+    <style>
+
+        /* ==============================
+           CONFIGURACIÓN GENERAL
+        ============================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff7ed, #fef3c7);
+            padding: 30px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* ==============================
+           ENCABEZADO
+        ============================== */
+
+        .encabezado {
+            background: linear-gradient(135deg, #ff8a3d, #ffb347);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .logo {
+            font-size: 45px;
+        }
+
+        .encabezado h1 {
+            font-size: 32px;
+            margin: 8px 0;
+        }
+
+        .encabezado p {
+            font-size: 15px;
+        }
+
+        /* ==============================
+           CONTENIDO
+        ============================== */
+
+        .contenido {
+            background: white;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .seccion {
+            margin-bottom: 40px;
+        }
+
+        .titulo {
+            font-size: 22px;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* ==============================
+           FORMULARIOS
+        ============================== */
+
+        .formulario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo.completo {
+            grid-column: 1 / 3;
+        }
+
+        .campo label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 7px;
+        }
+
+        .campo input,
+        .campo textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+            background-color: #fafafa;
+        }
+
+        .campo input:focus,
+        .campo textarea:focus {
+            border-color: #ff8a3d;
+            background-color: white;
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 138, 61, 0.12);
+        }
+
+        .campo textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        /* ==============================
+           BOTONES
+        ============================== */
+
+        .botones {
+            grid-column: 1 / 3;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.85;
+            transform: translateY(-1px);
+        }
+
+        .btn-principal {
+            background: #ff8a3d;
+            color: white;
+        }
+
+        .btn-buscar {
+            background: #6c5ce7;
+            color: white;
+        }
+
+        .btn-actualizar {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-eliminar {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-secundario {
+            background: #777;
+            color: white;
+        }
+
+        /* ==============================
+           BÚSQUEDA
+        ============================== */
+
+        .busqueda {
+            display: flex;
+            gap: 10px;
+        }
+
+        .busqueda input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .busqueda input:focus {
+            border-color: #ff8a3d;
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 138, 61, 0.12);
+        }
+
+        /* ==============================
+           RESULTADO
+        ============================== */
+
+        .resultado {
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff7ed;
+            border-radius: 10px;
+            border-left: 4px solid #ff8a3d;
+        }
+
+        .resultado p {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* ==============================
+           TABLA
+        ============================== */
+
+        .tabla-contenedor {
+            overflow-x: auto;
+            margin-top: 20px;
+            display: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th {
+            background: #ff8a3d;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 11px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background-color: #fff7ed;
+        }
+
+        /* ==============================
+           MENSAJES
+        ============================== */
+
+        .mensaje {
+            padding: 12px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+        .exito {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* ==============================
+           PIE DE PÁGINA
+        ============================== */
+
+        .pie {
+            background: #fafafa;
+            padding: 18px;
+            text-align: center;
+            color: #777;
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.completo {
+                grid-column: 1;
+            }
+
+            .botones {
+                grid-column: 1;
+            }
+
+            .busqueda {
+                flex-direction: column;
+            }
+
+            .encabezado h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- ==============================
+         ENCABEZADO
+    ============================== -->
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐾
+        </div>
+
+        <h1>
+            My Pet
+        </h1>
+
+        <p>
+            Gestión de administradores
+        </p>
+
+    </div>
+
+    <div class="contenido">
+
+        <!-- ==============================
+             REGISTRAR ADMINISTRADOR
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Registrar administrador
+            </h2>
+
+            <form
+                id="formAdministrador"
+                class="formulario"
+            >
+
+                <!-- ID DEL USUARIO -->
+
+                <div class="campo">
+
+                    <label for="idUsuario">
+                        ID del usuario
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuario"
+                        min="1"
+                        placeholder="Ingrese el ID del usuario"
+                        required
+                        title="Ingrese el ID del usuario que será administrador."
+                    >
+
+                </div>
+
+                <!-- PERMISOS -->
+
+                <div class="campo completo">
+
+                    <label for="permisos">
+                        Permisos
+                    </label>
+
+                    <textarea
+                        id="permisos"
+                        maxlength="200"
+                        placeholder="Ejemplo: Gestionar usuarios y mascotas"
+                        required
+                        title="Escriba los permisos que tendrá el administrador."
+                    ></textarea>
+
+                </div>
+
+                <!-- BOTÓN -->
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                        title="Registra un nuevo administrador. El ID del administrador será generado automáticamente."
+                    >
+                        Registrar administrador
+                    </button>
+
+                </div>
+
+            </form>
+
+            <p
+                id="mensajeRegistro"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+        <!-- ==============================
+             LISTAR ADMINISTRADORES
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Administradores registrados
+            </h2>
+
+            <button
+                onclick="listarAdministradores()"
+                class="btn-principal"
+                title="Consulta todos los administradores registrados y muestra la información en una tabla."
+            >
+                Listar administradores
+            </button>
+
+            <button
+                onclick="ocultarTabla()"
+                class="btn-secundario"
+                title="Oculta la tabla de administradores registrados."
+            >
+                Ocultar tabla
+            </button>
+
+            <div
+                id="listaAdministradores"
+                class="tabla-contenedor"
+            ></div>
+
+        </section>
+
+        <!-- ==============================
+             BUSCAR POR ID ADMINISTRADOR
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Buscar administrador por ID
+            </h2>
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idBuscar"
+                    min="1"
+                    placeholder="Ingrese el ID del administrador"
+                    title="Ingrese el ID generado para el administrador."
+                >
+
+                <button
+                    onclick="buscarAdministrador()"
+                    class="btn-buscar"
+                    title="Busca un administrador utilizando su ID."
+                >
+                    Buscar administrador
+                </button>
+
+            </div>
+
+            <div
+                id="resultadoAdministrador"
+                class="resultado"
+                style="display: none;"
+            ></div>
+
+        </section>
+
+        <!-- ==============================
+             BUSCAR POR ID DE USUARIO
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Buscar administrador por ID de usuario
+            </h2>
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idUsuarioBuscar"
+                    min="1"
+                    placeholder="Ingrese el ID del usuario"
+                    title="Ingrese el ID del usuario asociado al administrador."
+                >
+
+                <button
+                    onclick="buscarPorUsuario()"
+                    class="btn-buscar"
+                    title="Busca el administrador asociado a un usuario."
+                >
+                    Buscar por usuario
+                </button>
+
+            </div>
+
+            <div
+                id="resultadoUsuario"
+                class="resultado"
+                style="display: none;"
+            ></div>
+
+        </section>
+
+        <!-- ==============================
+             ACTUALIZAR ADMINISTRADOR
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Actualizar administrador
+            </h2>
+
+            <div class="formulario">
+
+                <!-- ID ADMINISTRADOR -->
+
+                <div class="campo">
+
+                    <label for="idActualizar">
+                        ID del administrador
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idActualizar"
+                        min="1"
+                        placeholder="ID generado por la base de datos"
+                        title="Ingrese el ID del administrador que desea actualizar."
+                    >
+
+                </div>
+
+                <!-- ID USUARIO -->
+
+                <div class="campo">
+
+                    <label for="idUsuarioActualizar">
+                        ID del usuario
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuarioActualizar"
+                        min="1"
+                        placeholder="ID del usuario"
+                        title="Ingrese el ID del usuario asociado al administrador."
+                    >
+
+                </div>
+
+                <!-- PERMISOS -->
+
+                <div class="campo completo">
+
+                    <label for="permisosActualizar">
+                        Permisos
+                    </label>
+
+                    <textarea
+                        id="permisosActualizar"
+                        maxlength="200"
+                        placeholder="Nuevos permisos"
+                        title="Escriba los nuevos permisos del administrador."
+                    ></textarea>
+
+                </div>
+
+                <div class="botones">
+
+                    <button
+                        onclick="actualizarAdministrador()"
+                        class="btn-actualizar"
+                        title="Actualiza la información del administrador utilizando su ID."
+                    >
+                        Actualizar administrador
+                    </button>
+
+                </div>
+
+            </div>
+
+            <p
+                id="mensajeActualizar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+        <!-- ==============================
+             ELIMINAR ADMINISTRADOR
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Eliminar administrador
+            </h2>
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idEliminar"
+                    min="1"
+                    placeholder="Ingrese el ID del administrador"
+                    title="Ingrese el ID del administrador que desea eliminar."
+                >
+
+                <button
+                    onclick="eliminarAdministrador()"
+                    class="btn-eliminar"
+                    title="Elimina de la base de datos el administrador cuyo ID haya ingresado."
+                >
+                    Eliminar administrador
+                </button>
+
+            </div>
+
+            <p
+                id="mensajeEliminar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+    </div>
+
+    <!-- ==============================
+         PIE DE PÁGINA
+    ============================== -->
+
+    <div class="pie">
+
+        My Pet © 2026 · Gestión de administradores
+
+    </div>
+
+</div>
+
+<!--
+    El JavaScript se mantiene dentro de este archivo porque las funciones
+    corresponden exclusivamente a esta página. Aquí se manejan las acciones
+    de registrar, listar, buscar, actualizar y eliminar administradores,
+    comunicándose directamente con los endpoints de la API.
+-->
+<script>
+
+// ==========================================
+// URL DE LA API
+// ==========================================
+
+const URL_API =
+    "http://localhost:8082/api/administradores";
+
+// ==========================================
+// REGISTRAR ADMINISTRADOR
+// POST /api/administradores/crear
+// ==========================================
+
+document
+    .getElementById("formAdministrador")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const idUsuario =
+            parseInt(
+                document.getElementById("idUsuario").value
+            );
+
+        const permisos =
+            document.getElementById("permisos").value;
+
+        const administrador = {
+
+            permisos: permisos,
+
+            usuario: {
+
+                idUsuario: idUsuario
+
+            }
+
+        };
+
+        fetch(
+            URL_API + "/crear",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(administrador)
+
+            }
+        )
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensaje => {
+
+                        throw new Error(
+                            mensaje ||
+                            "No fue posible registrar el administrador."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+            mensaje.textContent =
+                "Administrador registrado correctamente. ID generado: "
+                + data.idAdmin;
+
+            mensaje.className =
+                "mensaje exito";
+
+            document
+                .getElementById("formAdministrador")
+                .reset();
+
+        })
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+    });
+
+// ==========================================
+// LISTAR ADMINISTRADORES
+// GET /api/administradores/listar
+// ==========================================
+
+function listarAdministradores() {
+
+    const tabla =
+        document.getElementById(
+            "listaAdministradores"
+        );
+
+    fetch(
+        URL_API + "/listar"
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar los administradores."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(administradores => {
+
+        let contenido = "";
+
+        if (administradores.length === 0) {
+
+            contenido =
+                "<p>No hay administradores registrados.</p>";
+
+        }
+
+        else {
+
+            contenido = `
+
+                <table>
+
+                    <tr>
+
+                        <th>ID administrador</th>
+                        <th>ID usuario</th>
+                        <th>Nombre del usuario</th>
+                        <th>Permisos</th>
+
+                    </tr>
+
+            `;
+
+            administradores.forEach(administrador => {
+
+                contenido += `
+
+                    <tr>
+
+                        <td>
+                            ${administrador.idAdmin}
+                        </td>
+
+                        <td>
+                            ${
+                                administrador.usuario
+                                ? administrador.usuario.idUsuario
+                                : "Sin usuario"
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                administrador.usuario
+                                ? administrador.usuario.nombre
+                                : "Sin nombre"
+                            }
+                        </td>
+
+                        <td>
+                            ${administrador.permisos}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+            contenido += "</table>";
+
+        }
+
+        tabla.innerHTML =
+            contenido;
+
+        tabla.style.display =
+            "block";
+
+    })
+
+    .catch(error => {
+
+        tabla.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+        tabla.style.display =
+            "block";
+
+    });
+
+}
+
+// ==========================================
+// OCULTAR TABLA
+// ==========================================
+
+function ocultarTabla() {
+
+    document
+        .getElementById("listaAdministradores")
+        .style.display = "none";
+
+}
+
+// ==========================================
+// BUSCAR ADMINISTRADOR POR ID
+// GET /api/administradores/{id}
+// ==========================================
+
+function buscarAdministrador() {
+
+    const id =
+        document.getElementById(
+            "idBuscar"
+        ).value;
+
+    const resultado =
+        document.getElementById(
+            "resultadoAdministrador"
+        );
+
+    if (!id) {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Ingrese el ID del administrador.</p>";
+
+        return;
+
+    }
+
+    fetch(
+        URL_API + "/" + id
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Administrador no encontrado."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(administrador => {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML = `
+
+            <p>
+
+                <strong>ID administrador:</strong>
+
+                ${administrador.idAdmin}
+
+            </p>
+
+            <p>
+
+                <strong>ID usuario:</strong>
+
+                ${
+                    administrador.usuario
+                    ? administrador.usuario.idUsuario
+                    : "Sin usuario"
+                }
+
+            </p>
+
+            <p>
+
+                <strong>Nombre del usuario:</strong>
+
+                ${
+                    administrador.usuario
+                    ? administrador.usuario.nombre
+                    : "Sin nombre"
+                }
+
+            </p>
+
+            <p>
+
+                <strong>Permisos:</strong>
+
+                ${administrador.permisos}
+
+            </p>
+
+        `;
+
+    })
+
+    .catch(error => {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+    });
+
+}
+
+// ==========================================
+// BUSCAR POR ID DE USUARIO
+// GET /api/administradores/usuario/{idUsuario}
+// ==========================================
+
+function buscarPorUsuario() {
+
+    const idUsuario =
+        document.getElementById(
+            "idUsuarioBuscar"
+        ).value;
+
+    const resultado =
+        document.getElementById(
+            "resultadoUsuario"
+        );
+
+    if (!idUsuario) {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Ingrese el ID del usuario.</p>";
+
+        return;
+
+    }
+
+    fetch(
+        URL_API + "/usuario/" + idUsuario
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No se encontró un administrador asociado a ese usuario."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(administrador => {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML = `
+
+            <p>
+
+                <strong>ID administrador:</strong>
+
+                ${administrador.idAdmin}
+
+            </p>
+
+            <p>
+
+                <strong>ID usuario:</strong>
+
+                ${
+                    administrador.usuario
+                    ? administrador.usuario.idUsuario
+                    : "Sin usuario"
+                }
+
+            </p>
+
+            <p>
+
+                <strong>Nombre del usuario:</strong>
+
+                ${
+                    administrador.usuario
+                    ? administrador.usuario.nombre
+                    : "Sin nombre"
+                }
+
+            </p>
+
+            <p>
+
+                <strong>Permisos:</strong>
+
+                ${administrador.permisos}
+
+            </p>
+
+        `;
+
+    })
+
+    .catch(error => {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+    });
+
+}
+
+// ==========================================
+// ACTUALIZAR ADMINISTRADOR
+// PUT /api/administradores/actualizar/{id}
+// ==========================================
+
+function actualizarAdministrador() {
+
+    const id =
+        document.getElementById(
+            "idActualizar"
+        ).value;
+
+    const idUsuario =
+        document.getElementById(
+            "idUsuarioActualizar"
+        ).value;
+
+    const permisos =
+        document.getElementById(
+            "permisosActualizar"
+        ).value;
+
+    const mensaje =
+        document.getElementById(
+            "mensajeActualizar"
+        );
+
+    if (!id) {
+
+        mensaje.textContent =
+            "Ingrese el ID del administrador.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+    if (!idUsuario) {
+
+        mensaje.textContent =
+            "Ingrese el ID del usuario.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+    const administrador = {
+
+        permisos: permisos,
+
+        usuario: {
+
+            idUsuario:
+                parseInt(idUsuario)
+
+        }
+
+    };
+
+    fetch(
+        URL_API + "/actualizar/" + id,
+        {
+
+            method: "PUT",
+
+            headers: {
+
+                "Content-Type":
+                    "application/json"
+
+            },
+
+            body:
+                JSON.stringify(administrador)
+
+        }
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            return response.text()
+                .then(mensajeError => {
+
+                    throw new Error(
+                        mensajeError ||
+                        "No fue posible actualizar el administrador."
+                    );
+
+                });
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        mensaje.textContent =
+            "Administrador actualizado correctamente.";
+
+        mensaje.className =
+            "mensaje exito";
+
+    })
+
+    .catch(error => {
+
+        mensaje.textContent =
+            "Error: " + error.message;
+
+        mensaje.className =
+            "mensaje error";
+
+    });
+
+}
+
+// ==========================================
+// ELIMINAR ADMINISTRADOR
+// DELETE /api/administradores/eliminar/{id}
+// ==========================================
+
+function eliminarAdministrador() {
+
+    const id =
+        document.getElementById(
+            "idEliminar"
+        ).value;
+
+    const mensaje =
+        document.getElementById(
+            "mensajeEliminar"
+        );
+
+    if (!id) {
+
+        mensaje.textContent =
+            "Ingrese el ID del administrador.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+    const confirmar =
+        confirm(
+            "¿Está seguro de eliminar el administrador con ID "
+            + id
+            + "?"
+        );
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+    fetch(
+        URL_API + "/eliminar/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible eliminar el administrador."
+            );
+
+        }
+
+        return response.text();
+
+    })
+
+    .then(data => {
+
+        mensaje.textContent =
+            data;
+
+        mensaje.className =
+            "mensaje exito";
+
+        listarAdministradores();
+
+    })
+
+    .catch(error => {
+
+        mensaje.textContent =
+            "Error: " + error.message;
+
+        mensaje.className =
+            "mensaje error";
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="/JS/api-client.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de publicaciones del foro - My Pet</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff7ed, #fef3c7);
+            padding: 30px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* ENCABEZADO */
+
+        .encabezado {
+            background: linear-gradient(135deg, #ff8a3d, #ffb347);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .logo {
+            font-size: 45px;
+        }
+
+        .encabezado h1 {
+            font-size: 32px;
+            margin: 8px 0;
+        }
+
+        .encabezado p {
+            font-size: 15px;
+        }
+
+        /* CONTENIDO */
+
+        .contenido {
+            background: white;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .seccion {
+            margin-bottom: 40px;
+        }
+
+        .titulo {
+            font-size: 22px;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* FORMULARIO */
+
+        .formulario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 7px;
+        }
+
+        .campo input,
+        .campo textarea {
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background-color: #fafafa;
+        }
+
+        .campo textarea {
+
+            min-height: 130px;
+
+            resize: vertical;
+        }
+
+        .campo input:focus,
+        .campo textarea:focus {
+
+            border-color: #ff8a3d;
+
+            background-color: white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 138, 61, 0.12);
+        }
+
+        /* BOTONES */
+
+        .botones {
+
+            grid-column: 1 / 3;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        button {
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+
+            opacity: 0.85;
+
+            transform: translateY(-1px);
+        }
+
+        .btn-principal {
+
+            background: #ff8a3d;
+
+            color: white;
+        }
+
+        .btn-buscar {
+
+            background: #6c5ce7;
+
+            color: white;
+        }
+
+        .btn-eliminar {
+
+            background: #e74c3c;
+
+            color: white;
+        }
+
+        .btn-secundario {
+
+            background: #777;
+
+            color: white;
+        }
+
+        /* BUSQUEDA */
+
+        .busqueda {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .busqueda input {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        /* TABLA */
+
+        .tabla-contenedor {
+
+            overflow-x: auto;
+
+            margin-top: 20px;
+
+            display: none;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 900px;
+        }
+
+        th {
+
+            background: #ff8a3d;
+
+            color: white;
+
+            padding: 12px;
+
+            text-align: left;
+        }
+
+        td {
+
+            padding: 11px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+
+            background-color: #fff7ed;
+        }
+
+        /* RESULTADO */
+
+        .resultado {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #fff7ed;
+
+            border-radius: 10px;
+
+            border-left: 4px solid #ff8a3d;
+
+            display: none;
+
+            overflow-x: auto;
+        }
+
+        /* MENSAJES */
+
+        .mensaje {
+
+            padding: 12px;
+
+            margin-top: 20px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            display: none;
+        }
+
+        .exito {
+
+            display: block;
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .error {
+
+            display: block;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        /* PIE */
+
+        .pie {
+
+            background: #fafafa;
+
+            padding: 18px;
+
+            text-align: center;
+
+            color: #777;
+
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .botones {
+                grid-column: 1;
+            }
+
+            .busqueda {
+                flex-direction: column;
+            }
+
+            .encabezado h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- ENCABEZADO -->
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐾
+        </div>
+
+        <h1>
+            My Pet
+        </h1>
+
+        <p>
+            Gestión de publicaciones del foro
+        </p>
+
+    </div>
+
+
+    <div class="contenido">
+
+
+        <!-- REGISTRAR PUBLICACIÓN -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Registrar publicación
+            </h2>
+
+
+            <form
+                id="formPublicacion"
+                class="formulario"
+            >
+
+                <div class="campo">
+
+                    <label for="titulo">
+                        Título
+                    </label>
+
+                    <input
+                        type="text"
+                        id="titulo"
+                        placeholder="Ingrese el título de la publicación"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idUsuario">
+                        ID del usuario
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuario"
+                        min="1"
+                        placeholder="Ingrese el ID del usuario"
+                        required
+                    >
+
+                </div>
+
+
+                <div
+                    class="campo"
+                    style="grid-column: 1 / 3;"
+                >
+
+                    <label for="contenido">
+                        Contenido
+                    </label>
+
+                    <textarea
+                        id="contenido"
+                        placeholder="Escriba el contenido de la publicación"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                    >
+                        Publicar
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeRegistro"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- LISTAR PUBLICACIONES -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Publicaciones registradas
+            </h2>
+
+
+            <button
+                onclick="listarPublicaciones()"
+                class="btn-principal"
+            >
+                Listar publicaciones
+            </button>
+
+
+            <button
+                onclick="ocultarTabla()"
+                class="btn-secundario"
+            >
+                Ocultar tabla
+            </button>
+
+
+            <div
+                id="listaPublicaciones"
+                class="tabla-contenedor"
+            ></div>
+
+        </section>
+
+
+        <!-- BUSCAR POR USUARIO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Buscar publicaciones por usuario
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idUsuarioBuscar"
+                    min="1"
+                    placeholder="Ingrese el ID del usuario"
+                >
+
+                <button
+                    onclick="buscarPorUsuario()"
+                    class="btn-buscar"
+                >
+                    Buscar
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultadoUsuario"
+                class="resultado"
+            ></div>
+
+        </section>
+
+
+        <!-- ACTUALIZAR PUBLICACIÓN -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Actualizar publicación
+            </h2>
+
+
+            <form
+                id="formActualizar"
+                class="formulario"
+            >
+
+                <div class="campo">
+
+                    <label for="idActualizar">
+                        ID de la publicación
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idActualizar"
+                        min="1"
+                        placeholder="Ingrese el ID"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idUsuarioActualizar">
+                        ID del usuario
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuarioActualizar"
+                        min="1"
+                        placeholder="Ingrese el ID del usuario"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="tituloActualizar">
+                        Nuevo título
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tituloActualizar"
+                        placeholder="Ingrese el nuevo título"
+                        required
+                    >
+
+                </div>
+
+
+                <div
+                    class="campo"
+                >
+
+                    <label for="contenidoActualizar">
+                        Nuevo contenido
+                    </label>
+
+                    <textarea
+                        id="contenidoActualizar"
+                        placeholder="Ingrese el nuevo contenido"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-buscar"
+                    >
+                        Actualizar publicación
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeActualizar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- ELIMINAR PUBLICACIÓN -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Eliminar publicación
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idEliminar"
+                    min="1"
+                    placeholder="Ingrese el ID de la publicación"
+                >
+
+                <button
+                    onclick="eliminarPublicacion()"
+                    class="btn-eliminar"
+                >
+                    Eliminar publicación
+                </button>
+
+            </div>
+
+
+            <p
+                id="mensajeEliminar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+    </div>
+
+
+    <!-- PIE -->
+
+    <div class="pie">
+
+        My Pet © 2026 · Gestión de publicaciones del foro
+
+    </div>
+
+</div>
+
+
+<script>
+
+const URL_API =
+    "http://localhost:8082/api/publicaciones-foro";
+
+
+// ==========================================
+// REGISTRAR PUBLICACIÓN
+// POST /api/publicaciones-foro/guardar
+// ==========================================
+
+document
+    .getElementById("formPublicacion")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        // Datos de la nueva publicación
+        const publicacion = {
+
+            titulo:
+                document.getElementById(
+                    "titulo"
+                ).value,
+
+            contenido:
+                document.getElementById(
+                    "contenido"
+                ).value,
+
+            usuario: {
+
+                idUsuario:
+                    parseInt(
+                        document.getElementById(
+                            "idUsuario"
+                        ).value
+                    )
+
+            }
+
+        };
+
+
+        fetch(
+            URL_API + "/guardar",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(publicacion)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensaje => {
+
+                        throw new Error(
+                            mensaje ||
+                            "No fue posible registrar la publicación."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Publicación registrada correctamente. ID generado: "
+                + data.idPublicacion;
+
+
+            mensaje.className =
+                "mensaje exito";
+
+
+            document
+                .getElementById(
+                    "formPublicacion"
+                )
+                .reset();
+
+        })
+
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+});
+
+
+// ==========================================
+// LISTAR PUBLICACIONES
+// GET /api/publicaciones-foro/listar
+// ==========================================
+
+function listarPublicaciones() {
+
+    const tabla =
+        document.getElementById(
+            "listaPublicaciones"
+        );
+
+
+    fetch(
+        URL_API + "/listar"
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar las publicaciones."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(publicaciones => {
+
+        let contenido = "";
+
+
+        if (publicaciones.length === 0) {
+
+            contenido =
+                "<p>No hay publicaciones registradas.</p>";
+
+        }
+
+        else {
+
+            contenido = `
+
+                <table>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Título</th>
+
+                        <th>Contenido</th>
+
+                        <th>Fecha</th>
+
+                        <th>ID usuario</th>
+
+                        <th>Nombre usuario</th>
+
+                    </tr>
+
+            `;
+
+
+            publicaciones.forEach(publicacion => {
+
+                contenido += `
+
+                    <tr>
+
+                        <td>
+                            ${publicacion.idPublicacion}
+                        </td>
+
+                        <td>
+                            ${publicacion.titulo || ""}
+                        </td>
+
+                        <td>
+                            ${publicacion.contenido || ""}
+                        </td>
+
+                        <td>
+                            ${publicacion.fecha || ""}
+                        </td>
+
+                        <td>
+                            ${
+                                publicacion.usuario
+                                ? publicacion.usuario.idUsuario
+                                : ""
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                publicacion.usuario
+                                ? publicacion.usuario.nombre
+                                : ""
+                            }
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+
+            contenido += "</table>";
+
+        }
+
+
+        tabla.innerHTML =
+            contenido;
+
+
+        tabla.style.display =
+            "block";
+
+    })
+
+
+    .catch(error => {
+
+        tabla.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+
+        tabla.style.display =
+            "block";
+
+    });
+
+}
+
+
+// ==========================================
+// OCULTAR TABLA
+// ==========================================
+
+function ocultarTabla() {
+
+    document
+        .getElementById(
+            "listaPublicaciones"
+        )
+        .style.display = "none";
+
+}
+
+
+// ==========================================
+// BUSCAR POR USUARIO
+// GET /api/publicaciones-foro/usuario/{idUsuario}
+// ==========================================
+
+function buscarPorUsuario() {
+
+    const id =
+        document.getElementById(
+            "idUsuarioBuscar"
+        ).value;
+
+
+    const resultado =
+        document.getElementById(
+            "resultadoUsuario"
+        );
+
+
+    if (!id) {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Ingrese el ID del usuario.</p>";
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/usuario/" + id
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar las publicaciones del usuario."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(publicaciones => {
+
+        resultado.style.display =
+            "block";
+
+
+        if (publicaciones.length === 0) {
+
+            resultado.innerHTML =
+                "<p>El usuario no tiene publicaciones registradas.</p>";
+
+            return;
+
+        }
+
+
+        let contenido = `
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Título</th>
+
+                    <th>Contenido</th>
+
+                    <th>Fecha</th>
+
+                </tr>
+
+        `;
+
+
+        publicaciones.forEach(publicacion => {
+
+            contenido += `
+
+                <tr>
+
+                    <td>
+                        ${publicacion.idPublicacion}
+                    </td>
+
+                    <td>
+                        ${publicacion.titulo || ""}
+                    </td>
+
+                    <td>
+                        ${publicacion.contenido || ""}
+                    </td>
+
+                    <td>
+                        ${publicacion.fecha || ""}
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+        contenido += "</table>";
+
+
+        resultado.innerHTML =
+            contenido;
+
+    })
+
+
+    .catch(error => {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+    });
+
+}
+
+
+// ==========================================
+// ACTUALIZAR PUBLICACIÓN
+// PUT /api/publicaciones-foro/{id}
+// ==========================================
+
+document
+    .getElementById("formActualizar")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const id =
+            document.getElementById(
+                "idActualizar"
+            ).value;
+
+
+        // Datos que se van a actualizar
+        const publicacion = {
+
+            titulo:
+                document.getElementById(
+                    "tituloActualizar"
+                ).value,
+
+            contenido:
+                document.getElementById(
+                    "contenidoActualizar"
+                ).value,
+
+            usuario: {
+
+                idUsuario:
+                    parseInt(
+                        document.getElementById(
+                            "idUsuarioActualizar"
+                        ).value
+                    )
+
+            }
+
+        };
+
+
+        fetch(
+            URL_API + "/" + id,
+            {
+
+                method: "PUT",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(publicacion)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensaje => {
+
+                        throw new Error(
+                            mensaje ||
+                            "No fue posible actualizar la publicación."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeActualizar"
+                );
+
+
+            mensaje.textContent =
+                "Publicación actualizada correctamente. ID: "
+                + data.idPublicacion;
+
+
+            mensaje.className =
+                "mensaje exito";
+
+
+            document
+                .getElementById(
+                    "formActualizar"
+                )
+                .reset();
+
+        })
+
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeActualizar"
+                );
+
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+});
+
+
+// ==========================================
+// ELIMINAR PUBLICACIÓN
+// DELETE /api/publicaciones-foro/{id}
+// ==========================================
+
+function eliminarPublicacion() {
+
+    const id =
+        document.getElementById(
+            "idEliminar"
+        ).value;
+
+
+    const mensaje =
+        document.getElementById(
+            "mensajeEliminar"
+        );
+
+
+    if (!id) {
+
+        mensaje.textContent =
+            "Ingrese el ID de la publicación.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "¿Está seguro de eliminar la publicación con ID "
+            + id
+            + "?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            return response.text()
+                .then(mensajeError => {
+
+                    throw new Error(
+                        mensajeError ||
+                        "No fue posible eliminar la publicación."
+                    );
+
+                });
+
+        }
+
+        return response.text();
+
+    })
+
+
+    .then(data => {
+
+        mensaje.textContent =
+            data ||
+            "Publicación eliminada correctamente.";
+
+
+        mensaje.className =
+            "mensaje exito";
+
+
+        document
+            .getElementById(
+                "idEliminar"
+            )
+            .value = "";
+
+    })
+
+
+    .catch(error => {
+
+        mensaje.textContent =
+            "Error: " + error.message;
+
+
+        mensaje.className =
+            "mensaje error";
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>

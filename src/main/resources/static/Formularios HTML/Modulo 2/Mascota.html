@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="/JS/api-client.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de mascotas - My Pet</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff7ed, #fef3c7);
+            padding: 30px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* ==============================
+           ENCABEZADO
+        ============================== */
+
+        .encabezado {
+            background: linear-gradient(135deg, #ff8a3d, #ffb347);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .logo {
+            font-size: 45px;
+        }
+
+        .encabezado h1 {
+            font-size: 32px;
+            margin: 8px 0;
+        }
+
+        .encabezado p {
+            font-size: 15px;
+        }
+
+        /* ==============================
+           CONTENIDO
+        ============================== */
+
+        .contenido {
+            background: white;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .seccion {
+            margin-bottom: 40px;
+        }
+
+        .titulo {
+            font-size: 22px;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* ==============================
+           FORMULARIOS
+        ============================== */
+
+        .formulario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo.completo {
+            grid-column: 1 / 3;
+        }
+
+        .campo label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 7px;
+        }
+
+        .campo input,
+        .campo select {
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background-color: #fafafa;
+        }
+
+        .campo input:focus,
+        .campo select:focus {
+
+            border-color: #ff8a3d;
+
+            background-color: white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 138, 61, 0.12);
+        }
+
+        /* ==============================
+           BOTONES
+        ============================== */
+
+        .botones {
+
+            grid-column: 1 / 3;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        button {
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+
+            opacity: 0.85;
+
+            transform: translateY(-1px);
+        }
+
+        .btn-principal {
+
+            background: #ff8a3d;
+
+            color: white;
+        }
+
+        .btn-buscar {
+
+            background: #6c5ce7;
+
+            color: white;
+        }
+
+        .btn-actualizar {
+
+            background: #3498db;
+
+            color: white;
+        }
+
+        .btn-eliminar {
+
+            background: #e74c3c;
+
+            color: white;
+        }
+
+        .btn-secundario {
+
+            background: #777;
+
+            color: white;
+        }
+
+        /* ==============================
+           BUSQUEDA
+        ============================== */
+
+        .busqueda {
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+        .busqueda input {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        .busqueda input:focus {
+
+            border-color: #ff8a3d;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 138, 61, 0.12);
+        }
+
+        /* ==============================
+           RESULTADO
+        ============================== */
+
+        .resultado {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #fff7ed;
+
+            border-radius: 10px;
+
+            border-left: 4px solid #ff8a3d;
+        }
+
+        .resultado p {
+
+            margin-bottom: 8px;
+
+            color: #444;
+        }
+
+        /* ==============================
+           TABLA
+        ============================== */
+
+        .tabla-contenedor {
+
+            overflow-x: auto;
+
+            margin-top: 20px;
+
+            display: none;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 950px;
+        }
+
+        th {
+
+            background: #ff8a3d;
+
+            color: white;
+
+            padding: 12px;
+
+            text-align: left;
+        }
+
+        td {
+
+            padding: 11px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+
+            background-color: #fff7ed;
+        }
+
+        /* ==============================
+           MENSAJES
+        ============================== */
+
+        .mensaje {
+
+            padding: 12px;
+
+            margin-top: 20px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            display: none;
+        }
+
+        .exito {
+
+            display: block;
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .error {
+
+            display: block;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        /* ==============================
+           PIE
+        ============================== */
+
+        .pie {
+
+            background: #fafafa;
+
+            padding: 18px;
+
+            text-align: center;
+
+            color: #777;
+
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.completo {
+                grid-column: 1;
+            }
+
+            .botones {
+                grid-column: 1;
+            }
+
+            .busqueda {
+                flex-direction: column;
+            }
+
+            .encabezado h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+    <!-- ==============================
+         ENCABEZADO
+    ============================== -->
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐾
+        </div>
+
+        <h1>
+            My Pet
+        </h1>
+
+        <p>
+            Gestión de mascotas
+        </p>
+
+    </div>
+
+
+    <div class="contenido">
+
+
+        <!-- ==============================
+             REGISTRAR MASCOTA
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Registrar mascota
+            </h2>
+
+
+            <form
+                id="formMascota"
+                class="formulario"
+            >
+
+
+                <div class="campo">
+
+                    <label for="nombre">
+                        Nombre de la mascota
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        maxlength="100"
+                        placeholder="Ingrese el nombre"
+                        required
+                        title="Escriba el nombre de la mascota."
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="especie">
+                        Especie
+                    </label>
+
+                    <input
+                        type="text"
+                        id="especie"
+                        maxlength="50"
+                        placeholder="Ejemplo: Perro"
+                        required
+                        title="Escriba la especie de la mascota."
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="raza">
+                        Raza
+                    </label>
+
+                    <input
+                        type="text"
+                        id="raza"
+                        maxlength="50"
+                        placeholder="Ejemplo: Poodle"
+                        required
+                        title="Escriba la raza de la mascota."
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="fechaNacimiento">
+                        Fecha de nacimiento
+                    </label>
+
+                    <input
+                        type="date"
+                        id="fechaNacimiento"
+                        required
+                        title="Seleccione la fecha de nacimiento de la mascota."
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="foto">
+                        Foto
+                    </label>
+
+                    <input
+                        type="text"
+                        id="foto"
+                        maxlength="300"
+                        placeholder="URL de la imagen"
+                        title="Ingrese la URL de la foto de la mascota."
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idUsuario">
+                        ID del usuario dueño
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuario"
+                        min="1"
+                        placeholder="Ingrese el ID del usuario"
+                        required
+                        title="Ingrese el ID del usuario que es dueño de la mascota."
+                    >
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                        title="Registra una nueva mascota en la base de datos."
+                    >
+                        Registrar mascota
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeRegistro"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- ==============================
+             LISTAR MASCOTAS
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Mascotas registradas
+            </h2>
+
+
+            <button
+                onclick="listarMascotas()"
+                class="btn-principal"
+                title="Consulta todas las mascotas registradas y muestra la información en una tabla."
+            >
+                Listar mascotas
+            </button>
+
+
+            <button
+                onclick="ocultarTabla()"
+                class="btn-secundario"
+                title="Oculta la tabla de mascotas registradas."
+            >
+                Ocultar tabla
+            </button>
+
+
+            <div
+                id="listaMascotas"
+                class="tabla-contenedor"
+            ></div>
+
+        </section>
+
+
+        <!-- ==============================
+             BUSCAR MASCOTA
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Buscar mascota por ID
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idBuscar"
+                    min="1"
+                    placeholder="Ingrese el ID de la mascota"
+                    title="Escriba el ID de la mascota que desea consultar."
+                >
+
+
+                <button
+                    onclick="buscarMascota()"
+                    class="btn-buscar"
+                    title="Busca una mascota específica utilizando su ID."
+                >
+                    Buscar mascota
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultadoMascota"
+                class="resultado"
+                style="display: none;"
+            ></div>
+
+        </section>
+
+
+        <!-- ==============================
+             ACTUALIZAR MASCOTA
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Actualizar mascota
+            </h2>
+
+
+            <div class="formulario">
+
+
+                <div class="campo">
+
+                    <label for="idActualizar">
+                        ID de la mascota
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idActualizar"
+                        min="1"
+                        placeholder="ID de la mascota"
+                        title="Ingrese el ID de la mascota que desea modificar."
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="nombreActualizar">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombreActualizar"
+                        maxlength="100"
+                        placeholder="Nuevo nombre"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="especieActualizar">
+                        Especie
+                    </label>
+
+                    <input
+                        type="text"
+                        id="especieActualizar"
+                        maxlength="50"
+                        placeholder="Nueva especie"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="razaActualizar">
+                        Raza
+                    </label>
+
+                    <input
+                        type="text"
+                        id="razaActualizar"
+                        maxlength="50"
+                        placeholder="Nueva raza"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="fechaNacimientoActualizar">
+                        Fecha de nacimiento
+                    </label>
+
+                    <input
+                        type="date"
+                        id="fechaNacimientoActualizar"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="fotoActualizar">
+                        Foto
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fotoActualizar"
+                        maxlength="300"
+                        placeholder="Nueva URL de la imagen"
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idUsuarioActualizar">
+                        ID del usuario dueño
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuarioActualizar"
+                        min="1"
+                        placeholder="ID del usuario"
+                    >
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        onclick="actualizarMascota()"
+                        class="btn-actualizar"
+                        title="Actualiza la información de la mascota utilizando su ID."
+                    >
+                        Actualizar mascota
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <p
+                id="mensajeActualizar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- ==============================
+             ELIMINAR MASCOTA
+        ============================== -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Eliminar mascota
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idEliminar"
+                    min="1"
+                    placeholder="Ingrese el ID de la mascota"
+                    title="Escriba el ID de la mascota que desea eliminar."
+                >
+
+
+                <button
+                    onclick="eliminarMascota()"
+                    class="btn-eliminar"
+                    title="Elimina de la base de datos la mascota cuyo ID haya ingresado."
+                >
+                    Eliminar mascota
+                </button>
+
+            </div>
+
+
+            <p
+                id="mensajeEliminar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+    </div>
+
+
+    <!-- ==============================
+         PIE
+    ============================== -->
+
+    <div class="pie">
+
+        My Pet © 2026 · Gestión de mascotas
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+const URL_API =
+    "http://localhost:8082/api/mascotas";
+
+
+// ==========================================
+// REGISTRAR MASCOTA
+// POST /api/mascotas/crear
+// ==========================================
+
+document
+    .getElementById("formMascota")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const mascota = {
+
+            nombre:
+                document.getElementById("nombre").value,
+
+            especie:
+                document.getElementById("especie").value,
+
+            raza:
+                document.getElementById("raza").value,
+
+            fechaNacimiento:
+                document.getElementById("fechaNacimiento").value,
+
+            foto:
+                document.getElementById("foto").value,
+
+            usuario: {
+
+                idUsuario:
+                    parseInt(
+                        document.getElementById("idUsuario").value
+                    )
+
+            }
+
+        };
+
+
+        fetch(
+            URL_API + "/crear",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body:
+                    JSON.stringify(mascota)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "No fue posible registrar la mascota."
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Mascota registrada correctamente. ID generado: "
+                + data.idMascota;
+
+
+            mensaje.className =
+                "mensaje exito";
+
+
+            document
+                .getElementById("formMascota")
+                .reset();
+
+        })
+
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+    });
+
+
+// ==========================================
+// LISTAR MASCOTAS
+// GET /api/mascotas/listar
+// ==========================================
+
+function listarMascotas() {
+
+    const tabla =
+        document.getElementById(
+            "listaMascotas"
+        );
+
+
+    fetch(
+        URL_API + "/listar"
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar las mascotas."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(mascotas => {
+
+        let contenido = "";
+
+
+        if (mascotas.length === 0) {
+
+            contenido =
+                "<p>No hay mascotas registradas.</p>";
+
+        }
+
+        else {
+
+            contenido = `
+
+                <table>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Nombre</th>
+
+                        <th>Especie</th>
+
+                        <th>Raza</th>
+
+                        <th>Fecha de nacimiento</th>
+
+                        <th>Foto</th>
+
+                        <th>ID usuario</th>
+
+                    </tr>
+
+            `;
+
+
+            mascotas.forEach(mascota => {
+
+                contenido += `
+
+                    <tr>
+
+                        <td>
+                            ${mascota.idMascota}
+                        </td>
+
+                        <td>
+                            ${mascota.nombre}
+                        </td>
+
+                        <td>
+                            ${mascota.especie}
+                        </td>
+
+                        <td>
+                            ${mascota.raza}
+                        </td>
+
+                        <td>
+                            ${mascota.fechaNacimiento}
+                        </td>
+
+                        <td>
+                            ${mascota.foto || ""}
+                        </td>
+
+                        <td>
+                            ${
+                                mascota.usuario
+                                ? mascota.usuario.idUsuario
+                                : ""
+                            }
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+
+            contenido += "</table>";
+
+        }
+
+
+        tabla.innerHTML =
+            contenido;
+
+
+        tabla.style.display =
+            "block";
+
+    })
+
+
+    .catch(error => {
+
+        tabla.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+
+        tabla.style.display =
+            "block";
+
+    });
+
+}
+
+
+// ==========================================
+// OCULTAR TABLA
+// ==========================================
+
+function ocultarTabla() {
+
+    document
+        .getElementById("listaMascotas")
+        .style.display = "none";
+
+}
+
+
+// ==========================================
+// BUSCAR MASCOTA
+// GET /api/mascotas/{id}
+// ==========================================
+
+function buscarMascota() {
+
+    const id =
+        document.getElementById(
+            "idBuscar"
+        ).value;
+
+
+    const resultado =
+        document.getElementById(
+            "resultadoMascota"
+        );
+
+
+    if (!id) {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML =
+            "<p>Ingrese el ID de la mascota.</p>";
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/" + id
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Mascota no encontrada."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(mascota => {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML = `
+
+            <p>
+                <strong>ID:</strong>
+                ${mascota.idMascota}
+            </p>
+
+            <p>
+                <strong>Nombre:</strong>
+                ${mascota.nombre}
+            </p>
+
+            <p>
+                <strong>Especie:</strong>
+                ${mascota.especie}
+            </p>
+
+            <p>
+                <strong>Raza:</strong>
+                ${mascota.raza}
+            </p>
+
+            <p>
+                <strong>Fecha de nacimiento:</strong>
+                ${mascota.fechaNacimiento}
+            </p>
+
+            <p>
+                <strong>Foto:</strong>
+                ${mascota.foto || ""}
+            </p>
+
+            <p>
+                <strong>ID del usuario:</strong>
+                ${
+                    mascota.usuario
+                    ? mascota.usuario.idUsuario
+                    : ""
+                }
+            </p>
+
+        `;
+
+    })
+
+
+    .catch(error => {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+    });
+
+}
+
+
+// ==========================================
+// ACTUALIZAR MASCOTA
+// PUT /api/mascotas/actualizar/{id}
+// ==========================================
+
+function actualizarMascota() {
+
+    const id =
+        document.getElementById(
+            "idActualizar"
+        ).value;
+
+
+    const mensaje =
+        document.getElementById(
+            "mensajeActualizar"
+        );
+
+
+    if (!id) {
+
+        mensaje.textContent =
+            "Ingrese el ID de la mascota.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+
+    const mascota = {
+
+        nombre:
+            document.getElementById(
+                "nombreActualizar"
+            ).value,
+
+        especie:
+            document.getElementById(
+                "especieActualizar"
+            ).value,
+
+        raza:
+            document.getElementById(
+                "razaActualizar"
+            ).value,
+
+        fechaNacimiento:
+            document.getElementById(
+                "fechaNacimientoActualizar"
+            ).value,
+
+        foto:
+            document.getElementById(
+                "fotoActualizar"
+            ).value,
+
+        usuario: {
+
+            idUsuario:
+                parseInt(
+                    document.getElementById(
+                        "idUsuarioActualizar"
+                    ).value
+                )
+
+        }
+
+    };
+
+
+    fetch(
+        URL_API + "/actualizar/" + id,
+        {
+
+            method: "PUT",
+
+            headers: {
+
+                "Content-Type":
+                    "application/json"
+
+            },
+
+            body:
+                JSON.stringify(mascota)
+
+        }
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible actualizar la mascota."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(data => {
+
+        mensaje.textContent =
+            "Mascota actualizada correctamente.";
+
+        mensaje.className =
+            "mensaje exito";
+
+    })
+
+
+    .catch(error => {
+
+        mensaje.textContent =
+            "Error: " + error.message;
+
+        mensaje.className =
+            "mensaje error";
+
+    });
+
+}
+
+
+// ==========================================
+// ELIMINAR MASCOTA
+// DELETE /api/mascotas/eliminar/{id}
+// ==========================================
+
+function eliminarMascota() {
+
+    const id =
+        document.getElementById(
+            "idEliminar"
+        ).value;
+
+
+    const mensaje =
+        document.getElementById(
+            "mensajeEliminar"
+        );
+
+
+    if (!id) {
+
+        mensaje.textContent =
+            "Ingrese el ID de la mascota.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "¿Está seguro de eliminar la mascota con ID "
+            + id
+            + "?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/eliminar/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible eliminar la mascota."
+            );
+
+        }
+
+        return response.text();
+
+    })
+
+
+    .then(data => {
+
+        mensaje.textContent =
+            data;
+
+        mensaje.className =
+            "mensaje exito";
+
+    })
+
+
+    .catch(error => {
+
+        mensaje.textContent =
+            "Error: " + error.message;
+
+        mensaje.className =
+            "mensaje error";
+
+    });
+
+}
+
+</script>
+
+
+</body>
+
+</html>

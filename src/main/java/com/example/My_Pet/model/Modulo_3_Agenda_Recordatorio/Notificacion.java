@@ -1,0 +1,87 @@
+// Modelo que representa una notificación asociada a un usuario.
+package com.example.My_Pet.model.Modulo_3_Agenda_Recordatorio;
+
+// Librerías necesarias para el mapeo de la entidad y el manejo de fechas.
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
+
+// Define la clase como una entidad de la base de datos.
+@Entity
+@Table(name = "notificacion")
+public class Notificacion {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_notificacion")
+    private Integer idNotificacion;
+
+    @Column(length = 300, nullable = false)
+    private String mensaje;
+
+    @Column(name = "fecha", nullable = false, updatable = false)
+    private LocalDateTime fecha;
+
+    @Column(length = 100)
+    private String estado;
+
+    // Relación entre la notificación y el usuario al que pertenece.
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
+    private Usuario usuario;
+
+    // Constructor vacío requerido por JPA.
+    public Notificacion() {
+    }
+
+    // Constructor para crear una notificación con sus datos.
+    public Notificacion(Integer idNotificacion, String mensaje, LocalDateTime fecha, String estado, Usuario usuario) {
+        this.idNotificacion = idNotificacion;
+        this.mensaje = mensaje;
+        this.fecha = fecha;
+        this.estado = estado;
+        this.usuario = usuario;
+    }
+
+    // Getters y setters- Métodos para obtener y modificar los datos.
+    public Integer getIdNotificacion() {
+        return idNotificacion;
+    }
+
+    public void setIdNotificacion(Integer idNotificacion) {
+        this.idNotificacion = idNotificacion;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    public LocalDateTime getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+}

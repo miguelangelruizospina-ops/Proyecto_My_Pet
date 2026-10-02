@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="/JS/api-client.js"></script>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Historial Médico - My Pet</title>
+
+
+    <style>
+
+        /* ==========================================
+           ESTILOS GENERALES
+        ========================================== */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            background: linear-gradient(
+                135deg,
+                #fff7ed,
+                #fef3c7
+            );
+
+            padding: 30px;
+        }
+
+        .contenedor {
+
+            max-width: 1100px;
+
+            margin: auto;
+        }
+
+
+        /* ==========================================
+           ENCABEZADO
+        ========================================== */
+
+        .encabezado {
+
+            background: linear-gradient(
+                135deg,
+                #ff8a3d,
+                #ffb347
+            );
+
+            color: white;
+
+            padding: 30px;
+
+            text-align: center;
+
+            border-radius: 20px 20px 0 0;
+        }
+
+        .logo {
+
+            font-size: 45px;
+        }
+
+        .encabezado h1 {
+
+            font-size: 32px;
+
+            margin: 8px 0;
+        }
+
+        .encabezado p {
+
+            font-size: 15px;
+        }
+
+
+        /* ==========================================
+           CONTENIDO PRINCIPAL
+        ========================================== */
+
+        .contenido {
+
+            background: white;
+
+            padding: 30px;
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .seccion {
+
+            margin-bottom: 40px;
+        }
+
+
+        /* ==========================================
+           BLOQUES DE CADA OPERACIÓN
+        ========================================== */
+
+        .tabla-historial {
+
+            border: 1px solid #eee;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            background: #fff;
+
+            box-shadow:
+                0 5px 18px rgba(0, 0, 0, 0.06);
+
+            margin-bottom: 35px;
+        }
+
+        .tabla-titulo {
+
+            font-size: 20px;
+
+            color: #ff8a3d;
+
+            margin-bottom: 20px;
+
+            border-bottom: 2px solid #f1f1f1;
+
+            padding-bottom: 10px;
+        }
+
+        .descripcion {
+
+            color: #666;
+
+            margin-bottom: 20px;
+
+            line-height: 1.5;
+        }
+
+
+        /* ==========================================
+           FORMULARIOS
+        ========================================== */
+
+        .formulario {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .campo {
+
+            display: flex;
+
+            flex-direction: column;
+        }
+
+        .campo.completo {
+
+            grid-column: 1 / 3;
+        }
+
+        .campo label {
+
+            font-weight: bold;
+
+            color: #444;
+
+            margin-bottom: 7px;
+        }
+
+        .campo input,
+        .campo textarea {
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background-color: #fafafa;
+        }
+
+        .campo input:focus,
+        .campo textarea:focus {
+
+            border-color: #ff8a3d;
+
+            background-color: white;
+
+            box-shadow:
+                0 0 0 3px rgba(
+                    255,
+                    138,
+                    61,
+                    0.12
+                );
+        }
+
+        .campo textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        /* ==========================================
+           BOTONES
+        ========================================== */
+
+        .botones {
+
+            grid-column: 1 / 3;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 5px;
+        }
+
+        button {
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+
+            opacity: 0.85;
+
+            transform: translateY(-1px);
+        }
+
+        .btn-crear {
+
+            background: #ff8a3d;
+
+            color: white;
+        }
+
+        .btn-actualizar {
+
+            background: #3498db;
+
+            color: white;
+        }
+
+        .btn-buscar {
+
+            background: #6c5ce7;
+
+            color: white;
+        }
+
+        .btn-eliminar {
+
+            background: #e74c3c;
+
+            color: white;
+        }
+
+        .btn-limpiar {
+
+            background: #777;
+
+            color: white;
+        }
+
+
+        /* ==========================================
+           MENSAJES
+        ========================================== */
+
+        .mensaje {
+
+            padding: 12px;
+
+            margin-top: 20px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            display: none;
+        }
+
+        .exito {
+
+            display: block;
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .error {
+
+            display: block;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+
+        /* ==========================================
+           TABLAS DE RESULTADOS
+        ========================================== */
+
+        .resultado {
+
+            margin-top: 20px;
+
+            overflow-x: auto;
+        }
+
+        .tabla-resultados {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            margin-top: 15px;
+
+            min-width: 950px;
+        }
+
+        .tabla-resultados th,
+        .tabla-resultados td {
+
+            border: 1px solid #ddd;
+
+            padding: 10px;
+
+            text-align: left;
+
+            vertical-align: top;
+        }
+
+        .tabla-resultados th {
+
+            background: #fff1e6;
+
+            color: #444;
+        }
+
+        .tabla-resultados tr:nth-child(even) {
+
+            background: #fafafa;
+        }
+
+
+        /* ==========================================
+           PIE DE PÁGINA
+        ========================================== */
+
+        .pie {
+
+            background: #fafafa;
+
+            padding: 18px;
+
+            text-align: center;
+
+            color: #777;
+
+            border-radius: 0 0 20px 20px;
+        }
+
+
+        /* ==========================================
+           DISEÑO PARA CELULARES
+        ========================================== */
+
+        @media (max-width: 700px) {
+
+            body {
+
+                padding: 10px;
+            }
+
+            .formulario {
+
+                grid-template-columns: 1fr;
+            }
+
+            .campo.completo {
+
+                grid-column: 1;
+            }
+
+            .botones {
+
+                grid-column: 1;
+            }
+
+            .encabezado h1 {
+
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+    <!-- ==========================================
+         ENCABEZADO PRINCIPAL
+    ========================================== -->
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐾
+        </div>
+
+        <h1>
+            My Pet
+        </h1>
+
+        <p>
+            Gestión de historial médico
+        </p>
+
+    </div>
+
+
+    <div class="contenido">
+
+
+        <!-- ==================================================
+             1. CREAR HISTORIAL MÉDICO
+        =================================================== -->
+
+        <section class="seccion">
+
+            <div class="tabla-historial">
+
+                <h2 class="tabla-titulo">
+                    Crear historial médico
+                </h2>
+
+                <p class="descripcion">
+                    En esta sección se registra un nuevo historial
+                    médico y se relaciona con una mascota existente.
+                </p>
+
+
+                <form
+                    id="formCrearHistorial"
+                    class="formulario"
+                >
+
+
+                    <div class="campo">
+
+                        <label for="crearIdMascota">
+                            ID de la mascota
+                        </label>
+
+                        <input
+                            type="number"
+                            id="crearIdMascota"
+                            min="1"
+                            placeholder="Ingrese el ID de la mascota"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="crearDiagnosticos">
+                            Diagnósticos
+                        </label>
+
+                        <input
+                            type="text"
+                            id="crearDiagnosticos"
+                            maxlength="100"
+                            placeholder="Ejemplo: Otitis"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="crearAntecedentes">
+                            Antecedentes médicos
+                        </label>
+
+                        <input
+                            type="text"
+                            id="crearAntecedentes"
+                            maxlength="200"
+                            placeholder="Antecedentes de la mascota"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="crearAlergias">
+                            Alergias
+                        </label>
+
+                        <input
+                            type="text"
+                            id="crearAlergias"
+                            maxlength="100"
+                            placeholder="Ejemplo: Pollo"
+                        >
+
+                    </div>
+
+
+                    <div class="campo completo">
+
+                        <label for="crearTratamientos">
+                            Tratamientos
+                        </label>
+
+                        <textarea
+                            id="crearTratamientos"
+                            maxlength="300"
+                            placeholder="Escriba los tratamientos realizados..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="botones">
+
+                        <button
+                            type="submit"
+                            class="btn-crear"
+                        >
+                            Crear historial
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-limpiar"
+                            onclick="limpiarCrear()"
+                        >
+                            Limpiar
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <p
+                    id="mensajeCrear"
+                    class="mensaje"
+                ></p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             2. ACTUALIZAR HISTORIAL MÉDICO
+        =================================================== -->
+
+        <section class="seccion">
+
+            <div class="tabla-historial">
+
+                <h2 class="tabla-titulo">
+                    Actualizar historial médico
+                </h2>
+
+                <p class="descripcion">
+                    En esta sección se pueden modificar los datos
+                    de un historial médico que ya está registrado.
+                </p>
+
+
+                <form
+                    id="formActualizarHistorial"
+                    class="formulario"
+                >
+
+
+                    <div class="campo">
+
+                        <label for="actualizarIdHistorial">
+                            ID del historial
+                        </label>
+
+                        <input
+                            type="number"
+                            id="actualizarIdHistorial"
+                            min="1"
+                            placeholder="Ingrese el ID del historial"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="actualizarIdMascota">
+                            ID de la mascota
+                        </label>
+
+                        <input
+                            type="number"
+                            id="actualizarIdMascota"
+                            min="1"
+                            placeholder="Ingrese el ID de la mascota"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="actualizarDiagnosticos">
+                            Diagnósticos
+                        </label>
+
+                        <input
+                            type="text"
+                            id="actualizarDiagnosticos"
+                            maxlength="100"
+                            placeholder="Nuevo diagnóstico"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="actualizarAntecedentes">
+                            Antecedentes médicos
+                        </label>
+
+                        <input
+                            type="text"
+                            id="actualizarAntecedentes"
+                            maxlength="200"
+                            placeholder="Nuevos antecedentes"
+                        >
+
+                    </div>
+
+
+                    <div class="campo">
+
+                        <label for="actualizarAlergias">
+                            Alergias
+                        </label>
+
+                        <input
+                            type="text"
+                            id="actualizarAlergias"
+                            maxlength="100"
+                            placeholder="Nuevas alergias"
+                        >
+
+                    </div>
+
+
+                    <div class="campo completo">
+
+                        <label for="actualizarTratamientos">
+                            Tratamientos
+                        </label>
+
+                        <textarea
+                            id="actualizarTratamientos"
+                            maxlength="300"
+                            placeholder="Escriba los nuevos tratamientos..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="botones">
+
+                        <button
+                            type="submit"
+                            class="btn-actualizar"
+                        >
+                            Actualizar historial
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn-limpiar"
+                            onclick="limpiarActualizar()"
+                        >
+                            Limpiar
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <p
+                    id="mensajeActualizar"
+                    class="mensaje"
+                ></p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             3. LISTAR TODOS LOS HISTORIALES MÉDICOS
+        =================================================== -->
+
+        <section class="seccion">
+
+            <div class="tabla-historial">
+
+                <h2 class="tabla-titulo">
+                    Listar todos los historiales médicos
+                </h2>
+
+                <p class="descripcion">
+                    Aquí se pueden consultar todos los historiales
+                    médicos registrados en el sistema.
+                </p>
+
+
+                <div class="botones">
+
+                    <button
+                        type="button"
+                        class="btn-buscar"
+                        onclick="listarTodosLosHistoriales()"
+                    >
+                        Listar todos los historiales
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="resultadoTodos"
+                    class="resultado"
+                ></div>
+
+
+                <p
+                    id="mensajeTodos"
+                    class="mensaje"
+                ></p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             4. CONSULTAR HISTORIAL POR MASCOTA
+        =================================================== -->
+
+        <section class="seccion">
+
+            <div class="tabla-historial">
+
+                <h2 class="tabla-titulo">
+                    Consultar historial por mascota
+                </h2>
+
+                <p class="descripcion">
+                    Ingrese el ID de una mascota para consultar
+                    sus historiales médicos.
+                </p>
+
+
+                <form
+                    id="formConsultar"
+                    class="formulario"
+                >
+
+
+                    <div class="campo">
+
+                        <label for="buscarIdMascota">
+                            ID de la mascota
+                        </label>
+
+                        <input
+                            type="number"
+                            id="buscarIdMascota"
+                            min="1"
+                            placeholder="Ingrese el ID de la mascota"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="botones">
+
+                        <button
+                            type="submit"
+                            class="btn-buscar"
+                        >
+                            Buscar historial
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <p
+                    id="mensajeConsulta"
+                    class="mensaje"
+                ></p>
+
+
+                <div
+                    id="resultadoHistorial"
+                    class="resultado"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             5. ELIMINAR HISTORIAL MÉDICO
+        =================================================== -->
+
+        <section class="seccion">
+
+            <div class="tabla-historial">
+
+                <h2 class="tabla-titulo">
+                    Eliminar historial médico
+                </h2>
+
+                <p class="descripcion">
+                    Ingrese el ID del historial que desea eliminar.
+                </p>
+
+
+                <form
+                    id="formEliminar"
+                    class="formulario"
+                >
+
+
+                    <div class="campo">
+
+                        <label for="eliminarIdHistorial">
+                            ID del historial
+                        </label>
+
+                        <input
+                            type="number"
+                            id="eliminarIdHistorial"
+                            min="1"
+                            placeholder="Ingrese el ID del historial"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="botones">
+
+                        <button
+                            type="submit"
+                            class="btn-eliminar"
+                        >
+                            Eliminar historial
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <p
+                    id="mensajeEliminar"
+                    class="mensaje"
+                ></p>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+
+    <div class="pie">
+
+        My Pet © 2026 · Gestión de historial médico 🐾
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+    // ==================================================
+    // URL PRINCIPAL DEL BACKEND
+    // ==================================================
+
+    const URL_API =
+        "http://localhost:8082/api/historiales-medicos";
+
+
+    // ==================================================
+    // FUNCIÓN PARA MOSTRAR MENSAJES
+    // ==================================================
+
+    function mostrarMensaje(elemento, texto, tipo) {
+
+        elemento.textContent = texto;
+
+        elemento.className =
+            "mensaje " + tipo;
+
+    }
+
+
+
+    // ==================================================
+    // 1. CREAR HISTORIAL MÉDICO
+    // POST
+    // ==================================================
+
+    document
+        .getElementById("formCrearHistorial")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const idMascota =
+                parseInt(
+                    document.getElementById(
+                        "crearIdMascota"
+                    ).value
+                );
+
+
+            const historial = {
+
+                mascota: {
+
+                    idMascota: idMascota
+
+                },
+
+                diagnosticos:
+                    document.getElementById(
+                        "crearDiagnosticos"
+                    ).value,
+
+                antecedentesMedicos:
+                    document.getElementById(
+                        "crearAntecedentes"
+                    ).value,
+
+                alergias:
+                    document.getElementById(
+                        "crearAlergias"
+                    ).value,
+
+                tratamientos:
+                    document.getElementById(
+                        "crearTratamientos"
+                    ).value
+
+            };
+
+
+            fetch(
+                URL_API + "/guardar",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(historial)
+
+                }
+            )
+
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    return response.text()
+                        .then(mensaje => {
+
+                            throw new Error(
+                                mensaje
+                            );
+
+                        });
+
+                }
+
+                return response.json();
+
+            })
+
+
+            .then(data => {
+
+                mostrarMensaje(
+
+                    document.getElementById(
+                        "mensajeCrear"
+                    ),
+
+                    "Historial médico creado correctamente.",
+
+                    "exito"
+
+                );
+
+
+                document
+                    .getElementById(
+                        "formCrearHistorial"
+                    )
+                    .reset();
+
+            })
+
+
+            .catch(error => {
+
+                mostrarMensaje(
+
+                    document.getElementById(
+                        "mensajeCrear"
+                    ),
+
+                    "Error: " + error.message,
+
+                    "error"
+
+                );
+
+            });
+
+        });
+
+
+
+    // ==================================================
+    // 2. ACTUALIZAR HISTORIAL MÉDICO
+    // PUT
+    // ==================================================
+
+    document
+        .getElementById("formActualizarHistorial")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const idHistorial =
+                document.getElementById(
+                    "actualizarIdHistorial"
+                ).value;
+
+
+            const idMascota =
+                parseInt(
+                    document.getElementById(
+                        "actualizarIdMascota"
+                    ).value
+                );
+
+
+            const historial = {
+
+                mascota: {
+
+                    idMascota: idMascota
+
+                },
+
+                diagnosticos:
+                    document.getElementById(
+                        "actualizarDiagnosticos"
+                    ).value,
+
+                antecedentesMedicos:
+                    document.getElementById(
+                        "actualizarAntecedentes"
+                    ).value,
+
+                alergias:
+                    document.getElementById(
+                        "actualizarAlergias"
+                    ).value,
+
+                tratamientos:
+                    document.getElementById(
+                        "actualizarTratamientos"
+                    ).value
+
+            };
+
+
+            fetch(
+
+                URL_API +
+                "/actualizar/" +
+                idHistorial,
+
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(historial)
+
+                }
+
+            )
+
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    return response.text()
+                        .then(mensaje => {
+
+                            throw new Error(
+                                mensaje
+                            );
+
+                        });
+
+                }
+
+                return response.json();
+
+            })
+
+
+            .then(data => {
+
+                mostrarMensaje(
+
+                    document.getElementById(
+                        "mensajeActualizar"
+                    ),
+
+                    "Historial médico actualizado correctamente.",
+
+                    "exito"
+
+                );
+
+            })
+
+
+            .catch(error => {
+
+                mostrarMensaje(
+
+                    document.getElementById(
+                        "mensajeActualizar"
+                    ),
+
+                    "Error: " + error.message,
+
+                    "error"
+
+                );
+
+            });
+
+        });
+
+
+
+    // ==================================================
+    // 3. LISTAR TODOS LOS HISTORIALES MÉDICOS
+    // GET
+    // ==================================================
+
+    function listarTodosLosHistoriales() {
+
+        const resultado =
+            document.getElementById(
+                "resultadoTodos"
+            );
+
+        const mensaje =
+            document.getElementById(
+                "mensajeTodos"
+            );
+
+
+        fetch(
+            URL_API + "/listar"
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "No fue posible listar los historiales médicos."
+                );
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(historiales => {
+
+
+            if (historiales.length === 0) {
+
+                resultado.innerHTML = "";
+
+                mostrarMensaje(
+
+                    mensaje,
+
+                    "No hay historiales médicos registrados.",
+
+                    "error"
+
+                );
+
+                return;
+
+            }
+
+
+            // ==================================================
+            // TABLA CON ID HISTORIAL + ID MASCOTA + NOMBRE
+            // ==================================================
+
+            let html = `
+
+                <table class="tabla-resultados">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID Historial
+                            </th>
+
+                            <th>
+                                ID Mascota
+                            </th>
+
+                            <th>
+                                Nombre mascota
+                            </th>
+
+                            <th>
+                                Diagnósticos
+                            </th>
+
+                            <th>
+                                Antecedentes médicos
+                            </th>
+
+                            <th>
+                                Alergias
+                            </th>
+
+                            <th>
+                                Tratamientos
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+            `;
+
+
+            historiales.forEach(historial => {
+
+                html += `
+
+                    <tr>
+
+                        <td>
+                            ${historial.idHistorial}
+                        </td>
+
+                        <td>
+                            ${
+                                historial.mascota
+                                    ? historial.mascota.idMascota
+                                    : ""
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                historial.mascota
+                                    ? historial.mascota.nombre
+                                    : ""
+                            }
+                        </td>
+
+                        <td>
+                            ${historial.diagnosticos || ""}
+                        </td>
+
+                        <td>
+                            ${
+                                historial.antecedentesMedicos || ""
+                            }
+                        </td>
+
+                        <td>
+                            ${historial.alergias || ""}
+                        </td>
+
+                        <td>
+                            ${historial.tratamientos || ""}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+
+            html += `
+
+                    </tbody>
+
+                </table>
+
+            `;
+
+
+            resultado.innerHTML = html;
+
+
+            mostrarMensaje(
+
+                mensaje,
+
+                "Historiales médicos cargados correctamente.",
+
+                "exito"
+
+            );
+
+        })
+
+
+        .catch(error => {
+
+            resultado.innerHTML = "";
+
+            mostrarMensaje(
+
+                mensaje,
+
+                "Error: " + error.message,
+
+                "error"
+
+            );
+
+        });
+
+    }
+
+
+
+    // ==================================================
+    // 4. CONSULTAR HISTORIAL POR MASCOTA
+    // GET
+    // ==================================================
+
+    document
+        .getElementById("formConsultar")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const idMascota =
+                document.getElementById(
+                    "buscarIdMascota"
+                ).value;
+
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeConsulta"
+                );
+
+
+            const resultado =
+                document.getElementById(
+                    "resultadoHistorial"
+                );
+
+
+            fetch(
+
+                URL_API +
+                "/mascota/" +
+                idMascota
+
+            )
+
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "No fue posible consultar el historial."
+                    );
+
+                }
+
+                return response.json();
+
+            })
+
+
+            .then(historiales => {
+
+
+                if (historiales.length === 0) {
+
+                    resultado.innerHTML = "";
+
+                    mostrarMensaje(
+
+                        mensaje,
+
+                        "La mascota no tiene historiales médicos registrados.",
+
+                        "error"
+
+                    );
+
+                    return;
+
+                }
+
+
+                // ==================================================
+                // TABLA DE CONSULTA
+                // AHORA TAMBIÉN MUESTRA ID Y NOMBRE DE MASCOTA
+                // ==================================================
+
+                let html = `
+
+                    <table class="tabla-resultados">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    ID Historial
+                                </th>
+
+                                <th>
+                                    ID Mascota
+                                </th>
+
+                                <th>
+                                    Nombre mascota
+                                </th>
+
+                                <th>
+                                    Diagnósticos
+                                </th>
+
+                                <th>
+                                    Antecedentes médicos
+                                </th>
+
+                                <th>
+                                    Alergias
+                                </th>
+
+                                <th>
+                                    Tratamientos
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                `;
+
+
+                historiales.forEach(historial => {
+
+                    html += `
+
+                        <tr>
+
+                            <td>
+                                ${historial.idHistorial}
+                            </td>
+
+                            <td>
+                                ${
+                                    historial.mascota
+                                        ? historial.mascota.idMascota
+                                        : idMascota
+                                }
+                            </td>
+
+                            <td>
+                                ${
+                                    historial.mascota
+                                        ? historial.mascota.nombre
+                                        : ""
+                                }
+                            </td>
+
+                            <td>
+                                ${historial.diagnosticos || ""}
+                            </td>
+
+                            <td>
+                                ${
+                                    historial.antecedentesMedicos || ""
+                                }
+                            </td>
+
+                            <td>
+                                ${historial.alergias || ""}
+                            </td>
+
+                            <td>
+                                ${historial.tratamientos || ""}
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                });
+
+
+                html += `
+
+                        </tbody>
+
+                    </table>
+
+                `;
+
+
+                resultado.innerHTML = html;
+
+
+                mostrarMensaje(
+
+                    mensaje,
+
+                    "Historial médico encontrado correctamente.",
+
+                    "exito"
+
+                );
+
+            })
+
+
+            .catch(error => {
+
+                resultado.innerHTML = "";
+
+                mostrarMensaje(
+
+                    mensaje,
+
+                    "Error: " + error.message,
+
+                    "error"
+
+                );
+
+            });
+
+        });
+
+
+
+    // ==================================================
+    // 5. ELIMINAR HISTORIAL MÉDICO
+    // DELETE
+    // ==================================================
+
+    document
+        .getElementById("formEliminar")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const idHistorial =
+                document.getElementById(
+                    "eliminarIdHistorial"
+                ).value;
+
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeEliminar"
+                );
+
+
+            const confirmar =
+                confirm(
+                    "¿Está seguro de eliminar este historial médico?"
+                );
+
+
+            if (!confirmar) {
+
+                return;
+
+            }
+
+
+            fetch(
+
+                URL_API +
+                "/eliminar/" +
+                idHistorial,
+
+                {
+
+                    method: "DELETE"
+
+                }
+
+            )
+
+
+            .then(response => {
+
+                if (!response.ok) {
+
+                    return response.text()
+                        .then(mensajeError => {
+
+                            throw new Error(
+                                mensajeError
+                            );
+
+                        });
+
+                }
+
+                return response.text();
+
+            })
+
+
+            .then(data => {
+
+                mostrarMensaje(
+
+                    mensaje,
+
+                    data ||
+                    "Historial médico eliminado correctamente.",
+
+                    "exito"
+
+                );
+
+
+                document.getElementById(
+                    "eliminarIdHistorial"
+                ).value = "";
+
+            })
+
+
+            .catch(error => {
+
+                mostrarMensaje(
+
+                    mensaje,
+
+                    "Error: " + error.message,
+
+                    "error"
+
+                );
+
+            });
+
+        });
+
+
+
+    // ==================================================
+    // LIMPIAR FORMULARIO DE CREAR
+    // ==================================================
+
+    function limpiarCrear() {
+
+        document
+            .getElementById(
+                "formCrearHistorial"
+            )
+            .reset();
+
+
+        document
+            .getElementById(
+                "mensajeCrear"
+            )
+            .style.display = "none";
+
+    }
+
+
+
+    // ==================================================
+    // LIMPIAR FORMULARIO DE ACTUALIZAR
+    // ==================================================
+
+    function limpiarActualizar() {
+
+        document
+            .getElementById(
+                "formActualizarHistorial"
+            )
+            .reset();
+
+
+        document
+            .getElementById(
+                "mensajeActualizar"
+            )
+            .style.display = "none";
+
+    }
+
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const idMascota = new URLSearchParams(window.location.search).get("idMascota");
+    if (!idMascota) return;
+
+    ["crearIdMascota", "actualizarIdMascota", "buscarIdMascota"].forEach(function (idCampo) {
+        const campo = document.getElementById(idCampo);
+        if (campo) campo.value = idMascota;
+    });
+
+    const formularioConsulta = document.getElementById("formConsultar");
+    if (formularioConsulta) formularioConsulta.requestSubmit();
+});
+</script>
+</body>
+
+</html>

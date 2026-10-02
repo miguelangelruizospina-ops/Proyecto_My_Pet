@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <title>Inicio</title>
+
+    <!-- Hoja de estilos principal de My Pet -->
+    <link rel="stylesheet" href="../mi_pet.css">
+</head>
+
+<body class="fondo_pata">
+
+
+    <!-- =====================================================
+         BOTÓN DE NOTIFICACIONES
+         ===================================================== -->
+
+    <div class="notificaciones-inicio">
+
+        <a href="../Modulo_3_Agenda_Recordatorio/Notificacion.html"
+           class="btn-notificaciones"
+           aria-label="Notificaciones"
+           title="Notificaciones">
+
+            &#128276;
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         MENÚ PRINCIPAL
+         ===================================================== -->
+
+    <div class="container my-5 pt-5">
+
+        <div class="row justify-content-center text-center"
+             style="row-gap: 80px;">
+
+
+            <!-- =================================================
+                 TU USUARIO
+                 ================================================= -->
+
+            <div class="col-12 col-md-4 d-flex justify-content-center">
+
+                <a href="tu_usuario.html"
+                   class="btn boton-naranja-ini btn-1">
+
+                    Tu usuario
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 TUS MASCOTAS
+                 ================================================= -->
+
+            <div class="col-12 col-md-4 d-flex justify-content-center">
+
+                <a href="../Modulo_2_gestion_mascotas/mis_mascotas.html"
+                   class="btn boton-naranja-ini btn-2">
+
+                    Tus mascotas
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORO
+                 ================================================= -->
+
+            <div class="col-12 col-md-4 d-flex justify-content-center">
+
+                <a href="../Modulo_4_servicio_comunidad/foro.html"
+                   class="btn boton-naranja-ini btn-3">
+
+                    Foro
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 AGENDA
+                 ================================================= -->
+
+            <div class="col-12 col-md-4 d-flex justify-content-center">
+
+                <a href="../Modulo_3_Agenda_Recordatorio/agenda_general.html"
+                   class="btn boton-naranja-ini btn-4">
+
+                    Agenda
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 MAPA
+                 ================================================= -->
+
+            <div class="col-12 col-md-4 d-flex justify-content-center">
+
+                <a href="https://www.google.com/maps/@6.128376,-75.3295456,15z?entry=ttu&g_ep=EgoyMDI2MDQyMi4wIKXMDSoASAFQAw%3D%3D"
+                   class="btn boton-naranja-ini btn-5"
+                   target="_blank">
+
+                    Mapa
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 EMERGENCIAS
+                 ================================================= -->
+
+            <div class="col-12 col-md-4 d-flex justify-content-center">
+
+                <a href="../Modulo_5_emergencia/emergencia.html"
+                   class="btn boton-naranja-ini btn-6">
+
+                    Emergencias
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             BOTONES INFERIORES
+             ===================================================== -->
+
+        <div class="text-center mt-5">
+
+
+            <!-- Ayuda -->
+
+            <a href="ayuda.html"
+               class="btn boton-naranja-ini btn-ayuda">
+
+                Ayuda
+
+            </a>
+
+
+            <!-- Cerrar sesión -->
+
+            <button type="button"
+                    id="btnCerrarSesion"
+                    class="btn btn-cerrar-sesion">
+
+                Cerrar sesión
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CERRAR SESIÓN
+         ===================================================== -->
+
+    <script>
+
+        document
+            .getElementById("btnCerrarSesion")
+            .addEventListener("click", function () {
+
+                const confirmar = confirm(
+                    "¿Está seguro de que desea cerrar sesión?"
+                );
+
+
+                if (!confirmar) {
+
+                    return;
+                }
+
+
+                // Eliminar la sesión almacenada
+
+                localStorage.removeItem("usuarioLogueado");
+
+
+                // Regresar al inicio de sesión
+
+                window.location.href = "iniciar_sesion.html";
+
+            });
+
+    </script>
+
+
+</body>
+</html>

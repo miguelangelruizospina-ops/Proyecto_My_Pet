@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="/JS/api-client.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de servicios - My Pet</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff7ed, #fef3c7);
+            padding: 30px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* ENCABEZADO */
+
+        .encabezado {
+            background: linear-gradient(135deg, #ff8a3d, #ffb347);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .logo {
+            font-size: 45px;
+        }
+
+        .encabezado h1 {
+            font-size: 32px;
+            margin: 8px 0;
+        }
+
+        .encabezado p {
+            font-size: 15px;
+        }
+
+        /* CONTENIDO */
+
+        .contenido {
+            background: white;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .seccion {
+            margin-bottom: 40px;
+        }
+
+        .titulo {
+            font-size: 22px;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* FORMULARIO */
+
+        .formulario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 7px;
+        }
+
+        .campo input,
+        .campo select,
+        .campo textarea {
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background-color: #fafafa;
+        }
+
+        .campo textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .campo input:focus,
+        .campo select:focus,
+        .campo textarea:focus {
+
+            border-color: #ff8a3d;
+
+            background-color: white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 138, 61, 0.12);
+        }
+
+        /* BOTONES */
+
+        .botones {
+
+            grid-column: 1 / 3;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        button {
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+
+            opacity: 0.85;
+
+            transform: translateY(-1px);
+        }
+
+        .btn-principal {
+
+            background: #ff8a3d;
+
+            color: white;
+        }
+
+        .btn-buscar {
+
+            background: #6c5ce7;
+
+            color: white;
+        }
+
+        .btn-actualizar {
+
+            background: #3498db;
+
+            color: white;
+        }
+
+        .btn-eliminar {
+
+            background: #e74c3c;
+
+            color: white;
+        }
+
+        .btn-secundario {
+
+            background: #777;
+
+            color: white;
+        }
+
+        /* BUSQUEDA */
+
+        .busqueda {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .busqueda input,
+        .busqueda select {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        /* TABLA */
+
+        .tabla-contenedor {
+
+            overflow-x: auto;
+
+            margin-top: 20px;
+
+            display: none;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 950px;
+        }
+
+        th {
+
+            background: #ff8a3d;
+
+            color: white;
+
+            padding: 12px;
+
+            text-align: left;
+        }
+
+        td {
+
+            padding: 11px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+
+            background-color: #fff7ed;
+        }
+
+        /* RESULTADO */
+
+        .resultado {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #fff7ed;
+
+            border-radius: 10px;
+
+            border-left: 4px solid #ff8a3d;
+
+            display: none;
+        }
+
+        .resultado p {
+
+            margin-bottom: 8px;
+
+            color: #444;
+        }
+
+        /* MENSAJES */
+
+        .mensaje {
+
+            padding: 12px;
+
+            margin-top: 20px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            display: none;
+        }
+
+        .exito {
+
+            display: block;
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .error {
+
+            display: block;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        /* PIE */
+
+        .pie {
+
+            background: #fafafa;
+
+            padding: 18px;
+
+            text-align: center;
+
+            color: #777;
+
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .botones {
+                grid-column: 1;
+            }
+
+            .busqueda {
+                flex-direction: column;
+            }
+
+            .encabezado h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- ENCABEZADO -->
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐾
+        </div>
+
+        <h1>
+            My Pet
+        </h1>
+
+        <p>
+            Gestión de servicios
+        </p>
+
+    </div>
+
+
+    <div class="contenido">
+
+
+        <!-- REGISTRAR SERVICIO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Registrar servicio
+            </h2>
+
+
+            <form
+                id="formServicio"
+                class="formulario"
+            >
+
+
+                <div class="campo">
+
+                    <label for="nombre">
+                        Nombre del servicio
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombre"
+                        placeholder="Ejemplo: Clínica Veterinaria"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="tipo">
+                        Tipo de servicio
+                    </label>
+
+                    <select
+                        id="tipo"
+                        required
+                    >
+
+                        <option value="">
+                            Seleccione una opción
+                        </option>
+
+                        <option value="Veterinaria">
+                            Veterinaria
+                        </option>
+
+                        <option value="Peluquería">
+                            Peluquería
+                        </option>
+
+                        <option value="Paseador">
+                            Paseador
+                        </option>
+
+                        <option value="Guardería">
+                            Guardería
+                        </option>
+
+                        <option value="Adiestramiento">
+                            Adiestramiento
+                        </option>
+
+                        <option value="Tienda">
+                            Tienda
+                        </option>
+
+                        <option value="Otro">
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="ubicacion">
+                        Ubicación
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ubicacion"
+                        placeholder="Ejemplo: Medellín"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="calificacion">
+                        Calificación
+                    </label>
+
+                    <input
+                        type="number"
+                        id="calificacion"
+                        min="1"
+                        max="5"
+                        placeholder="1 a 5"
+                        required
+                    >
+
+                </div>
+
+
+                <div
+                    class="campo"
+                    style="grid-column: 1 / 3;"
+                >
+
+                    <label for="descripcion">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcion"
+                        placeholder="Descripción del servicio"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idUsuario">
+                        ID del usuario
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuario"
+                        min="1"
+                        placeholder="Ingrese el ID del usuario"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                    >
+                        Registrar servicio
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeRegistro"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- LISTAR SERVICIOS -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Servicios registrados
+            </h2>
+
+
+            <button
+                onclick="listarServicios()"
+                class="btn-principal"
+            >
+                Listar servicios
+            </button>
+
+
+            <button
+                onclick="ocultarTabla()"
+                class="btn-secundario"
+            >
+                Ocultar tabla
+            </button>
+
+
+            <div
+                id="listaServicios"
+                class="tabla-contenedor"
+            ></div>
+
+        </section>
+
+
+        <!-- BUSCAR POR ID -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Buscar servicio por ID
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idBuscar"
+                    min="1"
+                    placeholder="Ingrese el ID del servicio"
+                >
+
+                <button
+                    onclick="buscarPorId()"
+                    class="btn-buscar"
+                >
+                    Buscar
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultadoId"
+                class="resultado"
+            ></div>
+
+        </section>
+
+
+        <!-- BUSCAR POR TIPO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Buscar servicios por tipo
+            </h2>
+
+
+            <div class="busqueda">
+
+                <select id="tipoBuscar">
+
+                    <option value="">
+                        Seleccione el tipo
+                    </option>
+
+                    <option value="Veterinaria">
+                        Veterinaria
+                    </option>
+
+                    <option value="Peluquería">
+                        Peluquería
+                    </option>
+
+                    <option value="Paseador">
+                        Paseador
+                    </option>
+
+                    <option value="Guardería">
+                        Guardería
+                    </option>
+
+                    <option value="Adiestramiento">
+                        Adiestramiento
+                    </option>
+
+                    <option value="Tienda">
+                        Tienda
+                    </option>
+
+                    <option value="Otro">
+                        Otro
+                    </option>
+
+                </select>
+
+
+                <button
+                    onclick="buscarPorTipo()"
+                    class="btn-buscar"
+                >
+                    Buscar
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultadoTipo"
+                class="resultado"
+            ></div>
+
+        </section>
+
+
+        <!-- ACTUALIZAR SERVICIO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Actualizar servicio
+            </h2>
+
+
+            <form
+                id="formActualizar"
+                class="formulario"
+            >
+
+
+                <div class="campo">
+
+                    <label for="idActualizar">
+                        ID del servicio
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idActualizar"
+                        min="1"
+                        placeholder="ID del servicio"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="nombreActualizar">
+                        Nombre
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nombreActualizar"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="tipoActualizar">
+                        Tipo
+                    </label>
+
+                    <select
+                        id="tipoActualizar"
+                        required
+                    >
+
+                        <option value="Veterinaria">
+                            Veterinaria
+                        </option>
+
+                        <option value="Peluquería">
+                            Peluquería
+                        </option>
+
+                        <option value="Paseador">
+                            Paseador
+                        </option>
+
+                        <option value="Guardería">
+                            Guardería
+                        </option>
+
+                        <option value="Adiestramiento">
+                            Adiestramiento
+                        </option>
+
+                        <option value="Tienda">
+                            Tienda
+                        </option>
+
+                        <option value="Otro">
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="ubicacionActualizar">
+                        Ubicación
+                    </label>
+
+                    <input
+                        type="text"
+                        id="ubicacionActualizar"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="calificacionActualizar">
+                        Calificación
+                    </label>
+
+                    <input
+                        type="number"
+                        id="calificacionActualizar"
+                        min="1"
+                        max="5"
+                        required
+                    >
+
+                </div>
+
+
+                <div
+                    class="campo"
+                    style="grid-column: 1 / 3;"
+                >
+
+                    <label for="descripcionActualizar">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcionActualizar"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idUsuarioActualizar">
+                        ID del usuario
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idUsuarioActualizar"
+                        min="1"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-actualizar"
+                    >
+                        Actualizar servicio
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeActualizar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- ELIMINAR SERVICIO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Eliminar servicio
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idEliminar"
+                    min="1"
+                    placeholder="Ingrese el ID del servicio"
+                >
+
+
+                <button
+                    onclick="eliminarServicio()"
+                    class="btn-eliminar"
+                >
+                    Eliminar servicio
+                </button>
+
+            </div>
+
+
+            <p
+                id="mensajeEliminar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+    </div>
+
+
+    <!-- PIE -->
+
+    <div class="pie">
+
+        My Pet © 2026 · Gestión de servicios
+
+    </div>
+
+</div>
+
+
+<script>
+
+const URL_API =
+    "http://localhost:8082/api/servicios";
+
+
+// ==========================================
+// REGISTRAR SERVICIO
+// POST /api/servicios/guardar
+// ==========================================
+
+document
+    .getElementById("formServicio")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const servicio = {
+
+            nombre:
+                document.getElementById(
+                    "nombre"
+                ).value,
+
+            tipo:
+                document.getElementById(
+                    "tipo"
+                ).value,
+
+            ubicacion:
+                document.getElementById(
+                    "ubicacion"
+                ).value,
+
+            descripcion:
+                document.getElementById(
+                    "descripcion"
+                ).value,
+
+            calificacion:
+                parseInt(
+                    document.getElementById(
+                        "calificacion"
+                    ).value
+                ),
+
+            usuario: {
+
+                idUsuario:
+                    parseInt(
+                        document.getElementById(
+                            "idUsuario"
+                        ).value
+                    )
+
+            }
+
+        };
+
+
+        fetch(
+            URL_API + "/guardar",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(servicio)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensaje => {
+
+                        throw new Error(
+                            mensaje ||
+                            "No fue posible registrar el servicio."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Servicio registrado correctamente. ID generado: "
+                + data.idServicio;
+
+
+            mensaje.className =
+                "mensaje exito";
+
+
+            document
+                .getElementById("formServicio")
+                .reset();
+
+        })
+
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+});
+
+
+// ==========================================
+// LISTAR SERVICIOS
+// GET /api/servicios/listar
+// ==========================================
+
+function listarServicios() {
+
+    const tabla =
+        document.getElementById(
+            "listaServicios"
+        );
+
+
+    fetch(
+        URL_API + "/listar"
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar los servicios."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(servicios => {
+
+        let contenido = "";
+
+
+        if (servicios.length === 0) {
+
+            contenido =
+                "<p>No hay servicios registrados.</p>";
+
+        }
+
+        else {
+
+            contenido = `
+
+                <table>
+
+                    <tr>
+
+                        <th>ID</th>
+
+                        <th>Nombre</th>
+
+                        <th>Tipo</th>
+
+                        <th>Ubicación</th>
+
+                        <th>Descripción</th>
+
+                        <th>Calificación</th>
+
+                        <th>ID usuario</th>
+
+                    </tr>
+
+            `;
+
+
+            servicios.forEach(servicio => {
+
+                contenido += `
+
+                    <tr>
+
+                        <td>
+                            ${servicio.idServicio}
+                        </td>
+
+                        <td>
+                            ${servicio.nombre || ""}
+                        </td>
+
+                        <td>
+                            ${servicio.tipo || ""}
+                        </td>
+
+                        <td>
+                            ${servicio.ubicacion || ""}
+                        </td>
+
+                        <td>
+                            ${servicio.descripcion || ""}
+                        </td>
+
+                        <td>
+                            ${servicio.calificacion || ""}
+                        </td>
+
+                        <td>
+                            ${
+                                servicio.usuario
+                                ? servicio.usuario.idUsuario
+                                : ""
+                            }
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+
+            contenido += "</table>";
+
+        }
+
+
+        tabla.innerHTML =
+            contenido;
+
+
+        tabla.style.display =
+            "block";
+
+    })
+
+
+    .catch(error => {
+
+        tabla.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+
+        tabla.style.display =
+            "block";
+
+    });
+
+}
+
+
+// ==========================================
+// OCULTAR TABLA
+// ==========================================
+
+function ocultarTabla() {
+
+    document
+        .getElementById(
+            "listaServicios"
+        )
+        .style.display = "none";
+
+}
+
+
+// ==========================================
+// BUSCAR POR ID
+// GET /api/servicios/{id}
+// ==========================================
+
+function buscarPorId() {
+
+    const id =
+        document.getElementById(
+            "idBuscar"
+        ).value;
+
+
+    const resultado =
+        document.getElementById(
+            "resultadoId"
+        );
+
+
+    if (!id) {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Ingrese el ID del servicio.</p>";
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/" + id
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            return response.text()
+                .then(mensaje => {
+
+                    throw new Error(
+                        mensaje ||
+                        "El servicio no existe."
+                    );
+
+                });
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(servicio => {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML = `
+
+            <p>
+                <strong>ID:</strong>
+                ${servicio.idServicio}
+            </p>
+
+            <p>
+                <strong>Nombre:</strong>
+                ${servicio.nombre || ""}
+            </p>
+
+            <p>
+                <strong>Tipo:</strong>
+                ${servicio.tipo || ""}
+            </p>
+
+            <p>
+                <strong>Ubicación:</strong>
+                ${servicio.ubicacion || ""}
+            </p>
+
+            <p>
+                <strong>Descripción:</strong>
+                ${servicio.descripcion || ""}
+            </p>
+
+            <p>
+                <strong>Calificación:</strong>
+                ${servicio.calificacion || ""}
+            </p>
+
+            <p>
+                <strong>ID usuario:</strong>
+                ${
+                    servicio.usuario
+                    ? servicio.usuario.idUsuario
+                    : ""
+                }
+            </p>
+
+        `;
+
+    })
+
+
+    .catch(error => {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+    });
+
+}
+
+
+// ==========================================
+// BUSCAR POR TIPO
+// GET /api/servicios/tipo/{tipo}
+// ==========================================
+
+function buscarPorTipo() {
+
+    const tipo =
+        document.getElementById(
+            "tipoBuscar"
+        ).value;
+
+
+    const resultado =
+        document.getElementById(
+            "resultadoTipo"
+        );
+
+
+    if (!tipo) {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Seleccione un tipo de servicio.</p>";
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API +
+        "/tipo/" +
+        encodeURIComponent(tipo)
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible buscar los servicios."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(servicios => {
+
+        resultado.style.display =
+            "block";
+
+
+        if (servicios.length === 0) {
+
+            resultado.innerHTML =
+                "<p>No hay servicios de este tipo.</p>";
+
+            return;
+
+        }
+
+
+        let contenido = `
+
+            <table>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Nombre</th>
+
+                    <th>Tipo</th>
+
+                    <th>Ubicación</th>
+
+                    <th>Calificación</th>
+
+                </tr>
+
+        `;
+
+
+        servicios.forEach(servicio => {
+
+            contenido += `
+
+                <tr>
+
+                    <td>
+                        ${servicio.idServicio}
+                    </td>
+
+                    <td>
+                        ${servicio.nombre || ""}
+                    </td>
+
+                    <td>
+                        ${servicio.tipo || ""}
+                    </td>
+
+                    <td>
+                        ${servicio.ubicacion || ""}
+                    </td>
+
+                    <td>
+                        ${servicio.calificacion || ""}
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+        contenido += "</table>";
+
+
+        resultado.innerHTML =
+            contenido;
+
+    })
+
+
+    .catch(error => {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+    });
+
+}
+
+
+// ==========================================
+// ACTUALIZAR SERVICIO
+// PUT /api/servicios/{id}
+// ==========================================
+
+document
+    .getElementById("formActualizar")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const id =
+            document.getElementById(
+                "idActualizar"
+            ).value;
+
+
+        const servicio = {
+
+            nombre:
+                document.getElementById(
+                    "nombreActualizar"
+                ).value,
+
+            tipo:
+                document.getElementById(
+                    "tipoActualizar"
+                ).value,
+
+            ubicacion:
+                document.getElementById(
+                    "ubicacionActualizar"
+                ).value,
+
+            descripcion:
+                document.getElementById(
+                    "descripcionActualizar"
+                ).value,
+
+            calificacion:
+                parseInt(
+                    document.getElementById(
+                        "calificacionActualizar"
+                    ).value
+                ),
+
+            usuario: {
+
+                idUsuario:
+                    parseInt(
+                        document.getElementById(
+                            "idUsuarioActualizar"
+                        ).value
+                    )
+
+            }
+
+        };
+
+
+        const mensaje =
+            document.getElementById(
+                "mensajeActualizar"
+            );
+
+
+        if (!id) {
+
+            mensaje.textContent =
+                "Ingrese el ID del servicio.";
+
+            mensaje.className =
+                "mensaje error";
+
+            return;
+
+        }
+
+
+        fetch(
+            URL_API + "/" + id,
+            {
+
+                method: "PUT",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(servicio)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensajeError => {
+
+                        throw new Error(
+                            mensajeError ||
+                            "No fue posible actualizar el servicio."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            mensaje.textContent =
+                "Servicio actualizado correctamente.";
+
+            mensaje.className =
+                "mensaje exito";
+
+        })
+
+
+        .catch(error => {
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+});
+
+
+// ==========================================
+// ELIMINAR SERVICIO
+// DELETE /api/servicios/{id}
+// ==========================================
+
+function eliminarServicio() {
+
+    const id =
+        document.getElementById(
+            "idEliminar"
+        ).value;
+
+
+    const mensaje =
+        document.getElementById(
+            "mensajeEliminar"
+        );
+
+
+    if (!id) {
+
+        mensaje.textContent =
+            "Ingrese el ID del servicio.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "¿Está seguro de eliminar el servicio con ID "
+            + id
+            + "?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            return response.text()
+                .then(mensajeError => {
+
+                    throw new Error(
+                        mensajeError ||
+                        "No fue posible eliminar el servicio."
+                    );
+
+                });
+
+        }
+
+        return response.text();
+
+    })
+
+
+    .then(data => {
+
+        mensaje.textContent =
+            data ||
+            "Servicio eliminado correctamente.";
+
+        mensaje.className =
+            "mensaje exito";
+
+    })
+
+
+    .catch(error => {
+
+        mensaje.textContent =
+            "Error: " + error.message;
+
+        mensaje.className =
+            "mensaje error";
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>

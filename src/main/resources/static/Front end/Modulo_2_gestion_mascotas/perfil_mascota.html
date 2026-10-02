@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="/JS/api-client.js"></script>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <!-- BOOTSTRAP -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <title>Perfil de mascota</title>
+
+    <!-- CSS PRINCIPAL -->
+
+   <link rel="stylesheet" href="../mi_pet.css">
+
+    
+
+</head>
+
+
+<body class="fondo_pata min-vh-100 d-flex flex-column align-items-center py-3">
+
+
+    <!-- ========================================== -->
+    <!-- FLECHA PARA VOLVER -->
+    <!-- ========================================== -->
+
+    <div class="w-100 px-4">
+
+        <a class="flecha text-decoration-none"
+           href="mis_mascotas.html">
+
+            ←
+
+        </a>
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- BOTON SOS -->
+    <!-- ========================================== -->
+
+    <a id="enlaceEmergencia" href="/Front%20end/Modulo_5_emergencia/emergencia.html"
+       class="boton-sos">
+
+        SOS
+
+    </a>
+
+
+    <!-- ========================================== -->
+    <!-- FOTO Y NOMBRE -->
+    <!-- ========================================== -->
+
+    <header class="text-center d-flex flex-column align-items-center my-2">
+
+        <label for="input-foto-mascota"
+               class="marco-foto-per"
+               title="Haz clic para cambiar la foto">
+
+
+            <img src="fotos/anny.jpg"
+                 alt="Foto de la mascota"
+                 id="fotoMascota">
+
+
+            <input type="file"
+                   id="input-foto-mascota"
+                   class="d-none"
+                   accept="image/*">
+
+
+            <div class="overlay-cambiar-foto">
+
+                <span>Cambiar foto</span>
+
+            </div>
+
+
+        </label>
+
+
+        <h1 id="nombreMascotaTitulo"
+            class="mt-3"
+            style="color: white !important;">
+
+            Anny
+
+        </h1>
+
+    </header>
+
+
+    <!-- ========================================== -->
+    <!-- INFORMACION DE LA MASCOTA -->
+    <!-- ========================================== -->
+
+    <div id="informacionMascota"
+         class="tarjeta-mascota">
+
+
+        <h2 class="titulo-perfil-mascota text-center">
+
+            Información de la mascota
+
+        </h2>
+
+
+        <p id="nombreMascota"
+           class="dato-mascota">
+
+            Nombre: Anny
+
+        </p>
+
+
+        <p id="especieMascota"
+           class="dato-mascota">
+
+            Especie: Canino
+
+        </p>
+
+
+        <p id="razaMascota"
+           class="dato-mascota">
+
+            Raza: Poodle
+
+        </p>
+
+
+        <p id="fechaNacimientoMascota"
+           class="dato-mascota">
+
+            Fecha de nacimiento: -
+
+        </p>
+
+
+        <p id="edadMascota"
+           class="dato-mascota">
+
+            Edad: -
+
+        </p>
+
+
+        <hr>
+
+
+        <p id="caracteristicasInformacion"
+           class="dato-mascota">
+
+            Características: -
+
+        </p>
+
+
+        <p id="comportamientoInformacion"
+           class="dato-mascota">
+
+            Comportamiento: -
+
+        </p>
+
+
+        <p id="gustosInformacion"
+           class="dato-mascota">
+
+            Gustos: -
+
+        </p>
+
+
+        <p id="cuidadosInformacion"
+           class="dato-mascota">
+
+            Cuidados especiales: -
+
+        </p>
+
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- FORMULARIO EDITAR INFORMACION -->
+    <!-- ========================================== -->
+
+    <div id="formularioEdicion"
+         class="formulario-mascota"
+         style="display: none;">
+
+
+        <h2 class="titulo-perfil-mascota text-center">
+
+            Editar información
+
+        </h2>
+
+
+        <form id="formEditarMascota">
+
+
+            <div class="mb-3">
+
+                <label for="editarNombre"
+                       class="form-label">
+
+                    Nombre
+
+                </label>
+
+                <input type="text"
+                       id="editarNombre"
+                       class="form-control"
+                       required>
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="editarEspecie"
+                       class="form-label">
+
+                    Especie
+
+                </label>
+
+                <input type="text"
+                       id="editarEspecie"
+                       class="form-control"
+                       required>
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="editarRaza"
+                       class="form-label">
+
+                    Raza
+
+                </label>
+
+                <input type="text"
+                       id="editarRaza"
+                       class="form-control"
+                       required>
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="editarFechaNacimiento"
+                       class="form-label">
+
+                    Fecha de nacimiento
+
+                </label>
+
+                <input type="date"
+                       id="editarFechaNacimiento"
+                       class="form-control"
+                       required>
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="editarCaracteristicas"
+                       class="form-label">
+
+                    Características
+
+                </label>
+
+                <textarea id="editarCaracteristicas"
+                          class="form-control"
+                          rows="3"></textarea>
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="editarComportamiento"
+                       class="form-label">
+
+                    Comportamiento
+
+                </label>
+
+                <textarea id="editarComportamiento"
+                          class="form-control"
+                          rows="3"></textarea>
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="editarGustos"
+                       class="form-label">
+
+                    Gustos
+
+                </label>
+
+                <textarea id="editarGustos"
+                          class="form-control"
+                          rows="3"></textarea>
+
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="editarCuidados"
+                       class="form-label">
+
+                    Cuidados especiales
+
+                </label>
+
+                <textarea id="editarCuidados"
+                          class="form-control"
+                          rows="3"></textarea>
+
+            </div>
+
+
+            <div class="text-center mt-4">
+
+
+                <button type="submit"
+                        class="btn-guardar">
+
+                    Guardar cambios
+
+                </button>
+
+
+                <br>
+                <br>
+
+
+                <button type="button"
+                        id="cancelarEdicion"
+                        class="btn-cancelar">
+
+                    Cancelar
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- ACCIONES -->
+    <!-- ========================================== -->
+
+    <div id="accionesMascota"
+         class="acciones-mascota">
+
+
+        <!-- EDITAR INFORMACION -->
+
+        <button type="button"
+                id="editarInformacion"
+                class="btn-perfil-mascota btn-editar">
+
+            Editar información
+
+        </button>
+
+
+        <!-- DOCUMENTOS E HISTORIAL -->
+
+        <div class="botones-mascota">
+
+
+            <a id="enlaceDocumentos" href="documento.html"
+               class="btn-perfil-mascota boton-grande-mascota">
+
+                Documentos
+
+            </a>
+
+
+            <a id="enlaceHistorial" href="Historial_medico.html"
+               class="btn-perfil-mascota boton-grande-mascota">
+
+                Historial médico
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- CHATBOT -->
+    <!-- ========================================== -->
+
+    <a href="/Front%20end/Modulo_4_servicio_comunidad/chat_bot.html"
+       class="boton-chatbot">
+
+        Chatbot
+
+    </a>
+
+
+    <script src="/JS/mascota.js"></script>
+</body>
+
+</html>

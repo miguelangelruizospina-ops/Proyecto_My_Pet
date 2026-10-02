@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de Perfiles - My Pet</title>
+
+    <!-- Librería compartida de JavaScript para las solicitudes a la API -->
+    <script src="/JS/api-client.js"></script>
+
+    <!--
+        CSS interno:
+        Se utiliza porque los estilos de esta página corresponden
+        específicamente al módulo de gestión de perfiles de usuario.
+        Actualmente estos estilos no son compartidos con otras vistas,
+        por lo que se mantienen dentro del mismo HTML para facilitar
+        la organización de este módulo.
+    -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #F7931E;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .seccion {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #F7931E;
+            margin-top: 0;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #F7931E;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            background-color: #d9790d;
+        }
+
+        .resultado {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        .perfil {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .perfil strong {
+            color: #F7931E;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <h1>Gestión de Perfiles de Usuario</h1>
+
+        <!-- Crear perfil -->
+        <div class="seccion">
+            <h2>Crear Perfil</h2>
+
+            <input type="number" id="crearIdUsuario" placeholder="ID del usuario">
+            <input type="text" id="crearNombreUsuario" placeholder="Nombre de usuario">
+            <input type="text" id="crearFotoPerfil" placeholder="Foto de perfil">
+            <textarea id="crearBiografia" placeholder="Biografía"></textarea>
+            <input type="text" id="crearTelefono" placeholder="Teléfono">
+            <input type="text" id="crearCiudad" placeholder="Ciudad">
+            <input type="text" id="crearGenero" placeholder="Género">
+            <input type="date" id="crearFechaNacimiento">
+
+            <button onclick="crearPerfil()">Crear Perfil</button>
+
+            <div id="resultadoCrear" class="resultado"></div>
+        </div>
+
+        <!-- Listar perfiles -->
+        <div class="seccion">
+            <h2>Listar Todos los Perfiles</h2>
+
+            <button onclick="listarPerfiles()">Listar Perfiles</button>
+
+            <div id="resultadoLista" class="resultado"></div>
+        </div>
+
+        <!-- Buscar perfil -->
+        <div class="seccion">
+            <h2>Buscar Perfil por ID</h2>
+
+            <input type="number" id="buscarId" placeholder="ID del perfil">
+
+            <button onclick="buscarPerfil()">Buscar Perfil</button>
+
+            <div id="resultadoBuscar" class="resultado"></div>
+        </div>
+
+        <!-- Actualizar perfil -->
+        <div class="seccion">
+            <h2>Actualizar Perfil</h2>
+
+            <input type="number" id="actualizarId" placeholder="ID del perfil">
+            <input type="number" id="actualizarIdUsuario" placeholder="ID del usuario">
+            <input type="text" id="actualizarNombreUsuario" placeholder="Nombre de usuario">
+            <input type="text" id="actualizarFotoPerfil" placeholder="Foto de perfil">
+            <textarea id="actualizarBiografia" placeholder="Biografía"></textarea>
+            <input type="text" id="actualizarTelefono" placeholder="Teléfono">
+            <input type="text" id="actualizarCiudad" placeholder="Ciudad">
+            <input type="text" id="actualizarGenero" placeholder="Género">
+            <input type="date" id="actualizarFechaNacimiento">
+
+            <button onclick="actualizarPerfil()">Actualizar Perfil</button>
+
+            <div id="resultadoActualizar" class="resultado"></div>
+        </div>
+
+        <!-- Eliminar perfil -->
+        <div class="seccion">
+            <h2>Eliminar Perfil</h2>
+
+            <input type="number" id="eliminarId" placeholder="ID del perfil">
+
+            <button onclick="eliminarPerfil()">Eliminar Perfil</button>
+
+            <div id="resultadoEliminar" class="resultado"></div>
+        </div>
+
+    </div>
+
+    <!--
+        JavaScript interno:
+        Se utiliza porque las funciones de esta página corresponden
+        específicamente a las operaciones CRUD de perfiles de usuario
+        y trabajan directamente con los formularios y elementos de esta vista.
+        El archivo api-client.js permanece externo porque contiene
+        funcionalidades que pueden ser reutilizadas en otras páginas.
+    -->
+    <script>
+
+        const URL_API = "http://localhost:8082/api/perfiles";
+
+        // POST - Crea un nuevo perfil de usuario.
+        async function crearPerfil() {
+
+            const perfil = {
+                idUsuario: document.getElementById("crearIdUsuario").value,
+                nombreUsuario: document.getElementById("crearNombreUsuario").value,
+                fotoPerfil: document.getElementById("crearFotoPerfil").value,
+                biografia: document.getElementById("crearBiografia").value,
+                telefono: document.getElementById("crearTelefono").value,
+                ciudad: document.getElementById("crearCiudad").value,
+                genero: document.getElementById("crearGenero").value,
+                fechaNacimiento: document.getElementById("crearFechaNacimiento").value
+            };
+
+            try {
+
+                const respuesta = await fetch(`${URL_API}/crear`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(perfil)
+                });
+
+                const datos = await respuesta.json();
+
+                document.getElementById("resultadoCrear").textContent =
+                    JSON.stringify(datos, null, 2);
+
+            } catch (error) {
+
+                document.getElementById("resultadoCrear").textContent =
+                    "Error al crear el perfil: " + error.message;
+            }
+        }
+
+        // GET - Lista todos los perfiles de usuario.
+        async function listarPerfiles() {
+
+            try {
+
+                const respuesta = await fetch(`${URL_API}/listar`);
+                const datos = await respuesta.json();
+
+                document.getElementById("resultadoLista").textContent =
+                    JSON.stringify(datos, null, 2);
+
+            } catch (error) {
+
+                document.getElementById("resultadoLista").textContent =
+                    "Error al listar los perfiles: " + error.message;
+            }
+        }
+
+        // GET - Busca un perfil por su ID.
+        async function buscarPerfil() {
+
+            const id = document.getElementById("buscarId").value;
+
+            try {
+
+                const respuesta = await fetch(`${URL_API}/${id}`);
+                const datos = await respuesta.json();
+
+                document.getElementById("resultadoBuscar").textContent =
+                    JSON.stringify(datos, null, 2);
+
+            } catch (error) {
+
+                document.getElementById("resultadoBuscar").textContent =
+                    "Error al buscar el perfil: " + error.message;
+            }
+        }
+
+        // PUT - Actualiza los datos de un perfil existente.
+        async function actualizarPerfil() {
+
+            const id = document.getElementById("actualizarId").value;
+
+            const perfil = {
+                idUsuario: document.getElementById("actualizarIdUsuario").value,
+                nombreUsuario: document.getElementById("actualizarNombreUsuario").value,
+                fotoPerfil: document.getElementById("actualizarFotoPerfil").value,
+                biografia: document.getElementById("actualizarBiografia").value,
+                telefono: document.getElementById("actualizarTelefono").value,
+                ciudad: document.getElementById("actualizarCiudad").value,
+                genero: document.getElementById("actualizarGenero").value,
+                fechaNacimiento: document.getElementById("actualizarFechaNacimiento").value
+            };
+
+            try {
+
+                const respuesta = await fetch(`${URL_API}/actualizar/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(perfil)
+                });
+
+                const datos = await respuesta.json();
+
+                document.getElementById("resultadoActualizar").textContent =
+                    JSON.stringify(datos, null, 2);
+
+            } catch (error) {
+
+                document.getElementById("resultadoActualizar").textContent =
+                    "Error al actualizar el perfil: " + error.message;
+            }
+        }
+
+        // DELETE - Elimina un perfil por su ID.
+        async function eliminarPerfil() {
+
+            const id = document.getElementById("eliminarId").value;
+
+            try {
+
+                const respuesta = await fetch(`${URL_API}/eliminar/${id}`);
+                const datos = await respuesta.json();
+
+                document.getElementById("resultadoEliminar").textContent =
+                    JSON.stringify(datos, null, 2);
+
+            } catch (error) {
+
+                document.getElementById("resultadoEliminar").textContent =
+                    "Error al eliminar el perfil: " + error.message;
+            }
+        }
+
+    </script>
+
+</body>
+</html>

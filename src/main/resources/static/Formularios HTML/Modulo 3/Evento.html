@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <script src="/JS/api-client.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de eventos - My Pet</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff7ed, #fef3c7);
+            padding: 30px;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* ENCABEZADO */
+
+        .encabezado {
+            background: linear-gradient(135deg, #ff8a3d, #ffb347);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .logo {
+            font-size: 45px;
+        }
+
+        .encabezado h1 {
+            font-size: 32px;
+            margin: 8px 0;
+        }
+
+        .encabezado p {
+            font-size: 15px;
+        }
+
+        /* CONTENIDO */
+
+        .contenido {
+            background: white;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .seccion {
+            margin-bottom: 40px;
+        }
+
+        .titulo {
+            font-size: 22px;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        /* FORMULARIO */
+
+        .formulario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo label {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 7px;
+        }
+
+        .campo input,
+        .campo textarea,
+        .campo select {
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background-color: #fafafa;
+        }
+
+        .campo textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .campo input:focus,
+        .campo textarea:focus,
+        .campo select:focus {
+
+            border-color: #ff8a3d;
+
+            background-color: white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(255, 138, 61, 0.12);
+        }
+
+        /* BOTONES */
+
+        .botones {
+
+            grid-column: 1 / 3;
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        button {
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+
+            opacity: 0.85;
+
+            transform: translateY(-1px);
+        }
+
+        .btn-principal {
+
+            background: #ff8a3d;
+
+            color: white;
+        }
+
+        .btn-buscar {
+
+            background: #6c5ce7;
+
+            color: white;
+        }
+
+        .btn-editar {
+
+            background: #3498db;
+
+            color: white;
+        }
+
+        .btn-eliminar {
+
+            background: #e74c3c;
+
+            color: white;
+        }
+
+        .btn-secundario {
+
+            background: #777;
+
+            color: white;
+        }
+
+        /* BUSQUEDA */
+
+        .busqueda {
+
+            display: flex;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .busqueda input {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 9px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        /* TABLA */
+
+        .tabla-contenedor {
+
+            overflow-x: auto;
+
+            margin-top: 20px;
+
+            display: none;
+        }
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 850px;
+        }
+
+        th {
+
+            background: #ff8a3d;
+
+            color: white;
+
+            padding: 12px;
+
+            text-align: left;
+        }
+
+        td {
+
+            padding: 11px;
+
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+
+            background-color: #fff7ed;
+        }
+
+        /* RESULTADO */
+
+        .resultado {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #fff7ed;
+
+            border-radius: 10px;
+
+            border-left: 4px solid #ff8a3d;
+
+            display: none;
+        }
+
+        .resultado p {
+
+            margin-bottom: 8px;
+
+            color: #444;
+        }
+
+        /* MENSAJES */
+
+        .mensaje {
+
+            padding: 12px;
+
+            margin-top: 20px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+            display: none;
+        }
+
+        .exito {
+
+            display: block;
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .error {
+
+            display: block;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        /* PIE */
+
+        .pie {
+
+            background: #fafafa;
+
+            padding: 18px;
+
+            text-align: center;
+
+            color: #777;
+
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+
+            .botones {
+                grid-column: 1;
+            }
+
+            .busqueda {
+                flex-direction: column;
+            }
+
+            .encabezado h1 {
+                font-size: 26px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- ENCABEZADO -->
+
+    <div class="encabezado">
+
+        <div class="logo">
+            🐾
+        </div>
+
+        <h1>
+            My Pet
+        </h1>
+
+        <p>
+            Gestión de eventos
+        </p>
+
+    </div>
+
+
+    <div class="contenido">
+
+
+        <!-- REGISTRAR EVENTO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Registrar evento
+            </h2>
+
+
+            <form
+                id="formEvento"
+                class="formulario"
+            >
+
+
+                <div class="campo">
+
+                    <label for="tipoEvento">
+                        Tipo de evento
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tipoEvento"
+                        placeholder="Ejemplo: Vacunación"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idMascota">
+                        ID de la mascota
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idMascota"
+                        min="1"
+                        placeholder="Ingrese el ID de la mascota"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="descripcion">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcion"
+                        placeholder="Descripción del evento"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label>
+                        Fecha
+                    </label>
+
+                    <input
+                        type="text"
+                        value="Se genera automáticamente"
+                        readonly
+                    >
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-principal"
+                    >
+                        Registrar evento
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeRegistro"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- LISTAR EVENTOS -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Eventos registrados
+            </h2>
+
+
+            <button
+                onclick="listarEventos()"
+                class="btn-principal"
+            >
+                Listar eventos
+            </button>
+
+
+            <button
+                onclick="ocultarTabla()"
+                class="btn-secundario"
+            >
+                Ocultar tabla
+            </button>
+
+
+            <div
+                id="listaEventos"
+                class="tabla-contenedor"
+            ></div>
+
+        </section>
+
+
+        <!-- BUSCAR POR MASCOTA -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Buscar eventos por mascota
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idMascotaBuscar"
+                    min="1"
+                    placeholder="Ingrese el ID de la mascota"
+                >
+
+                <button
+                    onclick="buscarPorMascota()"
+                    class="btn-buscar"
+                >
+                    Buscar
+                </button>
+
+            </div>
+
+
+            <div
+                id="resultadoMascota"
+                class="resultado"
+            ></div>
+
+        </section>
+
+
+        <!-- ACTUALIZAR EVENTO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Actualizar evento
+            </h2>
+
+
+            <form
+                id="formActualizar"
+                class="formulario"
+            >
+
+
+                <div class="campo">
+
+                    <label for="idActualizar">
+                        ID del evento
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idActualizar"
+                        min="1"
+                        placeholder="Ingrese el ID del evento"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="tipoEventoActualizar">
+                        Tipo de evento
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tipoEventoActualizar"
+                        placeholder="Nuevo tipo de evento"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="descripcionActualizar">
+                        Descripción
+                    </label>
+
+                    <textarea
+                        id="descripcionActualizar"
+                        placeholder="Nueva descripción"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="campo">
+
+                    <label for="idMascotaActualizar">
+                        ID de la mascota
+                    </label>
+
+                    <input
+                        type="number"
+                        id="idMascotaActualizar"
+                        min="1"
+                        placeholder="ID de la mascota"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="botones">
+
+                    <button
+                        type="submit"
+                        class="btn-editar"
+                    >
+                        Actualizar evento
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <p
+                id="mensajeActualizar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+        <!-- ELIMINAR EVENTO -->
+
+        <section class="seccion">
+
+            <h2 class="titulo">
+                Eliminar evento
+            </h2>
+
+
+            <div class="busqueda">
+
+                <input
+                    type="number"
+                    id="idEliminar"
+                    min="1"
+                    placeholder="Ingrese el ID del evento"
+                >
+
+                <button
+                    onclick="eliminarEvento()"
+                    class="btn-eliminar"
+                >
+                    Eliminar evento
+                </button>
+
+            </div>
+
+
+            <p
+                id="mensajeEliminar"
+                class="mensaje"
+            ></p>
+
+        </section>
+
+
+    </div>
+
+
+    <!-- PIE -->
+
+    <div class="pie">
+
+        My Pet © 2026 · Gestión de eventos
+
+    </div>
+
+</div>
+
+
+<script>
+
+const URL_API =
+    "http://localhost:8082/api/eventos";
+
+
+// ==========================================
+// REGISTRAR EVENTO
+// POST /api/eventos/guardar
+// ==========================================
+
+document
+    .getElementById("formEvento")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const evento = {
+
+            tipoEvento:
+                document.getElementById(
+                    "tipoEvento"
+                ).value,
+
+            descripcion:
+                document.getElementById(
+                    "descripcion"
+                ).value,
+
+            mascota: {
+
+                idMascota:
+                    parseInt(
+                        document.getElementById(
+                            "idMascota"
+                        ).value
+                    )
+
+            }
+
+        };
+
+
+        fetch(
+            URL_API + "/guardar",
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(evento)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensaje => {
+
+                        throw new Error(
+                            mensaje ||
+                            "No fue posible registrar el evento."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Evento registrado correctamente. ID generado: "
+                + data.idEvento
+                + ". El recordatorio se creó automáticamente.";
+
+
+            mensaje.className =
+                "mensaje exito";
+
+
+            document
+                .getElementById("formEvento")
+                .reset();
+
+        })
+
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeRegistro"
+                );
+
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+});
+
+
+// ==========================================
+// LISTAR EVENTOS
+// GET /api/eventos/listar
+// ==========================================
+
+function listarEventos() {
+
+    const tabla =
+        document.getElementById(
+            "listaEventos"
+        );
+
+
+    fetch(
+        URL_API + "/listar"
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar los eventos."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(eventos => {
+
+        let contenido = "";
+
+
+        if (eventos.length === 0) {
+
+            contenido =
+                "<p>No hay eventos registrados.</p>";
+
+        }
+
+        else {
+
+            contenido = `
+
+                <table>
+
+                    <tr>
+
+                        <th>ID evento</th>
+
+                        <th>Tipo de evento</th>
+
+                        <th>Fecha</th>
+
+                        <th>Descripción</th>
+
+                        <th>ID mascota</th>
+
+                        <th>Nombre mascota</th>
+
+                    </tr>
+
+            `;
+
+
+            eventos.forEach(evento => {
+
+                contenido += `
+
+                    <tr>
+
+                        <td>
+                            ${evento.idEvento}
+                        </td>
+
+                        <td>
+                            ${evento.tipoEvento || ""}
+                        </td>
+
+                        <td>
+                            ${evento.fecha || ""}
+                        </td>
+
+                        <td>
+                            ${evento.descripcion || ""}
+                        </td>
+
+                        <td>
+                            ${
+                                evento.mascota
+                                ? evento.mascota.idMascota
+                                : ""
+                            }
+                        </td>
+
+                        <td>
+                            ${
+                                evento.mascota
+                                ? evento.mascota.nombre
+                                : ""
+                            }
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+
+            contenido += "</table>";
+
+        }
+
+
+        tabla.innerHTML =
+            contenido;
+
+
+        tabla.style.display =
+            "block";
+
+    })
+
+
+    .catch(error => {
+
+        tabla.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+
+        tabla.style.display =
+            "block";
+
+    });
+
+}
+
+
+// ==========================================
+// OCULTAR TABLA
+// ==========================================
+
+function ocultarTabla() {
+
+    document
+        .getElementById(
+            "listaEventos"
+        )
+        .style.display = "none";
+
+}
+
+
+// ==========================================
+// BUSCAR EVENTOS POR MASCOTA
+// GET /api/eventos/mascota/{idMascota}
+// ==========================================
+
+function buscarPorMascota() {
+
+    const id =
+        document.getElementById(
+            "idMascotaBuscar"
+        ).value;
+
+
+    const resultado =
+        document.getElementById(
+            "resultadoMascota"
+        );
+
+
+    if (!id) {
+
+        resultado.style.display =
+            "block";
+
+        resultado.innerHTML =
+            "<p>Ingrese el ID de la mascota.</p>";
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/mascota/" + id
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "No fue posible consultar los eventos."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(eventos => {
+
+        resultado.style.display =
+            "block";
+
+
+        if (eventos.length === 0) {
+
+            resultado.innerHTML =
+                "<p>La mascota no tiene eventos registrados.</p>";
+
+            return;
+
+        }
+
+
+        let contenido = `
+
+            <table>
+
+                <tr>
+
+                    <th>ID evento</th>
+
+                    <th>Tipo</th>
+
+                    <th>Fecha</th>
+
+                    <th>Descripción</th>
+
+                    <th>Nombre mascota</th>
+
+                </tr>
+
+        `;
+
+
+        eventos.forEach(evento => {
+
+            contenido += `
+
+                <tr>
+
+                    <td>
+                        ${evento.idEvento}
+                    </td>
+
+                    <td>
+                        ${evento.tipoEvento || ""}
+                    </td>
+
+                    <td>
+                        ${evento.fecha || ""}
+                    </td>
+
+                    <td>
+                        ${evento.descripcion || ""}
+                    </td>
+
+                    <td>
+                        ${
+                            evento.mascota
+                            ? evento.mascota.nombre
+                            : ""
+                        }
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+
+        contenido += "</table>";
+
+
+        resultado.innerHTML =
+            contenido;
+
+    })
+
+
+    .catch(error => {
+
+        resultado.style.display =
+            "block";
+
+
+        resultado.innerHTML =
+            "<p>Error: "
+            + error.message
+            + "</p>";
+
+    });
+
+}
+
+
+// ==========================================
+// ACTUALIZAR EVENTO
+// PUT /api/eventos/actualizar/{id}
+// ==========================================
+
+document
+    .getElementById("formActualizar")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const id =
+            document.getElementById(
+                "idActualizar"
+            ).value;
+
+
+        const evento = {
+
+            tipoEvento:
+                document.getElementById(
+                    "tipoEventoActualizar"
+                ).value,
+
+            descripcion:
+                document.getElementById(
+                    "descripcionActualizar"
+                ).value,
+
+            mascota: {
+
+                idMascota:
+                    parseInt(
+                        document.getElementById(
+                            "idMascotaActualizar"
+                        ).value
+                    )
+
+            }
+
+        };
+
+
+        fetch(
+            URL_API + "/actualizar/" + id,
+            {
+
+                method: "PUT",
+
+                headers: {
+
+                    "Content-Type":
+                        "application/json"
+
+                },
+
+                body:
+                    JSON.stringify(evento)
+
+            }
+        )
+
+
+        .then(response => {
+
+            if (!response.ok) {
+
+                return response.text()
+                    .then(mensaje => {
+
+                        throw new Error(
+                            mensaje ||
+                            "No fue posible actualizar el evento."
+                        );
+
+                    });
+
+            }
+
+            return response.json();
+
+        })
+
+
+        .then(data => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeActualizar"
+                );
+
+
+            mensaje.textContent =
+                "Evento actualizado correctamente.";
+
+
+            mensaje.className =
+                "mensaje exito";
+
+
+            document
+                .getElementById("formActualizar")
+                .reset();
+
+        })
+
+
+        .catch(error => {
+
+            const mensaje =
+                document.getElementById(
+                    "mensajeActualizar"
+                );
+
+
+            mensaje.textContent =
+                "Error: " + error.message;
+
+
+            mensaje.className =
+                "mensaje error";
+
+        });
+
+});
+
+
+// ==========================================
+// ELIMINAR EVENTO
+// DELETE /api/eventos/eliminar/{id}
+// ==========================================
+
+function eliminarEvento() {
+
+    const id =
+        document.getElementById(
+            "idEliminar"
+        ).value;
+
+
+    const mensaje =
+        document.getElementById(
+            "mensajeEliminar"
+        );
+
+
+    if (!id) {
+
+        mensaje.textContent =
+            "Ingrese el ID del evento.";
+
+        mensaje.className =
+            "mensaje error";
+
+        return;
+
+    }
+
+
+    const confirmar =
+        confirm(
+            "¿Está seguro de eliminar el evento con ID "
+            + id
+            + "?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    fetch(
+        URL_API + "/eliminar/" + id,
+        {
+
+            method: "DELETE"
+
+        }
+    )
+
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            return response.text()
+                .then(mensajeError => {
+
+                    throw new Error(
+                        mensajeError ||
+                        "No fue posible eliminar el evento."
+                    );
+
+                });
+
+        }
+
+        return response.text();
+
+    })
+
+
+    .then(data => {
+
+        mensaje.textContent =
+            data ||
+            "Evento eliminado correctamente.";
+
+        mensaje.className =
+            "mensaje exito";
+
+    })
+
+
+    .catch(error => {
+
+        mensaje.textContent =
+            "Error: " + error.message;
+
+        mensaje.className =
+            "mensaje error";
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>
