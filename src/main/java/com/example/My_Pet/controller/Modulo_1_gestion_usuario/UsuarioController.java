@@ -1,4 +1,6 @@
+
 // Controlador del módulo de gestión de usuarios.
+
 package com.example.My_Pet.controller.Modulo_1_gestion_usuario;
 
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
@@ -28,30 +30,54 @@ import java.util.List;
 @RequestMapping("/api/usuario")
 public class UsuarioController {
 
-    // Datos necesarios para cambiar la contraseña.
+    // ============================================================
+    // DATOS PARA CAMBIAR LA CONTRASEÑA
+    // ============================================================
+
     public record CambioContrasenaRequest(
             String correo,
             String contrasenaActual,
             String nuevaContrasena) {
     }
 
-    // Conecta el controlador con la lógica de usuarios.
+
+    // ============================================================
+    // SERVICIO DE USUARIOS
+    // ============================================================
+
     @Autowired
     private UsuarioService usuarioService;
 
-    // Permite guardar y gestionar la sesión de seguridad.
+
+    // ============================================================
+    // REPOSITORIO DE SEGURIDAD
+    // ============================================================
+
+    // Permite guardar el SecurityContext dentro de la sesión HTTP.
     @Autowired
     private SecurityContextRepository securityContextRepository;
 
 
-    // GET - Obtiene el token CSRF para las solicitudes protegidas.
+    // ============================================================
+    // OBTENER TOKEN CSRF
+    // ============================================================
+
+    // El frontend utiliza este endpoint para obtener el token
+    // necesario para las solicitudes que modifican información.
+
     @GetMapping("/csrf")
     public CsrfToken csrf(CsrfToken token) {
         return token;
     }
 
 
-    // POST - Registra un nuevo usuario e inicia su sesión.
+    // ============================================================
+    // REGISTRO DE USUARIO
+    // ============================================================
+
+    // Registra el usuario y después inicia automáticamente
+    // su sesión de seguridad.
+
     @PostMapping("/registro")
     public ResponseEntity<?> registrar(
             @RequestBody Usuario usuario,
@@ -59,67 +85,148 @@ public class UsuarioController {
             HttpServletResponse response) {
 
         try {
-            Usuario usuarioCreado = usuarioService.registrarUsuario(usuario);
-            crearSesion(usuarioCreado, request, response);
+
+            Usuario usuarioCreado =
+                    usuarioService.registrarUsuario(usuario);
+
+            crearSesion(
+                    usuarioCreado,
+                    request,
+                    response
+            );
+
             return ResponseEntity.ok(usuarioCreado);
 
         } catch (IllegalArgumentException error) {
-            return ResponseEntity.badRequest().body(error.getMessage());
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(error.getMessage());
         }
     }
 
 
-    // POST - Valida las credenciales e inicia sesión.
+    // ============================================================
+    // INICIO DE SESIÓN
+    // ============================================================
+
+    // Valida las credenciales y crea la sesión de Spring Security.
+
     @PostMapping("/login")
     public Usuario login(
             @RequestBody Usuario datosLogin,
             HttpServletRequest request,
             HttpServletResponse response) {
 
-        Usuario usuario = usuarioService.iniciarSesion(
-                datosLogin.getCorreo(),
-                datosLogin.getContrasena()
+        Usuario usuario =
+                usuarioService.iniciarSesion(
+                        datosLogin.getCorreo(),
+                        datosLogin.getContrasena()
+                );
+
+        crearSesion(
+                usuario,
+                request,
+                response
         );
 
-        crearSesion(usuario, request, response);
         return usuario;
     }
 
 
-    // Crea la sesión de seguridad con el usuario y su rol.
+    // ============================================================
+    // CREAR SESIÓN DE SEGURIDAD
+    // ============================================================
+
+    // Crea el UsuarioPrincipal, establece la autenticación
+    // y guarda el SecurityContext en la sesión HTTP.
+
     private void crearSesion(
             Usuario usuario,
             HttpServletRequest request,
             HttpServletResponse response) {
 
-        String rol = usuario.getRol().toUpperCase();
+        // --------------------------------------------------------
+        // OBTENER EL ROL DEL USUARIO
+        // --------------------------------------------------------
 
-        var authentication = UsernamePasswordAuthenticationToken.authenticated(
-                new UsuarioPrincipal(usuario.getIdUsuario(), rol),
-                null,
-                List.of(new SimpleGrantedAuthority("ROLE_" + rol))
-        );
+        String rol =
+                usuario.getRol()
+                        .trim()
+                        .toUpperCase();
 
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
+
+        // --------------------------------------------------------
+        // CREAR EL USUARIO PRINCIPAL
+        // --------------------------------------------------------
+
+        UsuarioPrincipal usuarioPrincipal =
+                new UsuarioPrincipal(
+                        usuario.getIdUsuario(),
+                        rol
+                );
+
+
+        // --------------------------------------------------------
+        // CREAR LA AUTENTICACIÓN
+        // --------------------------------------------------------
+
+        UsernamePasswordAuthenticationToken authentication =
+                UsernamePasswordAuthenticationToken.authenticated(
+                        usuarioPrincipal,
+                        null,
+                        List.of(
+                                new SimpleGrantedAuthority(
+                                        "ROLE_" + rol
+                                )
+                        )
+                );
+
+
+        // --------------------------------------------------------
+        // CREAR EL SECURITY CONTEXT
+        // --------------------------------------------------------
+
+        SecurityContext context =
+                SecurityContextHolder.createEmptyContext();
+
         context.setAuthentication(authentication);
+
         SecurityContextHolder.setContext(context);
 
-        if (request.getSession(false) != null) {
-            request.changeSessionId();
-        }
 
-        securityContextRepository.saveContext(context, request, response);
+        // --------------------------------------------------------
+        // CREAR LA SESIÓN HTTP
+        // --------------------------------------------------------
+
+        request.getSession(true);
+
+
+        // --------------------------------------------------------
+        // GUARDAR EL SECURITY CONTEXT
+        // --------------------------------------------------------
+
+        securityContextRepository.saveContext(
+                context,
+                request,
+                response
+        );
     }
 
 
-    // POST - Cierra la sesión del usuario.
+    // ============================================================
+    // CERRAR SESIÓN
+    // ============================================================
+
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
             HttpServletRequest request,
             HttpServletResponse response) {
 
+        // Limpia la autenticación actual.
         SecurityContextHolder.clearContext();
 
+        // Invalida la sesión existente.
         if (request.getSession(false) != null) {
             request.getSession(false).invalidate();
         }
@@ -128,27 +235,41 @@ public class UsuarioController {
     }
 
 
-    // PUT - Permite cambiar la contraseña del usuario.
+    // ============================================================
+    // CAMBIAR CONTRASEÑA
+    // ============================================================
+
     @PutMapping("/cambiar-contrasena")
     public ResponseEntity<String> cambiarContrasena(
             @RequestBody CambioContrasenaRequest solicitud) {
 
         try {
+
             usuarioService.cambiarContrasena(
                     solicitud.correo(),
                     solicitud.contrasenaActual(),
                     solicitud.nuevaContrasena()
             );
 
-            return ResponseEntity.ok("Contraseña actualizada correctamente.");
+            return ResponseEntity.ok(
+                    "Contraseña actualizada correctamente."
+            );
 
         } catch (IllegalArgumentException error) {
-            return ResponseEntity.badRequest().body(error.getMessage());
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(error.getMessage());
         }
     }
 
 
-    // GET - Lista todos los usuarios. Solo para administradores.
+    // ============================================================
+    // LISTAR USUARIOS
+    // ============================================================
+
+    // Solo disponible para administradores.
+
     @GetMapping("/listar")
     @PreAuthorize("@autorizacion.esAdministrador()")
     public List<Usuario> listar() {
@@ -156,29 +277,49 @@ public class UsuarioController {
     }
 
 
-    // GET - Busca un usuario por ID y valida sus permisos.
+    // ============================================================
+    // OBTENER USUARIO POR ID
+    // ============================================================
+
+    // Permite consultar los datos propios o los de otro usuario
+    // cuando se tienen permisos de administrador.
+
     @GetMapping("/{id}")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
-    public Usuario obtenerPorId(@PathVariable int id) {
+    public Usuario obtenerPorId(
+            @PathVariable("id") int id) {
+
         return usuarioService.obtenerUsuarioPorId(id);
     }
 
 
-    // PUT - Actualiza los datos de un usuario.
+    // ============================================================
+    // ACTUALIZAR USUARIO
+    // ============================================================
+
     @PutMapping("/actualizar/{id}")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
     public Usuario actualizar(
-            @PathVariable int id,
+            @PathVariable("id") int id,
             @RequestBody Usuario usuario) {
 
-        return usuarioService.actualizarUsuario(id, usuario);
+        return usuarioService.actualizarUsuario(
+                id,
+                usuario
+        );
     }
 
 
-    // DELETE - Elimina un usuario. Solo para administradores.
+    // ============================================================
+    // ELIMINAR USUARIO
+    // ============================================================
+
+    // Exclusivo para administradores.
+
     @DeleteMapping("/eliminar/{id}")
     @PreAuthorize("@autorizacion.esAdministrador()")
-    public String eliminar(@PathVariable int id) {
+    public String eliminar(
+            @PathVariable("id") int id) {
 
         usuarioService.eliminarUsuario(id);
 

@@ -4,9 +4,11 @@ import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
 import com.example.My_Pet.model.Modulo_4_servicio_comunidad.PublicacionForo;
 import com.example.My_Pet.repository.Modulo_1_gestion_usuario.UsuarioRepository;
 import com.example.My_Pet.repository.Modulo_4_servicio_comunidad.PublicacionForoRepository;
+import com.example.My_Pet.security.UsuarioPrincipal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,17 +22,29 @@ public class PublicacionForoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+
+    // ============================================================
     // Obtener todas las publicaciones
+    // ============================================================
+
     public List<PublicacionForo> obtenerTodas() {
         return forumRepository.findAll();
     }
 
+
+    // ============================================================
     // Obtener publicaciones de un usuario
+    // ============================================================
+
     public List<PublicacionForo> obtenerPorUsuario(Integer idUsuario) {
         return forumRepository.findByUsuarioIdUsuario(idUsuario);
     }
 
+
+    // ============================================================
     // Crear una publicación
+    // ============================================================
+
     public PublicacionForo guardar(PublicacionForo publicacion) {
 
         if (publicacion.getUsuario() == null ||
@@ -56,6 +70,7 @@ public class PublicacionForoService {
         publicacion.setUsuario(usuarioExistente);
 
         // Coloca la fecha automáticamente al crear
+
         if (publicacion.getIdPublicacion() == null) {
             publicacion.setFecha(LocalDateTime.now());
         }
@@ -63,10 +78,16 @@ public class PublicacionForoService {
         return forumRepository.save(publicacion);
     }
 
+
+    // ============================================================
     // Actualizar una publicación
+    // ============================================================
+
+    @Transactional
     public PublicacionForo actualizar(
             Integer id,
-            PublicacionForo publicacion) {
+            PublicacionForo publicacion,
+            UsuarioPrincipal usuarioPrincipal) {
 
         PublicacionForo publicacionExistente =
                 forumRepository.findById(id)
@@ -77,50 +98,190 @@ public class PublicacionForoService {
                     )
                 );
 
-        // Actualizar título
-        publicacionExistente.setTitulo(
-                publicacion.getTitulo()
-        );
 
-        // Actualizar contenido
-        publicacionExistente.setContenido(
-                publicacion.getContenido()
-        );
+        // ========================================================
+        // Identificar usuario autenticado
+        // ========================================================
 
-        // Actualizar usuario si se envía
-        if (publicacion.getUsuario() != null) {
+        Integer idUsuarioActual =
+                usuarioPrincipal.idUsuario();
 
-            Integer idUsuario =
-                    publicacion.getUsuario().getIdUsuario();
 
-            Usuario usuarioExistente =
-                    usuarioRepository.findById(idUsuario)
-                    .orElseThrow(() ->
-                        new IllegalArgumentException(
-                            "El usuario con ID " + idUsuario +
-                            " no existe."
-                        )
-                    );
+        // ========================================================
+        // Identificar propietario de la publicación
+        // ========================================================
 
-            publicacionExistente.setUsuario(
-                    usuarioExistente
+        Integer idUsuarioPublicacion =
+                publicacionExistente.getUsuario() != null
+                        ? publicacionExistente
+                                .getUsuario()
+                                .getIdUsuario()
+                        : null;
+
+
+        // ========================================================
+        // Comprobar si es administrador
+        // ========================================================
+
+        boolean administrador =
+                "ADMINISTRADOR".equalsIgnoreCase(
+                        usuarioPrincipal.rol()
+                );
+
+
+        // ========================================================
+        // Comprobar si es propietario
+        // ========================================================
+
+        boolean propietario =
+                idUsuarioPublicacion != null
+                        && idUsuarioPublicacion.equals(
+                                idUsuarioActual
+                        );
+
+
+        // ========================================================
+        // Validar permisos
+        // ========================================================
+
+        if (!administrador && !propietario) {
+
+            throw new SecurityException(
+                    "No tienes permiso para editar esta publicación."
             );
         }
+
+
+        // ========================================================
+        // Validar título
+        // ========================================================
+
+        if (publicacion.getTitulo() == null ||
+            publicacion.getTitulo().trim().isEmpty()) {
+
+            throw new IllegalArgumentException(
+                    "El título no puede estar vacío."
+            );
+        }
+
+
+        // ========================================================
+        // Validar contenido
+        // ========================================================
+
+        if (publicacion.getContenido() == null ||
+            publicacion.getContenido().trim().isEmpty()) {
+
+            throw new IllegalArgumentException(
+                    "El contenido no puede estar vacío."
+            );
+        }
+
+
+        // ========================================================
+        // Actualizar título
+        // ========================================================
+
+        publicacionExistente.setTitulo(
+                publicacion.getTitulo().trim()
+        );
+
+
+        // ========================================================
+        // Actualizar contenido
+        // ========================================================
+
+        publicacionExistente.setContenido(
+                publicacion.getContenido().trim()
+        );
+
+
+        /*
+         * No modificamos el usuario de la publicación.
+         *
+         * El propietario original debe mantenerse.
+         */
 
         return forumRepository.save(publicacionExistente);
     }
 
+
+    // ============================================================
     // Eliminar una publicación
-    public void eliminar(Integer id) {
+    // ============================================================
 
-        if (!forumRepository.existsById(id)) {
+    @Transactional
+    public void eliminar(
+            Integer id,
+            UsuarioPrincipal usuarioPrincipal) {
 
-            throw new IllegalArgumentException(
-                "La publicación con ID " + id +
-                " no existe."
+        PublicacionForo publicacion =
+                forumRepository.findById(id)
+                .orElseThrow(() ->
+                    new IllegalArgumentException(
+                        "La publicación con ID " + id +
+                        " no existe."
+                    )
+                );
+
+
+        // ========================================================
+        // Identificar usuario autenticado
+        // ========================================================
+
+        Integer idUsuarioActual =
+                usuarioPrincipal.idUsuario();
+
+
+        // ========================================================
+        // Identificar propietario
+        // ========================================================
+
+        Integer idUsuarioPublicacion =
+                publicacion.getUsuario() != null
+                        ? publicacion
+                                .getUsuario()
+                                .getIdUsuario()
+                        : null;
+
+
+        // ========================================================
+        // Comprobar administrador
+        // ========================================================
+
+        boolean administrador =
+                "ADMINISTRADOR".equalsIgnoreCase(
+                        usuarioPrincipal.rol()
+                );
+
+
+        // ========================================================
+        // Comprobar propietario
+        // ========================================================
+
+        boolean propietario =
+                idUsuarioPublicacion != null
+                        && idUsuarioPublicacion.equals(
+                                idUsuarioActual
+                        );
+
+
+        // ========================================================
+        // Validar permisos
+        // ========================================================
+
+        if (!administrador && !propietario) {
+
+            throw new SecurityException(
+                    "No tienes permiso para eliminar esta publicación."
             );
         }
 
-        forumRepository.deleteById(id);
+
+        // ========================================================
+        // Eliminar publicación
+        // ========================================================
+
+        forumRepository.delete(publicacion);
     }
 }

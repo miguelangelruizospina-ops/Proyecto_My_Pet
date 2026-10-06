@@ -2,67 +2,175 @@
 <html lang="es">
 <head>
     <script src="/JS/api-client.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Agenda Personalizada - Mi Pet</title>
+
     <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Estilos generales de Mi Pet -->
     <link rel="stylesheet" href="../mi_pet.css">
 </head>
+
 <body class="fondo_pata">
 
     <header>
-        <a class="flecha" href="agenda_general.html">←</a>
-        <div class="titulo-naranja">
-            <h1 id="tituloAgendaMascota">Agenda de mascota</h1>
-        </div>
-       
 
+        <!-- Flecha para regresar a la agenda general -->
+        <a
+            class="flecha"
+            href="agenda_general.html"
+            aria-label="Volver a la agenda general">
+            ←
+        </a>
+
+        <!-- Título -->
+        <div class="titulo-naranja">
+            <h1 id="tituloAgendaMascota">
+                Agenda de mascota
+            </h1>
+        </div>
+
+        <!-- Contenedor principal de la agenda -->
         <div class="contenedor_agenda_personalizada">
-            
+
             <main class="recuadro_gestion_evento">
-                
-                <p id="estadoAgenda" aria-live="polite"></p>
-                <section id="eventosMascota" class="d-grid gap-3"></section>
+
+                <!-- Mensajes de estado -->
+                <p
+                    id="estadoAgenda"
+                    aria-live="polite">
+                </p>
+
+                <!-- Eventos de la mascota -->
+                <section
+                    id="eventosMascota"
+                    class="d-grid gap-3">
+                </section>
 
             </main>
 
+            <!-- Botón para agregar evento -->
             <aside class="control_inferior">
+
                 <div class="boton_agregar_a">
-                    <button type="button" id="btnNuevoEvento" title="Agregar nuevo evento">+</button>
+
+                    <button
+                        type="button"
+                        id="btnNuevoEvento"
+                        class="btn_agregar_debajo"
+                        title="Agregar nuevo evento"
+                        aria-label="Agregar nuevo evento">
+                        +
+                    </button>
+
                 </div>
+
             </aside>
 
         </div>
+
     </header>
 
+
+    <!-- =====================================================
+         MODAL NUEVO EVENTO
+         ===================================================== -->
+
     <dialog id="dialogo_nuevo_evento">
+
         <div class="formulario_modal">
+
             <h2>Nuevo Evento</h2>
+
             <form id="formNuevoEvento">
-                <label for="mascotaEvento">Mascota:</label>
-                <select id="mascotaEvento" required></select>
 
-                <label for="tipoEvento">Tipo:</label>
-                <input id="tipoEvento" type="text" placeholder="Ej: Peluquería" required>
+                <!-- Mascota -->
+                <label for="mascotaEvento">
+                    Mascota:
+                </label>
 
-                <label for="fechaEvento">Fecha:</label>
-                <input id="fechaEvento" type="date" required>
+                <select
+                    id="mascotaEvento"
+                    required>
+                </select>
 
-                <label for="horaEvento">Hora:</label>
-                <input id="horaEvento" type="time" required>
 
-                <label for="descripcionEvento">Notas:</label>
-                <textarea id="descripcionEvento" maxlength="300" rows="3"></textarea>
+                <!-- Tipo de evento -->
+                <label for="tipoEvento">
+                    Tipo:
+                </label>
 
+                <input
+                    id="tipoEvento"
+                    type="text"
+                    placeholder="Ej: Peluquería"
+                    required>
+
+
+                <!-- Fecha -->
+                <label for="fechaEvento">
+                    Fecha:
+                </label>
+
+                <input
+                    id="fechaEvento"
+                    type="date"
+                    required>
+
+
+                <!-- Hora -->
+                <label for="horaEvento">
+                    Hora:
+                </label>
+
+                <input
+                    id="horaEvento"
+                    type="time"
+                    required>
+
+
+                <!-- Descripción -->
+                <label for="descripcionEvento">
+                    Notas:
+                </label>
+
+                <textarea
+                    id="descripcionEvento"
+                    maxlength="300"
+                    rows="3">
+                </textarea>
+
+
+                <!-- Botones -->
                 <div class="botones_form">
-                    <button type="submit">Guardar</button>
-                    <button type="button" onclick="document.getElementById('dialogo_nuevo_evento').close()">Cerrar</button>
+
+                    <button
+                        type="submit">
+                        Guardar
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cerrarDialogoEvento">
+                        Cerrar
+                    </button>
+
                 </div>
+
             </form>
+
         </div>
+
     </dialog>
 
+
+    <!-- JavaScript de agenda -->
     <script src="/JS/agenda.js"></script>
 
 </body>

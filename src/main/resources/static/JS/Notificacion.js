@@ -1,86 +1,144 @@
-const API_BASE = "http://localhost:8082/api";
+// Servicio encargado de consultar y gestionar las notificaciones de My Pet.
 
-const listaNotificaciones = document.getElementById("listaNotificaciones");
-const mensajeSinNotificaciones = document.getElementById("mensajeSinNotificaciones");
-const contadorNotificaciones = document.getElementById("contadorNotificaciones");
-const btnEliminarTodas = document.getElementById("btnEliminarTodas");
+const API_BASE = `${window.location.origin}/api`;
 
-/* ==========================================
-   OBTENER ID DEL USUARIO
-   ========================================== */
+const listaNotificaciones =
+    document.getElementById("listaNotificaciones");
 
+const mensajeSinNotificaciones =
+    document.getElementById("mensajeSinNotificaciones");
+
+const contadorNotificaciones =
+    document.getElementById("contadorNotificaciones");
+
+const btnMarcarTodasComoLeidas =
+    document.getElementById("btnMarcarTodasComoLeidas");
+
+const btnEliminarTodas =
+    document.getElementById("btnEliminarTodas");
+
+
+// =========================================================
+// OBTENCIÓN DEL USUARIO
+// =========================================================
+
+// Obtiene el ID del usuario actualmente autenticado.
 function obtenerIdUsuario() {
 
-    const usuarioGuardado = localStorage.getItem("usuarioLogueado");
+    const usuarioGuardado =
+        localStorage.getItem("usuarioLogueado");
 
-    if (usuarioGuardado) {
-
-        try {
-
-            const usuario = JSON.parse(usuarioGuardado);
-
-            if (usuario.idUsuario) {
-                return usuario.idUsuario;
-            }
-
-            if (usuario.id_usuario) {
-                return usuario.id_usuario;
-            }
-
-        } catch (error) {
-
-            console.error(
-                "No se pudo leer usuarioLogueado:",
-                error
-            );
-
-        }
+    if (!usuarioGuardado) {
+        return localStorage.getItem("idUsuario");
     }
 
-    const idUsuario = localStorage.getItem("idUsuario");
+    try {
 
-    if (idUsuario) {
-        return Number(idUsuario);
+        const usuario =
+            JSON.parse(usuarioGuardado);
+
+        return (
+            usuario.idUsuario ||
+            usuario.id_usuario ||
+            localStorage.getItem("idUsuario")
+        );
+
+    } catch (error) {
+
+        console.error(
+            "No se pudo leer el usuario guardado:",
+            error
+        );
+
+        return localStorage.getItem("idUsuario");
     }
-
-    return null;
 }
 
-/* ==========================================
-   CARGAR NOTIFICACIONES
-   ========================================== */
 
+// =========================================================
+// PETICIONES AL BACKEND
+// =========================================================
+
+// Realiza las solicitudes al backend de notificaciones.
+async function solicitar(url, opciones = {}) {
+
+    const headers = {
+        ...(opciones.body
+            ? { "Content-Type": "application/json" }
+            : {}),
+        ...(opciones.headers || {})
+    };
+
+    const respuesta =
+        await fetch(
+            `${API_BASE}${url}`,
+            {
+                ...opciones,
+                cache: "no-store",
+                credentials: "include",
+                headers
+            }
+        );
+
+    if (!respuesta.ok) {
+
+        const mensaje =
+            await respuesta.text();
+
+        throw new Error(
+            mensaje ||
+            `Error HTTP ${respuesta.status}`
+        );
+    }
+
+    const texto =
+        await respuesta.text();
+
+    if (!texto) {
+        return null;
+    }
+
+    const contentType =
+        respuesta.headers.get("content-type") || "";
+
+    if (
+        contentType.includes("application/json")
+    ) {
+
+        return JSON.parse(texto);
+    }
+
+    return texto;
+}
+
+
+// =========================================================
+// CARGA DE NOTIFICACIONES
+// =========================================================
+
+// Consulta las notificaciones actuales del usuario.
 async function cargarNotificaciones() {
 
-    const idUsuario = obtenerIdUsuario();
+    const idUsuario =
+        obtenerIdUsuario();
 
     if (!idUsuario) {
 
-        console.warn(
-            "No se encontró el usuario conectado."
-        );
-
         mostrarSinNotificaciones();
+
         return;
     }
 
     try {
 
-        const respuesta = await fetch(
-            `${API_BASE}/notificaciones/usuario/${idUsuario}`
-        );
-
-        if (!respuesta.ok) {
-
-            throw new Error(
-                "No se pudieron cargar las notificaciones."
+        const notificaciones =
+            await solicitar(
+                `/notificaciones/usuario/${encodeURIComponent(idUsuario)}`
             );
 
-        }
-
-        const notificaciones = await respuesta.json();
-
-        mostrarNotificaciones(notificaciones);
+        mostrarNotificaciones(
+            notificaciones
+        );
 
     } catch (error) {
 
@@ -93,107 +151,143 @@ async function cargarNotificaciones() {
     }
 }
 
-/* ==========================================
-   MOSTRAR NOTIFICACIONES
-   ========================================== */
 
-function mostrarNotificaciones(notificaciones) {
+// =========================================================
+// MOSTRAR NOTIFICACIONES
+// =========================================================
+
+// Construye visualmente la lista de notificaciones.
+function mostrarNotificaciones(
+    notificaciones
+) {
 
     listaNotificaciones.replaceChildren();
 
     if (
-        !notificaciones ||
+        !Array.isArray(notificaciones) ||
         notificaciones.length === 0
     ) {
 
         mostrarSinNotificaciones();
+
         actualizarContador(0);
 
         return;
     }
 
-    mensajeSinNotificaciones.style.display = "none";
+    if (mensajeSinNotificaciones) {
+
+        mensajeSinNotificaciones.style.display =
+            "none";
+    }
 
     let noLeidas = 0;
 
-    notificaciones.forEach(notificacion => {
+    notificaciones.forEach(
+        function (notificacion) {
 
-        const estado = obtenerEstado(
-            notificacion.estado
-        );
+            const estado =
+                obtenerEstado(
+                    notificacion.estado
+                );
 
-        if (estado !== "leida") {
-            noLeidas++;
+            if (
+                estado === "no-leida"
+            ) {
+
+                noLeidas++;
+            }
+
+            crearNotificacion(
+                notificacion
+            );
         }
+    );
 
-        crearNotificacion(notificacion);
-
-    });
-
-    actualizarContador(noLeidas);
+    actualizarContador(
+        noLeidas
+    );
 }
 
-/* ==========================================
-   CREAR TARJETA DE NOTIFICACIÓN
-   ========================================== */
 
-function crearNotificacion(notificacion) {
+// =========================================================
+// CREACIÓN DE TARJETAS
+// =========================================================
 
-    const tarjeta = document.createElement("div");
+// Crea la tarjeta visual de cada notificación.
+function crearNotificacion(
+    notificacion
+) {
+
+    const tarjeta =
+        document.createElement("div");
 
     tarjeta.classList.add(
         "notificacion-item"
     );
 
-    const estado = obtenerEstado(
-        notificacion.estado
-    );
+    tarjeta.dataset.idNotificacion =
+        notificacion.idNotificacion;
 
-    if (estado !== "leida") {
+
+    const estado =
+        obtenerEstado(
+            notificacion.estado
+        );
+
+    if (
+        estado === "no-leida"
+    ) {
 
         tarjeta.classList.add(
             "notificacion-no-leida"
         );
-
     }
 
-    /* MENSAJE */
 
-    const mensaje = document.createElement("div");
+    const mensaje =
+        document.createElement("div");
 
     mensaje.classList.add(
         "notificacion-mensaje"
     );
 
     mensaje.textContent =
-        notificacion.mensaje || "Sin mensaje";
+        notificacion.mensaje ||
+        "Sin mensaje";
 
-    /* FECHA */
 
-    const fecha = document.createElement("span");
+    const fecha =
+        document.createElement("span");
 
     fecha.classList.add(
         "notificacion-fecha"
     );
 
     fecha.textContent =
-        formatearFecha(notificacion.fecha);
+        formatearFecha(
+            notificacion.fecha
+        );
 
-    /* ESTADO */
 
-    const estadoTexto = document.createElement("span");
+    const estadoTexto =
+        document.createElement("span");
 
     estadoTexto.classList.add(
         "notificacion-estado"
     );
 
-    if (estado === "leida") {
+
+    if (
+        estado === "leida"
+    ) {
 
         estadoTexto.classList.add(
             "estado-leida"
         );
 
-        estadoTexto.textContent = "Leída";
+        estadoTexto.textContent =
+            "Leída";
 
     } else {
 
@@ -201,239 +295,659 @@ function crearNotificacion(notificacion) {
             "estado-no-leida"
         );
 
-        estadoTexto.textContent = "No leída";
+        estadoTexto.textContent =
+            "No leída";
     }
 
-    /* FECHA + ESTADO */
 
-    const informacion = document.createElement("div");
+    const informacion =
+        document.createElement("div");
 
-    informacion.appendChild(fecha);
-    informacion.appendChild(estadoTexto);
+    informacion.appendChild(
+        fecha
+    );
 
-    /* ACCIONES */
+    informacion.appendChild(
+        estadoTexto
+    );
 
-    const acciones = document.createElement("div");
+
+    const acciones =
+        document.createElement("div");
 
     acciones.classList.add(
         "notificacion-acciones"
     );
 
-    /* BOTÓN ELIMINAR */
 
-    const btnEliminar = document.createElement("button");
+    // Botón para marcar una notificación individual como leída.
+    if (
+        estado === "no-leida"
+    ) {
 
-    btnEliminar.type = "button";
+        const btnLeer =
+            document.createElement("button");
+
+        btnLeer.type =
+            "button";
+
+        btnLeer.classList.add(
+            "btn",
+            "btn-success",
+            "btn-sm"
+        );
+
+        btnLeer.textContent =
+            "Marcar como leída";
+
+
+        btnLeer.addEventListener(
+            "click",
+            async function () {
+
+                btnLeer.disabled =
+                    true;
+
+                const resultado =
+                    await marcarComoLeida(
+                        notificacion.idNotificacion,
+                        tarjeta
+                    );
+
+                if (!resultado) {
+
+                    btnLeer.disabled =
+                        false;
+                }
+            }
+        );
+
+        acciones.appendChild(
+            btnLeer
+        );
+    }
+
+
+    // Botón para eliminar la notificación.
+    const btnEliminar =
+        document.createElement("button");
+
+    btnEliminar.type =
+        "button";
 
     btnEliminar.classList.add(
         "btn-eliminar-notificacion"
     );
 
-    btnEliminar.textContent = "Eliminar";
+    btnEliminar.textContent =
+        "Eliminar";
+
 
     btnEliminar.addEventListener(
         "click",
-        function () {
+        async function () {
 
-            eliminarNotificacion(
-                notificacion.idNotificacion
-            );
+            btnEliminar.disabled =
+                true;
 
+            const resultado =
+                await eliminarNotificacion(
+                    notificacion.idNotificacion,
+                    tarjeta
+                );
+
+            if (
+                !resultado &&
+                document.body.contains(tarjeta)
+            ) {
+
+                btnEliminar.disabled =
+                    false;
+            }
         }
     );
 
-    acciones.appendChild(btnEliminar);
+    acciones.appendChild(
+        btnEliminar
+    );
 
-    tarjeta.appendChild(mensaje);
-    tarjeta.appendChild(informacion);
-    tarjeta.appendChild(acciones);
 
-    listaNotificaciones.appendChild(tarjeta);
+    tarjeta.appendChild(
+        mensaje
+    );
+
+    tarjeta.appendChild(
+        informacion
+    );
+
+    tarjeta.appendChild(
+        acciones
+    );
+
+
+    listaNotificaciones.appendChild(
+        tarjeta
+    );
 }
 
-/* ==========================================
-   OBTENER ESTADO
-   ========================================== */
 
-    function obtenerEstado(estado) {
+// =========================================================
+// ESTADO DE LAS NOTIFICACIONES
+// =========================================================
 
-    if (!estado) {
-        return "no-leida";
-    }
+// Normaliza los diferentes formatos de estado.
+function obtenerEstado(
+    estado
+) {
 
-    const estadoNormalizado = estado
-        .toString()
-        .trim()
-        .toLowerCase();
+    const valor =
+        estado
+            ? estado
+                .toString()
+                .trim()
+                .toUpperCase()
+            : "NO_LEIDA";
+
 
     if (
-        estadoNormalizado === "no_leida" ||
-        estadoNormalizado === "no-leida"
+        valor === "LEIDA" ||
+        valor === "LEÍDA"
     ) {
-        return "no-leida";
-    }
 
-    if (estadoNormalizado === "leida") {
         return "leida";
     }
 
-    return estadoNormalizado;
+    return "no-leida";
 }
 
-/* ==========================================
-   FORMATEAR FECHA
-   ========================================== */
 
-function formatearFecha(fecha) {
+// =========================================================
+// FORMATO DE FECHA
+// =========================================================
+
+// Convierte la fecha recibida del backend a formato colombiano.
+function formatearFecha(
+    fecha
+) {
 
     if (!fecha) {
+
         return "Fecha no disponible";
     }
 
-    try {
 
-        const fechaConvertida = new Date(fecha);
+    const fechaObjeto =
+        new Date(fecha);
 
-        if (isNaN(fechaConvertida.getTime())) {
-            return fecha;
-        }
 
-        return fechaConvertida.toLocaleString(
-            "es-CO",
-            {
-                dateStyle: "medium",
-                timeStyle: "short"
-            }
-        );
-
-    } catch (error) {
+    if (
+        Number.isNaN(
+            fechaObjeto.getTime()
+        )
+    ) {
 
         return fecha;
     }
+
+
+    return fechaObjeto.toLocaleString(
+        "es-CO"
+    );
 }
 
-/* ==========================================
-   ACTUALIZAR CONTADOR
-   ========================================== */
 
-function actualizarContador(cantidad) {
+// =========================================================
+// CONTADOR
+// =========================================================
 
-    if (!contadorNotificaciones) {
+// Actualiza el contador de notificaciones no leídas.
+function actualizarContador(
+    cantidad
+) {
+
+    if (
+        !contadorNotificaciones
+    ) {
+
         return;
     }
 
-    if (cantidad === 0) {
 
-        contadorNotificaciones.textContent =
-            "No tienes notificaciones nuevas.";
-
-    } else if (cantidad === 1) {
-
-        contadorNotificaciones.textContent =
-            "Tienes 1 notificación nueva.";
-
-    } else {
-
-        contadorNotificaciones.textContent =
-            `Tienes ${cantidad} notificaciones nuevas.`;
-    }
+    contadorNotificaciones.textContent =
+        cantidad === 1
+            ? "1 notificación"
+            : `${cantidad} notificaciones`;
 }
 
-/* ==========================================
-   MOSTRAR SIN NOTIFICACIONES
-   ========================================== */
 
-function mostrarSinNotificaciones() {
+// =========================================================
+// MARCAR COMO LEÍDA
+// =========================================================
 
-    listaNotificaciones.replaceChildren();
-
-    mensajeSinNotificaciones.style.display =
-        "block";
-}
-
-/* ==========================================
-   ELIMINAR NOTIFICACIÓN
-   ========================================== */
-
-async function eliminarNotificacion(id) {
+// Marca una notificación individual como leída.
+async function marcarComoLeida(
+    id,
+    tarjeta
+) {
 
     if (!id) {
-        return;
+        return false;
     }
 
-    const confirmar = confirm(
-        "¿Quieres eliminar esta notificación?"
-    );
-
-    if (!confirmar) {
-        return;
-    }
 
     try {
 
-        const respuesta = await fetch(
-            `${API_BASE}/notificaciones/${id}`,
+        await solicitar(
+            `/notificaciones/leer/${encodeURIComponent(id)}`,
             {
-                method: "DELETE"
+                method: "PUT"
             }
         );
 
-        if (!respuesta.ok) {
 
-            const mensajeError =
-                await respuesta.text();
+        // Actualiza inmediatamente la tarjeta.
+        if (tarjeta) {
 
-            throw new Error(
-                mensajeError ||
-                "No se pudo eliminar la notificación."
+            tarjeta.classList.remove(
+                "notificacion-no-leida"
             );
+
+
+            const estadoTexto =
+                tarjeta.querySelector(
+                    ".notificacion-estado"
+                );
+
+
+            if (estadoTexto) {
+
+                estadoTexto.classList.remove(
+                    "estado-no-leida"
+                );
+
+                estadoTexto.classList.add(
+                    "estado-leida"
+                );
+
+                estadoTexto.textContent =
+                    "Leída";
+            }
+
+
+            const botonLeer =
+                tarjeta.querySelector(
+                    ".btn-success"
+                );
+
+
+            if (botonLeer) {
+
+                botonLeer.remove();
+            }
         }
 
-        await cargarNotificaciones();
+
+        const noLeidas =
+            listaNotificaciones.querySelectorAll(
+                ".notificacion-no-leida"
+            ).length;
+
+
+        actualizarContador(
+            noLeidas
+        );
+
+
+        return true;
 
     } catch (error) {
 
         console.error(
-            "Error al eliminar notificación:",
+            "Error al marcar la notificación como leída:",
+            error
+        );
+
+        alert(
+            "No fue posible marcar la notificación como leída."
+        );
+
+        return false;
+    }
+}
+
+
+// =========================================================
+// ELIMINACIÓN INDIVIDUAL
+// =========================================================
+
+// Elimina una notificación de la base de datos
+// y posteriormente la quita de la interfaz.
+async function eliminarNotificacion(
+    id,
+    tarjeta
+) {
+
+    if (
+        !id ||
+        !tarjeta
+    ) {
+
+        return false;
+    }
+
+
+    const confirmar =
+        window.confirm(
+            "¿Quieres eliminar esta notificación?"
+        );
+
+
+    if (!confirmar) {
+
+        return false;
+    }
+
+
+    try {
+
+        const respuesta =
+            await fetch(
+                `${API_BASE}/notificaciones/${encodeURIComponent(id)}`,
+                {
+                    method: "DELETE",
+                    cache: "no-store",
+                    credentials: "include"
+                }
+            );
+
+
+        if (!respuesta.ok) {
+
+            const mensaje =
+                await respuesta.text();
+
+            throw new Error(
+                mensaje ||
+                `Error HTTP ${respuesta.status}`
+            );
+        }
+
+
+        // El backend confirmó la eliminación.
+        // Ahora se elimina la tarjeta de la interfaz.
+        tarjeta.remove();
+
+
+        // Actualiza el contador de no leídas.
+        const noLeidas =
+            listaNotificaciones.querySelectorAll(
+                ".notificacion-no-leida"
+            ).length;
+
+
+        actualizarContador(
+            noLeidas
+        );
+
+
+        // Comprueba si ya no quedan notificaciones.
+        const cantidadTarjetas =
+            listaNotificaciones.querySelectorAll(
+                ".notificacion-item"
+            ).length;
+
+
+        if (
+            cantidadTarjetas === 0
+        ) {
+
+            mostrarSinNotificaciones();
+
+            actualizarContador(0);
+        }
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Error al eliminar la notificación:",
             error
         );
 
         alert(
             "No fue posible eliminar la notificación."
         );
+
+        return false;
     }
 }
 
-/* ==========================================
-   INICIALIZAR
-   ========================================== */
 
+// =========================================================
+// MARCAR TODAS COMO LEÍDAS
+// =========================================================
+
+// Marca todas las notificaciones del usuario como leídas.
+async function marcarTodasComoLeidas() {
+
+    const idUsuario =
+        obtenerIdUsuario();
+
+
+    if (!idUsuario) {
+        return;
+    }
+
+
+    try {
+
+        await solicitar(
+            `/notificaciones/leer-todas/${encodeURIComponent(idUsuario)}`,
+            {
+                method: "PUT"
+            }
+        );
+
+
+        // Actualiza todas las tarjetas directamente.
+        const tarjetas =
+            listaNotificaciones.querySelectorAll(
+                ".notificacion-item"
+            );
+
+
+        tarjetas.forEach(
+            function (tarjeta) {
+
+                tarjeta.classList.remove(
+                    "notificacion-no-leida"
+                );
+
+
+                const estadoTexto =
+                    tarjeta.querySelector(
+                        ".notificacion-estado"
+                    );
+
+
+                if (estadoTexto) {
+
+                    estadoTexto.classList.remove(
+                        "estado-no-leida"
+                    );
+
+                    estadoTexto.classList.add(
+                        "estado-leida"
+                    );
+
+                    estadoTexto.textContent =
+                        "Leída";
+                }
+
+
+                const botonLeer =
+                    tarjeta.querySelector(
+                        ".btn-success"
+                    );
+
+
+                if (botonLeer) {
+
+                    botonLeer.remove();
+                }
+            }
+        );
+
+
+        actualizarContador(0);
+
+    } catch (error) {
+
+        console.error(
+            "Error al marcar todas las notificaciones como leídas:",
+            error
+        );
+
+        alert(
+            "No fue posible marcar las notificaciones como leídas."
+        );
+    }
+}
+
+
+// =========================================================
+// ELIMINAR TODAS
+// =========================================================
+
+// Elimina todas las notificaciones del usuario.
+async function eliminarTodas() {
+
+    const idUsuario =
+        obtenerIdUsuario();
+
+
+    if (!idUsuario) {
+        return;
+    }
+
+
+    const confirmar =
+        window.confirm(
+            "¿Quieres eliminar todas las notificaciones? Esta acción no se puede deshacer."
+        );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    try {
+
+        const respuesta =
+            await fetch(
+                `${API_BASE}/notificaciones/usuario/${encodeURIComponent(idUsuario)}`,
+                {
+                    method: "DELETE",
+                    cache: "no-store",
+                    credentials: "include"
+                }
+            );
+
+
+        if (!respuesta.ok) {
+
+            const mensaje =
+                await respuesta.text();
+
+            throw new Error(
+                mensaje ||
+                `Error HTTP ${respuesta.status}`
+            );
+        }
+
+
+        // El backend confirmó la eliminación.
+        // Se limpia la lista inmediatamente.
+        mostrarSinNotificaciones();
+
+        actualizarContador(0);
+
+
+    } catch (error) {
+
+        console.error(
+            "Error al eliminar todas las notificaciones:",
+            error
+        );
+
+        alert(
+            "No fue posible eliminar las notificaciones."
+        );
+    }
+}
+
+
+// =========================================================
+// ESTADO VACÍO
+// =========================================================
+
+// Muestra el mensaje cuando no existen notificaciones.
+function mostrarSinNotificaciones() {
+
+    if (
+        listaNotificaciones
+    ) {
+
+        listaNotificaciones.replaceChildren();
+    }
+
+
+    if (
+        mensajeSinNotificaciones
+    ) {
+
+        mensajeSinNotificaciones.style.display =
+            "block";
+    }
+}
+
+
+// =========================================================
+// INICIALIZACIÓN
+// =========================================================
+
+// Carga las notificaciones cuando la página está lista.
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        if (btnEliminarTodas) {
-            btnEliminarTodas.addEventListener("click", async function () {
-                const idUsuario = obtenerIdUsuario();
-                if (!idUsuario) return;
+        // Botón para marcar todas como leídas.
+        if (
+            btnMarcarTodasComoLeidas
+        ) {
 
-                try {
-                    const respuesta = await fetch(
-                        `${API_BASE}/notificaciones/leer-todas/${idUsuario}`,
-                        { method: "PUT" }
-                    );
-                    if (!respuesta.ok) {
-                        throw new Error(await respuesta.text());
-                    }
-                    await cargarNotificaciones();
-                } catch (error) {
-                    console.error("Error marcando notificaciones:", error);
-                    alert("No fue posible marcar las notificaciones como leídas.");
-                }
-            });
+            btnMarcarTodasComoLeidas.addEventListener(
+                "click",
+                marcarTodasComoLeidas
+            );
         }
 
-        cargarNotificaciones();
 
+        // Botón para eliminar todas definitivamente.
+        if (
+            btnEliminarTodas
+        ) {
+
+            btnEliminarTodas.addEventListener(
+                "click",
+                eliminarTodas
+            );
+        }
+
+
+        cargarNotificaciones();
     }
 );

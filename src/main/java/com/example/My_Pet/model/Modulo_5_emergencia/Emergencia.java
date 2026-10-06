@@ -1,13 +1,12 @@
-// Modelo que representa una emergencia asociada a un usuario y una mascota.
 package com.example.My_Pet.model.Modulo_5_emergencia;
 
-// Librerías necesarias para el mapeo de la entidad y el manejo de fechas.
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.Mascota;
 
-// Define la clase como una entidad de la base de datos.
 @Entity
 @Table(name = "emergencia")
 public class Emergencia {
@@ -26,7 +25,12 @@ public class Emergencia {
     @Column(name = "fecha", nullable = false, updatable = false)
     private LocalDateTime fecha;
 
-    // Relación entre la emergencia y el usuario que la registra.
+    @Column(length = 30, nullable = false)
+    private String estado;
+
+    @Column(name = "ultima_notificacion")
+    private LocalDateTime ultimaNotificacion;
+
     @ManyToOne
     @JoinColumn(
         name = "id_usuario",
@@ -35,30 +39,29 @@ public class Emergencia {
     )
     private Usuario usuario;
 
-    // Relación entre la emergencia y la mascota asociada.
     @ManyToOne
     @JoinColumn(name = "id_mascota")
     private Mascota mascota;
 
-    // Constructor vacío requerido por JPA.
     public Emergencia() {
+        this.estado = "PENDIENTE";
     }
 
-    // Constructor para crear una emergencia con sus datos.
     public Emergencia(
             Integer idEmergencia,
             String tipo,
             String descripcion,
             LocalDateTime fecha,
             Usuario usuario) {
+
         this.idEmergencia = idEmergencia;
         this.tipo = tipo;
         this.descripcion = descripcion;
         this.fecha = fecha;
+        this.estado = "PENDIENTE";
         this.usuario = usuario;
     }
 
-    // Getters y setters- Métodos para obtener y modificar los datos.
     public Integer getIdEmergencia() {
         return idEmergencia;
     }
@@ -91,6 +94,24 @@ public class Emergencia {
         this.fecha = fecha;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public LocalDateTime getUltimaNotificacion() {
+        return ultimaNotificacion;
+    }
+
+    public void setUltimaNotificacion(
+            LocalDateTime ultimaNotificacion) {
+
+        this.ultimaNotificacion = ultimaNotificacion;
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
@@ -106,5 +127,4 @@ public class Emergencia {
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }
-
 }

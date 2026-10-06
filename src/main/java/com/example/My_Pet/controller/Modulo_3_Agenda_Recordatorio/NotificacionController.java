@@ -1,87 +1,274 @@
-// Controlador para la gestión de notificaciones.
+// Controlador encargado de gestionar las notificaciones.
+
 package com.example.My_Pet.controller.Modulo_3_Agenda_Recordatorio;
 
-// Librerías necesarias para el controlador y la seguridad.
 import com.example.My_Pet.model.Modulo_3_Agenda_Recordatorio.Notificacion;
+
 import com.example.My_Pet.service.Modulo_3_Agenda_Recordatorio.NotificacionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.access.prepost.PreAuthorize;
+
+import org.springframework.security.core.parameters.P;
+
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-// Define el controlador REST de notificaciones.
+// Controlador REST para las operaciones de notificaciones.
+
 @RestController
+
 @RequestMapping("/api/notificaciones")
+
 public class NotificacionController {
 
-    // Conecta el controlador con el servicio de notificaciones.
     @Autowired
+
     private NotificacionService notificacionService;
 
-    // GET - Lista todas las notificaciones. Solo para administradores.
+
+    // =========================================================
+    // CONSULTA DE NOTIFICACIONES
+    // =========================================================
+
+    // Obtiene todas las notificaciones del sistema.
+
     @GetMapping("/listar")
+
     @PreAuthorize("@autorizacion.esAdministrador()")
+
     public List<Notificacion> listarTodo() {
+
         return notificacionService.obtenerTodas();
+
     }
 
-    // GET - Lista las notificaciones asociadas a un usuario.
+
+    // Obtiene las notificaciones pertenecientes a un usuario.
+
     @GetMapping("/usuario/{idUsuario}")
-    @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
-    public ResponseEntity<List<Notificacion>> listarPorUsuario(@PathVariable Integer idUsuario) {
-        List<Notificacion> notificaciones = notificacionService.obtenerPorUsuario(idUsuario);
+
+    @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
+
+    public ResponseEntity<List<Notificacion>> listarPorUsuario(
+
+            @PathVariable("idUsuario")
+
+            @P("idUsuario") Integer idUsuario) {
+
+        List<Notificacion> notificaciones =
+
+                notificacionService.obtenerPorUsuario(idUsuario);
+
         return ResponseEntity.ok(notificaciones);
+
     }
 
-    // POST - Crea una nueva notificación.
+
+    // =========================================================
+    // CREACIÓN DE NOTIFICACIONES
+    // =========================================================
+
+    // Crea una nueva notificación para un usuario.
+
     @PostMapping("/crear")
-    @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
+
+    @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
+
     public ResponseEntity<?> crear(
-            @RequestParam Integer idUsuario,
-            @RequestParam String mensaje) {
+
+            @RequestParam
+
+            @P("idUsuario") Integer idUsuario,
+
+            @RequestParam String mensaje,
+
+            @RequestParam(
+
+                    required = false,
+
+                    defaultValue = "EMERGENCIA"
+
+            )
+
+            String tipo) {
+
         try {
-            Notificacion notificacion = notificacionService.crear(idUsuario, mensaje);
+
+            Notificacion notificacion =
+
+                    notificacionService.crear(
+
+                            idUsuario,
+
+                            mensaje,
+
+                            tipo
+
+                    );
+
             return ResponseEntity.ok(notificacion);
+
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+
+            return ResponseEntity
+
+                    .badRequest()
+
+                    .body(e.getMessage());
+
         }
+
     }
 
-    // PUT - Marca una notificación como leída.
+
+    // =========================================================
+    // GESTIÓN DEL ESTADO DE LAS NOTIFICACIONES
+    // =========================================================
+
+    // Marca una notificación específica como leída.
+
     @PutMapping("/leer/{id}")
-    @PreAuthorize("@autorizacion.esNotificacionPropiaOAdministrador(#p0)")
-    public ResponseEntity<?> marcarComoLeida(@PathVariable Integer id) {
+
+    @PreAuthorize("@autorizacion.esNotificacionPropiaOAdministrador(#id)")
+
+    public ResponseEntity<?> marcarComoLeida(
+
+            @PathVariable("id")
+
+            @P("id") Integer id) {
+
         try {
-            Notificacion notificacion = notificacionService.marcarComoLeida(id);
+
+            Notificacion notificacion =
+
+                    notificacionService.marcarComoLeida(id);
+
             return ResponseEntity.ok(notificacion);
+
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+
+            return ResponseEntity
+
+                    .badRequest()
+
+                    .body(e.getMessage());
+
         }
+
     }
 
-    // PUT - Marca todas las notificaciones de un usuario como leídas.
+
+    // Marca todas las notificaciones de un usuario como leídas.
+
     @PutMapping("/leer-todas/{idUsuario}")
-    @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
-    public ResponseEntity<?> marcarTodasComoLeidas(@PathVariable Integer idUsuario) {
+
+    @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
+
+    public ResponseEntity<?> marcarTodasComoLeidas(
+
+            @PathVariable("idUsuario")
+
+            @P("idUsuario") Integer idUsuario) {
+
         try {
+
             notificacionService.marcarTodasComoLeidas(idUsuario);
-            return ResponseEntity.ok("Todas las notificaciones fueron marcadas como leídas.");
+
+            return ResponseEntity.ok(
+
+                    "Todas las notificaciones fueron marcadas como leídas."
+
+            );
+
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+
+            return ResponseEntity
+
+                    .badRequest()
+
+                    .body(e.getMessage());
+
         }
+
     }
 
-    // DELETE - Elimina una notificación por su ID.
+
+    // =========================================================
+    // ELIMINACIÓN DE NOTIFICACIONES
+    // =========================================================
+
+    // Elimina una notificación perteneciente al usuario.
+
     @DeleteMapping("/{id}")
-    @PreAuthorize("@autorizacion.esNotificacionPropiaOAdministrador(#p0)")
-    public ResponseEntity<?> eliminarNotificacion(@PathVariable Integer id) {
+
+    @PreAuthorize("@autorizacion.esNotificacionPropiaOAdministrador(#id)")
+
+    public ResponseEntity<?> eliminarNotificacion(
+
+            @PathVariable("id")
+
+            @P("id") Integer id) {
+
         try {
+
             notificacionService.eliminar(id);
-            return ResponseEntity.ok("Notificación eliminada correctamente.");
+
+            return ResponseEntity.ok(
+
+                    "Notificación eliminada correctamente."
+
+            );
+
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+
+            return ResponseEntity
+
+                    .badRequest()
+
+                    .body(e.getMessage());
+
         }
+
+    }
+
+
+    // Elimina todas las notificaciones pertenecientes a un usuario.
+
+    @DeleteMapping("/usuario/{idUsuario}")
+
+    @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
+
+    public ResponseEntity<?> eliminarTodas(
+
+            @PathVariable("idUsuario")
+
+            @P("idUsuario") Integer idUsuario) {
+
+        try {
+
+            notificacionService.eliminarTodas(idUsuario);
+
+            return ResponseEntity.ok(
+
+                    "Todas las notificaciones fueron eliminadas correctamente."
+
+            );
+
+        } catch (IllegalArgumentException e) {
+
+            return ResponseEntity
+
+                    .badRequest()
+
+                    .body(e.getMessage());
+
+        }
+
     }
 
 }

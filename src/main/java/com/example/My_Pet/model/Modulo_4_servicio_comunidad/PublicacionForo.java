@@ -1,12 +1,18 @@
 // Modelo que representa una publicación realizada en el foro.
+
 package com.example.My_Pet.model.Modulo_4_servicio_comunidad;
 
 // Librerías necesarias para el mapeo de la entidad y el manejo de fechas.
+
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
+
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 // Define la clase como una entidad de la base de datos.
+
 @Entity
 @Table(name = "publicacion_foro")
 public class PublicacionForo {
@@ -26,25 +32,30 @@ public class PublicacionForo {
     private LocalDateTime fecha;
 
     // Relación entre la publicación y el usuario que la creó.
+
     @ManyToOne
     @JoinColumn(
         name = "id_usuario",
         referencedColumnName = "id_usuario",
         nullable = false
     )
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Usuario usuario;
 
     // Constructor vacío requerido por JPA.
+
     public PublicacionForo() {
     }
 
     // Constructor para crear una publicación con sus datos.
+
     public PublicacionForo(
             Integer idPublicacion,
             String titulo,
             String contenido,
             LocalDateTime fecha,
             Usuario usuario) {
+
         this.idPublicacion = idPublicacion;
         this.titulo = titulo;
         this.contenido = contenido;
@@ -52,7 +63,8 @@ public class PublicacionForo {
         this.usuario = usuario;
     }
 
-    // Getters y setters- Métodos para obtener y modificar los datos.
+    // Getters y setters.
+
     public Integer getIdPublicacion() {
         return idPublicacion;
     }
@@ -92,5 +104,4 @@ public class PublicacionForo {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
 }

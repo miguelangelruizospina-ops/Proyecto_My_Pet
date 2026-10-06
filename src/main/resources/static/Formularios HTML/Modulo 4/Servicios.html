@@ -2,14 +2,36 @@
 <html lang="es">
 
 <head>
+
+    <!--
+        Se carga api-client.js porque contiene funciones comunes
+        para realizar peticiones a la API de My Pet.
+    -->
     <script src="/JS/api-client.js"></script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Gestión de servicios - My Pet</title>
 
+
+    <!--
+        CSS propio de esta interfaz.
+
+        El CSS se encuentra dentro de este HTML porque esta pantalla
+        tiene un diseño específico para la gestión administrativa
+        de servicios y no necesita compartir estos estilos con las
+        demás interfaces de la aplicación.
+
+        Esto permite mantener esta pantalla independiente y evitar
+        modificar estilos generales de otras páginas de My Pet.
+    -->
     <style>
+
+        /* Configuración general de los elementos */
 
         * {
             box-sizing: border-box;
@@ -18,18 +40,25 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+
+        /* Fondo general de la pantalla */
+
         body {
             min-height: 100vh;
             background: linear-gradient(135deg, #fff7ed, #fef3c7);
             padding: 30px;
         }
 
+
+        /* Contenedor principal */
+
         .contenedor {
             max-width: 1100px;
             margin: auto;
         }
 
-        /* ENCABEZADO */
+
+        /* Encabezado de la interfaz */
 
         .encabezado {
             background: linear-gradient(135deg, #ff8a3d, #ffb347);
@@ -39,20 +68,24 @@
             border-radius: 20px 20px 0 0;
         }
 
+
         .logo {
             font-size: 45px;
         }
+
 
         .encabezado h1 {
             font-size: 32px;
             margin: 8px 0;
         }
 
+
         .encabezado p {
             font-size: 15px;
         }
 
-        /* CONTENIDO */
+
+        /* Área donde se encuentran los formularios */
 
         .contenido {
             background: white;
@@ -60,9 +93,11 @@
             box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
         }
 
+
         .seccion {
             margin-bottom: 40px;
         }
+
 
         .titulo {
             font-size: 22px;
@@ -72,7 +107,8 @@
             margin-bottom: 25px;
         }
 
-        /* FORMULARIO */
+
+        /* Organización de los formularios en dos columnas */
 
         .formulario {
             display: grid;
@@ -80,10 +116,12 @@
             gap: 20px;
         }
 
+
         .campo {
             display: flex;
             flex-direction: column;
         }
+
 
         .campo label {
             font-weight: bold;
@@ -91,34 +129,33 @@
             margin-bottom: 7px;
         }
 
+
+        /* Estilo de campos de texto, selección y descripción */
+
         .campo input,
         .campo select,
         .campo textarea {
-
             padding: 12px;
-
             border: 1px solid #ddd;
-
             border-radius: 9px;
-
             font-size: 15px;
-
             outline: none;
-
             background-color: #fafafa;
         }
+
 
         .campo textarea {
             resize: vertical;
             min-height: 100px;
         }
 
+
+        /* Cambio visual cuando el usuario selecciona un campo */
+
         .campo input:focus,
         .campo select:focus,
         .campo textarea:focus {
-
             border-color: #ff8a3d;
-
             background-color: white;
 
             box-shadow:
@@ -126,223 +163,180 @@
                 rgba(255, 138, 61, 0.12);
         }
 
-        /* BOTONES */
+
+        /* Organización de los botones */
 
         .botones {
-
             grid-column: 1 / 3;
-
             display: flex;
-
             gap: 10px;
-
             flex-wrap: wrap;
         }
 
+
         button {
-
             border: none;
-
             padding: 12px 20px;
-
             border-radius: 9px;
-
             cursor: pointer;
-
             font-weight: bold;
-
             font-size: 14px;
-
             transition: 0.2s;
         }
 
+
         button:hover {
-
             opacity: 0.85;
-
             transform: translateY(-1px);
         }
 
+
+        /* Colores utilizados para diferenciar las acciones */
+
         .btn-principal {
-
             background: #ff8a3d;
-
             color: white;
         }
+
 
         .btn-buscar {
-
             background: #6c5ce7;
-
             color: white;
         }
+
 
         .btn-actualizar {
-
             background: #3498db;
-
             color: white;
         }
+
 
         .btn-eliminar {
-
             background: #e74c3c;
-
             color: white;
         }
+
 
         .btn-secundario {
-
             background: #777;
-
             color: white;
         }
 
-        /* BUSQUEDA */
+
+        /* Controles utilizados para las búsquedas */
 
         .busqueda {
-
             display: flex;
-
             gap: 10px;
-
             margin-bottom: 15px;
         }
 
+
         .busqueda input,
         .busqueda select {
-
             flex: 1;
-
             padding: 12px;
-
             border: 1px solid #ddd;
-
             border-radius: 9px;
-
             font-size: 15px;
-
             outline: none;
         }
 
-        /* TABLA */
+
+        /* Contenedor de las tablas.
+           Se mantiene oculto hasta que JavaScript cargue información. */
 
         .tabla-contenedor {
-
             overflow-x: auto;
-
             margin-top: 20px;
-
             display: none;
         }
 
+
+        /* Estilo general de las tablas */
+
         table {
-
             width: 100%;
-
             border-collapse: collapse;
-
             min-width: 950px;
         }
 
+
         th {
-
             background: #ff8a3d;
-
             color: white;
-
             padding: 12px;
-
             text-align: left;
         }
 
+
         td {
-
             padding: 11px;
-
             border-bottom: 1px solid #eee;
         }
 
-        tr:hover {
 
+        tr:hover {
             background-color: #fff7ed;
         }
 
-        /* RESULTADO */
+
+        /* Área donde se muestran resultados individuales */
 
         .resultado {
-
             margin-top: 20px;
-
             padding: 20px;
-
             background: #fff7ed;
-
             border-radius: 10px;
-
             border-left: 4px solid #ff8a3d;
-
             display: none;
         }
 
+
         .resultado p {
-
             margin-bottom: 8px;
-
             color: #444;
         }
 
-        /* MENSAJES */
+
+        /* Mensajes de éxito y error */
 
         .mensaje {
-
             padding: 12px;
-
             margin-top: 20px;
-
             border-radius: 8px;
-
             text-align: center;
-
             font-weight: bold;
-
             display: none;
         }
 
+
         .exito {
-
             display: block;
-
             background: #dcfce7;
-
             color: #166534;
         }
 
+
         .error {
-
             display: block;
-
             background: #fee2e2;
-
             color: #991b1b;
         }
 
-        /* PIE */
+
+        /* Pie de la interfaz */
 
         .pie {
-
             background: #fafafa;
-
             padding: 18px;
-
             text-align: center;
-
             color: #777;
-
             border-radius: 0 0 20px 20px;
         }
 
-        /* RESPONSIVE */
+
+        /* Adaptación de la interfaz para pantallas pequeñas */
 
         @media (max-width: 700px) {
 
@@ -372,11 +366,13 @@
 
 </head>
 
+
 <body>
 
 <div class="contenedor">
 
-    <!-- ENCABEZADO -->
+
+    <!-- Encabezado principal de la gestión de servicios -->
 
     <div class="encabezado">
 
@@ -398,7 +394,11 @@
     <div class="contenido">
 
 
-        <!-- REGISTRAR SERVICIO -->
+        <!-- =================================================
+             REGISTRAR SERVICIO
+             Permite crear un nuevo servicio y relacionarlo
+             con el usuario que lo registra.
+             ================================================= -->
 
         <section class="seccion">
 
@@ -411,7 +411,6 @@
                 id="formServicio"
                 class="formulario"
             >
-
 
                 <div class="campo">
 
@@ -567,7 +566,11 @@
         </section>
 
 
-        <!-- LISTAR SERVICIOS -->
+        <!-- =================================================
+             LISTAR SERVICIOS
+             JavaScript consulta la API y genera la tabla
+             dinámicamente con los servicios registrados.
+             ================================================= -->
 
         <section class="seccion">
 
@@ -600,7 +603,10 @@
         </section>
 
 
-        <!-- BUSCAR POR ID -->
+        <!-- =================================================
+             BUSCAR SERVICIO POR ID
+             Permite consultar un servicio específico.
+             ================================================= -->
 
         <section class="seccion">
 
@@ -636,7 +642,10 @@
         </section>
 
 
-        <!-- BUSCAR POR TIPO -->
+        <!-- =================================================
+             BUSCAR SERVICIOS POR TIPO
+             Permite filtrar los servicios según su categoría.
+             ================================================= -->
 
         <section class="seccion">
 
@@ -702,7 +711,11 @@
         </section>
 
 
-        <!-- ACTUALIZAR SERVICIO -->
+        <!-- =================================================
+             ACTUALIZAR SERVICIO
+             Permite modificar los datos de un servicio
+             existente mediante su ID.
+             ================================================= -->
 
         <section class="seccion">
 
@@ -715,7 +728,6 @@
                 id="formActualizar"
                 class="formulario"
             >
-
 
                 <div class="campo">
 
@@ -879,7 +891,10 @@
         </section>
 
 
-        <!-- ELIMINAR SERVICIO -->
+        <!-- =================================================
+             ELIMINAR SERVICIO
+             Permite eliminar un servicio mediante su ID.
+             ================================================= -->
 
         <section class="seccion">
 
@@ -919,7 +934,7 @@
     </div>
 
 
-    <!-- PIE -->
+    <!-- Pie de página -->
 
     <div class="pie">
 
@@ -930,16 +945,39 @@
 </div>
 
 
+<!--
+    JavaScript propio de esta pantalla.
+
+    Se mantiene dentro del HTML porque las funciones de esta
+    interfaz están directamente relacionadas con sus formularios,
+    botones, tablas y campos.
+
+    Este código se encarga de comunicarse con la API REST del
+    backend para realizar las operaciones CRUD:
+
+    - Registrar
+    - Consultar
+    - Buscar
+    - Actualizar
+    - Eliminar
+
+    También modifica dinámicamente el contenido de la página
+    cuando el backend devuelve información.
+
+    Mantenerlo aquí permite que esta interfaz sea independiente
+    de otros módulos que utilizan JavaScript diferente.
+-->
+
 <script>
 
 const URL_API =
     "http://localhost:8082/api/servicios";
 
 
-// ==========================================
+// ============================================================
 // REGISTRAR SERVICIO
-// POST /api/servicios/guardar
-// ==========================================
+// Envía los datos del formulario al backend mediante POST.
+// ============================================================
 
 document
     .getElementById("formServicio")
@@ -951,39 +989,27 @@ document
         const servicio = {
 
             nombre:
-                document.getElementById(
-                    "nombre"
-                ).value,
+                document.getElementById("nombre").value,
 
             tipo:
-                document.getElementById(
-                    "tipo"
-                ).value,
+                document.getElementById("tipo").value,
 
             ubicacion:
-                document.getElementById(
-                    "ubicacion"
-                ).value,
+                document.getElementById("ubicacion").value,
 
             descripcion:
-                document.getElementById(
-                    "descripcion"
-                ).value,
+                document.getElementById("descripcion").value,
 
             calificacion:
                 parseInt(
-                    document.getElementById(
-                        "calificacion"
-                    ).value
+                    document.getElementById("calificacion").value
                 ),
 
             usuario: {
 
                 idUsuario:
                     parseInt(
-                        document.getElementById(
-                            "idUsuario"
-                        ).value
+                        document.getElementById("idUsuario").value
                     )
 
             }
@@ -998,10 +1024,7 @@ document
                 method: "POST",
 
                 headers: {
-
-                    "Content-Type":
-                        "application/json"
-
+                    "Content-Type": "application/json"
                 },
 
                 body:
@@ -1009,7 +1032,6 @@ document
 
             }
         )
-
 
         .then(response => {
 
@@ -1030,7 +1052,6 @@ document
             return response.json();
 
         })
-
 
         .then(data => {
 
@@ -1055,7 +1076,6 @@ document
 
         })
 
-
         .catch(error => {
 
             const mensaje =
@@ -1076,10 +1096,11 @@ document
 });
 
 
-// ==========================================
+// ============================================================
 // LISTAR SERVICIOS
-// GET /api/servicios/listar
-// ==========================================
+// Consulta todos los servicios mediante GET y construye
+// dinámicamente la tabla en el HTML.
+// ============================================================
 
 function listarServicios() {
 
@@ -1092,7 +1113,6 @@ function listarServicios() {
     fetch(
         URL_API + "/listar"
     )
-
 
     .then(response => {
 
@@ -1107,7 +1127,6 @@ function listarServicios() {
         return response.json();
 
     })
-
 
     .then(servicios => {
 
@@ -1130,17 +1149,11 @@ function listarServicios() {
                     <tr>
 
                         <th>ID</th>
-
                         <th>Nombre</th>
-
                         <th>Tipo</th>
-
                         <th>Ubicación</th>
-
                         <th>Descripción</th>
-
                         <th>Calificación</th>
-
                         <th>ID usuario</th>
 
                     </tr>
@@ -1207,7 +1220,6 @@ function listarServicios() {
 
     })
 
-
     .catch(error => {
 
         tabla.innerHTML =
@@ -1224,25 +1236,24 @@ function listarServicios() {
 }
 
 
-// ==========================================
+// ============================================================
 // OCULTAR TABLA
-// ==========================================
+// Oculta visualmente la tabla de servicios.
+// ============================================================
 
 function ocultarTabla() {
 
     document
-        .getElementById(
-            "listaServicios"
-        )
+        .getElementById("listaServicios")
         .style.display = "none";
 
 }
 
 
-// ==========================================
+// ============================================================
 // BUSCAR POR ID
-// GET /api/servicios/{id}
-// ==========================================
+// Consulta un servicio específico mediante su identificador.
+// ============================================================
 
 function buscarPorId() {
 
@@ -1275,7 +1286,6 @@ function buscarPorId() {
         URL_API + "/" + id
     )
 
-
     .then(response => {
 
         if (!response.ok) {
@@ -1295,7 +1305,6 @@ function buscarPorId() {
         return response.json();
 
     })
-
 
     .then(servicio => {
 
@@ -1348,7 +1357,6 @@ function buscarPorId() {
 
     })
 
-
     .catch(error => {
 
         resultado.style.display =
@@ -1365,10 +1373,10 @@ function buscarPorId() {
 }
 
 
-// ==========================================
+// ============================================================
 // BUSCAR POR TIPO
-// GET /api/servicios/tipo/{tipo}
-// ==========================================
+// Consulta los servicios pertenecientes a una categoría.
+// ============================================================
 
 function buscarPorTipo() {
 
@@ -1403,7 +1411,6 @@ function buscarPorTipo() {
         encodeURIComponent(tipo)
     )
 
-
     .then(response => {
 
         if (!response.ok) {
@@ -1417,7 +1424,6 @@ function buscarPorTipo() {
         return response.json();
 
     })
-
 
     .then(servicios => {
 
@@ -1442,13 +1448,9 @@ function buscarPorTipo() {
                 <tr>
 
                     <th>ID</th>
-
                     <th>Nombre</th>
-
                     <th>Tipo</th>
-
                     <th>Ubicación</th>
-
                     <th>Calificación</th>
 
                 </tr>
@@ -1497,7 +1499,6 @@ function buscarPorTipo() {
 
     })
 
-
     .catch(error => {
 
         resultado.style.display =
@@ -1514,10 +1515,10 @@ function buscarPorTipo() {
 }
 
 
-// ==========================================
+// ============================================================
 // ACTUALIZAR SERVICIO
-// PUT /api/servicios/{id}
-// ==========================================
+// Envía mediante PUT los nuevos datos del servicio.
+// ============================================================
 
 document
     .getElementById("formActualizar")
@@ -1601,10 +1602,8 @@ document
                 method: "PUT",
 
                 headers: {
-
                     "Content-Type":
                         "application/json"
-
                 },
 
                 body:
@@ -1612,7 +1611,6 @@ document
 
             }
         )
-
 
         .then(response => {
 
@@ -1634,7 +1632,6 @@ document
 
         })
 
-
         .then(data => {
 
             mensaje.textContent =
@@ -1644,7 +1641,6 @@ document
                 "mensaje exito";
 
         })
-
 
         .catch(error => {
 
@@ -1659,10 +1655,10 @@ document
 });
 
 
-// ==========================================
+// ============================================================
 // ELIMINAR SERVICIO
-// DELETE /api/servicios/{id}
-// ==========================================
+// Envía una petición DELETE después de solicitar confirmación.
+// ============================================================
 
 function eliminarServicio() {
 
@@ -1715,7 +1711,6 @@ function eliminarServicio() {
         }
     )
 
-
     .then(response => {
 
         if (!response.ok) {
@@ -1736,7 +1731,6 @@ function eliminarServicio() {
 
     })
 
-
     .then(data => {
 
         mensaje.textContent =
@@ -1747,7 +1741,6 @@ function eliminarServicio() {
             "mensaje exito";
 
     })
-
 
     .catch(error => {
 
@@ -1762,6 +1755,7 @@ function eliminarServicio() {
 }
 
 </script>
+
 
 </body>
 

@@ -1,20 +1,84 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+        rel="stylesheet"
+    >
 
     <title>Inicio</title>
 
     <!-- Hoja de estilos principal de My Pet -->
     <link rel="stylesheet" href="../mi_pet.css">
+
+
+    <style>
+
+        /* =====================================================
+           BOTONES INFERIORES
+           ===================================================== */
+
+        .botones-inferiores {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+
+        /*
+         * Ambos botones tienen exactamente
+         * el mismo tamaño.
+         */
+
+        .btn-inferior {
+            width: 190px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 0 10px;
+        }
+
+
+        /*
+         * Texto del panel administrativo
+         * ligeramente más pequeño.
+         */
+
+        .texto-panel-admin {
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+
+        /*
+         * Texto de Ayuda.
+         */
+
+        .texto-ayuda {
+            font-size: 16px;
+        }
+
+    </style>
+
 </head>
+
 
 <body class="fondo_pata">
 
@@ -25,12 +89,30 @@
 
     <div class="notificaciones-inicio">
 
-        <a href="../Modulo_3_Agenda_Recordatorio/Notificacion.html"
-           class="btn-notificaciones"
-           aria-label="Notificaciones"
-           title="Notificaciones">
+        <a
+            href="../Modulo_3_Agenda_Recordatorio/Notificacion.html"
+            class="btn-notificaciones"
+            aria-label="Notificaciones"
+            title="Notificaciones"
+        >
 
             &#128276;
+
+            <!-- Indicador de notificaciones de emergencias -->
+            <span
+                id="indicadorNotificaciones"
+                class="indicador-notificaciones"
+                style="display: none;"
+            >
+            </span>
+
+            <!-- Indicador de notificaciones de agenda -->
+            <span
+                id="indicadorAgenda"
+                class="indicador-agenda"
+                style="display: none;"
+            >
+            </span>
 
         </a>
 
@@ -43,8 +125,10 @@
 
     <div class="container my-5 pt-5">
 
-        <div class="row justify-content-center text-center"
-             style="row-gap: 80px;">
+        <div
+            class="row justify-content-center text-center"
+            style="row-gap: 80px;"
+        >
 
 
             <!-- =================================================
@@ -53,11 +137,11 @@
 
             <div class="col-12 col-md-4 d-flex justify-content-center">
 
-                <a href="tu_usuario.html"
-                   class="btn boton-naranja-ini btn-1">
-
+                <a
+                    href="tu_usuario.html"
+                    class="btn boton-naranja-ini btn-1"
+                >
                     Tu usuario
-
                 </a>
 
             </div>
@@ -69,11 +153,11 @@
 
             <div class="col-12 col-md-4 d-flex justify-content-center">
 
-                <a href="../Modulo_2_gestion_mascotas/mis_mascotas.html"
-                   class="btn boton-naranja-ini btn-2">
-
+                <a
+                    href="../Modulo_2_gestion_mascotas/mis_mascotas.html"
+                    class="btn boton-naranja-ini btn-2"
+                >
                     Tus mascotas
-
                 </a>
 
             </div>
@@ -85,11 +169,11 @@
 
             <div class="col-12 col-md-4 d-flex justify-content-center">
 
-                <a href="../Modulo_4_servicio_comunidad/foro.html"
-                   class="btn boton-naranja-ini btn-3">
-
+                <a
+                    href="../Modulo_4_servicio_comunidad/foro.html"
+                    class="btn boton-naranja-ini btn-3"
+                >
                     Foro
-
                 </a>
 
             </div>
@@ -101,11 +185,11 @@
 
             <div class="col-12 col-md-4 d-flex justify-content-center">
 
-                <a href="../Modulo_3_Agenda_Recordatorio/agenda_general.html"
-                   class="btn boton-naranja-ini btn-4">
-
+                <a
+                    href="../Modulo_3_Agenda_Recordatorio/agenda_general.html"
+                    class="btn boton-naranja-ini btn-4"
+                >
                     Agenda
-
                 </a>
 
             </div>
@@ -117,12 +201,12 @@
 
             <div class="col-12 col-md-4 d-flex justify-content-center">
 
-                <a href="https://www.google.com/maps/@6.128376,-75.3295456,15z?entry=ttu&g_ep=EgoyMDI2MDQyMi4wIKXMDSoASAFQAw%3D%3D"
-                   class="btn boton-naranja-ini btn-5"
-                   target="_blank">
-
+                <a
+                    href="/Front%20end/Modulo_5_emergencia/mapa.html"
+                    class="btn boton-naranja-ini btn-5"
+                    target="_blank"
+                >
                     Mapa
-
                 </a>
 
             </div>
@@ -134,11 +218,11 @@
 
             <div class="col-12 col-md-4 d-flex justify-content-center">
 
-                <a href="../Modulo_5_emergencia/emergencia.html"
-                   class="btn boton-naranja-ini btn-6">
-
+                <a
+                    href="../Modulo_5_emergencia/emergencia.html"
+                    class="btn boton-naranja-ini btn-6"
+                >
                     Emergencias
-
                 </a>
 
             </div>
@@ -152,30 +236,243 @@
 
         <div class="text-center mt-5">
 
-
-            <!-- Ayuda -->
-
-            <a href="ayuda.html"
-               class="btn boton-naranja-ini btn-ayuda">
-
-                Ayuda
-
-            </a>
+            <div class="botones-inferiores">
 
 
-            <!-- Cerrar sesión -->
+                <!-- =================================================
+                     PANEL ADMINISTRATIVO
+                     ================================================= -->
 
-            <button type="button"
+                <a
+                    href="admin.html"
+                    id="btnPanelAdministrador"
+                    class="btn boton-naranja-ini btn-inferior"
+                    style="display: none;"
+                >
+
+                    <span class="texto-panel-admin">
+                        Panel administrativo
+                    </span>
+
+                </a>
+
+
+                <!-- =================================================
+                     AYUDA
+                     ================================================= -->
+
+                <a
+                    href="ayuda.html"
+                    class="btn boton-naranja-ini btn-inferior"
+                >
+
+                    <span class="texto-ayuda">
+                        Ayuda
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =================================================
+                 CERRAR SESIÓN
+                 ================================================= -->
+
+            <div class="mt-4">
+
+                <button
+                    type="button"
                     id="btnCerrarSesion"
-                    class="btn btn-cerrar-sesion">
+                    class="btn btn-cerrar-sesion"
+                >
 
-                Cerrar sesión
+                    Cerrar sesión
 
-            </button>
+                </button>
+
+            </div>
 
         </div>
 
     </div>
+
+
+    <!-- =====================================================
+         INDICADOR DE NOTIFICACIONES DE EMERGENCIAS
+         ===================================================== -->
+
+    <script src="/JS/notificacion_indicador.js"></script>
+
+
+    <!-- =====================================================
+         INDICADOR DE AGENDA
+         ===================================================== -->
+
+    <script src="/JS/notificacion_agenda.js"></script>
+
+
+    <!-- =====================================================
+         VERIFICAR ROL DEL USUARIO
+         ===================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const btnPanelAdministrador =
+                    document.getElementById(
+                        "btnPanelAdministrador"
+                    );
+
+
+                if (!btnPanelAdministrador) {
+                    return;
+                }
+
+
+                /*
+                 * Obtener usuario almacenado.
+                 */
+
+                const datosUsuario =
+                    localStorage.getItem(
+                        "usuarioLogueado"
+                    );
+
+
+                console.log(
+                    "Datos guardados del usuario:",
+                    datosUsuario
+                );
+
+
+                /*
+                 * Si no existe usuario,
+                 * no mostrar el botón.
+                 */
+
+                if (!datosUsuario) {
+
+                    console.log(
+                        "No existe usuarioLogueado."
+                    );
+
+                    return;
+                }
+
+
+                let usuarioLogueado;
+
+
+                /*
+                 * Convertir el JSON almacenado
+                 * nuevamente en objeto.
+                 */
+
+                try {
+
+                    usuarioLogueado =
+                        JSON.parse(datosUsuario);
+
+                } catch (error) {
+
+                    console.error(
+                        "Error al leer usuarioLogueado:",
+                        error
+                    );
+
+                    return;
+                }
+
+
+                console.log(
+                    "Usuario:",
+                    usuarioLogueado
+                );
+
+
+                /*
+                 * Obtener el rol.
+                 */
+
+                let rol = "";
+
+
+                if (
+                    typeof usuarioLogueado ===
+                    "string"
+                ) {
+
+                    rol =
+                        usuarioLogueado;
+
+                } else if (
+                    usuarioLogueado
+                ) {
+
+                    rol =
+                        usuarioLogueado.rol ||
+                        usuarioLogueado.role ||
+                        usuarioLogueado.nombreRol ||
+                        usuarioLogueado.authority ||
+                        usuarioLogueado.autoridad ||
+                        "";
+
+                }
+
+
+                /*
+                 * Normalizar el rol.
+                 */
+
+                rol =
+                    String(rol)
+                        .trim()
+                        .toLowerCase();
+
+
+                console.log(
+                    "Rol detectado:",
+                    rol
+                );
+
+
+                /*
+                 * Mostrar el botón
+                 * si es administrador.
+                 */
+
+                if (
+                    rol === "administrador" ||
+                    rol === "admin" ||
+                    rol === "role_administrador" ||
+                    rol === "role administrador" ||
+                    rol.includes("administrador")
+                ) {
+
+                    btnPanelAdministrador.style.display =
+                        "flex";
+
+
+                    console.log(
+                        "Panel administrativo habilitado."
+                    );
+
+                } else {
+
+                    console.log(
+                        "El usuario no es administrador."
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
 
 
     <!-- =====================================================
@@ -186,32 +483,46 @@
 
         document
             .getElementById("btnCerrarSesion")
-            .addEventListener("click", function () {
-
-                const confirmar = confirm(
-                    "¿Está seguro de que desea cerrar sesión?"
-                );
+            .addEventListener(
+                "click",
+                function () {
 
 
-                if (!confirmar) {
+                    const confirmar =
+                        confirm(
+                            "¿Está seguro de que desea cerrar sesión?"
+                        );
 
-                    return;
+
+                    if (!confirmar) {
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Eliminar sesión.
+                     */
+
+                    localStorage.removeItem(
+                        "usuarioLogueado"
+                    );
+
+
+                    /*
+                     * Regresar al login.
+                     */
+
+                    window.location.href =
+                        "iniciar_sesion.html";
+
                 }
-
-
-                // Eliminar la sesión almacenada
-
-                localStorage.removeItem("usuarioLogueado");
-
-
-                // Regresar al inicio de sesión
-
-                window.location.href = "iniciar_sesion.html";
-
-            });
+            );
 
     </script>
 
 
 </body>
+
 </html>

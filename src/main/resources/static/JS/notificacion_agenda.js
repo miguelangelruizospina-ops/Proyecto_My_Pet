@@ -1,0 +1,163 @@
+/* =========================================================
+   INDICADOR DE NOTIFICACIONES DE AGENDA
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", async function () {
+
+    const indicadorAgenda =
+        document.getElementById("indicadorAgenda");
+
+    if (!indicadorAgenda) {
+        return;
+    }
+
+
+    /* =====================================================
+       OBTENER USUARIO
+       ===================================================== */
+
+    const usuarioGuardado =
+        localStorage.getItem("usuarioLogueado");
+
+    if (!usuarioGuardado) {
+        indicadorAgenda.style.display = "none";
+        return;
+    }
+
+
+    let usuario;
+
+    try {
+
+        usuario =
+            JSON.parse(usuarioGuardado);
+
+    } catch (error) {
+
+        console.error(
+            "No se pudo leer usuarioLogueado:",
+            error
+        );
+
+        indicadorAgenda.style.display = "none";
+        return;
+    }
+
+
+    const idUsuario =
+        usuario.idUsuario ||
+        usuario.id_usuario ||
+        localStorage.getItem("idUsuario");
+
+
+    if (!idUsuario) {
+
+        indicadorAgenda.style.display = "none";
+        return;
+    }
+
+
+    /* =====================================================
+       API
+       ===================================================== */
+
+    const apiBase =
+        `${window.location.origin}/api`;
+
+
+    try {
+
+        /* =================================================
+           OBTENER NOTIFICACIONES DEL USUARIO
+           ================================================= */
+
+        const respuesta =
+            await fetch(
+                `${apiBase}/notificaciones/usuario/${encodeURIComponent(idUsuario)}`,
+                {
+                    credentials: "same-origin"
+                }
+            );
+
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                "No se pudieron obtener las notificaciones."
+            );
+        }
+
+
+        const notificaciones =
+            await respuesta.json();
+
+
+        if (!Array.isArray(notificaciones)) {
+
+            indicadorAgenda.style.display = "none";
+            return;
+        }
+
+
+        /* =================================================
+           BUSCAR NOTIFICACIONES DE AGENDA NO LEÍDAS
+           ================================================= */
+
+        const notificacionesAgenda =
+            notificaciones.filter(
+                function (notificacion) {
+
+                    const tipo =
+                        notificacion.tipo
+                            ? notificacion.tipo
+                                .toString()
+                                .trim()
+                                .toUpperCase()
+                            : "";
+
+                    const estado =
+                        notificacion.estado
+                            ? notificacion.estado
+                                .toString()
+                                .trim()
+                                .toUpperCase()
+                            : "NO_LEIDA";
+
+                    return (
+                        tipo === "AGENDA" &&
+                        (
+                            estado === "NO_LEIDA" ||
+                            estado === "NO-LEIDA"
+                        )
+                    );
+
+                }
+            );
+
+
+        /* =================================================
+           MOSTRAR U OCULTAR INDICADOR
+           ================================================= */
+
+        if (notificacionesAgenda.length > 0) {
+
+            indicadorAgenda.style.display = "block";
+
+        } else {
+
+            indicadorAgenda.style.display = "none";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Error al actualizar indicador de agenda:",
+            error
+        );
+
+        indicadorAgenda.style.display = "none";
+    }
+
+});

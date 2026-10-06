@@ -3,40 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="/JS/api-client.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../mi_pet.css">
+
     <title>Ayuda | My Pet</title>
 </head>
+
 <body class="fondo_pata min-vh-100">
+
     <main class="container py-4" style="max-width: 780px">
+
         <a class="flecha" href="home.html" aria-label="Volver al inicio">←</a>
+
         <header class="text-center my-4">
             <h1 class="titulo-naranja">Ayuda con My Pet</h1>
-            <p class="text-white">Solución de problemas de acceso, registro y carga de datos.</p>
+            <p class="text-white">
+                Solución de problemas, manual de usuario y reportes.
+            </p>
         </header>
 
+        <!-- ESTADO DE CONEXIÓN -->
         <section class="bg-white p-4 rounded mb-4" aria-labelledby="tituloConexion">
+
             <h2 class="h5" id="tituloConexion">Estado de conexión</h2>
-            <p id="estadoConexion" role="status" aria-live="polite">Aún no se ha comprobado la conexión.</p>
-            <button type="button" id="btnProbarConexion" class="btn btn-primary">Comprobar conexión</button>
+
+            <p id="estadoConexion" role="status" aria-live="polite">
+                Aún no se ha comprobado la conexión.
+            </p>
+
+            <button type="button"
+                    id="btnProbarConexion"
+                    class="btn btn-primary">
+                Comprobar conexión
+            </button>
+
         </section>
 
+
+        <!-- PROBLEMAS HABITUALES -->
         <section class="bg-white p-4 rounded mb-4" aria-labelledby="tituloProblemas">
+
             <h2 class="h5" id="tituloProblemas">Problemas habituales</h2>
-            <p><strong>No puedo iniciar sesión:</strong> verifica el correo y la contraseña y usa la misma dirección `localhost` para abrir la aplicación.</p>
-            <p><strong>No se guarda un registro:</strong> revisa el mensaje que aparece en el formulario; el correo no puede estar registrado previamente.</p>
-            <p class="mb-0"><strong>No cargan mascotas u otros datos:</strong> comprueba el estado de conexión y que el servidor MySQL esté iniciado.</p>
+
+            <p>
+                <strong>No puedo iniciar sesión:</strong>
+                verifica el correo y la contraseña y usa la misma dirección
+                <code>localhost</code> para abrir la aplicación.
+            </p>
+
+            <p>
+                <strong>No se guarda un registro:</strong>
+                revisa el mensaje que aparece en el formulario; el correo no
+                puede estar registrado previamente.
+            </p>
+
+            <p class="mb-0">
+                <strong>No cargan mascotas u otros datos:</strong>
+                comprueba el estado de conexión y que el servidor MySQL esté iniciado.
+            </p>
+
         </section>
 
-        <section class="bg-white p-4 rounded" aria-labelledby="tituloReporte">
-            <h2 class="h5" id="tituloReporte">Preparar un reporte del problema</h2>
-            <label class="form-label" for="descripcionProblema">¿Qué estabas intentando hacer y qué ocurrió?</label>
-            <textarea id="descripcionProblema" class="form-control mb-3" rows="4" maxlength="1000"></textarea>
-            <button type="button" id="btnCopiarReporte" class="btn btn-outline-primary">Copiar reporte técnico</button>
-            <p id="estadoReporte" class="mt-3 mb-0" role="status" aria-live="polite"></p>
+
+        <!-- MANUAL DE USUARIO -->
+        <section class="bg-white p-4 rounded mb-4" aria-labelledby="tituloManual">
+
+            <h2 class="h5" id="tituloManual">Manual de usuario</h2>
+
+            <p>
+                Consulta el manual para conocer cómo funciona My Pet
+                y cómo utilizar sus principales funciones.
+            </p>
+
+            <a href="manual_usuario.html"
+               class="btn btn-outline-warning">
+                Ver manual de usuario
+            </a>
+
         </section>
+
+
+        <!-- REPORTE DEL PROBLEMA -->
+        <section class="bg-white p-4 rounded mb-4" aria-labelledby="tituloReporte">
+
+            <h2 class="h5" id="tituloReporte">Reportar un problema</h2>
+
+            <p>
+                Describe el problema que encontraste en My Pet para que pueda
+                ser revisado y solucionado por el administrador.
+            </p>
+
+            <label class="form-label" for="descripcionProblema">
+                ¿Qué estabas intentando hacer y qué ocurrió?
+            </label>
+
+            <textarea id="descripcionProblema"
+                      class="form-control mb-3"
+                      rows="4"
+                      maxlength="1000"
+                      placeholder="Describe el problema..."></textarea>
+
+            <button type="button"
+                    id="btnEnviarReporte"
+                    class="btn btn-primary">
+                Enviar reporte
+            </button>
+
+            <button type="button"
+                    id="btnCopiarReporte"
+                    class="btn btn-outline-primary ms-2">
+                Copiar reporte técnico
+            </button>
+
+            <p id="estadoReporte"
+               class="mt-3 mb-0"
+               role="status"
+               aria-live="polite"></p>
+
+        </section>
+
+
+        <!-- REPORTES REALIZADOS POR EL USUARIO -->
+        <section class="bg-white p-4 rounded mb-4"
+                 aria-labelledby="tituloMisReportes">
+
+            <h2 class="h5" id="tituloMisReportes">
+                Mis reportes
+            </h2>
+
+            <p class="text-muted">
+                Aquí puedes consultar los problemas que has reportado,
+                su estado y la respuesta del administrador.
+            </p>
+
+            <div id="listaMisReportes">
+                <p class="text-muted mb-0">
+                    Cargando reportes...
+                </p>
+            </div>
+
+        </section>
+
     </main>
+
     <script src="/JS/ayuda.js"></script>
+
 </body>
 </html>

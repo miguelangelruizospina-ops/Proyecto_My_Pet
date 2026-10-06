@@ -1,17 +1,16 @@
-// Paquete principal de la aplicación.
 package com.example.My_Pet;
 
-// Librerías necesarias para iniciar la aplicación.
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-// Clase principal que inicia la aplicación MyPet.
+// Clase principal de la aplicación My Pet.
 @SpringBootApplication
+@EnableScheduling
 public class MyPetApplication {
 
-    // Inicia la aplicación Spring Boot.
+    // Inicia la aplicación.
     public static void main(String[] args) {
         SpringApplication.run(MyPetApplication.class, args);
     }
-
 }

@@ -2,34 +2,76 @@
    MY PET - MASCOTA.JS
 
    Maneja:
+
    - Mis mascotas
    - Agregar mascota
    - Perfil de mascota
    - Edición del perfil
    - Foto de mascota
+   - Eliminación de mascota
+
    ============================================================ */
 
 const API_BASE = `${window.location.origin}/api`;
 
 let mascotaActual = null;
+
 let perfilMascotaActual = null;
+
 let idMascotaActual = null;
+
 let fotoMascotaNueva = null;
 
+
+/* ============================================================
+   LEER ARCHIVO COMO DATA URL
+   ============================================================ */
+
 function leerArchivoComoDataUrl(archivo) {
+
     return new Promise(function (resolve, reject) {
+
         const lector = new FileReader();
-        lector.addEventListener("load", () => resolve(lector.result), { once: true });
-        lector.addEventListener("error", () => reject(new Error("No se pudo leer la imagen.")), { once: true });
+
+        lector.addEventListener(
+            "load",
+            () => resolve(lector.result),
+            { once: true }
+        );
+
+        lector.addEventListener(
+            "error",
+            () => reject(
+                new Error("No se pudo leer la imagen.")
+            ),
+            { once: true }
+        );
+
         lector.readAsDataURL(archivo);
     });
 }
 
+
+/* ============================================================
+   OBTENER RUTA DE FOTO
+   ============================================================ */
+
 function obtenerRutaFoto(foto) {
-    if (!foto) return "/Front%20end/fotos/perro.jpg";
-    if (foto.startsWith("data:") || foto.startsWith("/") || /^https?:\/\//.test(foto)) {
+
+    if (!foto) {
+
+        return "/Front%20end/fotos/perro.jpg";
+    }
+
+    if (
+        foto.startsWith("data:") ||
+        foto.startsWith("/") ||
+        /^https?:\/\//.test(foto)
+    ) {
+
         return foto;
     }
+
     return `../fotos/${encodeURIComponent(foto)}`;
 }
 
@@ -38,22 +80,31 @@ function obtenerRutaFoto(foto) {
    INICIO
    ============================================================ */
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    const contenedorMascotas =
-        document.getElementById("contenedorMascotas");
+        const contenedorMascotas =
+            document.getElementById(
+                "contenedorMascotas"
+            );
 
-    const informacionMascota =
-        document.getElementById("informacionMascota");
+        const informacionMascota =
+            document.getElementById(
+                "informacionMascota"
+            );
 
-    if (contenedorMascotas) {
-        iniciarMisMascotas();
+        if (contenedorMascotas) {
+
+            iniciarMisMascotas();
+        }
+
+        if (informacionMascota) {
+
+            iniciarPerfilMascota();
+        }
     }
-
-    if (informacionMascota) {
-        iniciarPerfilMascota();
-    }
-});
+);
 
 
 /* ============================================================
@@ -63,15 +114,20 @@ document.addEventListener("DOMContentLoaded", function () {
 function obtenerUsuarioLogueado() {
 
     const usuarioGuardado =
-        localStorage.getItem("usuarioLogueado");
+        localStorage.getItem(
+            "usuarioLogueado"
+        );
 
     if (!usuarioGuardado) {
+
         return null;
     }
 
     try {
 
-        return JSON.parse(usuarioGuardado);
+        return JSON.parse(
+            usuarioGuardado
+        );
 
     } catch (error) {
 
@@ -91,6 +147,7 @@ function obtenerIdUsuario() {
         obtenerUsuarioLogueado();
 
     if (!usuario) {
+
         return null;
     }
 
@@ -112,7 +169,9 @@ function iniciarMisMascotas() {
         obtenerIdUsuario();
 
     if (!idUsuario) {
+
         mostrarSinSesion();
+
         return;
     }
 
@@ -134,9 +193,12 @@ async function cargarMascotas() {
         obtenerIdUsuario();
 
     const contenedor =
-        document.getElementById("contenedorMascotas");
+        document.getElementById(
+            "contenedorMascotas"
+        );
 
     if (!idUsuario || !contenedor) {
+
         return;
     }
 
@@ -166,8 +228,56 @@ async function cargarMascotas() {
             error
         );
 
-        contenedor.textContent =
+        /* ====================================================
+           NO BORRAR EL BOTÓN AGREGAR MASCOTA
+           ==================================================== */
+
+        const columnaAgregar =
+            document.getElementById(
+                "columnaAgregarMascota"
+            );
+
+        /* ====================================================
+           ELIMINAR MENSAJES ANTERIORES
+           ==================================================== */
+
+        contenedor
+            .querySelectorAll(
+                "[data-mensaje-mascotas]"
+            )
+            .forEach(
+                mensaje => mensaje.remove()
+            );
+
+        /* ====================================================
+           MOSTRAR MENSAJE SIN ELIMINAR EL BOTÓN
+           ==================================================== */
+
+        const mensaje =
+            document.createElement("p");
+
+        mensaje.className =
+            "col-12 text-center text-white";
+
+        mensaje.dataset.mensajeMascotas =
+            "true";
+
+        mensaje.textContent =
             "No fue posible cargar las mascotas.";
+
+        if (columnaAgregar) {
+
+            contenedor.insertBefore(
+                mensaje,
+                columnaAgregar
+            );
+
+        } else {
+
+            contenedor.appendChild(
+                mensaje
+            );
+        }
     }
 }
 
@@ -184,78 +294,323 @@ function mostrarMascotas(mascotas) {
         );
 
     if (!contenedor) {
+
         return;
     }
 
     const columnaAgregar =
-        document.getElementById("columnaAgregarMascota");
+        document.getElementById(
+            "columnaAgregarMascota"
+        );
 
     contenedor
-        .querySelectorAll("[data-tarjeta-mascota]")
-        .forEach(tarjeta => tarjeta.remove());
+        .querySelectorAll(
+            "[data-tarjeta-mascota]"
+        )
+        .forEach(
+            tarjeta => tarjeta.remove()
+        );
 
     contenedor
-        .querySelectorAll("[data-mensaje-mascotas]")
-        .forEach(mensaje => mensaje.remove());
+        .querySelectorAll(
+            "[data-mensaje-mascotas]"
+        )
+        .forEach(
+            mensaje => mensaje.remove()
+        );
 
     if (!mascotas.length) {
-        const mensaje = document.createElement("p");
-        mensaje.className = "col-12 text-center text-white";
-        mensaje.dataset.mensajeMascotas = "true";
-        mensaje.textContent = "Aún no tienes mascotas registradas.";
-        contenedor.insertBefore(mensaje, columnaAgregar);
+
+        const mensaje =
+            document.createElement("p");
+
+        mensaje.className =
+            "col-12 text-center text-white";
+
+        mensaje.dataset.mensajeMascotas =
+            "true";
+
+        mensaje.textContent =
+            "Aún no tienes mascotas registradas.";
+
+        if (columnaAgregar) {
+
+            contenedor.insertBefore(
+                mensaje,
+                columnaAgregar
+            );
+
+        } else {
+
+            contenedor.appendChild(
+                mensaje
+            );
+        }
+
         return;
     }
 
-    mascotas.forEach(function (mascota) {
-        const columna = document.createElement("div");
-        columna.className = "col-12 col-md-6 col-lg-4 d-flex flex-column align-items-center";
-        columna.dataset.tarjetaMascota = "true";
+    mascotas.forEach(
+        function (mascota) {
 
-        const enlace = document.createElement("a");
-        enlace.className = "marco-foto-per-masco";
-        enlace.href = `perfil_mascota.html?id=${encodeURIComponent(mascota.idMascota)}`;
-        enlace.setAttribute("aria-label", `Ver perfil de ${mascota.nombre || "mascota"}`);
+            const columna =
+                document.createElement("div");
 
-        const imagen = document.createElement("img");
-        const rutaFoto = mascota.foto || "/Front%20end/fotos/perro.jpg";
-        imagen.src = rutaFoto.startsWith("data:") ||
-            rutaFoto.startsWith("/") ||
-            rutaFoto.startsWith("http://") ||
-            rutaFoto.startsWith("https://")
-            ? rutaFoto
-            : `../fotos/${encodeURIComponent(rutaFoto)}`;
-        imagen.alt = mascota.nombre || "Foto de mascota";
-        imagen.addEventListener("error", function () {
-            imagen.src = "/Front%20end/fotos/perro.jpg";
-        }, { once: true });
+            columna.className =
+                "col-12 col-md-6 col-lg-4 d-flex flex-column align-items-center";
 
-        const etiqueta = document.createElement("span");
-        etiqueta.className = "overlay-ver-perfil";
-        etiqueta.textContent = "Ver perfil";
+            columna.dataset.tarjetaMascota =
+                "true";
 
-        enlace.append(imagen, etiqueta);
 
-        const nombre = document.createElement("h2");
-        nombre.className = "nom-masco mt-3";
-        nombre.textContent = mascota.nombre || "Mascota";
+            /* ====================================================
+               ENLACE AL PERFIL
+               ==================================================== */
 
-        const especie = document.createElement("p");
-        especie.className = "text-white mb-1";
-        especie.textContent = `Especie: ${mascota.especie || "No registrada"}`;
+            const enlace =
+                document.createElement("a");
 
-        const raza = document.createElement("p");
-        raza.className = "text-white mb-2";
-        raza.textContent = `Raza: ${mascota.raza || "No registrada"}`;
+            enlace.className =
+                "marco-foto-per-masco";
 
-        const botonVerPerfil = document.createElement("a");
-        botonVerPerfil.className = "btn-perfil-mascota mt-2";
-        botonVerPerfil.href = enlace.href;
-        botonVerPerfil.textContent = "Ver perfil";
+            enlace.href =
+                `perfil_mascota.html?id=${encodeURIComponent(mascota.idMascota)}`;
 
-        columna.append(enlace, nombre, especie, raza, botonVerPerfil);
-        contenedor.insertBefore(columna, columnaAgregar);
-    });
+            enlace.setAttribute(
+                "aria-label",
+                `Ver perfil de ${mascota.nombre || "mascota"}`
+            );
+
+
+            /* ====================================================
+               FOTO
+               ==================================================== */
+
+            const imagen =
+                document.createElement("img");
+
+            const rutaFoto =
+                mascota.foto ||
+                "/Front%20end/fotos/perro.jpg";
+
+            imagen.src =
+                rutaFoto.startsWith("data:") ||
+                rutaFoto.startsWith("/") ||
+                rutaFoto.startsWith("http://") ||
+                rutaFoto.startsWith("https://")
+                    ? rutaFoto
+                    : `../fotos/${encodeURIComponent(rutaFoto)}`;
+
+            imagen.alt =
+                mascota.nombre ||
+                "Foto de mascota";
+
+            imagen.addEventListener(
+                "error",
+                function () {
+
+                    imagen.src =
+                        "/Front%20end/fotos/perro.jpg";
+                },
+                { once: true }
+            );
+
+
+            /* ====================================================
+               TEXTO SOBRE LA FOTO
+               ==================================================== */
+
+            const etiqueta =
+                document.createElement("span");
+
+            etiqueta.className =
+                "overlay-ver-perfil";
+
+            etiqueta.textContent =
+                "Ver perfil";
+
+            enlace.append(
+                imagen,
+                etiqueta
+            );
+
+
+            /* ====================================================
+               NOMBRE
+               ==================================================== */
+
+            const nombre =
+                document.createElement("h2");
+
+            nombre.className =
+                "nom-masco mt-3";
+
+            nombre.textContent =
+                mascota.nombre ||
+                "Mascota";
+
+
+            /* ====================================================
+               ESPECIE
+               ==================================================== */
+
+            const especie =
+                document.createElement("p");
+
+            especie.className =
+                "text-white mb-1";
+
+            especie.textContent =
+                `Especie: ${
+                    mascota.especie ||
+                    "No registrada"
+                }`;
+
+
+            /* ====================================================
+               RAZA
+               ==================================================== */
+
+            const raza =
+                document.createElement("p");
+
+            raza.className =
+                "text-white mb-2";
+
+            raza.textContent =
+                `Raza: ${
+                    mascota.raza ||
+                    "No registrada"
+                }`;
+
+
+            /* ====================================================
+               BOTÓN VER PERFIL
+               ==================================================== */
+
+            const botonVerPerfil =
+                document.createElement("a");
+
+            botonVerPerfil.className =
+                "btn-perfil-mascota mt-2";
+
+            botonVerPerfil.href =
+                enlace.href;
+
+            botonVerPerfil.textContent =
+                "Ver perfil";
+
+
+            /* ====================================================
+               BOTÓN ELIMINAR MASCOTA
+               ==================================================== */
+
+            const botonEliminar =
+                document.createElement("button");
+
+            botonEliminar.type =
+                "button";
+
+            botonEliminar.className =
+                "btn btn-danger mt-2";
+
+            botonEliminar.textContent =
+                "Eliminar mascota";
+
+            botonEliminar.addEventListener(
+                "click",
+                async function (evento) {
+
+                    evento.preventDefault();
+
+                    evento.stopPropagation();
+
+                    const confirmar =
+                        confirm(
+                            `¿Estás seguro de que deseas eliminar a ${mascota.nombre}?`
+                        );
+
+                    if (!confirmar) {
+
+                        return;
+                    }
+
+                    try {
+
+                        const respuesta =
+                            await fetch(
+                                `${API_BASE}/mascotas/eliminar/${mascota.idMascota}`,
+                                {
+                                    method: "DELETE"
+                                }
+                            );
+
+                        if (!respuesta.ok) {
+
+                            const mensaje =
+                                await respuesta.text();
+
+                            throw new Error(
+                                mensaje ||
+                                "No fue posible eliminar la mascota."
+                            );
+                        }
+
+                        alert(
+                            "Mascota eliminada correctamente."
+                        );
+
+
+                        /* ========================================
+                           RECARGAR LA LISTA
+                           ======================================== */
+
+                        await cargarMascotas();
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error al eliminar la mascota:",
+                            error
+                        );
+
+                        alert(
+                            error.message ||
+                            "No fue posible eliminar la mascota."
+                        );
+                    }
+                }
+            );
+
+
+            /* ====================================================
+               AGREGAR ELEMENTOS A LA TARJETA
+               ==================================================== */
+
+            columna.append(
+                enlace,
+                nombre,
+                especie,
+                raza,
+                botonVerPerfil,
+                botonEliminar
+            );
+
+            if (columnaAgregar) {
+
+                contenedor.insertBefore(
+                    columna,
+                    columnaAgregar
+                );
+
+            } else {
+
+                contenedor.appendChild(
+                    columna
+                );
+            }
+        }
+    );
 }
 
 
@@ -276,6 +631,11 @@ function configurarBotonAgregarMascota() {
         );
 
     if (!boton || !ventana) {
+
+        console.error(
+            "No se encontró el botón o la ventana para agregar mascota."
+        );
+
         return;
     }
 
@@ -317,6 +677,7 @@ function configurarFormularioMascota() {
         );
 
     if (!formulario) {
+
         return;
     }
 
@@ -330,26 +691,69 @@ function configurarFormularioMascota() {
         }
     );
 
-    const inputFoto = document.getElementById("fotoMascota");
-    const previewFoto = document.getElementById("previewFotoMascota");
-    inputFoto?.addEventListener("change", async function () {
-        const archivo = inputFoto.files[0];
-        if (!archivo) {
-            previewFoto?.classList.add("d-none");
-            return;
+
+    const inputFoto =
+        document.getElementById(
+            "fotoMascota"
+        );
+
+    const previewFoto =
+        document.getElementById(
+            "previewFotoMascota"
+        );
+
+    inputFoto?.addEventListener(
+        "change",
+        async function () {
+
+            const archivo =
+                inputFoto.files[0];
+
+            if (!archivo) {
+
+                previewFoto?.classList.add(
+                    "d-none"
+                );
+
+                return;
+            }
+
+            if (
+                ![
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp",
+                    "image/gif"
+                ].includes(archivo.type) ||
+                archivo.size > 5 * 1024 * 1024
+            ) {
+
+                alert(
+                    "Selecciona una imagen JPG, PNG, WebP o GIF de máximo 5 MB."
+                );
+
+                inputFoto.value = "";
+
+                previewFoto?.classList.add(
+                    "d-none"
+                );
+
+                return;
+            }
+
+            if (previewFoto) {
+
+                previewFoto.src =
+                    await leerArchivoComoDataUrl(
+                        archivo
+                    );
+
+                previewFoto.classList.remove(
+                    "d-none"
+                );
+            }
         }
-        if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(archivo.type) ||
-            archivo.size > 5 * 1024 * 1024) {
-            alert("Selecciona una imagen JPG, PNG, WebP o GIF de máximo 5 MB.");
-            inputFoto.value = "";
-            previewFoto?.classList.add("d-none");
-            return;
-        }
-        if (previewFoto) {
-            previewFoto.src = await leerArchivoComoDataUrl(archivo);
-            previewFoto.classList.remove("d-none");
-        }
-    });
+    );
 }
 
 
@@ -370,7 +774,6 @@ async function guardarMascota() {
 
         return;
     }
-
 
     const nombre =
         obtenerValor(
@@ -396,18 +799,37 @@ async function guardarMascota() {
             "fechaNacimientoMascota"
         );
 
-    const archivoFoto = document.getElementById("fotoMascota")?.files?.[0];
+    const archivoFoto =
+        document.getElementById(
+            "fotoMascota"
+        )?.files?.[0];
+
     let foto = "";
 
     if (archivoFoto) {
-        if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(archivoFoto.type) ||
-            archivoFoto.size > 5 * 1024 * 1024) {
-            alert("Selecciona una imagen JPG, PNG, WebP o GIF de máximo 5 MB.");
+
+        if (
+            ![
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+                "image/gif"
+            ].includes(archivoFoto.type) ||
+            archivoFoto.size > 5 * 1024 * 1024
+        ) {
+
+            alert(
+                "Selecciona una imagen JPG, PNG, WebP o GIF de máximo 5 MB."
+            );
+
             return;
         }
-        foto = await leerArchivoComoDataUrl(archivoFoto);
-    }
 
+        foto =
+            await leerArchivoComoDataUrl(
+                archivoFoto
+            );
+    }
 
     const mascota = {
 
@@ -417,15 +839,17 @@ async function guardarMascota() {
 
         raza: raza,
 
-        fechaNacimiento: fechaNacimiento,
+        fechaNacimiento:
+            fechaNacimiento,
 
         foto: foto,
 
         usuario: {
-            idUsuario: parseInt(idUsuario)
+
+            idUsuario:
+                parseInt(idUsuario)
         }
     };
-
 
     try {
 
@@ -445,7 +869,6 @@ async function guardarMascota() {
                 }
             );
 
-
         if (!respuesta.ok) {
 
             const mensaje =
@@ -457,15 +880,12 @@ async function guardarMascota() {
             );
         }
 
-
         const mascotaCreada =
             await respuesta.json();
-
 
         alert(
             "Mascota agregada correctamente."
         );
-
 
         const formulario =
             document.getElementById(
@@ -473,22 +893,25 @@ async function guardarMascota() {
             );
 
         if (formulario) {
+
             formulario.reset();
         }
 
-        document.getElementById("previewFotoMascota")?.classList.add("d-none");
-
+        document
+            .getElementById(
+                "previewFotoMascota"
+            )
+            ?.classList.add(
+                "d-none"
+            );
 
         cerrarModalAgregarMascota();
 
-
         await cargarMascotas();
-
 
         window.location.href =
             "perfil_mascota.html?id=" +
             mascotaCreada.idMascota;
-
 
     } catch (error) {
 
@@ -517,9 +940,9 @@ function cerrarModalAgregarMascota() {
         );
 
     if (!ventana) {
+
         return;
     }
-
 
     if (
         typeof bootstrap !== "undefined" &&
@@ -532,6 +955,7 @@ function cerrarModalAgregarMascota() {
             );
 
         if (modal) {
+
             modal.hide();
         }
 
@@ -557,7 +981,6 @@ async function iniciarPerfilMascota() {
     idMascotaActual =
         parametros.get("id");
 
-
     if (!idMascotaActual) {
 
         alert(
@@ -567,25 +990,50 @@ async function iniciarPerfilMascota() {
         return;
     }
 
-    const parametroMascota = `?idMascota=${encodeURIComponent(idMascotaActual)}`;
-    const enlaceDocumentos = document.getElementById("enlaceDocumentos");
-    const enlaceHistorial = document.getElementById("enlaceHistorial");
-    const enlaceEmergencia = document.getElementById("enlaceEmergencia");
-    const idUsuario = obtenerIdUsuario();
+    const parametroMascota =
+        `?idMascota=${encodeURIComponent(
+            idMascotaActual
+        )}`;
+
+    const enlaceDocumentos =
+        document.getElementById(
+            "enlaceDocumentos"
+        );
+
+    const enlaceHistorial =
+        document.getElementById(
+            "enlaceHistorial"
+        );
+
+    const enlaceEmergencia =
+        document.getElementById(
+            "enlaceEmergencia"
+        );
 
     if (enlaceDocumentos) {
-        enlaceDocumentos.href += parametroMascota;
+
+        enlaceDocumentos.href +=
+            parametroMascota;
     }
 
     if (enlaceHistorial) {
-        enlaceHistorial.href += parametroMascota;
+
+        enlaceHistorial.href +=
+            parametroMascota;
     }
 
     if (enlaceEmergencia) {
-        const parametrosEmergencia = new URLSearchParams({ idMascota: idMascotaActual });
-        enlaceEmergencia.href += `?${parametrosEmergencia.toString()}`;
-    }
 
+        const parametrosEmergencia =
+            new URLSearchParams({
+
+                idMascota:
+                    idMascotaActual
+            });
+
+        enlaceEmergencia.href +=
+            `?${parametrosEmergencia.toString()}`;
+    }
 
     await cargarPerfilMascota();
 
@@ -611,14 +1059,12 @@ async function cargarPerfilMascota() {
         return;
     }
 
-
     try {
 
         const respuesta =
             await fetch(
                 `${API_BASE}/mascotas/usuario/${idUsuario}`
             );
-
 
         if (!respuesta.ok) {
 
@@ -627,10 +1073,8 @@ async function cargarPerfilMascota() {
             );
         }
 
-
         const mascotas =
             await respuesta.json();
-
 
         mascotaActual =
             mascotas.find(
@@ -644,7 +1088,6 @@ async function cargarPerfilMascota() {
                 }
             );
 
-
         if (!mascotaActual) {
 
             throw new Error(
@@ -652,18 +1095,27 @@ async function cargarPerfilMascota() {
             );
         }
 
-        const respuestaPerfil = await fetch(
-            `${API_BASE}/perfiles-mascotas/mascota/${idMascotaActual}`
-        );
+        const respuestaPerfil =
+            await fetch(
+                `${API_BASE}/perfiles-mascotas/mascota/${idMascotaActual}`
+            );
 
         if (respuestaPerfil.status === 404) {
-            perfilMascotaActual = null;
-        } else if (!respuestaPerfil.ok) {
-            throw new Error("No se pudo cargar el perfil de la mascota.");
-        } else {
-            perfilMascotaActual = await respuestaPerfil.json();
-        }
 
+            perfilMascotaActual =
+                null;
+
+        } else if (!respuestaPerfil.ok) {
+
+            throw new Error(
+                "No se pudo cargar el perfil de la mascota."
+            );
+
+        } else {
+
+            perfilMascotaActual =
+                await respuestaPerfil.json();
+        }
 
         mostrarDatosMascota();
 
@@ -674,7 +1126,9 @@ async function cargarPerfilMascota() {
             error
         );
 
-        alert(error.message);
+        alert(
+            error.message
+        );
     }
 }
 
@@ -686,75 +1140,106 @@ async function cargarPerfilMascota() {
 function mostrarDatosMascota() {
 
     if (!mascotaActual) {
+
         return;
     }
 
     establecerTexto(
         "nombreMascotaTitulo",
-        mascotaActual.nombre || "Mascota"
+        mascotaActual.nombre ||
+            "Mascota"
     );
 
     establecerTexto(
         "nombreMascota",
-        "Nombre: " + (mascotaActual.nombre || "No registrado")
+        "Nombre: " +
+            (
+                mascotaActual.nombre ||
+                "No registrado"
+            )
     );
 
     establecerTexto(
         "especieMascota",
-        "Especie: " + (mascotaActual.especie || "No registrada")
+        "Especie: " +
+            (
+                mascotaActual.especie ||
+                "No registrada"
+            )
     );
 
     establecerTexto(
         "razaMascota",
-        "Raza: " + (mascotaActual.raza || "No registrada")
+        "Raza: " +
+            (
+                mascotaActual.raza ||
+                "No registrada"
+            )
     );
 
     establecerTexto(
         "fechaNacimientoMascota",
         "Fecha de nacimiento: " +
-        (
-            mascotaActual.fechaNacimiento
-                ? formatearFecha(mascotaActual.fechaNacimiento)
-                : "No registrada"
-        )
+            (
+                mascotaActual.fechaNacimiento
+                    ? formatearFecha(
+                        mascotaActual.fechaNacimiento
+                    )
+                    : "No registrada"
+            )
     );
 
     establecerTexto(
         "edadMascota",
         "Edad: " +
-        (
-            mascotaActual.fechaNacimiento
-                ? calcularEdad(mascotaActual.fechaNacimiento)
-                : "No registrada"
-        )
+            (
+                mascotaActual.fechaNacimiento
+                    ? calcularEdad(
+                        mascotaActual.fechaNacimiento
+                    )
+                    : "No registrada"
+            )
     );
 
     establecerTexto(
         "caracteristicasInformacion",
         "Características: " +
-        (perfilMascotaActual?.caracteristicas || "No registradas")
+            (
+                perfilMascotaActual?.caracteristicas ||
+                "No registradas"
+            )
     );
 
     establecerTexto(
         "comportamientoInformacion",
         "Comportamiento: " +
-        (perfilMascotaActual?.comportamiento || "No registrado")
+            (
+                perfilMascotaActual?.comportamiento ||
+                "No registrado"
+            )
     );
 
     establecerTexto(
         "gustosInformacion",
         "Gustos: " +
-        (perfilMascotaActual?.gustos || "No registrados")
+            (
+                perfilMascotaActual?.gustos ||
+                "No registrados"
+            )
     );
 
     establecerTexto(
         "cuidadosInformacion",
         "Cuidados especiales: " +
-        (perfilMascotaActual?.cuidadosEspeciales || "No registrados")
+            (
+                perfilMascotaActual?.cuidadosEspeciales ||
+                "No registrados"
+            )
     );
 
     mostrarFotoMascota();
 }
+
 
 /* ============================================================
    MOSTRAR FOTO
@@ -768,11 +1253,14 @@ function mostrarFotoMascota() {
         );
 
     if (!imagen || !mascotaActual) {
+
         return;
     }
 
-
-    imagen.src = obtenerRutaFoto(mascotaActual.foto);
+    imagen.src =
+        obtenerRutaFoto(
+            mascotaActual.foto
+        );
 }
 
 
@@ -795,7 +1283,6 @@ function configurarPerfil() {
         );
     }
 
-
     const cancelar =
         document.getElementById(
             "cancelarEdicion"
@@ -809,7 +1296,6 @@ function configurarPerfil() {
         );
     }
 
-
     const formulario =
         document.getElementById(
             "formEditarMascota"
@@ -822,7 +1308,6 @@ function configurarPerfil() {
             guardarEdicion
         );
     }
-
 
     const inputFoto =
         document.getElementById(
@@ -846,57 +1331,53 @@ function configurarPerfil() {
 function abrirEdicion() {
 
     if (!mascotaActual) {
+
         return;
     }
-
 
     establecerValor(
         "editarNombre",
         mascotaActual.nombre
     );
 
-
     establecerValor(
         "editarEspecie",
         mascotaActual.especie
     );
-
 
     establecerValor(
         "editarRaza",
         mascotaActual.raza
     );
 
-
     establecerValor(
         "editarFechaNacimiento",
         mascotaActual.fechaNacimiento
     );
 
-
     establecerValor(
         "editarCaracteristicas",
-        perfilMascotaActual?.caracteristicas || ""
+        perfilMascotaActual?.caracteristicas ||
+            ""
     );
-
 
     establecerValor(
         "editarComportamiento",
-        perfilMascotaActual?.comportamiento || ""
+        perfilMascotaActual?.comportamiento ||
+            ""
     );
-
 
     establecerValor(
         "editarGustos",
-        perfilMascotaActual?.gustos || ""
+        perfilMascotaActual?.gustos ||
+            ""
     );
-
 
     establecerValor(
         "editarCuidados",
-        perfilMascotaActual?.cuidadosEspeciales || ""
+        perfilMascotaActual?.cuidadosEspeciales ||
+            ""
     );
-
 
     const informacion =
         document.getElementById(
@@ -908,14 +1389,16 @@ function abrirEdicion() {
             "formularioEdicion"
         );
 
-
     if (informacion) {
-        informacion.style.display = "none";
+
+        informacion.style.display =
+            "none";
     }
 
-
     if (formulario) {
-        formulario.style.display = "block";
+
+        formulario.style.display =
+            "block";
     }
 }
 
@@ -936,14 +1419,16 @@ function cancelarEdicion() {
             "formularioEdicion"
         );
 
-
     if (informacion) {
-        informacion.style.display = "block";
+
+        informacion.style.display =
+            "block";
     }
 
-
     if (formulario) {
-        formulario.style.display = "none";
+
+        formulario.style.display =
+            "none";
     }
 }
 
@@ -957,64 +1442,163 @@ async function guardarEdicion(evento) {
     evento.preventDefault();
 
     if (!mascotaActual) {
+
         return;
     }
 
     const datosMascota = {
-        nombre: obtenerValor("editarNombre"),
-        especie: obtenerValor("editarEspecie"),
-        raza: obtenerValor("editarRaza"),
-        fechaNacimiento: obtenerValor("editarFechaNacimiento"),
-        foto: mascotaActual.foto || "",
-        usuario: { idUsuario: mascotaActual.usuario.idUsuario }
+
+        nombre:
+            obtenerValor(
+                "editarNombre"
+            ),
+
+        especie:
+            obtenerValor(
+                "editarEspecie"
+            ),
+
+        raza:
+            obtenerValor(
+                "editarRaza"
+            ),
+
+        fechaNacimiento:
+            obtenerValor(
+                "editarFechaNacimiento"
+            ),
+
+        foto:
+            mascotaActual.foto ||
+            "",
+
+        usuario: {
+
+            idUsuario:
+                mascotaActual.usuario.idUsuario
+        }
     };
 
     const datosPerfil = {
-        caracteristicas: obtenerValor("editarCaracteristicas"),
-        comportamiento: obtenerValor("editarComportamiento"),
-        gustos: obtenerValor("editarGustos"),
-        cuidadosEspeciales: obtenerValor("editarCuidados"),
-        mascota: { idMascota: Number(idMascotaActual) }
+
+        caracteristicas:
+            obtenerValor(
+                "editarCaracteristicas"
+            ),
+
+        comportamiento:
+            obtenerValor(
+                "editarComportamiento"
+            ),
+
+        gustos:
+            obtenerValor(
+                "editarGustos"
+            ),
+
+        cuidadosEspeciales:
+            obtenerValor(
+                "editarCuidados"
+            ),
+
+        mascota: {
+
+            idMascota:
+                Number(
+                    idMascotaActual
+                )
+        }
     };
 
     try {
-        const respuestaMascota = await fetch(
-            `${API_BASE}/mascotas/actualizar/${idMascotaActual}`,
-            {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(datosMascota)
-            }
-        );
+
+        const respuestaMascota =
+            await fetch(
+                `${API_BASE}/mascotas/actualizar/${idMascotaActual}`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            datosMascota
+                        )
+                }
+            );
 
         if (!respuestaMascota.ok) {
-            throw new Error(await respuestaMascota.text() || "No se pudo guardar la mascota.");
-        }
-        mascotaActual = await respuestaMascota.json();
 
-        const perfilExiste = Boolean(perfilMascotaActual?.idPerfilMascota);
-        const respuestaPerfil = await fetch(
-            perfilExiste
-                ? `${API_BASE}/perfiles-mascotas/actualizar/${perfilMascotaActual.idPerfilMascota}`
-                : `${API_BASE}/perfiles-mascotas/guardar`,
-            {
-                method: perfilExiste ? "PUT" : "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(datosPerfil)
-            }
-        );
+            throw new Error(
+                await respuestaMascota.text() ||
+                "No se pudo guardar la mascota."
+            );
+        }
+
+        mascotaActual =
+            await respuestaMascota.json();
+
+        const perfilExiste =
+            Boolean(
+                perfilMascotaActual?.idPerfilMascota
+            );
+
+        const respuestaPerfil =
+            await fetch(
+                perfilExiste
+                    ? `${API_BASE}/perfiles-mascotas/actualizar/${perfilMascotaActual.idPerfilMascota}`
+                    : `${API_BASE}/perfiles-mascotas/guardar`,
+                {
+                    method:
+                        perfilExiste
+                            ? "PUT"
+                            : "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            datosPerfil
+                        )
+                }
+            );
 
         if (!respuestaPerfil.ok) {
-            throw new Error(await respuestaPerfil.text() || "No se pudo guardar el perfil de la mascota.");
+
+            throw new Error(
+                await respuestaPerfil.text() ||
+                "No se pudo guardar el perfil de la mascota."
+            );
         }
-        perfilMascotaActual = await respuestaPerfil.json();
+
+        perfilMascotaActual =
+            await respuestaPerfil.json();
 
         mostrarDatosMascota();
+
         cancelarEdicion();
-        alert("Información de la mascota y su perfil guardada correctamente.");
+
+        alert(
+            "Información de la mascota y su perfil guardada correctamente."
+        );
+
     } catch (error) {
-        console.error("Error guardando los datos de la mascota:", error);
-        alert(error.message || "No se pudo guardar la información.");
+
+        console.error(
+            "Error guardando los datos de la mascota:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "No se pudo guardar la información."
+        );
     }
 }
 
@@ -1024,40 +1608,95 @@ async function guardarEdicion(evento) {
    ============================================================ */
 
 async function cambiarFoto(evento) {
-    const archivo = evento.target.files[0];
-    if (!archivo || !mascotaActual) return;
 
-    if (!archivo.type.startsWith("image/") || archivo.size > 5 * 1024 * 1024) {
-        alert("Selecciona una imagen válida de máximo 5 MB.");
+    const archivo =
+        evento.target.files[0];
+
+    if (!archivo || !mascotaActual) {
+
+        return;
+    }
+
+    if (
+        !archivo.type.startsWith("image/") ||
+        archivo.size > 5 * 1024 * 1024
+    ) {
+
+        alert(
+            "Selecciona una imagen válida de máximo 5 MB."
+        );
+
         evento.target.value = "";
+
         return;
     }
 
     try {
-        fotoMascotaNueva = await leerArchivoComoDataUrl(archivo);
-        const respuesta = await fetch(
-            `${API_BASE}/mascotas/actualizar/${idMascotaActual}`,
-            {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    nombre: mascotaActual.nombre,
-                    especie: mascotaActual.especie,
-                    raza: mascotaActual.raza,
-                    fechaNacimiento: mascotaActual.fechaNacimiento,
-                    foto: fotoMascotaNueva
-                })
-            }
-        );
+
+        fotoMascotaNueva =
+            await leerArchivoComoDataUrl(
+                archivo
+            );
+
+        const respuesta =
+            await fetch(
+                `${API_BASE}/mascotas/actualizar/${idMascotaActual}`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            nombre:
+                                mascotaActual.nombre,
+
+                            especie:
+                                mascotaActual.especie,
+
+                            raza:
+                                mascotaActual.raza,
+
+                            fechaNacimiento:
+                                mascotaActual.fechaNacimiento,
+
+                            foto:
+                                fotoMascotaNueva
+                        })
+                }
+            );
+
         if (!respuesta.ok) {
-            throw new Error(await respuesta.text() || "No se pudo guardar la foto.");
+
+            throw new Error(
+                await respuesta.text() ||
+                "No se pudo guardar la foto."
+            );
         }
-        mascotaActual = await respuesta.json();
+
+        mascotaActual =
+            await respuesta.json();
+
         mostrarFotoMascota();
-        fotoMascotaNueva = null;
+
+        fotoMascotaNueva =
+            null;
+
     } catch (error) {
-        console.error("Error guardando foto de mascota:", error);
-        alert(error.message || "No se pudo guardar la foto.");
+
+        console.error(
+            "Error guardando foto de mascota:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "No se pudo guardar la foto."
+        );
     }
 }
 
@@ -1073,11 +1712,10 @@ function mostrarSinSesion() {
             "contenedorMascotas"
         );
 
-
     if (!contenedor) {
+
         return;
     }
-
 
     contenedor.textContent =
         "Debes iniciar sesión para ver tus mascotas.";
@@ -1098,7 +1736,6 @@ function obtenerValor(
             id
         );
 
-
     if (
         !elemento &&
         idAlternativo
@@ -1110,11 +1747,10 @@ function obtenerValor(
             );
     }
 
-
     if (!elemento) {
+
         return "";
     }
-
 
     return (
         elemento.value ||
@@ -1133,11 +1769,10 @@ function establecerValor(
             id
         );
 
-
     if (!elemento) {
+
         return;
     }
-
 
     elemento.value =
         valor || "";
@@ -1154,11 +1789,10 @@ function establecerTexto(
             id
         );
 
-
     if (!elemento) {
+
         return;
     }
-
 
     elemento.textContent =
         valor ||
@@ -1179,43 +1813,38 @@ function calcularEdad(
             fechaNacimiento
         );
 
-
     const hoy =
         new Date();
-
 
     let edad =
         hoy.getFullYear() -
         nacimiento.getFullYear();
 
-
     const diferenciaMes =
         hoy.getMonth() -
         nacimiento.getMonth();
-
 
     if (
         diferenciaMes < 0 ||
         (
             diferenciaMes === 0 &&
             hoy.getDate() <
-            nacimiento.getDate()
+                nacimiento.getDate()
         )
     ) {
 
         edad--;
     }
 
-
     if (edad < 0) {
+
         return "No válida";
     }
 
-
     if (edad === 1) {
+
         return "1 año";
     }
-
 
     return edad + " años";
 }
@@ -1230,18 +1859,17 @@ function formatearFecha(
 ) {
 
     if (!fecha) {
+
         return "";
     }
-
 
     const partes =
         fecha.split("-");
 
-
     if (partes.length !== 3) {
+
         return fecha;
     }
-
 
     return (
         partes[2] +

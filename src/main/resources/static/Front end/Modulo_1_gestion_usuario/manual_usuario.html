@@ -1,0 +1,1449 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <!-- CONFIGURACIÓN BÁSICA DEL DOCUMENTO -->
+    <meta charset="UTF-8">
+
+    <!-- Permite adaptar la página a computadores, tablets y celulares. -->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Manual de Usuario | My Pet</title>
+
+
+    <!--
+        BOOTSTRAP
+
+        Se utiliza para aprovechar las clases y utilidades de Bootstrap,
+        especialmente para espaciado, tamaños y diseño adaptable.
+    -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!--
+        CSS GENERAL DE MY PET
+
+        Este archivo contiene los estilos compartidos por las diferentes
+        pantallas de la aplicación, como el fondo, títulos y flechas.
+    -->
+    <link rel="stylesheet" href="../mi_pet.css">
+
+
+    <!--
+        CSS EXCLUSIVO DEL MANUAL
+
+        Estos estilos pertenecen únicamente a esta página.
+
+        Se mantienen aquí porque las clases:
+        - manual_item
+        - manual_contenido
+        - manual_paso
+        - manual_nota
+
+        son componentes específicos del manual y no forman parte del
+        diseño general de toda la aplicación.
+
+        De esta manera no se aumenta innecesariamente mi_pet.css ni se
+        corre el riesgo de modificar accidentalmente otras pantallas.
+
+        Si posteriormente alguno de estos estilos se reutiliza en varias
+        páginas, entonces sí sería conveniente trasladarlo a mi_pet.css.
+    -->
+    <style>
+
+        /* =========================================================
+           CUADROS PRINCIPALES DEL MANUAL
+           =========================================================
+
+           Se utiliza blanco semitransparente para que el fondo de My Pet
+           pueda seguir viéndose detrás del contenido.
+
+           0.88 significa aproximadamente 88 % de opacidad.
+           Esto permite conservar buena lectura sin ocultar completamente
+           el fondo.
+        */
+        .manual_item {
+            background: rgba(255, 255, 255, 0.88);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+
+        /* ENCABEZADO CLICKEABLE DE CADA SECCIÓN */
+        .manual_item summary {
+            cursor: pointer;
+            list-style: none;
+            padding: 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+
+        /* OCULTA EL MARCADOR TRIANGULAR PREDETERMINADO
+           DEL ELEMENTO <summary> EN NAVEGADORES WEBKIT. */
+        .manual_item summary::-webkit-details-marker {
+            display: none;
+        }
+
+
+        /* MUESTRA UN SIGNO + CUANDO LA SECCIÓN ESTÁ CERRADA. */
+        .manual_item summary::after {
+            content: "+";
+            float: right;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+
+        /* CAMBIA EL SIGNO + POR − CUANDO LA SECCIÓN ESTÁ ABIERTA. */
+        .manual_item[open] summary::after {
+            content: "−";
+        }
+
+
+        /* CONTENIDO INTERNO DE CADA SECCIÓN */
+        .manual_contenido {
+            padding: 0 20px 22px 20px;
+            color: #333;
+        }
+
+
+        /* SUBTÍTULOS DENTRO DE LAS SECCIONES */
+        .manual_contenido h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 18px;
+            margin-bottom: 10px;
+        }
+
+
+        /* ESPACIADO ENTRE LOS ELEMENTOS DE LAS LISTAS */
+        .manual_contenido ol li,
+        .manual_contenido ul li {
+            margin-bottom: 8px;
+        }
+
+
+        /*
+            CADA PASO SE PRESENTA COMO UNA PEQUEÑA TARJETA.
+
+            También tiene una transparencia ligera para conservar el efecto
+            visual del manual sin afectar la lectura.
+        */
+        .manual_paso {
+            background: rgba(248, 249, 250, 0.82);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+        }
+
+
+        /*
+            NOTAS IMPORTANTES
+
+            El fondo naranja muy claro y el borde naranja permiten destacar
+            advertencias y recomendaciones sin utilizar colores demasiado
+            fuertes.
+        */
+        .manual_nota {
+            border-left: 4px solid #F7931E;
+            background: rgba(255, 248, 239, 0.92);
+            padding: 14px 16px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+    </style>
+
+</head>
+
+
+<!--
+    CUERPO PRINCIPAL
+
+    fondo_pata pertenece a mi_pet.css y proporciona el fondo general
+    utilizado por My Pet.
+
+    min-vh-100 hace que la página ocupe como mínimo toda la altura
+    disponible de la ventana.
+-->
+<body class="fondo_pata min-vh-100">
+
+
+    <!--
+        CONTENEDOR PRINCIPAL
+
+        Bootstrap controla el ancho y el espaciado.
+
+        El ancho máximo de 900px evita que las líneas de texto sean
+        demasiado largas y facilita la lectura del manual.
+    -->
+    <main
+        class="container py-4"
+        style="max-width: 900px"
+    >
+
+
+        <!--
+            BOTÓN PARA REGRESAR
+
+            La clase flecha pertenece a mi_pet.css.
+
+            Al seleccionarlo, el usuario vuelve a la pantalla de ayuda.
+        -->
+        <a
+            class="flecha"
+            href="ayuda.html"
+            aria-label="Volver a ayuda"
+            title="Volver a ayuda"
+        >
+            ←
+        </a>
+
+
+        <!-- ENCABEZADO DEL MANUAL -->
+        <header class="text-center my-4">
+
+            <h1 class="titulo-naranja">
+                Manual de Usuario
+            </h1>
+
+            <p class="text-white mb-0">
+                Aprende paso a paso cómo utilizar My Pet.
+            </p>
+
+        </header>
+
+
+        <!-- =========================================================
+             1. INTRODUCCIÓN
+             ========================================================= -->
+        <details class="manual_item" open>
+
+            <summary>
+                1. Introducción a My Pet
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Qué es My Pet?</h3>
+
+                <p>
+                    My Pet es una aplicación orientada a la gestión de la
+                    información y el cuidado de las mascotas. Permite al
+                    usuario organizar en un solo lugar información personal,
+                    datos de sus mascotas, documentos, historial médico,
+                    actividades y herramientas de ayuda.
+                </p>
+
+                <h3>¿Qué puedo hacer con My Pet?</h3>
+
+                <ul>
+                    <li>Crear y administrar una cuenta de usuario.</li>
+                    <li>Registrar y consultar mascotas.</li>
+                    <li>Guardar información de cada mascota.</li>
+                    <li>Consultar y administrar documentos.</li>
+                    <li>Llevar un historial médico.</li>
+                    <li>Organizar eventos mediante la agenda.</li>
+                    <li>Participar en la comunidad.</li>
+                    <li>Consultar el chatbot.</li>
+                    <li>Consultar información de primeros auxilios.</li>
+                    <li>Reportar problemas de funcionamiento.</li>
+                    <li>Consultar el estado de los reportes enviados.</li>
+                </ul>
+
+                <div class="manual_nota">
+
+                    <strong>Importante:</strong>
+
+                    My Pet es una herramienta para organizar y consultar
+                    información. Las herramientas de orientación no sustituyen
+                    la valoración de un profesional veterinario.
+
+                </div>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             2. CREAR CUENTA
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                2. Crear una cuenta
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    El registro permite crear una cuenta personal para acceder
+                    a las funciones de My Pet y asociar las mascotas a tu
+                    usuario.
+                </p>
+
+                <h3>Pasos para registrarse</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la opción <strong>Registrarse</strong>
+                        desde la pantalla de inicio de sesión.
+                    </li>
+
+                    <li class="manual_paso">
+                        Completa los datos personales solicitados por el
+                        formulario.
+                    </li>
+
+                    <li class="manual_paso">
+                        Escribe un correo electrónico válido. Este correo se
+                        utilizará para identificar tu cuenta al iniciar sesión.
+                    </li>
+
+                    <li class="manual_paso">
+                        Crea una contraseña y confirma los datos solicitados.
+                    </li>
+
+                    <li class="manual_paso">
+                        Revisa la información antes de enviar el formulario.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la opción para completar el registro.
+                    </li>
+
+                </ol>
+
+                <h3>Si el registro no funciona</h3>
+
+                <p>
+                    Revisa los mensajes que aparecen en el formulario.
+                    Si el correo ya está registrado, debes utilizar una cuenta
+                    existente o realizar el proceso correspondiente para
+                    recuperar o cambiar la contraseña.
+                </p>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             3. INICIAR SESIÓN
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                3. Iniciar sesión
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    El inicio de sesión permite acceder a las funciones de
+                    My Pet asociadas a tu cuenta.
+                </p>
+
+                <h3>Pasos</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Abre la pantalla de inicio de sesión.
+                    </li>
+
+                    <li class="manual_paso">
+                        Introduce el correo electrónico con el que registraste
+                        tu cuenta.
+                    </li>
+
+                    <li class="manual_paso">
+                        Introduce tu contraseña.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona <strong>Iniciar sesión</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Si los datos son correctos, accederás a la aplicación.
+                    </li>
+
+                </ol>
+
+                <h3>Recomendación</h3>
+
+                <p>
+                    No compartas tu contraseña con otras personas y verifica
+                    que estés utilizando el correo correcto si no puedes
+                    ingresar.
+                </p>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             4. PERFIL DEL USUARIO
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                4. Perfil del usuario
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Qué es?</h3>
+
+                <p>
+                    El perfil del usuario contiene la información personal
+                    asociada a la cuenta.
+                </p>
+
+                <h3>¿Qué puedo hacer?</h3>
+
+                <ul>
+                    <li>Consultar la información registrada.</li>
+                    <li>Revisar los datos personales.</li>
+                    <li>Actualizar la información disponible.</li>
+                </ul>
+
+                <h3>Pasos generales</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la sección de <strong>Perfil</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Revisa la información mostrada.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la opción de edición cuando necesites
+                        modificar algún dato.
+                    </li>
+
+                    <li class="manual_paso">
+                        Actualiza la información.
+                    </li>
+
+                    <li class="manual_paso">
+                        Guarda los cambios.
+                    </li>
+
+                </ol>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             5. REGISTRAR Y ADMINISTRAR MASCOTAS
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                5. Registrar y administrar mascotas
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    Esta función permite crear el registro de cada mascota
+                    que pertenece al usuario. Cada mascota tiene su propia
+                    información y puede utilizar las diferentes herramientas
+                    disponibles en My Pet.
+                </p>
+
+                <h3>Registrar una mascota</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la sección <strong>Mascotas</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la opción para agregar una nueva mascota.
+                    </li>
+
+                    <li class="manual_paso">
+                        Completa los datos solicitados de la mascota.
+                    </li>
+
+                    <li class="manual_paso">
+                        Revisa que la información esté correcta.
+                    </li>
+
+                    <li class="manual_paso">
+                        Guarda el registro.
+                    </li>
+
+                </ol>
+
+                <h3>Consultar una mascota</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la sección de mascotas.
+                    </li>
+
+                    <li class="manual_paso">
+                        Busca la mascota que deseas consultar.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona su tarjeta o perfil.
+                    </li>
+
+                    <li class="manual_paso">
+                        Desde allí podrás acceder a las funciones asociadas
+                        a esa mascota.
+                    </li>
+
+                </ol>
+
+                <div class="manual_nota">
+
+                    Mantener correctamente registrados los datos de cada
+                    mascota facilita el uso del historial, documentos,
+                    agenda y demás herramientas.
+
+                </div>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             6. PERFIL DE LA MASCOTA
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                6. Perfil de la mascota
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Qué es?</h3>
+
+                <p>
+                    El perfil de la mascota reúne la información propia de
+                    cada animal registrado y funciona como punto de acceso
+                    a sus diferentes herramientas.
+                </p>
+
+                <h3>¿Qué encontrarás?</h3>
+
+                <ul>
+                    <li>Información de la mascota.</li>
+                    <li>Documentos.</li>
+                    <li>Historial médico.</li>
+                    <li>Agenda.</li>
+                    <li>Herramientas de emergencia.</li>
+                </ul>
+
+                <h3>Cómo utilizarlo</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Entra a <strong>Mascotas</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la mascota que deseas administrar.
+                    </li>
+
+                    <li class="manual_paso">
+                        Utiliza las opciones disponibles en su perfil para
+                        consultar o administrar la información.
+                    </li>
+
+                </ol>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             7. DOCUMENTOS
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                7. Documentos de la mascota
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    Permite guardar y consultar documentos relacionados con
+                    una mascota. De esta manera, la información importante
+                    puede mantenerse organizada dentro de su perfil.
+                </p>
+
+                <h3>Agregar un documento</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Selecciona la mascota correspondiente.
+                    </li>
+
+                    <li class="manual_paso">
+                        Ingresa a la sección <strong>Documentos</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la opción para agregar un documento.
+                    </li>
+
+                    <li class="manual_paso">
+                        Introduce la información solicitada.
+                    </li>
+
+                    <li class="manual_paso">
+                        Adjunta el archivo cuando la función esté disponible
+                        en el formulario.
+                    </li>
+
+                    <li class="manual_paso">
+                        Guarda el documento.
+                    </li>
+
+                </ol>
+
+                <h3>Consultar un documento</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Entra al perfil de la mascota.
+                    </li>
+
+                    <li class="manual_paso">
+                        Abre <strong>Documentos</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona el documento que deseas consultar.
+                    </li>
+
+                </ol>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             8. HISTORIAL MÉDICO
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                8. Historial médico
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    El historial médico permite organizar los registros
+                    relacionados con la salud y atención de la mascota.
+                    Sirve como referencia para conservar información de
+                    diferentes atenciones y antecedentes.
+                </p>
+
+                <h3>Consultar el historial</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Selecciona la mascota.
+                    </li>
+
+                    <li class="manual_paso">
+                        Ingresa a <strong>Historial médico</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Revisa los registros disponibles.
+                    </li>
+
+                </ol>
+
+                <h3>Agregar un registro</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa al historial de la mascota.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la opción para agregar un registro.
+                    </li>
+
+                    <li class="manual_paso">
+                        Completa los datos solicitados.
+                    </li>
+
+                    <li class="manual_paso">
+                        Revisa la información.
+                    </li>
+
+                    <li class="manual_paso">
+                        Guarda el registro.
+                    </li>
+
+                </ol>
+
+                <div class="manual_nota">
+
+                    La información del historial debe mantenerse lo más
+                    actualizada posible y no sustituye la historia clínica
+                    oficial que pueda manejar un profesional veterinario.
+
+                </div>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             9. AGENDA GENERAL
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                9. Agenda general
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Qué es?</h3>
+
+                <p>
+                    La agenda general permite visualizar en un mismo espacio
+                    los eventos y pendientes asociados a las mascotas
+                    registradas en la cuenta.
+                </p>
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    Ayuda a organizar actividades y recordar eventos
+                    importantes relacionados con el cuidado de las mascotas.
+                </p>
+
+                <h3>Consultar la agenda</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la sección <strong>Agenda</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Consulta los eventos registrados.
+                    </li>
+
+                    <li class="manual_paso">
+                        Identifica a qué mascota pertenece cada evento.
+                    </li>
+
+                </ol>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             10. AGENDA PERSONALIZADA
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                10. Agenda personalizada de una mascota
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Qué es?</h3>
+
+                <p>
+                    Es la agenda específica de una mascota. A diferencia de
+                    la agenda general, aquí puedes trabajar directamente con
+                    los eventos de la mascota seleccionada.
+                </p>
+
+                <h3>Agregar un evento</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa al perfil de la mascota.
+                    </li>
+
+                    <li class="manual_paso">
+                        Accede a su agenda.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la opción para agregar un evento.
+                    </li>
+
+                    <li class="manual_paso">
+                        Escribe la información del evento.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la fecha y los demás datos solicitados.
+                    </li>
+
+                    <li class="manual_paso">
+                        Guarda el evento.
+                    </li>
+
+                </ol>
+
+                <h3>Consultar eventos</h3>
+
+                <p>
+                    Los eventos guardados aparecerán dentro de la agenda de
+                    la mascota correspondiente y también podrán visualizarse
+                    desde la agenda general.
+                </p>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             11. COMUNIDAD
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                11. Comunidad y foro
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Qué es?</h3>
+
+                <p>
+                    El módulo de comunidad proporciona un espacio de
+                    interacción entre usuarios de My Pet mediante las
+                    funciones disponibles en el foro.
+                </p>
+
+                <h3>Consultar publicaciones</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a <strong>Comunidad</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Consulta las publicaciones disponibles.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona una publicación para consultar su contenido
+                        y las opciones disponibles.
+                    </li>
+
+                </ol>
+
+                <h3>Participar</h3>
+
+                <p>
+                    Utiliza las opciones habilitadas por el foro para crear
+                    publicaciones o participar en las conversaciones.
+                </p>
+
+                <div class="manual_nota">
+
+                    Mantén una comunicación respetuosa y evita compartir
+                    información personal innecesaria.
+
+                </div>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             12. CHATBOT
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                12. Chatbot
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Qué es?</h3>
+
+                <p>
+                    El chatbot es una herramienta de apoyo integrada en My Pet
+                    que permite al usuario realizar consultas y recibir
+                    orientación relacionada con el uso y los contenidos
+                    disponibles en la aplicación.
+                </p>
+
+                <h3>Cómo utilizarlo</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la sección del <strong>Chatbot</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Escribe claramente la pregunta o consulta.
+                    </li>
+
+                    <li class="manual_paso">
+                        Envía el mensaje.
+                    </li>
+
+                    <li class="manual_paso">
+                        Lee la respuesta proporcionada.
+                    </li>
+
+                    <li class="manual_paso">
+                        Si necesitas mayor orientación, realiza una pregunta
+                        más específica.
+                    </li>
+
+                </ol>
+
+                <div class="manual_nota">
+
+                    El chatbot es una herramienta de orientación. No debe
+                    utilizarse como sustituto de la valoración de un
+                    profesional veterinario.
+
+                </div>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             13. EMERGENCIAS
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                13. Emergencias y primeros auxilios
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    Esta función proporciona información de orientación para
+                    determinadas situaciones de emergencia y primeros
+                    auxilios relacionadas con mascotas.
+                </p>
+
+                <h3>Cómo consultar una situación</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la sección <strong>Emergencias</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Identifica la situación que presenta la mascota.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona la opción correspondiente.
+                    </li>
+
+                    <li class="manual_paso">
+                        Lee cuidadosamente las indicaciones.
+                    </li>
+
+                    <li class="manual_paso">
+                        Sigue las recomendaciones de orientación mientras
+                        buscas ayuda profesional cuando sea necesario.
+                    </li>
+
+                </ol>
+
+                <div class="manual_nota">
+
+                    <strong>Importante:</strong>
+
+                    ante una situación grave o que ponga en riesgo la vida
+                    de la mascota, busca atención veterinaria de inmediato.
+                    La guía de primeros auxilios no reemplaza la atención
+                    profesional.
+
+                </div>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             14. AYUDA Y SOLUCIÓN DE PROBLEMAS
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                14. Ayuda y solución de problemas
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    La sección de ayuda permite consultar recomendaciones
+                    cuando se presenta un inconveniente durante el uso de
+                    My Pet.
+                </p>
+
+                <h3>Problemas habituales</h3>
+
+                <p>
+                    Si no puedes iniciar sesión, revisa que el correo y la
+                    contraseña sean correctos.
+                </p>
+
+                <p>
+                    Si no se guarda un registro, revisa el mensaje mostrado
+                    por el formulario y verifica que los datos obligatorios
+                    estén completos.
+                </p>
+
+                <p>
+                    Si no cargan mascotas u otros datos, comprueba el estado
+                    de conexión y que los servicios necesarios para ejecutar
+                    la aplicación estén funcionando.
+                </p>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             15. REPORTAR UN PROBLEMA
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                15. Reportar un problema
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    El sistema de reportes permite comunicar al administrador
+                    un problema encontrado dentro de My Pet para que pueda
+                    ser revisado y atendido.
+                </p>
+
+                <h3>Cómo enviar un reporte</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la sección <strong>Ayuda</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Ubica el apartado <strong>Reportar un problema</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Describe qué estabas intentando hacer.
+                    </li>
+
+                    <li class="manual_paso">
+                        Explica qué ocurrió y qué comportamiento inesperado
+                        observaste.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona <strong>Enviar reporte</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        El reporte quedará registrado para su revisión.
+                    </li>
+
+                </ol>
+
+                <h3>Copiar reporte técnico</h3>
+
+                <p>
+                    La opción <strong>Copiar reporte técnico</strong> permite
+                    copiar información técnica que puede ser útil para
+                    describir el problema y facilitar su revisión.
+                </p>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             16. MIS REPORTES
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                16. Consultar mis reportes
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Para qué sirve?</h3>
+
+                <p>
+                    Después de enviar un reporte, puedes consultar su estado
+                    y revisar la respuesta registrada por el administrador.
+                </p>
+
+                <h3>Cómo consultar un reporte</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a <strong>Ayuda</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Desplázate hasta <strong>Mis reportes</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Consulta los reportes que has enviado.
+                    </li>
+
+                    <li class="manual_paso">
+                        Revisa el estado actual y la respuesta del
+                        administrador cuando exista.
+                    </li>
+
+                </ol>
+
+                <h3>Estados disponibles</h3>
+
+                <ul>
+
+                    <li>
+                        <strong>Pendiente:</strong>
+                        el reporte fue recibido y está esperando revisión.
+                    </li>
+
+                    <li>
+                        <strong>En revisión:</strong>
+                        el administrador está trabajando en la revisión
+                        del problema.
+                    </li>
+
+                    <li>
+                        <strong>Solucionado:</strong>
+                        el reporte fue atendido y se registró una respuesta.
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             17. RECUPERAR O CAMBIAR CONTRASEÑA
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                17. Recuperar o cambiar la contraseña
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Cuándo utilizar esta función?</h3>
+
+                <p>
+                    Utiliza esta opción cuando necesites actualizar tu
+                    contraseña o cuando no puedas acceder con la contraseña
+                    anterior.
+                </p>
+
+                <h3>Pasos generales</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Ingresa a la opción correspondiente para cambiar o
+                        recuperar la contraseña.
+                    </li>
+
+                    <li class="manual_paso">
+                        Proporciona los datos solicitados.
+                    </li>
+
+                    <li class="manual_paso">
+                        Introduce la nueva contraseña.
+                    </li>
+
+                    <li class="manual_paso">
+                        Confirma la nueva contraseña cuando sea solicitado.
+                    </li>
+
+                    <li class="manual_paso">
+                        Completa el proceso.
+                    </li>
+
+                </ol>
+
+                <div class="manual_nota">
+
+                    Utiliza una contraseña que no sea fácil de adivinar y
+                    evita compartirla con otras personas.
+
+                </div>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             18. FUNCIONES DEL ADMINISTRADOR
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                18. Funciones del administrador
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>¿Quién puede acceder?</h3>
+
+                <p>
+                    El panel administrativo está destinado a las cuentas que
+                    tienen permisos de administrador.
+                </p>
+
+                <h3>Gestión de reportes</h3>
+
+                <p>
+                    El administrador puede consultar los problemas reportados
+                    por los usuarios y gestionar cada caso.
+                </p>
+
+                <h3>Pasos para gestionar un reporte</h3>
+
+                <ol>
+
+                    <li class="manual_paso">
+                        Inicia sesión con una cuenta que tenga permisos de
+                        administrador.
+                    </li>
+
+                    <li class="manual_paso">
+                        Ingresa al panel administrativo.
+                    </li>
+
+                    <li class="manual_paso">
+                        Accede a <strong>Reportes de ayuda</strong>.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona el reporte que deseas revisar.
+                    </li>
+
+                    <li class="manual_paso">
+                        Consulta la información proporcionada por el usuario.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona el estado correspondiente.
+                    </li>
+
+                    <li class="manual_paso">
+                        Escribe una respuesta para el usuario.
+                    </li>
+
+                    <li class="manual_paso">
+                        Selecciona <strong>Guardar cambios</strong>.
+                    </li>
+
+                </ol>
+
+                <h3>Estados de gestión</h3>
+
+                <ul>
+
+                    <li>
+                        <strong>Pendiente:</strong>
+                        el caso todavía no ha sido gestionado.
+                    </li>
+
+                    <li>
+                        <strong>En revisión:</strong>
+                        el administrador está revisando el problema.
+                    </li>
+
+                    <li>
+                        <strong>Solucionado:</strong>
+                        el problema fue atendido.
+                    </li>
+
+                </ul>
+
+                <div class="manual_nota">
+
+                    La respuesta registrada por el administrador podrá ser
+                    consultada posteriormente por el usuario desde
+                    <strong>Mis reportes</strong>.
+
+                </div>
+
+            </div>
+
+        </details>
+
+
+        <!-- =========================================================
+             19. RECOMENDACIONES
+             ========================================================= -->
+        <details class="manual_item">
+
+            <summary>
+                19. Recomendaciones para utilizar My Pet
+            </summary>
+
+            <div class="manual_contenido">
+
+                <h3>Mantén la información actualizada</h3>
+
+                <p>
+                    Revisa periódicamente los datos de tu perfil y de tus
+                    mascotas para evitar información desactualizada.
+                </p>
+
+                <h3>Organiza los documentos</h3>
+
+                <p>
+                    Utiliza la sección de documentos para mantener organizada
+                    la información importante de cada mascota.
+                </p>
+
+                <h3>Utiliza la agenda</h3>
+
+                <p>
+                    Registra los eventos y pendientes para tener una mejor
+                    organización de las actividades relacionadas con tus
+                    mascotas.
+                </p>
+
+                <h3>Registra correctamente los problemas</h3>
+
+                <p>
+                    Cuando encuentres un error, explica claramente qué
+                    estabas haciendo, qué esperabas que ocurriera y qué
+                    ocurrió realmente. Esto facilita la revisión del reporte.
+                </p>
+
+                <h3>Protege tu cuenta</h3>
+
+                <p class="mb-0">
+                    Mantén segura tu contraseña y evita compartir las
+                    credenciales de acceso.
+                </p>
+
+            </div>
+
+        </details>
+
+
+        <!--
+            CIERRE DEL MANUAL
+
+            Esta tarjeta no necesita ser desplegable. Funciona como cierre
+            visual del documento y mantiene el estilo general de My Pet.
+
+            También utiliza transparencia para conservar visible el fondo.
+        -->
+        <section
+            class="p-4 rounded mt-4 text-center"
+            style="background: rgba(255, 255, 255, 0.88);"
+        >
+
+            <h2 class="titulo_seccion">
+                My Pet
+            </h2>
+
+            <p class="mb-0">
+                Manual de usuario para la gestión y organización de la
+                información relacionada con tus mascotas.
+            </p>
+
+        </section>
+
+
+    </main>
+
+</body>
+
+</html>

@@ -1,10 +1,4 @@
-// Configuración de seguridad y autorización de la aplicación.
-
-// Paquete donde se encuentra la configuración de seguridad.
-
 package com.example.My_Pet.security;
-
-// Librerías necesarias para configurar Spring Security.
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,20 +13,16 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
-// Define esta clase como configuración de Spring Security.
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    // Configura el almacenamiento de la información de seguridad en la sesión.
     @Bean
     public SecurityContextRepository securityContextRepository() {
         return new HttpSessionSecurityContextRepository();
     }
 
-    // Configura las reglas de seguridad y acceso de la aplicación.
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
@@ -40,22 +30,37 @@ public class SecurityConfig {
 
         return http
 
-                // Configura dónde se almacena la información del usuario autenticado.
+                // ========================================================
+                // CONTEXTO DE SEGURIDAD
+                // ========================================================
+
                 .securityContext(context -> context
-                        .securityContextRepository(securityContextRepository))
+                        .securityContextRepository(
+                                securityContextRepository
+                        )
+                        .requireExplicitSave(true)
+                )
 
-                // Configura la protección CSRF para las solicitudes.
+                // ========================================================
+                // CSRF
+                // ========================================================
+
                 .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
                         .csrfTokenRepository(
-                                CookieCsrfTokenRepository.withHttpOnlyFalse())
+                                CookieCsrfTokenRepository.withHttpOnlyFalse()
+                        )
                         .csrfTokenRequestHandler(
-                                new CsrfTokenRequestAttributeHandler()))
+                                new CsrfTokenRequestAttributeHandler()
+                        )
+                )
 
-                // Define qué rutas pueden utilizarse sin autenticación
-                // y cuáles requieren permisos.
+                // ========================================================
+                // AUTORIZACIÓN
+                // ========================================================
+
                 .authorizeHttpRequests(authorize -> authorize
 
-                        // Permite el acceso sin iniciar sesión a estas rutas.
                         .requestMatchers(
                                 "/api/usuario/registro",
                                 "/api/usuario/login",
@@ -64,37 +69,50 @@ public class SecurityConfig {
                                 "/error"
                         ).permitAll()
 
-                        // Permite consultar los servicios sin autenticación.
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/servicios/**"
                         ).permitAll()
 
-                        // Solo permite a los administradores acceder a estas rutas.
+                        .requestMatchers(
+                                "/api/publicaciones-foro/**"
+                        ).permitAll()
+
                         .requestMatchers(
                                 "/api/administradores/**"
                         ).hasRole("ADMINISTRADOR")
 
-                        // Las demás rutas de la API requieren autenticación.
-                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers(
+                                "/api/comentarios-foro/**"
+                        ).permitAll()
 
-                        // Permite las solicitudes GET generales.
+                        .requestMatchers(
+                                "/api/**"
+                        ).authenticated()
+
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/**"
                         ).permitAll()
 
-                        // Cualquier otra solicitud requiere autenticación.
-                        .anyRequest().authenticated())
+                        .anyRequest().authenticated()
+                )
 
-                // Desactiva el formulario de inicio de sesión de Spring Security.
-                .formLogin(AbstractHttpConfigurer::disable)
+                // ========================================================
+                // DESACTIVAR LOGIN NATIVO
+                // ========================================================
 
-                // Desactiva la autenticación HTTP básica.
-                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(
+                        AbstractHttpConfigurer::disable
+                )
 
-                // Desactiva el cierre de sesión predeterminado de Spring Security.
-                .logout(AbstractHttpConfigurer::disable)
+                .httpBasic(
+                        AbstractHttpConfigurer::disable
+                )
+
+                .logout(
+                        AbstractHttpConfigurer::disable
+                )
 
                 .build();
     }

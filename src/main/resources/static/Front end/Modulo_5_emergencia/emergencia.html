@@ -1,91 +1,811 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <script src="/JS/api-client.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../mi_pet.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+          href="../mi_pet.css">
+
     <title>Emergencias y primeros auxilios | My Pet</title>
+
+    <style>
+
+        /* Botones principales de My Pet */
+        .btn-naranja {
+            background-color: #F7931E;
+            border-color: #F7931E;
+            color: #ffffff;
+        }
+
+        .btn-naranja:hover,
+        .btn-naranja:focus {
+            background-color: #d9790d;
+            border-color: #d9790d;
+            color: #ffffff;
+        }
+
+        /* Botón naranja para acciones secundarias */
+        .btn-naranja-outline {
+            background-color: transparent;
+            border: 1px solid #F7931E;
+            color: #F7931E;
+        }
+
+        .btn-naranja-outline:hover,
+        .btn-naranja-outline:focus {
+            background-color: #F7931E;
+            border-color: #F7931E;
+            color: #ffffff;
+        }
+
+        /* Recuadros semitransparentes */
+        .recuadro-transparente {
+            background-color: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+
+    </style>
+
 </head>
+
 <body class="fondo_pata min-vh-100">
-    <main class="container py-4" style="max-width: 760px">
-        <a id="volverEmergencia" class="flecha" href="/Front%20end/Modulo_1_gestion_usuario/home.html" aria-label="Volver">←</a>
+
+    <main class="container py-4"
+          style="max-width: 760px">
+
+        <!-- Regresar al perfil -->
+        <a id="volverEmergencia"
+           class="flecha"
+           href="/Front%20end/Modulo_1_gestion_usuario/home.html"
+           aria-label="Volver">
+            ←
+        </a>
+
+
+        <!-- Encabezado -->
         <header class="text-center my-4">
-            <h1 class="titulo-naranja">Emergencias y primeros auxilios</h1>
-            <p class="text-white" id="mascotaEmergencia"></p>
+
+            <h1 class="titulo-naranja">
+                Emergencias y primeros auxilios
+            </h1>
+
+            <p class="text-white"
+               id="mascotaEmergencia">
+            </p>
+
         </header>
 
-        <p class="alert alert-warning" role="note">
-            Este formulario guarda el reporte en tu cuenta; no contacta a veterinarios ni servicios de emergencia.
-            Si existe peligro inmediato, contacta directamente a los servicios locales.
-        </p>
 
-        <section class="bg-white p-4 rounded mb-4" aria-labelledby="tituloPrimerosAuxilios">
-            <h2 class="h4" id="tituloPrimerosAuxilios">Guía rápida de primeros auxilios</h2>
-            <p>Estas indicaciones son temporales y no sustituyen la atención veterinaria. Ante una urgencia, llama a una clínica veterinaria y traslada a tu mascota con cuidado.</p>
-            <details class="mb-3">
-                <summary class="fw-semibold">Sangrado o herida</summary>
-                <p class="mt-2 mb-0">Cubre la zona con una gasa o tela limpia y aplica presión suave y continua. No retires objetos incrustados; busca atención veterinaria urgente.</p>
-            </details>
-            <details class="mb-3">
-                <summary class="fw-semibold">Convulsión</summary>
-                <p class="mt-2 mb-0">Retira objetos cercanos, baja el ruido y mide cuánto dura. No la sujetes ni pongas las manos u objetos en su boca. Contacta a un veterinario cuanto antes.</p>
-            </details>
-            <details class="mb-3">
-                <summary class="fw-semibold">Posible intoxicación</summary>
-                <p class="mt-2 mb-0">Aléjala de la sustancia y conserva el envase para el veterinario. No provoques el vómito ni administres medicamentos o comida sin indicación profesional.</p>
-            </details>
-            <details>
-                <summary class="fw-semibold">Atragantamiento o dificultad para respirar</summary>
-                <p class="mt-2 mb-0">Busca atención veterinaria inmediata. Retira un objeto solo si está claramente visible y puedes hacerlo sin empujarlo más adentro ni exponerte a una mordida.</p>
-            </details>
-        </section>
+        <!-- Aviso principal -->
+        <div class="alert alert-warning"
+             role="alert">
 
-        <section class="chatbot-contenedor mb-4" aria-labelledby="tituloChatEmergencia">
-            <div class="chatbot-cabecera">
-                <div>
-                    <h2 class="h5 mb-1" id="tituloChatEmergencia">Asistente de primeros auxilios</h2>
-                    <small>Describe lo que ocurre para recibir orientación general mientras contactas a un veterinario.</small>
+            <strong>Importante:</strong>
+
+            Esta sección proporciona orientación general de primeros
+            auxilios para mascotas. No sustituye la valoración ni el
+            tratamiento de un veterinario.
+
+            Si tu mascota presenta una emergencia, contacta directamente
+            con una clínica o servicio veterinario.
+
+        </div>
+
+
+        <!-- ==========================================
+             GUÍA DE PRIMEROS AUXILIOS
+             ========================================== -->
+
+        <section class="recuadro-transparente p-4 rounded mb-4"
+                 aria-labelledby="tituloPrimerosAuxilios">
+
+            <h2 class="h4"
+                id="tituloPrimerosAuxilios">
+
+                Guía de primeros auxilios
+
+            </h2>
+
+            <p>
+
+                Los primeros auxilios buscan ayudar a mantener estable
+                a una mascota mientras recibe atención profesional.
+                Actúa con calma, evita movimientos innecesarios y no
+                administres medicamentos por tu cuenta.
+
+            </p>
+
+
+            <!-- Sangrado -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Sangrado o herida
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        Si existe sangrado externo, coloca una gasa,
+                        paño o tela limpia directamente sobre la zona
+                        y aplica presión continua.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Mantén la presión durante varios minutos sin
+                            retirar constantemente el material.
+                        </li>
+
+                        <li>
+                            Si el material se empapa, coloca otra capa
+                            encima sin retirar la primera.
+                        </li>
+
+                        <li>
+                            No retires objetos que estén incrustados
+                            en la herida.
+                        </li>
+
+                        <li>
+                            Si el sangrado es abundante o no se controla,
+                            busca atención veterinaria inmediata.
+                        </li>
+
+                    </ul>
+
                 </div>
-                <button type="button" id="btnEliminarConversacion" class="btn btn-light btn-sm">Limpiar chat</button>
+
+            </details>
+
+
+            <!-- Dificultad respiratoria -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Dificultad para respirar o atragantamiento
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        La dificultad para respirar puede ser una emergencia
+                        grave. Mantén a la mascota tranquila y busca atención
+                        veterinaria inmediatamente.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Evita que corra o realice esfuerzos.
+                        </li>
+
+                        <li>
+                            Mantén el ambiente tranquilo.
+                        </li>
+
+                        <li>
+                            Si existe un objeto claramente visible en la boca,
+                            retíralo únicamente si puedes hacerlo sin empujarlo
+                            más profundamente.
+                        </li>
+
+                        <li>
+                            No introduzcas los dedos a ciegas en la garganta.
+                        </li>
+
+                        <li>
+                            Si continúa con dificultad respiratoria,
+                            trasládala inmediatamente a un servicio veterinario.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- Convulsiones -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Convulsiones
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        Durante una convulsión, protege a la mascota de
+                        posibles golpes y evita intervenir directamente
+                        sobre sus movimientos.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Retira objetos cercanos con los que pueda golpearse.
+                        </li>
+
+                        <li>
+                            Reduce el ruido y evita estímulos innecesarios.
+                        </li>
+
+                        <li>
+                            No intentes sujetarla.
+                        </li>
+
+                        <li>
+                            No introduzcas las manos ni objetos en su boca.
+                        </li>
+
+                        <li>
+                            Mide cuánto tiempo dura la convulsión.
+                        </li>
+
+                        <li>
+                            Si es seguro hacerlo, puedes grabar un video
+                            para mostrárselo al veterinario.
+                        </li>
+
+                        <li>
+                            Las convulsiones prolongadas o repetidas requieren
+                            atención veterinaria urgente.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- Intoxicación -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Posible intoxicación
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        Si sospechas que tu mascota consumió, inhaló o tuvo
+                        contacto con una sustancia potencialmente tóxica,
+                        contacta inmediatamente a un veterinario.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Aléjala de la sustancia.
+                        </li>
+
+                        <li>
+                            Conserva el envase, etiqueta o nombre del producto.
+                        </li>
+
+                        <li>
+                            Informa al veterinario qué sustancia pudo consumir,
+                            aproximadamente cuánto y cuándo ocurrió.
+                        </li>
+
+                        <li>
+                            No provoques el vómito por tu cuenta.
+                        </li>
+
+                        <li>
+                            No administres medicamentos ni remedios caseros
+                            sin indicación veterinaria.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- Golpe de calor -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Golpe de calor
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        El jadeo intenso, debilidad, confusión, vómitos,
+                        alteraciones del estado de conciencia o colapso
+                        después de una exposición al calor pueden indicar
+                        una emergencia.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Lleva a la mascota a un lugar fresco y ventilado.
+                        </li>
+
+                        <li>
+                            Comienza a enfriarla con agua fresca,
+                            evitando agua helada.
+                        </li>
+
+                        <li>
+                            Utiliza ventilación para favorecer el enfriamiento.
+                        </li>
+
+                        <li>
+                            No coloques hielo directamente sobre el cuerpo.
+                        </li>
+
+                        <li>
+                            Contacta a un veterinario y trasládala
+                            lo antes posible.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- Traumatismo -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Caída, golpe fuerte o posible fractura
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        Después de una caída, atropello o golpe fuerte puede
+                        existir una lesión interna aunque no sea visible
+                        inmediatamente.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Mantén a la mascota tranquila.
+                        </li>
+
+                        <li>
+                            Evita que camine si presenta dolor, debilidad
+                            o dificultad para moverse.
+                        </li>
+
+                        <li>
+                            Muévela con cuidado.
+                        </li>
+
+                        <li>
+                            Si es necesario, utiliza una manta o superficie
+                            firme como soporte durante el traslado.
+                        </li>
+
+                        <li>
+                            No intentes enderezar una extremidad deformada.
+                        </li>
+
+                        <li>
+                            Busca valoración veterinaria.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- Lesión ocular -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Lesión en el ojo
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        Las lesiones oculares necesitan valoración rápida
+                        porque algunas pueden comprometer la visión.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Evita que la mascota se frote el ojo.
+                        </li>
+
+                        <li>
+                            No retires objetos incrustados.
+                        </li>
+
+                        <li>
+                            No utilices gotas ni medicamentos sin indicación
+                            veterinaria.
+                        </li>
+
+                        <li>
+                            Busca atención veterinaria lo antes posible.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- Mordeduras -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Mordeduras o heridas causadas por otro animal
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        Una mordedura puede parecer pequeña externamente
+                        y producir lesiones más profundas.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Manipula a la mascota con precaución.
+                        </li>
+
+                        <li>
+                            Si existe sangrado, aplica presión con material limpio.
+                        </li>
+
+                        <li>
+                            No introduzcas sustancias irritantes en la herida.
+                        </li>
+
+                        <li>
+                            Busca valoración veterinaria, especialmente si
+                            la lesión es profunda o está cerca de los ojos,
+                            cuello, tórax o abdomen.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- Colapso -->
+
+            <details class="mb-3">
+
+                <summary class="fw-semibold">
+                    Desmayo, colapso o debilidad repentina
+                </summary>
+
+                <div class="mt-2">
+
+                    <p>
+
+                        Una pérdida de conciencia, colapso o incapacidad
+                        repentina para mantenerse de pie requiere atención
+                        veterinaria.
+
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Mantén a la mascota tranquila.
+                        </li>
+
+                        <li>
+                            Muévela lo mínimo necesario.
+                        </li>
+
+                        <li>
+                            Comprueba si respira normalmente.
+                        </li>
+
+                        <li>
+                            Busca atención veterinaria inmediata.
+                        </li>
+
+                        <li>
+                            No administres comida, agua ni medicamentos
+                            si está inconsciente o no puede tragar
+                            normalmente.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </details>
+
+
+            <!-- Advertencia final -->
+
+            <div class="alert alert-secondary mt-4 mb-0">
+
+                <strong>Recuerda:</strong>
+
+                ante una emergencia, contacta a un veterinario antes
+                o durante el traslado cuando sea posible. Explica los
+                síntomas, el tiempo de evolución y cualquier accidente,
+                sustancia o medicamento involucrado.
+
             </div>
-            <div id="conversacionChatbot" class="chatbot-mensajes" aria-live="polite"></div>
-            <div id="indicadorChatbot" class="chatbot-indicador">Preparando respuesta...</div>
-            <div class="chatbot-escritura">
-                <form id="formChatbot" class="chatbot-formulario">
-                    <input type="text" id="mensajeChatbot" class="form-control" placeholder="Escribe qué le ocurre a tu mascota..." autocomplete="off" required>
-                    <button type="submit" id="btnEnviarChatbot" class="btn btn-primary">Enviar</button>
-                </form>
-                <p class="chatbot-aviso">El asistente no diagnostica ni sustituye una consulta veterinaria.</p>
-            </div>
+
         </section>
 
-        <form id="formEmergenciaUsuario" class="bg-white p-4 rounded">
+
+        <!-- ==========================================
+             CHATBOT
+             ========================================== -->
+
+        <section class="chatbot-contenedor mb-4"
+                 aria-labelledby="tituloChatEmergencia">
+
+            <div class="chatbot-cabecera">
+
+                <div>
+
+                    <h2 class="h5 mb-1"
+                        id="tituloChatEmergencia">
+
+                        Asistente de primeros auxilios
+
+                    </h2>
+
+                    <small>
+
+                        Describe lo que ocurre para recibir orientación
+                        general mientras contactas a un veterinario.
+
+                    </small>
+
+                </div>
+
+                <button type="button"
+                        id="btnEliminarConversacion"
+                        class="btn btn-naranja btn-sm">
+
+                    Limpiar chat
+
+                </button>
+
+            </div>
+
+
+            <div id="conversacionChatbot"
+                 class="chatbot-mensajes"
+                 aria-live="polite">
+            </div>
+
+
+            <div id="indicadorChatbot"
+                 class="chatbot-indicador">
+
+                Preparando respuesta...
+
+            </div>
+
+
+            <div class="chatbot-escritura">
+
+                <form id="formChatbot"
+                      class="chatbot-formulario">
+
+                    <input type="text"
+                           id="mensajeChatbot"
+                           class="form-control"
+                           placeholder="Escribe qué le ocurre a tu mascota..."
+                           autocomplete="off"
+                           required>
+
+                    <button type="submit"
+                            id="btnEnviarChatbot"
+                            class="btn btn-naranja">
+
+                        Enviar
+
+                    </button>
+
+                </form>
+
+
+                <p class="chatbot-aviso">
+
+                    El asistente no diagnostica ni sustituye una consulta
+                    veterinaria.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ==========================================
+             FORMULARIO DE EMERGENCIA
+             ========================================== -->
+
+        <form id="formEmergenciaUsuario"
+              class="recuadro-transparente p-4 rounded">
+
             <div class="mb-3">
-                <label class="form-label" for="tipoEmergenciaUsuario">Tipo de emergencia</label>
-                <select class="form-select" id="tipoEmergenciaUsuario" required>
-                    <option value="">Selecciona un tipo</option>
-                    <option>Emergencia médica</option>
-                    <option>Accidente</option>
-                    <option>Animal perdido</option>
-                    <option>Otro</option>
+
+                <label class="form-label"
+                       for="tipoEmergenciaUsuario">
+
+                    Tipo de emergencia
+
+                </label>
+
+                <select class="form-select"
+                        id="tipoEmergenciaUsuario"
+                        required>
+
+                    <option value="">
+                        Selecciona un tipo
+                    </option>
+
+                    <option value="Emergencia médica">
+                        Emergencia médica
+                    </option>
+
+                    <option value="Accidente">
+                        Accidente
+                    </option>
+
+                    <option value="Animal perdido">
+                        Animal perdido
+                    </option>
+
+                    <option value="Otro">
+                        Otro
+                    </option>
+
                 </select>
+
             </div>
+
+
+            <!-- Mascota asociada a la emergencia -->
+
             <div class="mb-3">
-                <label class="form-label" for="descripcionEmergenciaUsuario">Descripción</label>
-                <textarea class="form-control" id="descripcionEmergenciaUsuario" rows="4" maxlength="300" required></textarea>
+
+                <label class="form-label"
+                       for="mascotaEmergenciaUsuario">
+
+                    Mascota
+
+                </label>
+
+                <select class="form-select"
+                        id="mascotaEmergenciaUsuario"
+                        required>
+
+                    <option value="">
+                        Cargando mascotas...
+                    </option>
+
+                </select>
+
             </div>
-            <button class="btn btn-danger" id="btnEnviarEmergencia" type="submit">Guardar reporte</button>
-            <p id="estadoEmergencia" class="mt-3 mb-0" role="status" aria-live="polite"></p>
+
+
+            <div class="mb-3">
+
+                <label class="form-label"
+                       for="descripcionEmergenciaUsuario">
+
+                    Descripción
+
+                </label>
+
+                <textarea class="form-control"
+                          id="descripcionEmergenciaUsuario"
+                          rows="4"
+                          maxlength="300"
+                          placeholder="Describe brevemente qué ocurrió..."
+                          required></textarea>
+
+                <div class="form-text">
+                    Máximo 300 caracteres.
+                </div>
+
+            </div>
+
+
+            <button class="btn btn-naranja"
+                    id="btnEnviarEmergencia"
+                    type="submit">
+
+                Guardar reporte
+
+            </button>
+
+
+            <p id="estadoEmergencia"
+               class="mt-3 mb-0"
+               role="status"
+               aria-live="polite">
+            </p>
+
         </form>
 
+
+        <!-- ==========================================
+             REPORTES DEL USUARIO
+             ========================================== -->
+
         <section class="mt-4">
-            <h2 class="h4 text-white">Mis reportes</h2>
-            <div id="listaEmergencias" class="d-grid gap-2"></div>
+
+            <h2 class="h4 text-white">
+                Mis reportes
+            </h2>
+
+            <div id="listaEmergencias"
+                 class="d-grid gap-2">
+            </div>
+
         </section>
+
     </main>
+
+
     <script src="/JS/emergencia_usuario.js"></script>
+
+    <!-- El chatbot permanece independiente -->
     <script src="/JS/chatbot.js"></script>
+
 </body>
+
 </html>

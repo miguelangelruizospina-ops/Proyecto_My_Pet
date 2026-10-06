@@ -1,123 +1,855 @@
+// Archivo encargado de gestionar las emergencias de la mascota.
+
+// Ejecuta el código cuando la página haya terminado de cargar.
+
 document.addEventListener("DOMContentLoaded", function () {
+
+    // URL base de la API del proyecto.
+
     const apiBase = `${window.location.origin}/api`;
-    const usuarioGuardado = localStorage.getItem("usuarioLogueado");
-    const formulario = document.getElementById("formEmergenciaUsuario");
-    const lista = document.getElementById("listaEmergencias");
-    const estado = document.getElementById("estadoEmergencia");
-    const boton = document.getElementById("btnEnviarEmergencia");
-    const idMascota = new URLSearchParams(window.location.search).get("idMascota");
+
+    // Obtiene la información del usuario guardada en la sesión.
+
+    const usuarioGuardado =
+        localStorage.getItem("usuarioLogueado");
+
+    // Obtiene los elementos principales de la pantalla.
+
+    const formulario =
+        document.getElementById("formEmergenciaUsuario");
+
+    const lista =
+        document.getElementById("listaEmergencias");
+
+    const estado =
+        document.getElementById("estadoEmergencia");
+
+    const boton =
+        document.getElementById("btnEnviarEmergencia");
+
+    const selectorMascota =
+        document.getElementById("mascotaEmergenciaUsuario");
+
+    // Obtiene el ID de la mascota enviado en la URL.
+
+    const idMascotaUrl =
+        new URLSearchParams(window.location.search)
+            .get("idMascota");
+
+
+    // =========================================================
+    // VERIFICAR SESIÓN
+    // =========================================================
 
     if (!usuarioGuardado) {
-        window.location.href = "/Front%20end/Modulo_1_gestion_usuario/iniciar_sesion.html";
+
+        window.location.href =
+            "/Front%20end/Modulo_1_gestion_usuario/iniciar_sesion.html";
+
         return;
     }
+
+    // Variable donde se almacenará la información del usuario.
 
     let usuario;
+
     try {
-        usuario = JSON.parse(usuarioGuardado);
+
+        usuario =
+            JSON.parse(usuarioGuardado);
+
     } catch (error) {
+
         localStorage.removeItem("usuarioLogueado");
         localStorage.removeItem("idUsuario");
-        window.location.href = "/Front%20end/Modulo_1_gestion_usuario/iniciar_sesion.html";
+
+        window.location.href =
+            "/Front%20end/Modulo_1_gestion_usuario/iniciar_sesion.html";
+
         return;
     }
 
-    const idUsuario = usuario.idUsuario || usuario.id_usuario || localStorage.getItem("idUsuario");
+
+    // =========================================================
+    // OBTENER ID DEL USUARIO
+    // =========================================================
+
+    const idUsuario =
+        usuario.idUsuario ||
+        usuario.id_usuario ||
+        localStorage.getItem("idUsuario");
+
     if (!idUsuario) {
-        estado.textContent = "No se pudo identificar tu cuenta.";
+
+        estado.textContent =
+            "No se pudo identificar tu cuenta.";
+
         return;
     }
 
-    async function solicitar(url, opciones = {}) {
-        const respuesta = await fetch(`${apiBase}${url}`, {
-            ...opciones,
-            headers: {
-                ...(opciones.body ? { "Content-Type": "application/json" } : {}),
-                ...opciones.headers
+
+    // =========================================================
+    // TOKEN CSRF
+    // =========================================================
+
+    function obtenerTokenCsrf() {
+
+        const nombreCookie =
+            "XSRF-TOKEN";
+
+        const cookies =
+            document.cookie.split(";");
+
+        for (const cookie of cookies) {
+
+            const parte =
+                cookie.trim();
+
+            if (
+                parte.startsWith(
+                    nombreCookie + "="
+                )
+            ) {
+
+                return decodeURIComponent(
+                    parte.substring(
+                        nombreCookie.length + 1
+                    )
+                );
             }
-        });
-        if (!respuesta.ok) throw new Error(await respuesta.text() || "No se pudo completar la solicitud.");
-        const texto = await respuesta.text();
-        return texto ? JSON.parse(texto) : null;
+        }
+
+        return null;
     }
 
-    function mostrarEmergencias(emergencias) {
-        lista.replaceChildren();
-        if (!emergencias.length) {
-            lista.textContent = "Todavía no tienes reportes.";
+
+    // Solicita un nuevo token CSRF al backend.
+
+    async function inicializarCsrf() {
+
+        const respuesta =
+            await fetch(
+                `${apiBase}/usuario/csrf`,
+                {
+                    method: "GET",
+                    credentials: "same-origin"
+                }
+            );
+
+        if (!respuesta.ok) {
+
+            throw new Error(
+                "No se pudo obtener el token de seguridad."
+            );
+        }
+
+        return obtenerTokenCsrf();
+    }
+
+
+    // =========================================================
+    // FUNCIÓN GENERAL PARA LA API
+    // =========================================================
+
+    async function solicitar(
+        url,
+        opciones = {}
+    ) {
+
+        const metodo =
+            (
+                opciones.method ||
+                "GET"
+            ).toUpperCase();
+
+        const headers = {
+
+            ...(opciones.body
+                ? {
+                    "Content-Type":
+                        "application/json"
+                }
+                : {}),
+
+            ...(opciones.headers || {})
+        };
+
+
+        // Agregar token CSRF a las operaciones que modifican datos.
+
+        if (
+            metodo !== "GET" &&
+            metodo !== "HEAD" &&
+            metodo !== "OPTIONS"
+        ) {
+
+            let tokenCsrf =
+                obtenerTokenCsrf();
+
+            if (!tokenCsrf) {
+
+                tokenCsrf =
+                    await inicializarCsrf();
+            }
+
+            if (tokenCsrf) {
+
+                headers["X-XSRF-TOKEN"] =
+                    tokenCsrf;
+
+            } else {
+
+                throw new Error(
+                    "No se pudo obtener el token de seguridad CSRF."
+                );
+            }
+        }
+
+
+        const respuesta =
+            await fetch(
+                `${apiBase}${url}`,
+                {
+                    ...opciones,
+                    credentials: "same-origin",
+                    headers
+                }
+            );
+
+
+        if (!respuesta.ok) {
+
+            const mensaje =
+                await respuesta.text();
+
+            throw new Error(
+                mensaje ||
+                "No se pudo completar la solicitud."
+            );
+        }
+
+
+        const texto =
+            await respuesta.text();
+
+        return texto
+            ? JSON.parse(texto)
+            : null;
+    }
+
+
+    // =========================================================
+    // CARGAR MASCOTAS DEL USUARIO
+    // =========================================================
+
+    async function cargarMascotas() {
+
+        if (!selectorMascota) {
             return;
         }
 
-        emergencias.forEach(function (emergencia) {
-            const articulo = document.createElement("article");
-            articulo.className = "bg-white p-3 rounded";
-            const titulo = document.createElement("h3");
-            titulo.className = "h6";
-            titulo.textContent = emergencia.tipo || "Emergencia";
-            const descripcion = document.createElement("p");
-            descripcion.className = "mb-1";
-            descripcion.textContent = emergencia.descripcion || "Sin descripción";
-            const detalle = document.createElement("small");
-            const nombreMascota = emergencia.mascota?.nombre;
-            detalle.textContent = [nombreMascota, emergencia.fecha]
-                .filter(Boolean)
-                .join(" · ");
-            articulo.append(titulo, descripcion, detalle);
-            lista.append(articulo);
-        });
+        try {
+
+            selectorMascota.replaceChildren();
+
+            const opcionInicial =
+                document.createElement("option");
+
+            opcionInicial.value = "";
+            opcionInicial.textContent =
+                "Selecciona una mascota";
+
+            selectorMascota.appendChild(
+                opcionInicial
+            );
+
+
+            // Obtiene únicamente las mascotas pertenecientes
+            // al usuario autenticado.
+
+            const mascotas =
+                await solicitar(
+                    `/mascotas/usuario/${encodeURIComponent(idUsuario)}`
+                );
+
+
+            if (
+                !Array.isArray(mascotas) ||
+                mascotas.length === 0
+            ) {
+
+                const opcion =
+                    document.createElement("option");
+
+                opcion.value = "";
+                opcion.textContent =
+                    "No tienes mascotas registradas";
+
+                opcion.disabled = true;
+
+                selectorMascota.appendChild(
+                    opcion
+                );
+
+                return;
+            }
+
+
+            // Agrega cada mascota al selector.
+
+            mascotas.forEach(
+                function (mascota) {
+
+                    const opcion =
+                        document.createElement("option");
+
+                    opcion.value =
+                        mascota.idMascota;
+
+                    opcion.textContent =
+                        mascota.nombre ||
+                        "Mascota sin nombre";
+
+                    selectorMascota.appendChild(
+                        opcion
+                    );
+                }
+            );
+
+
+            // Si se ingresó desde el perfil de una mascota,
+            // selecciona automáticamente esa mascota.
+
+            if (idMascotaUrl) {
+
+                const mascotaExiste =
+                    mascotas.some(
+                        function (mascota) {
+
+                            return String(
+                                mascota.idMascota
+                            ) === String(
+                                idMascotaUrl
+                            );
+                        }
+                    );
+
+
+                if (mascotaExiste) {
+
+                    selectorMascota.value =
+                        String(idMascotaUrl);
+
+                } else {
+
+                    console.warn(
+                        "La mascota indicada en la URL no pertenece al usuario."
+                    );
+                }
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Error cargando las mascotas:",
+                error
+            );
+
+            selectorMascota.replaceChildren();
+
+            const opcionError =
+                document.createElement("option");
+
+            opcionError.value = "";
+            opcionError.textContent =
+                "No se pudieron cargar las mascotas";
+
+            selectorMascota.appendChild(
+                opcionError
+            );
+
+            estado.textContent =
+                "No se pudieron cargar tus mascotas.";
+        }
     }
+
+
+    // =========================================================
+    // SOLUCIONAR EMERGENCIA
+    // =========================================================
+
+    async function solucionarEmergencia(
+        idEmergencia
+    ) {
+
+        try {
+
+            await solicitar(
+                `/emergencias/resolver/${encodeURIComponent(idEmergencia)}`,
+                {
+                    method: "PUT"
+                }
+            );
+
+            estado.textContent =
+                "La emergencia fue marcada como solucionada.";
+
+            await cargarEmergencias();
+
+        } catch (error) {
+
+            console.error(
+                "Error solucionando la emergencia:",
+                error
+            );
+
+            estado.textContent =
+                error.message ||
+                "No se pudo marcar la emergencia como solucionada.";
+        }
+    }
+
+
+    // =========================================================
+    // MOSTRAR EMERGENCIAS
+    // =========================================================
+
+    function mostrarEmergencias(
+        emergencias
+    ) {
+
+        lista.replaceChildren();
+
+
+        const emergenciasPendientes =
+            emergencias.filter(
+                function (emergencia) {
+
+                    return (
+                        emergencia.estado &&
+                        emergencia.estado
+                            .toUpperCase() ===
+                        "PENDIENTE"
+                    );
+                }
+            );
+
+
+        if (!emergenciasPendientes.length) {
+
+            lista.textContent =
+                "No tienes emergencias pendientes.";
+
+            return;
+        }
+
+
+        emergenciasPendientes.forEach(
+            function (emergencia) {
+
+                const articulo =
+                    document.createElement(
+                        "article"
+                    );
+
+                // Recuadro semitransparente.
+
+                articulo.className =
+                    "p-3 rounded shadow-sm mb-3";
+
+                articulo.style.backgroundColor =
+                    "rgba(255, 255, 255, 0.78)";
+
+                articulo.style.backdropFilter =
+                    "blur(3px)";
+
+                articulo.style.webkitBackdropFilter =
+                    "blur(3px)";
+
+
+                // =================================================
+                // TÍTULO
+                // =================================================
+
+                const titulo =
+                    document.createElement(
+                        "h3"
+                    );
+
+                titulo.className =
+                    "h6 mb-2";
+
+                titulo.textContent =
+                    emergencia.tipo ||
+                    "Emergencia";
+
+
+                // =================================================
+                // DESCRIPCIÓN
+                // =================================================
+
+                const descripcion =
+                    document.createElement(
+                        "p"
+                    );
+
+                descripcion.className =
+                    "mb-1";
+
+                descripcion.textContent =
+                    emergencia.descripcion ||
+                    "Sin descripción";
+
+
+                // =================================================
+                // INFORMACIÓN ADICIONAL
+                // =================================================
+
+                const detalle =
+                    document.createElement(
+                        "small"
+                    );
+
+                const nombreMascota =
+                    emergencia.mascota?.nombre;
+
+                detalle.textContent =
+                    [
+                        nombreMascota,
+                        emergencia.fecha
+                    ]
+                    .filter(Boolean)
+                    .join(" · ");
+
+
+                // =================================================
+                // BOTÓN SOLUCIONAR
+                // =================================================
+
+                const botonResolver =
+                    document.createElement(
+                        "button"
+                    );
+
+                botonResolver.type =
+                    "button";
+
+                botonResolver.className =
+                    "btn btn-sm mt-3";
+
+                botonResolver.style.backgroundColor =
+                    "#F7931E";
+
+                botonResolver.style.borderColor =
+                    "#F7931E";
+
+                botonResolver.style.color =
+                    "#ffffff";
+
+                botonResolver.textContent =
+                    "Marcar como solucionada";
+
+
+                botonResolver.addEventListener(
+                    "mouseenter",
+                    function () {
+
+                        botonResolver.style.backgroundColor =
+                            "#d9790d";
+
+                        botonResolver.style.borderColor =
+                            "#d9790d";
+                    }
+                );
+
+
+                botonResolver.addEventListener(
+                    "mouseleave",
+                    function () {
+
+                        botonResolver.style.backgroundColor =
+                            "#F7931E";
+
+                        botonResolver.style.borderColor =
+                            "#F7931E";
+                    }
+                );
+
+
+                botonResolver.addEventListener(
+                    "click",
+                    async function () {
+
+                        const confirmar =
+                            window.confirm(
+                                "¿La emergencia ya fue atendida o solucionada?"
+                            );
+
+                        if (!confirmar) {
+                            return;
+                        }
+
+
+                        botonResolver.disabled =
+                            true;
+
+                        botonResolver.textContent =
+                            "Guardando...";
+
+
+                        await solucionarEmergencia(
+                            emergencia.idEmergencia
+                        );
+                    }
+                );
+
+
+                articulo.append(
+                    titulo,
+                    descripcion,
+                    detalle,
+                    botonResolver
+                );
+
+
+                lista.append(
+                    articulo
+                );
+            }
+        );
+    }
+
+
+    // =========================================================
+    // CARGAR EMERGENCIAS
+    // =========================================================
 
     async function cargarEmergencias() {
+
         try {
-            const emergencias = await solicitar(`/emergencias/usuario/${encodeURIComponent(idUsuario)}`);
-            mostrarEmergencias(emergencias);
+
+            const emergencias =
+                await solicitar(
+                    `/emergencias/usuario/${encodeURIComponent(idUsuario)}`
+                );
+
+            mostrarEmergencias(
+                emergencias
+            );
+
         } catch (error) {
-            console.error("Error cargando reportes de emergencia:", error);
-            estado.textContent = "No se pudieron cargar tus reportes.";
+
+            console.error(
+                "Error cargando reportes de emergencia:",
+                error
+            );
+
+            estado.textContent =
+                "No se pudieron cargar tus reportes.";
         }
     }
 
-    if (idMascota) {
-        const enlaceVolver = document.getElementById("volverEmergencia");
-        enlaceVolver.href = `/Front%20end/Modulo_2_gestion_mascotas/perfil_mascota.html?id=${encodeURIComponent(idMascota)}`;
-        solicitar(`/mascotas/${encodeURIComponent(idMascota)}`)
-            .then(mascota => {
-                document.getElementById("mascotaEmergencia").textContent = `Mascota: ${mascota.nombre}`;
-            })
-            .catch(error => {
-                console.error("No se pudo cargar la mascota:", error);
-                estado.textContent = "No se pudo verificar la mascota seleccionada.";
-            });
+
+    // =========================================================
+    // MASCOTA RECIBIDA DESDE EL PERFIL
+    // =========================================================
+
+    if (idMascotaUrl) {
+
+        const enlaceVolver =
+            document.getElementById(
+                "volverEmergencia"
+            );
+
+
+        if (enlaceVolver) {
+
+            enlaceVolver.href =
+                `/Front%20end/Modulo_2_gestion_mascotas/perfil_mascota.html?id=${encodeURIComponent(idMascotaUrl)}`;
+        }
+
+
+        // Consulta la información de la mascota
+        // para mostrarla en el encabezado.
+
+        solicitar(
+            `/mascotas/${encodeURIComponent(idMascotaUrl)}`
+        )
+            .then(
+                mascota => {
+
+                    const elementoMascota =
+                        document.getElementById(
+                            "mascotaEmergencia"
+                        );
+
+                    if (elementoMascota) {
+
+                        elementoMascota.textContent =
+                            `Mascota: ${mascota.nombre}`;
+                    }
+                }
+            )
+            .catch(
+                error => {
+
+                    console.error(
+                        "No se pudo cargar la mascota:",
+                        error
+                    );
+
+                    estado.textContent =
+                        "No se pudo verificar la mascota seleccionada.";
+                }
+            );
     }
 
-    formulario.addEventListener("submit", async function (event) {
-        event.preventDefault();
-        estado.textContent = "";
-        boton.disabled = true;
 
-        const descripcion = document.getElementById("descripcionEmergenciaUsuario").value.trim();
-        const emergencia = {
-            tipo: document.getElementById("tipoEmergenciaUsuario").value,
-            descripcion,
-            usuario: { idUsuario: Number(idUsuario) },
-            mascota: idMascota ? { idMascota: Number(idMascota) } : null
-        };
+    // =========================================================
+    // REGISTRAR NUEVA EMERGENCIA
+    // =========================================================
 
-        try {
-            await solicitar("/emergencias/guardar", {
-                method: "POST",
-                body: JSON.stringify(emergencia)
-            });
-            formulario.reset();
-            estado.textContent = "Reporte guardado en tu cuenta.";
-            await cargarEmergencias();
-        } catch (error) {
-            console.error("Error guardando el reporte:", error);
-            estado.textContent = error.message || "No se pudo guardar el reporte.";
-        } finally {
-            boton.disabled = false;
+    formulario.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+            estado.textContent =
+                "";
+
+            boton.disabled =
+                true;
+
+
+            const descripcion =
+                document
+                    .getElementById(
+                        "descripcionEmergenciaUsuario"
+                    )
+                    .value
+                    .trim();
+
+
+            // Obtiene la mascota seleccionada en el formulario.
+
+            const idMascotaSeleccionada =
+                selectorMascota
+                    ? selectorMascota.value
+                    : "";
+
+
+            // Verifica que se haya seleccionado una mascota.
+
+            if (!idMascotaSeleccionada) {
+
+                estado.textContent =
+                    "Selecciona la mascota relacionada con la emergencia.";
+
+                boton.disabled =
+                    false;
+
+                if (selectorMascota) {
+                    selectorMascota.focus();
+                }
+
+                return;
+            }
+
+
+            // Construye el objeto de la emergencia.
+
+            const emergencia = {
+
+                tipo:
+                    document.getElementById(
+                        "tipoEmergenciaUsuario"
+                    ).value,
+
+                descripcion,
+
+                usuario: {
+                    idUsuario:
+                        Number(idUsuario)
+                },
+
+                mascota: {
+                    idMascota:
+                        Number(idMascotaSeleccionada)
+                }
+            };
+
+
+            try {
+
+                // Envía la emergencia al backend.
+
+                await solicitar(
+                    "/emergencias/guardar",
+                    {
+                        method: "POST",
+                        body:
+                            JSON.stringify(
+                                emergencia
+                            )
+                    }
+                );
+
+
+                // Limpia el formulario.
+
+                formulario.reset();
+
+
+                // Si la página fue abierta desde el perfil
+                // de una mascota, conserva esa selección.
+
+                if (
+                    idMascotaUrl &&
+                    selectorMascota
+                ) {
+
+                    selectorMascota.value =
+                        String(idMascotaUrl);
+                }
+
+
+                estado.textContent =
+                    "Reporte guardado en tu cuenta.";
+
+
+                await cargarEmergencias();
+
+            } catch (error) {
+
+                console.error(
+                    "Error guardando el reporte:",
+                    error
+                );
+
+                estado.textContent =
+                    error.message ||
+                    "No se pudo guardar el reporte.";
+
+            } finally {
+
+                boton.disabled =
+                    false;
+            }
         }
-    });
+    );
+
+
+    // =========================================================
+    // INICIO
+    // =========================================================
+
+    // Primero carga las mascotas para llenar el selector.
+
+    cargarMascotas();
+
+    // Después carga las emergencias existentes.
 
     cargarEmergencias();
+
 });

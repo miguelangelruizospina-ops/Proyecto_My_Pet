@@ -51,6 +51,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return;
     }
+// ======================================================
+// FLECHA PARA REGRESAR AL PERFIL DE LA MASCOTA
+// ======================================================
+
+    const flechaVolverPerfil =
+        document.getElementById(
+            "flechaVolverPerfil"
+         );
+
+
+    if (flechaVolverPerfil) {
+
+        flechaVolverPerfil.href =
+            `perfil_mascota.html?id=${encodeURIComponent(
+                 idMascotaHistorial
+            )}`;
+    }
 
 
     // Cargar el historial médico

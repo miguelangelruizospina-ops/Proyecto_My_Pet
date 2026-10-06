@@ -1,12 +1,32 @@
 /* =========================================================
-   MY PET - ESTILOS GENERALES
+   MY PET - STYLE.CSS
+   Diseño visual unificado
    ========================================================= */
 
 
 /* =========================================================
-   FONDO INICIO
-   Configuración del fondo principal de la pantalla de inicio.
+   01. CONFIGURACIÓN GENERAL Y FONDOS
    ========================================================= */
+
+:root {
+    --mypet-orange: #F7931E;
+    --mypet-orange-hover: #ff9e2b;
+    --mypet-black: #000000;
+    --mypet-dark: #222222;
+    --mypet-gray: #444444;
+
+    --mypet-card-bg: rgba(255, 255, 255, 0.20);
+    --mypet-card-border: rgba(255, 255, 255, 0.35);
+
+    --mypet-content-bg: rgba(255, 255, 255, 0.90);
+    --mypet-shadow: 0 8px 25px rgba(0, 0, 0, 0.20);
+
+    --mypet-radius: 20px;
+    --mypet-button-radius: 10px;
+
+    --mypet-font-title: 'Franklin Gothic Medium', Arial, sans-serif;
+    --mypet-font-body: Arial, sans-serif;
+}
 
 #fondo-inicio {
     background-image: url("ilustraciones/fondo-patas-inicio.jpg");
@@ -16,11 +36,17 @@
     background-attachment: fixed;
 }
 
+.fondo_pata {
+    background-image: url("ilustraciones/fondo-pata.png");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
 
 /* =========================================================
-   LOGO INICIO
-   Distribución y dimensiones del logotipo de la pantalla
-   principal.
+   02. LOGOS
    ========================================================= */
 
 #logo-inicio {
@@ -44,11 +70,14 @@
     width: 100%;
 }
 
+.logo-img {
+    max-height: 300px;
+    object-fit: contain;
+}
+
 
 /* =========================================================
-   BOTONES INICIO / REGISTRO
-   Estilos de los botones principales para acceder al inicio
-   de sesión y al registro.
+   03. INICIO / REGISTRO / LOGIN
    ========================================================= */
 
 .contenedor-ini {
@@ -63,17 +92,17 @@
     width: 100%;
     max-width: 420px;
     aspect-ratio: 2.2 / 1;
-    background-color: #F7931E;
+    background-color: var(--mypet-orange);
     border-radius: 50%;
     border: none;
-    box-shadow: 10px 12px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 12px 20px rgba(0, 0, 0, 0.50);
     transition: transform 0.3s ease, opacity 0.3s ease;
     padding: 0;
 }
 
 .boton-naranja-ini-regi:hover {
     transform: scale(1.05);
-    opacity: 0.9;
+    opacity: 0.90;
     cursor: pointer;
 }
 
@@ -83,82 +112,54 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     font-weight: bold;
     font-size: clamp(1.5rem, 4vw, 2.8rem);
     text-decoration: none;
-    color: black;
+    color: var(--mypet-black);
     text-align: center;
     padding: 15px;
 }
-
-
-/* =========================================================
-   FONDO PATA
-   Fondo utilizado en las pantallas internas que requieren
-   la ilustración de la pata.
-   ========================================================= */
-
-.fondo_pata {
-    background-image: url("ilustraciones/fondo-pata.png");
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
-
-/* =========================================================
-   INICIAR SESIÓN
-   Estilos relacionados con el formulario y elementos de
-   acceso de usuarios.
-   ========================================================= */
 
 .inicia_sesi {
     text-align: center;
 }
 
 .inicia_sesi h2 {
+    color: var(--mypet-orange);
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
     font-size: clamp(1.5rem, 5vw, 40px);
-    color: white;
 }
 
 .inicia_sesi input {
-    font-size: clamp(1.5rem, 5vw, 40px);
+    font-size: clamp(1rem, 3vw, 25px);
 }
 
 .inicia_sesi a {
-    font-size: clamp(1.5rem, 5vw, 30px);
+    font-size: clamp(1rem, 3vw, 30px);
     color: rgb(6, 255, 243);
 }
 
 .inicia_sesi a:hover {
-    transform: scale(2);
-    opacity: 0.9;
-    cursor: pointer;
+    opacity: 0.85;
 }
 
-
-/* =========================================================
-   REGISTRO
-   Estilos del formulario de creación de nuevos usuarios.
-   ========================================================= */
-
 .registrate {
-    font-size: clamp(1.5rem, 5vw, 30px);
-    color: white;
+    font-size: clamp(1.2rem, 4vw, 30px);
+    color: var(--mypet-orange);
     text-align: center;
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
 }
 
 .registrate input {
-    font-size: clamp(1.5rem, 5vw, 30px);
+    font-size: clamp(1rem, 3vw, 25px);
 }
 
 
 /* =========================================================
-   FLECHA HACIA ATRÁS
-   Elementos utilizados para la navegación hacia pantallas
-   anteriores y navegación descendente.
+   04. FLECHAS Y NAVEGACIÓN
    ========================================================= */
 
 .flecha {
@@ -174,8 +175,8 @@
 
 .flecha:hover {
     transform: scale(1.15);
-    color: #F7931E;
-    -webkit-text-stroke: 2px #F7931E;
+    color: var(--mypet-orange);
+    -webkit-text-stroke: 2px var(--mypet-orange);
 }
 
 .flecha-back {
@@ -197,29 +198,30 @@
 
 
 /* =========================================================
-   BOTÓN NARANJA
-   Estilo general de los botones principales de la aplicación.
+   05. SISTEMA UNIFICADO DE BOTONES
    ========================================================= */
 
+/* Botones generales */
+
 .boton-naranja {
-    font-size: clamp(1.5rem, 5vw, 30px);
+    font-size: clamp(1.2rem, 4vw, 30px);
     padding: 20px;
-    background-color: #F7931E;
+    background-color: var(--mypet-orange);
     margin: 10px;
     cursor: pointer;
     border-radius: 50%;
-    box-shadow: 0 6px 12px rgba(5, 5, 5, 0.788);
+    box-shadow: 0 6px 12px rgba(5, 5, 5, 0.50);
     border: none;
-    color: black;
+    color: var(--mypet-black);
     text-decoration: none;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     font-weight: bold;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .boton-naranja:hover {
     transform: scale(1.05);
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 .padre-naranja {
@@ -230,10 +232,61 @@
 }
 
 
+/* Botones Bootstrap y botones de aplicación */
+
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-danger,
+.btn-warning,
+.btn-info,
+.btn-guardar,
+.btn-perfil-mascota,
+.btn-editar-perfil,
+.btn-naranja-modal,
+.btn_mascota_card,
+.btn_agregar_debajo,
+.boton-sos,
+.boton-chatbot {
+    background-color: var(--mypet-orange) !important;
+    border-color: var(--mypet-orange) !important;
+    color: var(--mypet-black) !important;
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+}
+
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-success:hover,
+.btn-danger:hover,
+.btn-warning:hover,
+.btn-info:hover,
+.btn-guardar:hover,
+.btn-perfil-mascota:hover,
+.btn-editar-perfil:hover,
+.btn-naranja-modal:hover,
+.btn_mascota_card:hover,
+.btn_agregar_debajo:hover,
+.boton-sos:hover,
+.boton-chatbot:hover {
+    background-color: var(--mypet-orange-hover) !important;
+    border-color: var(--mypet-orange-hover) !important;
+    color: var(--mypet-black) !important;
+}
+
+
+/* Botones normales que usan Bootstrap */
+
+button.btn:not(.btn-cancelar),
+a.btn,
+input[type="submit"].btn {
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+}
+
+
 /* =========================================================
-   GRID PRINCIPAL
-   Distribución de las opciones principales de la aplicación
-   mediante una cuadrícula adaptable.
+   06. GRID PRINCIPAL
    ========================================================= */
 
 .contenedor-grid {
@@ -253,18 +306,22 @@
     font-size: clamp(1.2rem, 3vw, 40px);
     height: 140px;
     width: 350px;
-    background-color: #F7931E;
+    background-color: var(--mypet-orange);
     cursor: pointer;
     border-radius: 50%;
-    box-shadow: 10px 12px 20px rgba(5, 5, 5, 0.6);
+    box-shadow: 10px 12px 20px rgba(5, 5, 5, 0.60);
     border: none;
     transition: 0.3s;
-    color: #000;
-    font-family: Calibri;
+    color: var(--mypet-black);
+    font-family: Calibri, Arial, sans-serif;
     font-weight: bolder;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.boton-naranja-ini:hover {
+    transform: scale(1.05);
 }
 
 .boton-naranja-ini a {
@@ -273,17 +330,11 @@
     align-items: center;
     width: 100%;
     height: 100%;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     font-weight: bold;
     text-decoration: none;
-    color: black;
+    color: var(--mypet-black);
 }
-
-
-/* =========================================================
-   BOTÓN AYUDA
-   Ubicación y dimensiones del botón de ayuda general.
-   ========================================================= */
 
 .btn-ayuda {
     position: absolute;
@@ -296,30 +347,77 @@
 
 
 /* =========================================================
-   PERFIL DE USUARIO
-   Elementos visuales y controles correspondientes al perfil
-   del usuario registrado.
+   07. SISTEMA GENERAL DE TÍTULOS
+   ========================================================= */
+
+#usu-cen-h1,
+#usu-corre h2,
+#editar-per,
+.nom-masco,
+.texto_perfil h1,
+.titulo-perfil-mascota,
+.titulo-naranja,
+.titulo-naranja h1,
+.encabezado-historial h1,
+.informacion-mascota h2,
+.titulo_modal_naranja {
+    color: var(--mypet-orange) !important;
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+}
+
+
+/* Títulos de interfaces */
+
+[class*="document"] h1,
+[class*="document"] h2,
+[class*="document"] h3,
+[id*="document"] h1,
+[id*="document"] h2,
+[id*="document"] h3,
+
+[class*="reporte"] h1,
+[class*="reporte"] h2,
+[class*="reporte"] h3,
+[id*="reporte"] h1,
+[id*="reporte"] h2,
+[id*="reporte"] h3,
+
+[class*="admin"] h1,
+[class*="admin"] h2,
+[class*="admin"] h3,
+[id*="admin"] h1,
+[id*="admin"] h2,
+[id*="admin"] h3 {
+    color: var(--mypet-orange) !important;
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   08. PERFIL DE USUARIO
    ========================================================= */
 
 .marco-foto-per {
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    border: 4px solid #F7931E;
+    border: 4px solid var(--mypet-orange);
     overflow: hidden;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.50);
     transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
 }
 
 .marco-foto-per:hover {
     transform: scale(1.05);
     opacity: 0.88;
-    box-shadow: 0 12px 25px rgba(247, 147, 30, 0.6);
+    box-shadow: 0 12px 25px rgba(247, 147, 30, 0.60);
 }
 
 .marco-foto-per img {
@@ -333,7 +431,7 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.70);
     color: white;
     font-size: 0.85rem;
     padding: 6px 0;
@@ -348,21 +446,16 @@
 }
 
 
-/* Botón de edición del perfil */
+/* Botón editar usuario */
 
 .btn-editar-perfil {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 8px 24px;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight: bold;
-    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    padding: 10px 24px;
+    font-size: 1rem;
     text-decoration: none;
-    border-radius: 30px;
-    background-color: #F7931E;
-    color: black;
-    border: none;
+    border-radius: 10px;
     min-width: 180px;
     box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.35);
     transition: transform 0.3s ease, opacity 0.3s ease;
@@ -376,76 +469,76 @@
 }
 
 
-/* Enlace para cambiar la contraseña */
-
-.link-cambiar-con {
-    color: rgb(6, 255, 243);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight: bold;
-    font-size: clamp(1rem, 2.5vw, 1.3rem);
-    text-decoration: none;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 6px 12px;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    text-align: center;
-}
-
-.link-cambiar-con:hover {
-    transform: scale(1.05);
-    opacity: 0.8;
-    color: rgb(6, 255, 243);
-}
-
-
-/* Nombre del usuario */
+/* Información usuario */
 
 #usu-cen-h1 {
     text-align: center;
-    color: white;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-    font-weight: bold;
-    font-size: clamp(1.2rem, 5vw, 70px);
+    font-size: clamp(1.5rem, 5vw, 55px);
+    color: var(--mypet-orange) !important;
 }
 
+#usu-corre {
+    width: 100%;
+    max-width: 500px;
+    margin: 15px auto;
+    padding: 25px;
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: var(--mypet-radius);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
 
-/* Correo y nombre de usuario */
-
+/* Título Información de usuario */
 #usu-corre h2 {
-    color: white;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-    font-weight: bold;
-    font-size: clamp(1.2rem, 3vw, 50px);
+    font-size: clamp(1.3rem, 3vw, 30px);
+    margin-bottom: 20px;
+    color: var(--mypet-orange) !important;
 }
 
+/* Nombre de los campos */
+#usu-corre label,
+#usu-corre .form-label {
+    color: #000 !important;
+    font-weight: bold !important;
+    font-family: var(--mypet-font-title);
+}
 
-/* Texto de edición del perfil */
+/* Información mostrada */
+#usu-corre p,
+#usu-corre span,
+#usu-corre div,
+#usu-corre strong,
+#usu-corre small {
+    color: #000 !important;
+    font-weight: normal;
+    font-family: Arial, sans-serif;
+}
 
+/* Datos dentro de formularios */
+#usu-corre input,
+#usu-corre select,
+#usu-corre textarea {
+    color: #000 !important;
+}
+
+/* Editar información de usuario */
 #editar-per {
     text-align: center;
-    color: white;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-    font-weight: bold;
-    font-size: clamp(1.2rem, 3vw, 50px);
+    font-size: clamp(1.3rem, 3vw, 40px);
+    color: var(--mypet-orange) !important;
 }
 
-
-/* Texto de cambio de contraseña */
-
+/* Cambiar contraseña */
 #cambiar-con {
     text-align: center;
     color: rgb(6, 255, 243);
-    font-family: 'Arial Narrow';
-    font-size: clamp(1.2rem, 3vw, 30px);
-    font-weight: 100;
+    font-family: Arial, sans-serif;
+    font-size: clamp(1rem, 3vw, 25px);
 }
 
-
 /* =========================================================
-   MASCOTAS
-   Elementos utilizados para mostrar las mascotas registradas
-   y permitir agregar nuevas mascotas.
+   09. MASCOTAS
    ========================================================= */
 
 .marco-foto-per-masco {
@@ -453,8 +546,8 @@
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    border: 4px solid #F7931E;
-    box-shadow: 0 0 30px rgba(254, 128, 1, 0.6);
+    border: 4px solid var(--mypet-orange);
+    box-shadow: 0 0 30px rgba(254, 128, 1, 0.60);
     overflow: hidden;
     position: relative;
     cursor: pointer;
@@ -488,7 +581,7 @@
     background: rgba(0, 0, 0, 0.75);
     color: #ffffff;
     font-size: 1.1rem;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     font-weight: bold;
     padding: 8px 0;
     text-align: center;
@@ -500,19 +593,10 @@
     opacity: 1;
 }
 
-
-/* Nombre de la mascota */
-
 .nom-masco {
     text-align: center;
-    color: white;
     font-size: clamp(1.2rem, 5vw, 50px);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-weight: bold;
 }
-
-
-/* Botones utilizados para agregar una mascota */
 
 .boton-agregar-mascota {
     display: flex;
@@ -522,31 +606,26 @@
     height: 200px;
     border-radius: 50%;
     background-color: #ffffff;
-    border: 4px solid #F7931E;
-    box-shadow: 0 0 30px rgba(254, 128, 1, 0.6);
-    color: #000000;
+    border: 4px solid var(--mypet-orange);
+    box-shadow: 0 0 30px rgba(254, 128, 1, 0.60);
+    color: var(--mypet-black);
     font-size: 110px;
     font-family: Arial, sans-serif;
     line-height: 1;
     transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
 }
 
-.boton-agregar-mascota span {
-    margin-bottom: 12px;
-}
-
 .boton-agregar-mascota:hover {
     transform: scale(1.08);
     box-shadow: 0 0 45px rgba(254, 128, 1, 0.95);
     opacity: 0.95;
-    color: #000000;
     cursor: pointer;
 }
 
 .boton_agregar {
-    color: black;
+    color: var(--mypet-black);
     text-decoration: none;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     font-size: 120px;
     background-color: white;
     width: 200px;
@@ -555,8 +634,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 50px rgba(254, 128, 1, 0.825);
-    border: 4px solid rgb(246, 117, 3);
+    box-shadow: 0 0 50px rgba(254, 128, 1, 0.82);
+    border: 4px solid var(--mypet-orange);
     margin-top: -70px;
 }
 
@@ -565,9 +644,6 @@
     margin: 0;
     line-height: 1;
 }
-
-
-/* Lista y distribución de las mascotas */
 
 .contenedor-lista {
     display: flex;
@@ -578,9 +654,6 @@
     margin-top: 50px;
 }
 
-
-/* Contenedor individual de cada mascota */
-
 .foto-nombre {
     display: flex;
     flex-direction: column;
@@ -589,20 +662,19 @@
 
 
 /* =========================================================
-   PERFIL MASCOTA
-   Estilos principales para visualizar la información general
-   de una mascota registrada.
+   10. PERFIL DE MASCOTA
    ========================================================= */
 
 #perfil-mascotas {
     margin: 0;
     padding: 0;
-    font-family: 'Arial Black', Gadget, sans-serif;
-    color: white;
+    font-family: Arial, sans-serif;
+    color: var(--mypet-black);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: transparent !important;
 }
 
 .contenedor_mascotas {
@@ -612,6 +684,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+    background: transparent !important;
 }
 
 .perfil_detalle {
@@ -621,6 +694,7 @@
     gap: 60px;
     width: 90%;
     margin-top: 20px;
+    background: transparent !important;
 }
 
 .perfil_detalle img {
@@ -629,7 +703,7 @@
     object-fit: cover;
     object-position: center 15%;
     border-radius: 8px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.40);
 }
 
 .texto_perfil h1 {
@@ -639,17 +713,16 @@
 }
 
 .texto_perfil h3 {
+    color: var(--mypet-black);
     font-size: 40px;
     margin: 10px 0;
     font-weight: 900;
 }
 
 .texto_perfil p {
+    color: var(--mypet-black);
     font-size: 30px;
 }
-
-
-/* Botón para editar la información de la mascota */
 
 .boton_editar_perfil {
     margin-top: 10px;
@@ -657,14 +730,15 @@
     text-align: center;
 }
 
+.boton_editar_perfil a {
+    text-decoration: none;
+}
+
 .boton_editar_perfil a h3 {
-    color: #F7931E;
+    color: var(--mypet-orange);
     font-size: clamp(1.2rem, 5vw, 40px);
     display: inline-block;
 }
-
-
-/* Opciones disponibles dentro del perfil */
 
 .seccion_opciones {
     display: flex;
@@ -682,15 +756,15 @@
     align-items: center;
     width: 100%;
     padding: 14px 20px;
-    background-color: #F7931E;
-    color: #000000;
+    background-color: var(--mypet-orange);
+    color: var(--mypet-black);
     border-radius: 25px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.30);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .opcion_ovalada h3 {
-    color: black;
+    color: var(--mypet-black);
     font-size: 1.5rem;
     text-align: center;
     margin: 0;
@@ -699,7 +773,7 @@
 }
 
 .opcion_ovalada span {
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     font-size: 1.85rem;
     font-weight: bold;
     text-align: center;
@@ -707,20 +781,16 @@
 
 .opcion_ovalada:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(247, 147, 30, 0.5);
-    color: #000000;
+    box-shadow: 0 8px 25px rgba(247, 147, 30, 0.50);
     cursor: pointer;
 }
-
-
-/* Marco utilizado para fotografías dentro del perfil */
 
 .marco-foto-perfil {
     width: 300px;
     height: 300px;
     border-radius: 50%;
-    border: 4px solid #F7931E;
-    box-shadow: 0 0 30px rgba(254, 128, 1, 0.7);
+    border: 4px solid var(--mypet-orange);
+    box-shadow: 0 0 30px rgba(254, 128, 1, 0.70);
     overflow: hidden;
 }
 
@@ -728,34 +798,151 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
 }
 
 .detalles-texto {
-    color: #ffffff;
+    color: var(--mypet-black) !important;
     font-size: 1.2rem;
-    font-weight: bold;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-}
-
-
-/* Elimina fondos innecesarios heredados en esta pantalla */
-
-#perfil-mascotas,
-.contenedor_mascotas,
-.perfil_detalle {
-    background: transparent !important;
-    background-color: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
+    font-weight: normal;
+    font-family: Arial, sans-serif;
 }
 
 
 /* =========================================================
-   FORO
-   Estilos de publicaciones, usuarios y acciones dentro
-   del foro de la aplicación.
+   11. INFORMACIÓN Y EDICIÓN DE MASCOTA
    ========================================================= */
+
+.tarjeta-mascota,
+.formulario-mascota {
+    width: 100%;
+    max-width: 500px;
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: var(--mypet-radius);
+    padding: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.tarjeta-mascota {
+    margin-top: 10px;
+}
+
+.formulario-mascota {
+    margin-top: 15px;
+}
+
+.titulo-perfil-mascota {
+    font-size: 24px;
+    margin-bottom: 18px;
+}
+
+.dato-mascota {
+    color: var(--mypet-black) !important;
+    font-size: 17px;
+    margin: 10px 0;
+    font-weight: normal;
+}
+
+.dato-mascota strong {
+    color: var(--mypet-black) !important;
+    font-weight: bold;
+}
+
+.formulario-mascota label {
+    color: var(--mypet-black) !important;
+    font-weight: bold;
+    font-family: var(--mypet-font-title);
+}
+
+.btn-guardar {
+    border: none;
+    border-radius: var(--mypet-button-radius);
+    padding: 10px 25px;
+    cursor: pointer;
+}
+
+.btn-cancelar {
+    background: transparent !important;
+    border: none !important;
+    color: var(--mypet-black) !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn-perfil-mascota {
+    border: none;
+    border-radius: var(--mypet-button-radius);
+    padding: 12px 25px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.btn-editar {
+    width: 100%;
+    max-width: 360px;
+}
+
+.botones-mascota {
+    width: 100%;
+    max-width: 500px;
+    display: flex !important;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 12px;
+}
+
+.boton-grande-mascota {
+    width: 230px;
+    min-height: 55px;
+    flex: 0 0 230px;
+}
+
+.acciones-mascota {
+    width: 100%;
+    max-width: 500px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.boton-sos,
+.boton-chatbot {
+    position: fixed;
+    background-color: var(--mypet-orange);
+    color: var(--mypet-black);
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-decoration: none;
+    z-index: 1000;
+}
+
+.boton-sos {
+    top: 20px;
+    right: 20px;
+}
+
+.boton-chatbot {
+    bottom: 20px;
+    right: 20px;
+}
+
+
+/* =========================================================
+   12. FORO
+   ========================================================= */
+
+/* Se mantiene la estructura visual del foro,
+   aumentando el contraste del contenido. */
 
 .contenedor_foro {
     display: flex;
@@ -765,22 +952,45 @@
 }
 
 .tarjeta_post {
-    background-color: rgba(255, 255, 255, 0.95);
-    border: none;
+    background-color: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.70);
     border-radius: 18px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .tarjeta_post:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.30) !important;
+}
+
+.tarjeta_post h1,
+.tarjeta_post h2,
+.tarjeta_post h3,
+.tarjeta_post h4,
+.tarjeta_post h5,
+.tarjeta_post h6 {
+    color: var(--mypet-dark) !important;
+    font-weight: bold;
+}
+
+.tarjeta_post p,
+.tarjeta_post span,
+.tarjeta_post div {
+    color: var(--mypet-dark);
+}
+
+.tarjeta_post small,
+.tarjeta_post .text-muted {
+    color: var(--mypet-gray) !important;
 }
 
 .avatar_usuario {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: #e9ecef;
+    background-color: rgba(233, 236, 239, 0.95);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -788,7 +998,7 @@
 
 .btn_accion_icono {
     text-decoration: none;
-    color: #495057;
+    color: #333 !important;
     font-weight: bold;
     font-size: 1.05rem;
     padding: 6px 12px;
@@ -801,51 +1011,30 @@
 .btn_accion_icono:hover {
     background-color: rgba(247, 147, 30, 0.15);
     transform: scale(1.1);
-    color: #000;
+    color: var(--mypet-black) !important;
 }
 
-
-/* Botones de edición y eliminación de publicaciones */
-
-.btn_editar_hover {
-    background-color: #F7931E;
-    color: #000;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+.btn_editar_hover,
+.btn_eliminar_hover {
+    background-color: var(--mypet-orange);
+    color: var(--mypet-black);
+    font-family: var(--mypet-font-title);
     font-weight: bold;
     padding: 6px 18px;
     border-radius: 20px;
-    text-decoration: none;
     border: none;
+    text-decoration: none;
     display: inline-block;
     transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.btn_editar_hover:hover {
-    transform: scale(1.08);
-    background-color: #ff9e2b;
-    box-shadow: 0 4px 12px rgba(247, 147, 30, 0.4);
-    color: #000;
-}
-
-.btn_eliminar_hover {
-    background-color: #343a40;
-    color: #fff;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-    font-weight: bold;
-    padding: 6px 18px;
-    border-radius: 20px;
-    border: none;
-    transition: transform 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
-}
-
+.btn_editar_hover:hover,
 .btn_eliminar_hover:hover {
     transform: scale(1.08);
-    background-color: #dc3545;
-    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+    background-color: var(--mypet-orange-hover);
+    box-shadow: 0 4px 12px rgba(247, 147, 30, 0.40);
+    color: var(--mypet-black);
 }
-
-
-/* Botón flotante para agregar publicaciones */
 
 .btn_flotante_agregar {
     position: fixed;
@@ -854,44 +1043,38 @@
     width: 65px;
     height: 65px;
     border-radius: 50%;
-    background-color: #ffffff;
-    color: #F7931E;
+    background-color: var(--mypet-orange);
+    color: var(--mypet-black);
     font-size: 45px;
     font-family: Arial, sans-serif;
     font-weight: 300;
-    border: 3px solid #F7931E;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    border: 3px solid var(--mypet-orange);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.30);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 0;
     padding: 0 0 5px 0;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: all 0.3s ease;
     z-index: 1000;
 }
 
 .btn_flotante_agregar:hover {
     transform: scale(1.15) rotate(90deg);
-    background-color: #F7931E;
-    color: #ffffff;
-    border-color: #ffffff;
-    box-shadow:
-        0 0 25px rgba(247, 147, 30, 0.9),
-        0 0 45px rgba(247, 147, 30, 0.6);
+    background-color: var(--mypet-orange-hover);
+    color: white;
+    border-color: white;
 }
 
 
 /* =========================================================
-   MODAL FORO
-   Estilos de la ventana utilizada para crear nuevas
-   publicaciones en el foro.
+   13. MODAL DEL FORO
    ========================================================= */
 
 #dialogo_nuevo_post {
     width: 90%;
     max-width: 500px;
-    background-color: #ffffff;
 }
 
 #dialogo_nuevo_post::backdrop {
@@ -900,27 +1083,22 @@
 }
 
 .titulo_modal_naranja {
-    color: #F7931E;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+    font-size: 1.8rem;
 }
 
 .btn-naranja-modal {
-    background-color: #F7931E;
-    color: #ffffff;
     border: none;
     transition: transform 0.2s ease;
 }
 
 .btn-naranja-modal:hover {
-    background-color: #ff9e2b;
     transform: scale(1.03);
 }
 
 
 /* =========================================================
-   AGENDA
-   Elementos principales de la agenda y selección de mascotas
-   para los eventos.
+   14. AGENDA
+   Se conserva el diseño actual
    ========================================================= */
 
 #calendario_principal {
@@ -931,7 +1109,7 @@
     border-radius: 30px;
     font-family: Arial, sans-serif;
     font-weight: bolder;
-    background-color: #F7931E;
+    background-color: var(--mypet-orange);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.814);
 }
 
@@ -943,7 +1121,7 @@
     text-align: center;
     color: white;
     font-size: clamp(1.5rem, 5vw, 30px);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
 }
 
 .boton_real_mascota,
@@ -951,26 +1129,31 @@
     height: 80px;
     width: 300px;
     font-size: clamp(1.5rem, 5vw, 40px);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     border-radius: 30px;
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.814);
     margin: 10px;
+    background-color: var(--mypet-orange);
+    border: none;
+    color: var(--mypet-black);
 }
 
-.contenedor_agenda_personalizada {
-    text-align: center;
+.boton_real_mascota:hover,
+.boton_agregar_evento:hover {
+    background-color: var(--mypet-orange-hover);
+    color: var(--mypet-black);
 }
 
 .campo_funcional {
     color: white;
     font-size: clamp(1.5rem, 5vw, 30px);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     padding: 10px;
 }
 
 #fecha_evento,
 #reloj_funcional {
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     padding: 5px;
     font-size: clamp(1.5rem, 5vw, 20px);
     background: none;
@@ -989,6 +1172,12 @@
     height: 50px;
 }
 
+.boton_agregar_a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .boton_agregar_a a {
     text-decoration: none;
     color: white;
@@ -997,39 +1186,83 @@
 }
 
 
-/* Agenda personalizada */
+/* =========================================================
+   15. AGENDA PERSONALIZADA
+   ========================================================= */
 
 .titulo-naranja h1,
 .titulo-naranja {
-    color: #F7931E;
+    color: var(--mypet-orange);
     font-size: clamp(2.2rem, 6.5vw, 75px);
     text-align: center;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     font-weight: 900;
     margin: 0;
     line-height: 1.1;
 }
 
+.contenedor_agenda_personalizada {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.recuadro_gestion_evento {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 25px;
+    box-sizing: border-box;
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: var(--mypet-radius);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+#estadoAgenda {
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
 .tarjeta_agenda {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.20);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     border-radius: 30px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-    backdrop-filter: blur(4px);
-    transition: transform 0.2s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta_agenda:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
 }
 
 .titulo_seccion {
     color: #343a40;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+    font-family: var(--mypet-font-title);
     font-weight: bold;
     font-size: clamp(1.1rem, 4vw, 1.85rem);
     margin: 0;
 }
 
-.input_fecha_custom {
-    background-color: #F7931E;
+.tarjeta_agenda p {
     color: #343a40;
-    border: 2px solid #F7931E;
+    font-family: Arial, sans-serif;
+}
+
+.input_fecha_custom {
+    background-color: var(--mypet-orange);
+    color: #343a40;
+    border: 2px solid var(--mypet-orange);
     border-radius: 14px !important;
     text-align: left;
     font-weight: 800;
@@ -1044,17 +1277,16 @@
 }
 
 .input_fecha_custom:hover {
-    background-color: #ff9e2b;
-    border-color: #ff9e2b;
-    color: #ffffff;
+    background-color: var(--mypet-orange-hover);
+    border-color: var(--mypet-orange-hover);
+    color: white;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(247, 147, 30, 0.4);
 }
 
 .input_fecha_custom:focus {
-    background-color: #ffffff;
+    background-color: white;
     color: #343a40;
-    border-color: #F7931E;
+    border-color: var(--mypet-orange);
     outline: none;
     box-shadow: 0 0 0 0.25rem rgba(247, 147, 30, 0.35);
 }
@@ -1062,104 +1294,203 @@
 .input_fecha_custom::-webkit-calendar-picker-indicator {
     cursor: pointer;
     filter: brightness(0.2);
-    transition: filter 0.2s ease;
-}
-
-.input_fecha_custom:hover::-webkit-calendar-picker-indicator {
-    filter: brightness(1);
 }
 
 .btn_mascota_card {
-    background-color: #ffffff;
-    color: #F7931E;
-    border: 2px solid #F7931E;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
+    border: 2px solid var(--mypet-orange);
     font-size: clamp(0.95rem, 3.5vw, 1.1rem);
-    font-weight: bold;
     padding: 8px 24px;
     border-radius: 22px;
     cursor: pointer;
     transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn_mascota_card:hover {
-    background-color: #F7931E;
-    color: #ffffff;
     transform: scale(1.05);
+}
+
+
+/* Botón agregar evento */
+
+.control_inferior {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 40px;
 }
 
 .btn_agregar_debajo {
     width: 65px;
     height: 65px;
     border-radius: 50%;
-    background-color: #ffffff;
-    color: #F7931E;
+    color: var(--mypet-black);
     font-size: 42px;
-    font-family: Arial, sans-serif;
     font-weight: 300;
-    border: 3px solid #F7931E;
+    border: 3px solid var(--mypet-orange);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    line-height: 0;
-    padding: 0 0 4px 0;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    line-height: 1;
+    padding: 0 0 5px 0;
+    transition: all 0.3s ease;
 }
 
 .btn_agregar_debajo:hover {
     transform: scale(1.12) rotate(90deg);
-    background-color: #F7931E;
-    color: #ffffff;
-    border-color: #ffffff;
-    box-shadow: 0 0 22px rgba(247, 147, 30, 0.85);
-}
-
-#dialogo_nuevo_evento {
-    width: 90%;
-    max-width: 450px;
-}
-
-#dialogo_nuevo_evento::backdrop {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(2px);
 }
 
 
 /* =========================================================
-   CHATBOT
-   Estilos de la interfaz de conversación, mensajes,
-   formulario de entrada y elementos de navegación.
+   16. MODAL NUEVO EVENTO
    ========================================================= */
 
-.chatbot-card {
-    background: rgba(255, 255, 255, 0.90);
+#dialogo_nuevo_evento {
+    width: 90%;
+    max-width: 450px;
+    border: none;
     border-radius: 20px;
+    padding: 0;
+    background: transparent;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.40);
     overflow: hidden;
 }
 
-.chatbot-header {
-    background: #F7931E;
+#dialogo_nuevo_evento::backdrop {
+    background: rgba(0, 0, 0, 0.60);
+    backdrop-filter: blur(2px);
+}
+
+.formulario_modal {
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.70);
+    border-radius: 20px;
+    box-sizing: border-box;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.formulario_modal h2 {
+    color: var(--mypet-orange);
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+    text-align: center;
+    margin: 0 0 25px;
+    font-size: 1.8rem;
+}
+
+.formulario_modal label {
+    display: block;
+    color: var(--mypet-black);
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+.formulario_modal input,
+.formulario_modal select,
+.formulario_modal textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    color: var(--mypet-black);
+    background-color: var(--mypet-content-bg);
+    box-sizing: border-box;
+}
+
+.formulario_modal textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.formulario_modal input:focus,
+.formulario_modal select:focus,
+.formulario_modal textarea:focus {
+    outline: none;
+    border-color: var(--mypet-orange);
+    box-shadow: 0 0 0 0.2rem rgba(247, 147, 30, 0.25);
+}
+
+.botones_form {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.botones_form button {
+    border: none;
+    border-radius: var(--mypet-button-radius);
+    padding: 10px 25px;
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.botones_form button[type="submit"],
+.botones_form button[type="button"] {
+    background-color: var(--mypet-orange);
+    color: var(--mypet-black);
+}
+
+.botones_form button:hover {
+    transform: scale(1.05);
+    opacity: 0.90;
+}
+
+
+/* =========================================================
+   17. CHATBOT
+   ========================================================= */
+
+.chatbot-card,
+.chatbot-contenedor {
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: 20px;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.chatbot-header,
+.chatbot-cabecera {
+    background: var(--mypet-orange);
 }
 
 .chatbot-conversacion {
     height: 500px;
     overflow-y: auto;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.20);
+}
+
+.mensaje-usuario,
+.mensaje-chatbot {
+    display: flex;
+    margin-bottom: 18px;
 }
 
 .mensaje-usuario {
-    display: flex;
     justify-content: flex-end;
-    margin-bottom: 18px;
 }
 
 .mensaje-chatbot {
-    display: flex;
     justify-content: flex-start;
-    margin-bottom: 18px;
 }
 
 .mensaje-contenido {
@@ -1171,15 +1502,15 @@
 }
 
 .mensaje-usuario .mensaje-contenido {
-    background: #F7931E;
-    color: white;
+    background: var(--mypet-orange);
+    color: var(--mypet-black);
     border-bottom-right-radius: 4px;
 }
 
 .mensaje-chatbot .mensaje-contenido {
-    background: white;
+    background: rgba(255, 255, 255, 0.92);
     color: #333;
-    border: 1px solid #e2e2e2;
+    border: 1px solid rgba(226, 226, 226, 0.70);
     border-bottom-left-radius: 4px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
@@ -1189,30 +1520,28 @@
     border-radius: 12px;
     border: 1px solid #d7d7d7;
     padding-left: 15px;
+    background: rgba(255, 255, 255, 0.90);
+    color: var(--mypet-black);
 }
 
 #mensajeChatbot:focus {
-    border-color: #F7931E;
+    border-color: var(--mypet-orange);
     box-shadow: 0 0 0 0.2rem rgba(247, 147, 30, 0.15);
 }
 
 #btnEnviarChatbot {
     height: 45px;
     padding: 0 24px;
-    background: #F7931E;
+    background: var(--mypet-orange);
     border: none;
-    color: white;
+    color: var(--mypet-black);
     border-radius: 12px;
-    font-weight: 500;
+    font-weight: bold;
 }
 
 #btnEnviarChatbot:hover {
-    background: #d9790c;
-    color: white;
+    background: var(--mypet-orange-hover);
 }
-
-
-/* Estructura principal y navegación del chatbot */
 
 .chatbot-titulo {
     position: relative;
@@ -1231,31 +1560,25 @@
     color: white;
     font-size: clamp(1.8rem, 5vw, 55px);
     text-decoration: none;
-    display: inline-block;
     font-weight: 900;
     line-height: 1;
     -webkit-text-stroke: 2px white;
-    transition: transform 0.2s ease, color 0.2s ease;
 }
 
 .chatbot-regresar:hover {
     transform: translateY(-50%) scale(1.15);
-    color: #F7931E;
-    -webkit-text-stroke: 2px #F7931E;
+    color: var(--mypet-orange);
+    -webkit-text-stroke: 2px var(--mypet-orange);
 }
 
 .chatbot-contenedor {
     width: 100%;
     max-width: 850px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.94);
-    border-radius: 22px;
-    overflow: hidden;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
 }
 
 .chatbot-cabecera {
-    background: #F7931E;
     color: white;
     padding: 18px 22px;
     display: flex;
@@ -1276,20 +1599,20 @@
     height: 500px;
     overflow-y: auto;
     padding: 25px;
-    background: rgba(248, 248, 248, 0.95);
+    background: rgba(248, 248, 248, 0.20);
 }
 
 .chatbot-indicador {
     display: none;
     padding: 8px 25px;
     font-size: 13px;
-    color: #777;
+    color: white;
 }
 
 .chatbot-escritura {
     padding: 18px 20px 15px;
-    background: white;
-    border-top: 1px solid #eeeeee;
+    background: rgba(255, 255, 255, 0.20);
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .chatbot-formulario {
@@ -1302,31 +1625,29 @@
     margin: 9px 0 0;
     text-align: center;
     font-size: 12px;
-    color: #777;
+    color: white;
 }
 
 
 /* =========================================================
-   NOTIFICACIONES
-   Estilos de la lista, estados, acciones y mensajes de las
-   notificaciones del usuario.
+   18. NOTIFICACIONES
    ========================================================= */
 
 .notificaciones-contenedor {
     width: 100%;
     max-width: 850px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.94);
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
     border-radius: 22px;
     overflow: hidden;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
-
-/* Cabecera de notificaciones */
-
 .notificaciones-cabecera {
-    background: #F7931E;
+    background: rgba(247, 147, 30, 0.74);
     color: white;
     padding: 18px 22px;
     display: flex;
@@ -1339,63 +1660,71 @@
     font-weight: 600;
 }
 
+
+/* No modificamos "Mis notificaciones" de forma global */
+
 #contadorNotificaciones {
     font-size: 13px;
     opacity: 0.95;
 }
 
+#btnMarcarTodasComoLeidas,
+#btnEliminarTodas {
+    background-color: var(--mypet-orange) !important;
+    color: var(--mypet-black) !important;
+    border: none !important;
+    border-radius: 30px !important;
+    padding: 8px 18px !important;
+    font-family: var(--mypet-font-title) !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.25) !important;
+    cursor: pointer !important;
+    transition: transform 0.3s ease, opacity 0.3s ease !important;
+}
 
-/* Lista de notificaciones */
+#btnMarcarTodasComoLeidas:hover,
+#btnEliminarTodas:hover {
+    background-color: var(--mypet-orange-hover) !important;
+    transform: scale(1.05);
+}
 
 .notificaciones-lista {
     padding: 20px;
 }
-
-
-/* Tarjetas individuales */
 
 .notificacion-item {
     position: relative;
     padding: 18px;
     margin-bottom: 12px;
     border-radius: 14px;
-    border: 1px solid #e5e5e5;
-    background: white;
+    border: 1px solid rgba(229, 229, 229, 0.45);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     transition: 0.2s ease;
 }
 
 .notificacion-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
-
-
-/* Diferenciación de notificaciones no leídas */
 
 .notificacion-no-leida {
-    border-left: 5px solid #F7931E;
-    background: #fff8ef;
+    border-left: 5px solid var(--mypet-orange);
+    background: rgba(255, 248, 239, 0.92);
 }
 
-
-/* Contenido de la notificación */
-
 .notificacion-mensaje {
-    color: #333;
+    color: var(--mypet-dark);
     font-size: 15px;
     line-height: 1.5;
     margin-bottom: 8px;
 }
 
-
-/* Fecha de la notificación */
-
 .notificacion-fecha {
-    color: #777;
+    color: var(--mypet-gray);
     font-size: 12px;
 }
-
-
-/* Estado de lectura */
 
 .notificacion-estado {
     display: inline-block;
@@ -1407,17 +1736,14 @@
 }
 
 .estado-no-leida {
-    background: #F7931E;
-    color: white;
+    background: var(--mypet-orange);
+    color: var(--mypet-black);
 }
 
 .estado-leida {
-    background: #e9e9e9;
-    color: #666;
+    background: rgba(233, 233, 233, 0.90);
+    color: #444;
 }
-
-
-/* Acciones disponibles para cada notificación */
 
 .notificacion-acciones {
     display: flex;
@@ -1431,53 +1757,626 @@
     padding: 6px 10px;
     font-size: 12px;
     cursor: pointer;
+    background: var(--mypet-orange);
+    color: var(--mypet-black);
 }
 
-.btn-leer-notificacion {
-    background: #F7931E;
-    color: white;
+.notificacion-acciones button:hover {
+    background: var(--mypet-orange-hover);
 }
-
-.btn-leer-notificacion:hover {
-    background: #d9790c;
-}
-
-.btn-eliminar-notificacion {
-    background: #eeeeee;
-    color: #555;
-}
-
-.btn-eliminar-notificacion:hover {
-    background: #dddddd;
-}
-
-
-/* Mensaje mostrado cuando no existen notificaciones */
 
 .notificaciones-vacio {
     padding: 50px 20px;
     text-align: center;
-    color: #777;
+    color: var(--mypet-dark);
     display: none;
 }
 
 
-/* =========================================================
-   LOGO
-   Configuración general para logotipos utilizados dentro
-   de las diferentes pantallas.
-   ========================================================= */
+/* Notificaciones en inicio */
 
-.logo-img {
-    max-height: 300px;
-    object-fit: contain;
+.notificaciones-inicio {
+    position: fixed;
+    top: 25px;
+    right: 30px;
+    z-index: 9999;
+}
+
+.notificaciones-inicio .btn-notificaciones {
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 90px !important;
+    height: 90px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: var(--mypet-orange) !important;
+    border: 3px solid white !important;
+    border-radius: 50% !important;
+    color: black !important;
+    text-decoration: none !important;
+    font-size: 50px !important;
+    line-height: 1 !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.notificaciones-inicio .btn-notificaciones:hover {
+    transform: scale(1.08);
+    opacity: 0.90;
+}
+
+.indicador-notificaciones,
+.indicador-agenda {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid white;
+    display: none;
+}
+
+.indicador-agenda {
+    z-index: 2;
+}
+
+.indicador-notificaciones {
+    z-index: 3;
 }
 
 
 /* =========================================================
-   RESPONSIVE GENERAL
-   Adaptaciones para pantallas con un ancho máximo de
-   900 píxeles.
+   19. HISTORIAL MÉDICO
+   ========================================================= */
+
+.contenedor-historial {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px 20px 50px;
+}
+
+.encabezado-historial {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
+    padding: 10px 60px;
+}
+
+.encabezado-historial h1 {
+    color: var(--mypet-orange);
+    font-family: var(--mypet-font-title);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+}
+
+.encabezado-historial .flecha-back {
+    position: fixed;
+    top: 20px;
+    left: 30px;
+    color: white;
+    font-size: 55px;
+    line-height: 1;
+    text-decoration: none;
+    font-weight: 900;
+    z-index: 1000;
+}
+
+.encabezado-historial .flecha-back:hover {
+    transform: scale(1.15);
+    color: var(--mypet-orange);
+    -webkit-text-stroke: 2px var(--mypet-orange);
+}
+
+.informacion-mascota,
+.estado-historial,
+.formulario-historial,
+.informacion-historial {
+    width: 100%;
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: var(--mypet-radius);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.informacion-mascota {
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.informacion-mascota h2 {
+    color: var(--mypet-orange);
+    font-family: var(--mypet-font-title);
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    font-weight: bold;
+    margin: 0;
+}
+
+.informacion-mascota p {
+    color: var(--mypet-black);
+    font-weight: normal;
+}
+
+.estado-historial {
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.estado-historial p {
+    color: var(--mypet-dark);
+    font-family: Arial, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.formulario-historial {
+    padding: 25px 20px;
+}
+
+.formulario-historial label {
+    color: var(--mypet-black);
+    font-weight: bold;
+    font-family: var(--mypet-font-title);
+}
+
+.formulario-historial .form-control,
+.formulario-historial .form-select {
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    background: var(--mypet-content-bg);
+    color: var(--mypet-black);
+}
+
+.formulario-historial .form-control:focus,
+.formulario-historial .form-select:focus {
+    border-color: var(--mypet-orange);
+    box-shadow: 0 0 0 0.2rem rgba(247, 147, 30, 0.25);
+}
+
+.informacion-historial {
+    padding: 25px 20px;
+}
+
+.campo-historial {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.70);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.campo-historial h3 {
+    color: var(--mypet-black);
+    font-family: var(--mypet-font-title);
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.campo-historial p {
+    color: var(--mypet-black) !important;
+    font-family: Arial, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+    font-weight: normal;
+}
+
+.acciones-formulario,
+.acciones-historial {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.acciones-formulario .btn,
+.acciones-historial .btn,
+.estado-historial .btn {
+    background-color: var(--mypet-orange);
+    border: none;
+    color: var(--mypet-black);
+    border-radius: var(--mypet-button-radius);
+    padding: 10px 30px;
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+}
+
+.acciones-formulario .btn:hover,
+.acciones-historial .btn:hover,
+.estado-historial .btn:hover {
+    background-color: var(--mypet-orange-hover);
+    color: var(--mypet-black);
+    transform: scale(1.05);
+}
+
+
+/* =========================================================
+   20. DOCUMENTOS
+   ========================================================= */
+
+/* Unificación para las interfaces de documentos */
+
+[class*="document"],
+[id*="document"] {
+    color: var(--mypet-black);
+}
+
+[class*="document"] label,
+[id*="document"] label,
+[class*="document"] .form-label,
+[id*="document"] .form-label {
+    color: var(--mypet-black) !important;
+    font-weight: bold !important;
+    font-family: var(--mypet-font-title);
+}
+
+[class*="document"] input,
+[class*="document"] select,
+[class*="document"] textarea,
+[id*="document"] input,
+[id*="document"] select,
+[id*="document"] textarea {
+    color: var(--mypet-black) !important;
+    background-color: var(--mypet-content-bg);
+}
+
+[class*="document"] table,
+[id*="document"] table {
+    color: var(--mypet-black);
+}
+
+[class*="document"] .card,
+[id*="document"] .card,
+[class*="document"] .container-card,
+[id*="document"] .container-card {
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: var(--mypet-radius);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+
+/* =========================================================
+   21. REPORTES Y AYUDA
+   ========================================================= */
+
+[class*="reporte"],
+[id*="reporte"],
+[class*="ayuda"],
+[id*="ayuda"] {
+    color: var(--mypet-black);
+}
+
+[class*="reporte"] label,
+[id*="reporte"] label,
+[class*="ayuda"] label,
+[id*="ayuda"] label {
+    color: var(--mypet-black) !important;
+    font-weight: bold !important;
+}
+
+[class*="reporte"] input,
+[class*="reporte"] select,
+[class*="reporte"] textarea,
+[id*="reporte"] input,
+[id*="reporte"] select,
+[id*="reporte"] textarea,
+[class*="ayuda"] input,
+[class*="ayuda"] select,
+[class*="ayuda"] textarea,
+[id*="ayuda"] input,
+[id*="ayuda"] select,
+[id*="ayuda"] textarea {
+    color: var(--mypet-black) !important;
+}
+
+button[id*="manual" i],
+a[id*="manual" i],
+button[class*="manual" i],
+a[class*="manual" i],
+button[id*="reporte" i],
+a[id*="reporte" i],
+button[class*="reporte" i],
+a[class*="reporte" i],
+button[id*="copiar" i],
+a[id*="copiar" i],
+button[class*="copiar" i],
+a[class*="copiar" i] {
+    background-color: var(--mypet-orange) !important;
+    border-color: var(--mypet-orange) !important;
+    color: var(--mypet-black) !important;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   22. ADMINISTRACIÓN
+   ========================================================= */
+
+[class*="admin"],
+[id*="admin"] {
+    color: var(--mypet-black);
+}
+
+[class*="admin"] label,
+[id*="admin"] label,
+[class*="admin"] .form-label,
+[id*="admin"] .form-label {
+    color: var(--mypet-black) !important;
+    font-weight: bold !important;
+    font-family: var(--mypet-font-title);
+}
+
+[class*="admin"] input,
+[class*="admin"] select,
+[class*="admin"] textarea,
+[id*="admin"] input,
+[id*="admin"] select,
+[id*="admin"] textarea {
+    color: var(--mypet-black) !important;
+    background-color: var(--mypet-content-bg);
+}
+
+[class*="admin"] .card,
+[id*="admin"] .card {
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: var(--mypet-radius);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+[class*="admin"] .btn,
+[id*="admin"] .btn {
+    background-color: var(--mypet-orange) !important;
+    border-color: var(--mypet-orange) !important;
+    color: var(--mypet-black) !important;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   23. FORMULARIOS GLOBALES
+   ========================================================= */
+
+/* Todos los campos editables */
+
+.form-control,
+.form-select,
+input,
+select,
+textarea {
+    color: var(--mypet-black) !important;
+}
+
+/* Campos Bootstrap */
+
+.form-control,
+.form-select {
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    background-color: var(--mypet-content-bg);
+}
+
+.form-control:focus,
+.form-select:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--mypet-orange);
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(247, 147, 30, 0.25);
+}
+
+input::placeholder,
+textarea::placeholder,
+.form-control::placeholder {
+    color: #555 !important;
+    opacity: 1;
+}
+
+
+/* Etiquetas generales */
+
+label,
+.form-label {
+    color: var(--mypet-black) !important;
+    font-family: var(--mypet-font-title);
+    font-weight: bold !important;
+}
+
+
+/* Formularios comunes */
+
+.formulario-transparente {
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: var(--mypet-radius);
+    padding: 20px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+
+/* =========================================================
+   24. RECUADROS Y TARJETAS
+   ========================================================= */
+
+.recuadro-transparente,
+.formulario-transparente,
+.tarjeta-transparente {
+    background: var(--mypet-card-bg);
+    border: 1px solid var(--mypet-card-border);
+    border-radius: var(--mypet-radius);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+/*
+ * Se conserva .bg-white para compatibilidad con Bootstrap,
+ * pero se evita que el contenido quede completamente opaco.
+ */
+
+.bg-white {
+    background-color: var(--mypet-card-bg) !important;
+    border-color: var(--mypet-card-border);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+
+/* =========================================================
+   25. TABLAS
+   ========================================================= */
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--mypet-black);
+
+    background: transparent;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.table > :not(caption) > * > * {
+    color: var(--mypet-black) !important;
+    border-color: rgba(0, 0, 0, 0.10);
+}
+
+/* Encabezado */
+
+.table thead {
+    background: var(--mypet-orange);
+}
+
+.table thead th {
+    background: var(--mypet-orange) !important;
+    color: var(--mypet-black) !important;
+    border-color: rgba(0, 0, 0, 0.10);
+    font-weight: bold;
+}
+
+/* Área de información */
+
+.table tbody {
+    background: transparent;
+}
+
+.table tbody tr {
+    background: rgba(255, 255, 255, 0.88);
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.94);
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 248, 239, 0.98);
+}
+
+.table tbody td {
+    color: var(--mypet-black) !important;
+    font-weight: normal;
+}
+
+
+/* =========================================================
+   26. ELEMENTOS DE INFORMACIÓN
+   ========================================================= */
+
+.dato-mascota,
+.dato-mascota p,
+.dato-mascota span,
+.detalles-texto,
+.campo-historial p {
+    color: var(--mypet-black) !important;
+    font-weight: normal;
+}
+
+.dato-mascota strong,
+.campo-historial h3 {
+    color: var(--mypet-black) !important;
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   27. CERRAR SESIÓN
+   ========================================================= */
+
+#btnCerrarSesion.btn-cerrar-sesion {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--mypet-orange) !important;
+    border: 2px solid var(--mypet-orange) !important;
+    color: var(--mypet-black) !important;
+    border-radius: 8px !important;
+    padding: 8px 18px !important;
+    min-width: 130px !important;
+    min-height: 42px !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+    line-height: 1.2 !important;
+    margin-left: 10px;
+    opacity: 1 !important;
+    visibility: visible !important;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+#btnCerrarSesion.btn-cerrar-sesion:hover {
+    transform: scale(1.05);
+    background-color: var(--mypet-orange-hover) !important;
+    border-color: var(--mypet-orange-hover) !important;
+}
+
+
+/* =========================================================
+   28. BOTONES ESPECÍFICOS DE PERFIL
+   ========================================================= */
+
+.botones-mascota .btn,
+.acciones-mascota .btn,
+.acciones-formulario .btn,
+.acciones-historial .btn {
+    background-color: var(--mypet-orange) !important;
+    border-color: var(--mypet-orange) !important;
+    color: var(--mypet-black) !important;
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+}
+
+.botones-mascota .btn:hover,
+.acciones-mascota .btn:hover,
+.acciones-formulario .btn:hover,
+.acciones-historial .btn:hover {
+    background-color: var(--mypet-orange-hover) !important;
+    border-color: var(--mypet-orange-hover) !important;
+}
+
+
+/* =========================================================
+   29. RESPONSIVE - 900 PX
    ========================================================= */
 
 @media (max-width: 900px) {
@@ -1506,9 +2405,7 @@
 
 
 /* =========================================================
-   RESPONSIVE - TABLETS
-   Ajustes específicos para dispositivos con pantallas
-   de hasta 768 píxeles.
+   30. RESPONSIVE - 768 PX
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -1546,16 +2443,61 @@
     .mensaje-contenido {
         max-width: 85%;
     }
+
+    #calendario_principal {
+        width: 90%;
+        max-width: 600px;
+        font-size: 50px;
+        height: auto;
+        padding: 20px;
+    }
+
+    .contenedor_agenda_personalizada {
+        padding: 15px;
+    }
+
+    .recuadro_gestion_evento {
+        padding: 15px;
+    }
+
+    #dialogo_nuevo_evento {
+        width: 92%;
+        max-width: 450px;
+    }
+
+    .formulario_modal {
+        padding: 25px;
+    }
 }
 
 
 /* =========================================================
-   RESPONSIVE - CELULARES
-   Adaptaciones generales para pantallas pequeñas de hasta
-   576 píxeles.
+   31. RESPONSIVE - 600 PX
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .botones-mascota {
+        flex-direction: column !important;
+        align-items: center;
+        width: 100%;
+    }
+
+    .boton-grande-mascota {
+        width: 100%;
+        max-width: 360px;
+        flex: 0 0 auto;
+    }
+}
+
+
+/* =========================================================
+   32. RESPONSIVE - 576 PX
    ========================================================= */
 
 @media (max-width: 576px) {
+
+    /* Inicio */
 
     .contenedor-ini {
         flex-direction: column;
@@ -1573,12 +2515,18 @@
         max-width: 350px;
     }
 
+
+    /* Fotografías */
+
     .marco-foto-per,
     .marco-foto-per-masco,
     .marco-foto-perfil {
         width: 220px;
         height: 220px;
     }
+
+
+    /* Perfil mascota */
 
     .texto_perfil h1 {
         font-size: 45px;
@@ -1588,9 +2536,28 @@
         font-size: 28px;
     }
 
+    .texto_perfil p {
+        font-size: 20px;
+    }
+
     .seccion_opciones {
         gap: 20px;
     }
+
+
+    /* Perfil usuario */
+
+    #usu-corre {
+        width: 92%;
+        padding: 18px;
+    }
+
+    #usu-cen-h1 {
+        font-size: 2rem;
+    }
+
+
+    /* Chatbot */
 
     .chatbot-titulo {
         margin-bottom: 15px;
@@ -1620,6 +2587,9 @@
         max-width: 90%;
     }
 
+
+    /* Notificaciones */
+
     .notificaciones-cabecera {
         flex-direction: column;
         text-align: center;
@@ -1642,472 +2612,98 @@
         width: 100%;
     }
 
-}
+    #btnMarcarTodasComoLeidas,
+    #btnEliminarTodas {
+        width: 100% !important;
+    }
 
 
-/* =========================================================
-   PERFIL DE MASCOTA - INFORMACIÓN Y EDICIÓN
-   Estilos específicos para mostrar, editar y gestionar
-   la información detallada de una mascota.
-   ========================================================= */
+    /* Notificaciones en inicio */
+
+    .notificaciones-inicio {
+        top: 15px;
+        right: 15px;
+    }
+
+    .notificaciones-inicio .btn-notificaciones {
+        width: 75px !important;
+        height: 75px !important;
+        font-size: 42px !important;
+    }
+
+    .indicador-notificaciones,
+    .indicador-agenda {
+        top: 1px;
+        right: 1px;
+        width: 11px;
+        height: 11px;
+    }
 
 
-/* Tarjeta principal de información de la mascota */
+    /* Cerrar sesión */
 
-.tarjeta-mascota {
-    width: 100%;
-    max-width: 500px;
-    background: rgba(255, 255, 255, 0.20);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 20px;
-    padding: 20px;
-    margin-top: 10px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
+    #btnCerrarSesion.btn-cerrar-sesion {
+        margin-left: 8px;
+        min-width: 120px !important;
+        min-height: 40px !important;
+        padding: 8px 14px !important;
+        font-size: 14px !important;
+    }
 
 
-/* Título principal del perfil */
+    /* Agenda personalizada */
 
-.titulo-perfil-mascota {
-    color: white !important;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 18px;
-}
+    .titulo-naranja h1,
+    .titulo-naranja {
+        font-size: 2.2rem;
+    }
 
+    .contenedor_agenda_personalizada {
+        padding: 10px;
+    }
 
-/* Datos mostrados en el perfil */
+    .recuadro_gestion_evento {
+        padding: 10px;
+    }
 
-.dato-mascota {
-    color: white !important;
-    font-size: 17px;
-    margin: 10px 0;
-}
+    .tarjeta_agenda {
+        border-radius: 20px;
+    }
 
-
-/* Formulario para editar los datos de la mascota */
-
-.formulario-mascota {
-    width: 100%;
-    max-width: 500px;
-    background: rgba(255, 255, 255, 0.20);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 20px;
-    padding: 20px;
-    margin-top: 15px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.formulario-mascota label {
-    color: white !important;
-    font-weight: bold;
-}
+    .btn_agregar_debajo {
+        width: 60px;
+        height: 60px;
+        font-size: 38px;
+    }
 
 
-/* Botones de guardar y cancelar */
+    /* Modal nuevo evento */
 
-.btn-guardar {
-    background-color: #F7931E;
-    color: white !important;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 25px;
-    font-weight: bold;
-    cursor: pointer;
-}
+    #dialogo_nuevo_evento {
+        width: 94%;
+        max-width: none;
+    }
 
-.btn-guardar:hover {
-    opacity: 0.9;
-}
+    .formulario_modal {
+        padding: 22px 18px;
+    }
 
-.btn-cancelar {
-    background: transparent;
-    border: none;
-    color: white !important;
-    text-decoration: none;
-    cursor: pointer;
-}
+    .formulario_modal h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
 
+    .botones_form {
+        flex-direction: column;
+        gap: 10px;
+    }
 
-/* Botones principales del perfil */
-
-.btn-perfil-mascota {
-    background-color: #F7931E;
-    color: black !important;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 25px;
-    text-decoration: none;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.btn-perfil-mascota:hover {
-    opacity: 0.9;
-    color: black !important;
-}
-
-
-/* Botón utilizado para editar la información */
-
-.btn-editar {
-    width: 100%;
-    max-width: 360px;
-    min-height: 50px;
-}
-
-
-/* =========================================================
-   BOTONES DE PERFIL MASCOTA
-   Distribución de los botones de documentos e historial
-   médico.
-   ========================================================= */
-
-.botones-mascota {
-    width: 100%;
-    max-width: 500px;
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 12px;
-}
-
-.boton-grande-mascota {
-    width: 230px;
-    min-height: 55px;
-    flex: 0 0 230px;
-}
-
-
-/* Contenedor general de las acciones de la mascota */
-
-.acciones-mascota {
-    width: 100%;
-    max-width: 500px;
-    margin-top: 20px;
-    margin-bottom: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
-/* Botón de emergencia SOS */
-
-.boton-sos {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    z-index: 1000;
-}
-
-.boton-sos:hover {
-    background-color: #bb2d3b;
-    color: white;
-}
-
-
-/* Botón de acceso al chatbot */
-
-.boton-chatbot {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #F7931E;
-    color: black;
-    border: none;
-    border-radius: 50px;
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    z-index: 1000;
-}
-
-.boton-chatbot:hover {
-    opacity: 0.9;
-    color: black;
-}
-
-
-/* =========================================================
-   RESPONSIVE - PERFIL DE MASCOTA
-   Adaptación de los botones de documentos e historial para
-   dispositivos móviles de hasta 600 píxeles.
-   ========================================================= */
-
-@media (max-width: 600px) {
-
-    .botones-mascota {
-        flex-direction: column !important;
-        align-items: center;
+    .botones_form button {
         width: 100%;
     }
 
-    .boton-grande-mascota {
-        width: 100%;
-        max-width: 360px;
-        flex: 0 0 auto;
-    }
 
-}
-
-
-/* =========================================================
-   HISTORIAL MÉDICO
-   Estilos específicos para visualizar, registrar y editar
-   la información médica de una mascota.
-   ========================================================= */
-
-
-/* Contenedor principal del historial médico */
-
-.contenedor-historial {
-    width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 30px 20px 50px;
-}
-
-
-/* =========================================================
-   ENCABEZADO DEL HISTORIAL MÉDICO
-   ========================================================= */
-
-.encabezado-historial {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 30px;
-    padding: 10px 60px;
-}
-
-.encabezado-historial h1 {
-    color: #F7931E;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-    font-size: clamp(2rem, 6vw, 3.5rem);
-    font-weight: bold;
-    text-align: center;
-    margin: 0;
-}
-
-
-/*
-   La flecha utiliza la clase .flecha-back existente
-   en los estilos generales de My Pet.
-
-   En esta pantalla se coloca en la esquina superior
-   izquierda y permanece visible al desplazarse.
-*/
-
-.encabezado-historial .flecha-back {
-    position: fixed;
-    top: 20px;
-    left: 30px;
-    color: white;
-    font-size: 55px;
-    line-height: 1;
-    text-decoration: none;
-    font-weight: 900;
-    z-index: 1000;
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.encabezado-historial .flecha-back:hover {
-    transform: scale(1.15);
-    color: #F7931E;
-    -webkit-text-stroke: 2px #F7931E;
-}
-
-
-/* =========================================================
-   INFORMACIÓN BÁSICA DE LA MASCOTA
-   ========================================================= */
-
-.informacion-mascota {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.20);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.informacion-mascota h2 {
-    color: white;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-    font-size: clamp(1.2rem, 4vw, 1.8rem);
-    font-weight: bold;
-    margin: 0;
-}
-
-
-/* =========================================================
-   ESTADO SIN HISTORIAL
-   Se muestra cuando todavía no existe un historial médico.
-   ========================================================= */
-
-.estado-historial {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.20);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 20px;
-    padding: 30px 20px;
-    text-align: center;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.estado-historial p {
-    color: white;
-    font-family: Arial, sans-serif;
-    font-size: 1.05rem;
-    line-height: 1.5;
-    margin-bottom: 25px;
-}
-
-
-/* =========================================================
-   FORMULARIO DEL HISTORIAL MÉDICO
-   ========================================================= */
-
-.formulario-historial {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.20);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 20px;
-    padding: 25px 20px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-.formulario-historial label {
-    color: white;
-    font-weight: bold;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-}
-
-.formulario-historial .form-control {
-    border-radius: 10px;
-    border: 1px solid #dddddd;
-}
-
-.formulario-historial .form-control:focus {
-    border-color: #F7931E;
-    box-shadow: 0 0 0 0.2rem rgba(247, 147, 30, 0.25);
-}
-
-
-/* =========================================================
-   INFORMACIÓN REGISTRADA DEL HISTORIAL
-   ========================================================= */
-
-.informacion-historial {
-    width: 100%;
-    background: rgba(255, 255, 255, 0.20);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 20px;
-    padding: 25px 20px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-
-
-/* Cada campo de información médica */
-
-.campo-historial {
-    background: rgba(255, 255, 255, 0.90);
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.campo-historial h3 {
-    color: #F7931E;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-    font-size: 1.05rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.campo-historial p {
-    color: #333333;
-    font-family: Arial, sans-serif;
-    font-size: 1rem;
-    line-height: 1.5;
-    margin: 0;
-    white-space: pre-wrap;
-}
-
-
-/* =========================================================
-   CONTENEDORES DE BOTONES
-   ========================================================= */
-
-.acciones-formulario,
-.acciones-historial {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-
-/* =========================================================
-   BOTONES DEL HISTORIAL MÉDICO
-   Incluye:
-   - Crear historial médico
-   - Editar información
-   - Guardar
-   ========================================================= */
-
-.acciones-formulario .btn,
-.acciones-historial .btn,
-.estado-historial .btn {
-    background-color: #F7931E;
-    border: none;
-    color: black;
-    border-radius: 10px;
-    padding: 10px 30px;
-    font-family: 'Franklin Gothic Medium', Arial, sans-serif;
-    font-weight: bold;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
-    transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.acciones-formulario .btn:hover,
-.acciones-historial .btn:hover,
-.estado-historial .btn:hover {
-    background-color: #F7931E;
-    color: black;
-    transform: scale(1.05);
-    opacity: 0.9;
-}
-
-
-/* =========================================================
-   RESPONSIVE - HISTORIAL MÉDICO
-   Adaptación para dispositivos móviles.
-   ========================================================= */
-
-@media (max-width: 576px) {
+    /* Historial */
 
     .contenedor-historial {
         padding: 20px 12px 40px;
@@ -2121,8 +2717,6 @@
     .encabezado-historial h1 {
         font-size: 2rem;
     }
-
-    /* Flecha del historial en dispositivos móviles */
 
     .encabezado-historial .flecha-back {
         top: 15px;
@@ -2141,119 +2735,197 @@
         padding: 13px;
     }
 
-} /* FIN RESPONSIVE - HISTORIAL MÉDICO */
 
+    /* Foro */
 
+    .contenedor_foro {
+        width: 95%;
+    }
+
+    .tarjeta_post {
+        width: 100%;
+    }
+
+    .btn_flotante_agregar {
+        right: 20px;
+        bottom: 20px;
+        width: 58px;
+        height: 58px;
+        font-size: 38px;
+    }
 /* =========================================================
-   NOTIFICACIONES - INICIO
-   Botón de acceso a la interfaz de notificaciones.
+   LEGIBILIDAD GLOBAL SOBRE FONDOS TRANSPARENTES
    ========================================================= */
 
-.notificaciones-inicio {
-    position: fixed;
-    top: 25px;
-    right: 30px;
-    z-index: 9999;
+/* Todo texto normal de la aplicación */
+body {
+    color: #111 !important;
 }
 
-.notificaciones-inicio .btn-notificaciones {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-
-    width: 90px !important;
-    height: 90px !important;
-
-    padding: 0 !important;
-    margin: 0 !important;
-
-    background-color: #F7931E !important;
-    border: 3px solid white !important;
-    border-radius: 50% !important;
-
-    color: black !important;
-    text-decoration: none !important;
-
-    font-size: 50px !important;
-    line-height: 1 !important;
-
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-
-    transition: transform 0.2s ease, opacity 0.2s ease;
+/* Texto dentro de tarjetas, cuadros y contenedores */
+.tarjeta_agenda,
+.tarjeta-mascota,
+.informacion-mascota,
+.informacion-historial,
+.campo-historial,
+#usu-corre,
+.formulario-mascota,
+.formulario-historial,
+.notificaciones-contenedor,
+.notificacion-item,
+.contenedor_mascotas,
+.perfil_detalle,
+.contenedor_agenda_personalizada,
+.recuadro_gestion_evento,
+.chatbot-card,
+.chatbot-contenedor {
+    color: #111 !important;
 }
 
-.notificaciones-inicio .btn-notificaciones:hover {
-    transform: scale(1.08);
-    opacity: 0.9;
-}
-
-
-/* =========================================================
-   CERRAR SESIÓN DESDE HOME
-   ========================================================= */
-
-#btnCerrarSesion.btn-cerrar-sesion {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-
-    background-color: #F7931E !important;
-    border: 2px solid #F7931E !important;
-
-    color: black !important;
-
-    border-radius: 8px !important;
-
-    padding: 8px 18px !important;
-
-    min-width: 130px !important;
-    min-height: 42px !important;
-
-    font-family: Arial, sans-serif !important;
-    font-size: 15px !important;
-    font-weight: bold !important;
-
-    line-height: 1.2 !important;
-
-    margin-left: 10px;
-
+/* Párrafos, datos y textos informativos */
+.tarjeta_agenda p,
+.tarjeta-mascota p,
+.informacion-mascota p,
+.informacion-mascota span,
+.informacion-mascota div,
+.informacion-historial p,
+.informacion-historial span,
+.informacion-historial div,
+.campo-historial p,
+.campo-historial span,
+#usu-corre p,
+#usu-corre span,
+#usu-corre div,
+#usu-corre small,
+#usu-corre strong {
+    color: #111 !important;
     opacity: 1 !important;
-    visibility: visible !important;
-
-    cursor: pointer;
-
-    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-#btnCerrarSesion.btn-cerrar-sesion:hover {
-    transform: scale(1.05);
-    opacity: 0.9 !important;
+/* Etiquetas y nombres de campos */
+label,
+.form-label {
+    color: #111 !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
 }
 
+/* Texto de campos */
+input,
+select,
+textarea {
+    color: #111 !important;
+    opacity: 1 !important;
+}
+
+/* Placeholders */
+input::placeholder,
+textarea::placeholder {
+    color: #444 !important;
+    opacity: 1 !important;
+}
+
+/* Texto de tablas */
+.table td,
+.table th {
+    color: #111 !important;
+    opacity: 1 !important;
+}
+
+/* Títulos importantes siguen siendo naranja */
+.titulo-naranja,
+.titulo-naranja h1,
+.titulo-naranja h2,
+.titulo-naranja h3,
+.titulo-perfil-mascota,
+.encabezado-historial h1,
+.informacion-mascota h2,
+#usu-cen-h1,
+#usu-corre h2,
+#editar-per {
+    color: #F7931E !important;
+    opacity: 1 !important;
+}
+
+/* Los cuadros no deben volver opaco el texto */
+.tarjeta_agenda,
+.tarjeta-mascota,
+.informacion-mascota,
+.informacion-historial,
+.campo-historial,
+#usu-corre,
+.formulario-mascota,
+.formulario-historial {
+    opacity: 1 !important;
+}
+}
+/* Botones de comentarios del foro */
+
+.btn-foro-formulario {
+    width: 90px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    font-size: 14px !important;
+    border-radius: 6px !important;
+}
+
+.btn-foro-cancelar {
+    background-color: #ffffff !important;
+    color: #6c757d !important;
+    border: 1px solid #6c757d !important;
+}
+
+.btn-foro-confirmar {
+    background-color: #f7931e !important;
+    color: #ffffff !important;
+    border: 1px solid #f7931e !important;
+}
 
 /* =========================================================
-   RESPONSIVE - NOTIFICACIONES Y CERRAR SESIÓN
+   COMENTARIOS Y RESPUESTAS DEL FORO
    ========================================================= */
 
-@media (max-width: 576px) {
+/* Contenedor general de cada comentario */
+.comentario-foro {
+    width: 100%;
+    box-sizing: border-box;
+}
 
-    .notificaciones-inicio {
-        top: 15px;
-        right: 15px;
-    }
+/* Cuadro visual del comentario */
+.comentario-card {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 120px;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
 
-    .notificaciones-inicio .btn-notificaciones {
-        width: 75px !important;
-        height: 75px !important;
-        font-size: 42px !important;
-    }
+/* Contenido del comentario */
+.comentario-card .contenido-comentario {
+    width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
 
-    #btnCerrarSesion.btn-cerrar-sesion {
-        margin-left: 8px;
-        min-width: 120px !important;
-        min-height: 40px !important;
-        padding: 8px 14px !important;
-        font-size: 14px !important;
-    }
+/* Respuestas */
+.respuestas-comentario {
+    width: 100%;
+    box-sizing: border-box;
+}
 
+/* Cuadro de cada respuesta */
+.respuesta-card {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 100px;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 }

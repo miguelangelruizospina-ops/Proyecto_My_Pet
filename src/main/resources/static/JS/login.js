@@ -1,23 +1,110 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    const boton = document.getElementById("btnIniciarSesion");
+// ============================================================
+// REFERENCIA AL BOTÓN DE INICIO DE SESIÓN
+// ============================================================
 
-    boton.addEventListener("click", async function (e) {
+const boton =
+    document.getElementById("btnIniciarSesion");
 
-        // Evita que el formulario recargue la página
+
+// ============================================================
+// OBTENER EL TOKEN CSRF DESDE LA COOKIE
+// ============================================================
+
+function obtenerTokenCsrf() {
+
+    const nombreCookie = "XSRF-TOKEN";
+
+    const cookies =
+        document.cookie.split(";");
+
+    for (const cookie of cookies) {
+
+        const parte = cookie.trim();
+
+        if (parte.startsWith(nombreCookie + "=")) {
+
+            return decodeURIComponent(
+                parte.substring(
+                    nombreCookie.length + 1
+                )
+            );
+        }
+    }
+
+    return null;
+}
+
+
+// ============================================================
+// SOLICITAR EL TOKEN CSRF AL SERVIDOR
+// ============================================================
+
+async function obtenerCsrf() {
+
+    const respuesta =
+        await fetch(
+            "/api/usuario/csrf",
+            {
+                method: "GET",
+
+                // Permite conservar las cookies de sesión.
+                credentials: "include"
+            }
+        );
+
+    if (!respuesta.ok) {
+
+        throw new Error(
+            "No se pudo obtener el token de seguridad."
+        );
+    }
+
+    return obtenerTokenCsrf();
+}
+
+
+// ============================================================
+// INICIO DE SESIÓN
+// ============================================================
+
+boton.addEventListener(
+    "click",
+    async function (e) {
+
+        // Evita que el formulario recargue la página.
         e.preventDefault();
 
+
+        // ====================================================
+        // OBTENER LOS DATOS DEL FORMULARIO
+        // ====================================================
+
         const correo =
-            document.getElementById("correo").value.trim();
+            document
+                .getElementById("correo")
+                .value
+                .trim();
 
         const contrasena =
-            document.getElementById("contrasena").value;
+            document
+                .getElementById("contrasena")
+                .value;
 
 
-        // Validar campos
-        if (correo === "" || contrasena === "") {
+        // ====================================================
+        // VALIDAR LOS CAMPOS
+        // ====================================================
 
-            alert("Por favor, ingresa el correo y la contraseña.");
+        if (
+            correo === "" ||
+            contrasena === ""
+        ) {
+
+            alert(
+                "Por favor, ingresa el correo y la contraseña."
+            );
 
             return;
         }
@@ -25,26 +112,70 @@ document.addEventListener("DOMContentLoaded", function () {
 
         try {
 
-            const respuesta = await fetch(
-                "http://localhost:8082/api/usuario/login",
-                {
-                    method: "POST",
+            // =================================================
+            // OBTENER EL TOKEN CSRF
+            // =================================================
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+            let tokenCsrf =
+                obtenerTokenCsrf();
 
-                    body: JSON.stringify({
-                        correo: correo,
-                        contrasena: contrasena
-                    })
-                }
-            );
+            if (!tokenCsrf) {
 
+                tokenCsrf =
+                    await obtenerCsrf();
+            }
+
+            if (!tokenCsrf) {
+
+                throw new Error(
+                    "No se pudo obtener el token CSRF."
+                );
+            }
+
+
+            // =================================================
+            // ENVIAR LAS CREDENCIALES AL BACKEND
+            // =================================================
+
+            const respuesta =
+                await fetch(
+                    "/api/usuario/login",
+                    {
+                        method: "POST",
+
+                        // Mantiene la cookie de sesión
+                        // utilizada por Spring Security.
+                        credentials: "include",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "X-XSRF-TOKEN":
+                                tokenCsrf
+                        },
+
+                        body: JSON.stringify({
+
+                            correo:
+                                correo,
+
+                            contrasena:
+                                contrasena
+                        })
+                    }
+                );
+
+
+            // =================================================
+            // LOGIN EXITOSO
+            // =================================================
 
             if (respuesta.ok) {
 
-                const usuario = await respuesta.json();
+                const usuario =
+                    await respuesta.json();
+
 
                 console.log(
                     "Usuario encontrado:",
@@ -52,14 +183,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                // Guardar usuario completo
+                // =================================================
+                // GUARDAR INFORMACIÓN DEL USUARIO EN EL NAVEGADOR
+                // =================================================
+
                 localStorage.setItem(
                     "usuarioLogueado",
                     JSON.stringify(usuario)
                 );
 
-
-                // Guardar también el ID del usuario
                 localStorage.setItem(
                     "idUsuario",
                     usuario.idUsuario
@@ -72,27 +204,47 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                alert("Inicio de sesión exitoso");
+                alert(
+                    "Inicio de sesión exitoso"
+                );
 
 
-                // Verificar el rol
-                const rol = usuario.rol
-                    ? usuario.rol.toString().trim().toUpperCase()
-                    : "";
+                // =================================================
+                // IDENTIFICAR EL ROL DEL USUARIO
+                // =================================================
+
+                const rol =
+                    usuario.rol
+                        ? usuario.rol
+                            .toString()
+                            .trim()
+                            .toUpperCase()
+                        : "";
 
 
-                if (rol === "ADMINISTRADOR") {
+                // =================================================
+                // REDIRECCIONAR SEGÚN EL ROL
+                // =================================================
 
-                    window.location.href = "/Front%20end/Modulo_1_gestion_usuario/admin.html";
+                if (
+                    rol === "ADMINISTRADOR"
+                ) {
+
+                    window.location.href =
+                        "/Front%20end/Modulo_1_gestion_usuario/admin.html";
 
                 } else {
 
-                    window.location.href = "/Front%20end/Modulo_1_gestion_usuario/home.html";
-
+                    window.location.href =
+                        "/Front%20end/Modulo_1_gestion_usuario/home.html";
                 }
 
 
             } else {
+
+                // =================================================
+                // LOGIN INCORRECTO
+                // =================================================
 
                 const mensaje =
                     await respuesta.text();
@@ -105,11 +257,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Error:",
                     mensaje
                 );
-
             }
 
 
         } catch (error) {
+
+            // ====================================================
+            // ERROR DE CONEXIÓN O DEL SERVIDOR
+            // ====================================================
 
             console.error(
                 "Error de conexión:",
@@ -117,11 +272,12 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
             alert(
+                error.message ||
                 "No se pudo conectar con el servidor."
             );
-
         }
+    }
+);
 
-    });
 
 });
