@@ -11,6 +11,16 @@
 :root {
     --mypet-orange: #F7931E;
     --mypet-orange-hover: #ff9e2b;
+
+    --mypet-blue: #0d6efd;
+    --mypet-blue-hover: #3d8bfd;
+
+    --mypet-green: #198754;
+    --mypet-green-hover: #3fa773;
+
+    --mypet-purple: #6f42c1;
+    --mypet-purple-hover: #8959dc;
+
     --mypet-black: #000000;
     --mypet-dark: #222222;
     --mypet-gray: #444444;
@@ -26,6 +36,30 @@
 
     --mypet-font-title: 'Franklin Gothic Medium', Arial, sans-serif;
     --mypet-font-body: Arial, sans-serif;
+}
+
+/* =====================================================
+   COLORES DE INTERFAZ - CONFIGURACIÓN GLOBAL
+   ===================================================== */
+
+body.color-naranja-activo {
+    --mypet-orange: #F7931E;
+    --mypet-orange-hover: #ff9e2b;
+}
+
+body.color-azul-activo {
+    --mypet-orange: #0d6efd;
+    --mypet-orange-hover: #3d8bfd;
+}
+
+body.color-verde-activo {
+    --mypet-orange: #198754;
+    --mypet-orange-hover: #3fa773;
+}
+
+body.color-morado-activo {
+    --mypet-orange: #6f42c1;
+    --mypet-orange-hover: #8959dc;
 }
 
 #fondo-inicio {
@@ -300,51 +334,100 @@ input[type="submit"].btn {
     margin: 0 auto;
 }
 
+/* =========================================================
+   BOTONES PRINCIPALES DEL HOME
+   ========================================================= */
+
 .boton-naranja-ini {
+
     padding: 0;
+
     overflow: hidden;
+
     font-size: clamp(1.2rem, 3vw, 40px);
+
     height: 140px;
+
     width: 350px;
-    background-color: var(--mypet-orange);
+
+    background-color: var(--mypet-orange) !important;
+
     cursor: pointer;
+
     border-radius: 50%;
+
     box-shadow: 10px 12px 20px rgba(5, 5, 5, 0.60);
-    border: none;
+
+    border: none !important;
+
     transition: 0.3s;
-    color: var(--mypet-black);
+
+    color: var(--mypet-black) !important;
+
     font-family: Calibri, Arial, sans-serif;
+
     font-weight: bolder;
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
 }
+
 
 .boton-naranja-ini:hover {
+
+    background-color: var(--mypet-orange-hover) !important;
+
     transform: scale(1.05);
+
 }
+
 
 .boton-naranja-ini a {
+
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
     width: 100%;
+
     height: 100%;
+
     font-family: var(--mypet-font-title);
+
     font-weight: bold;
+
     text-decoration: none;
-    color: var(--mypet-black);
+
+    color: var(--mypet-black) !important;
+
 }
+
+
+/* =========================================================
+   BOTÓN AYUDA
+   ========================================================= */
 
 .btn-ayuda {
-    position: absolute;
-    bottom: 40px;
-    right: 50px;
-    width: 200px;
-    height: 80px;
-    font-size: 1.5rem;
-}
 
+    position: absolute;
+
+    bottom: 40px;
+
+    right: 50px;
+
+    width: 200px;
+
+    height: 80px;
+
+    font-size: 1.5rem;
+
+}
 
 /* =========================================================
    07. SISTEMA GENERAL DE TÍTULOS
@@ -2753,6 +2836,7 @@ label,
         height: 58px;
         font-size: 38px;
     }
+
 /* =========================================================
    LEGIBILIDAD GLOBAL SOBRE FONDOS TRANSPARENTES
    ========================================================= */
@@ -2928,4 +3012,804 @@ textarea::placeholder {
     border: 1px solid #e9e9e9;
     overflow-wrap: break-word;
     word-wrap: break-word;
+}
+
+/* =========================================================
+   33. CONFIGURACIÓN
+   ========================================================= */
+
+.contenedor-configuracion {
+    width: 100%;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.titulo-configuracion {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.titulo-configuracion h1 {
+    color: var(--mypet-orange) !important;
+    font-family: var(--mypet-font-title);
+    font-weight: bold;
+}
+
+.tarjeta-configuracion {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.70);
+    border-radius: var(--mypet-radius);
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: var(--mypet-shadow);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.titulo-seccion {
+    color: var(--mypet-orange) !important;
+    font-family: var(--mypet-font-title);
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.opcion-configuracion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.opcion-configuracion:last-child {
+    border-bottom: none;
+}
+
+.opcion-configuracion strong {
+    color: #111 !important;
+}
+
+.descripcion-opcion {
+    margin: 5px 0 0;
+    color: #555 !important;
+    font-size: 14px;
+}
+
+.colores {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.color-opcion {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 1px #cccccc;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.color-opcion:hover {
+    transform: scale(1.12);
+}
+
+.color-opcion.color-seleccionado {
+    box-shadow:
+        0 0 0 3px white,
+        0 0 0 5px var(--mypet-orange);
+}
+
+.color-naranja {
+    background-color: #F7931E;
+}
+
+.color-azul {
+    background-color: #0d6efd;
+}
+
+.color-verde {
+    background-color: #198754;
+}
+
+.color-morado {
+    background-color: #6f42c1;
+}
+
+.btn-eliminar-cuenta {
+    color: #dc3545 !important;
+    border: 1px solid #dc3545 !important;
+    background-color: white !important;
+    white-space: nowrap;
+}
+
+.btn-eliminar-cuenta:hover {
+    background-color: #dc3545 !important;
+    color: white !important;
+}
+
+.contenedor-volver {
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 40px;
+}
+
+
+/* =========================================================
+   TEMA OSCURO
+   ========================================================= */
+
+body.tema-oscuro {
+    background-color: #121212 !important;
+    color: #ffffff !important;
+}
+
+body.tema-oscuro .tarjeta-configuracion {
+    background-color: #1f1f1f !important;
+    border-color: #444444;
+}
+
+body.tema-oscuro .titulo-seccion {
+    color: var(--mypet-orange) !important;
+}
+
+body.tema-oscuro .opcion-configuracion strong {
+    color: #ffffff !important;
+}
+
+body.tema-oscuro .descripcion-opcion {
+    color: #cccccc !important;
+}
+
+body.tema-oscuro .opcion-configuracion {
+    border-bottom-color: #444444;
+}
+
+body.tema-oscuro .form-select {
+    background-color: #2b2b2b !important;
+    color: #ffffff !important;
+    border-color: #666666;
+}
+
+
+/* =========================================================
+   TAMAÑO DE LETRA
+   ========================================================= */
+
+body.letra-pequena {
+    font-size: 14px !important;
+}
+
+body.letra-normal {
+    font-size: 16px !important;
+}
+
+body.letra-grande {
+    font-size: 18px !important;
+}
+
+body.letra-muy-grande {
+    font-size: 21px !important;
+}
+
+
+/* =========================================================
+   ALTO CONTRASTE
+   ========================================================= */
+
+body.alto-contraste {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+body.alto-contraste .tarjeta-configuracion {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+body.alto-contraste .titulo-seccion {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .opcion-configuracion strong,
+body.alto-contraste .descripcion-opcion {
+    color: #ffffff !important;
+}
+
+body.alto-contraste .opcion-configuracion {
+    border-bottom-color: #ffffff !important;
+}
+
+body.alto-contraste .form-select {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 2px solid #ffffff !important;
+}
+
+
+/* =========================================================
+   COLORES DE INTERFAZ
+   ========================================================= */
+
+body.color-naranja-activo {
+    --color-configuracion: #F7931E;
+}
+
+body.color-azul-activo {
+    --color-configuracion: #0d6efd;
+}
+
+body.color-verde-activo {
+    --color-configuracion: #198754;
+}
+
+body.color-morado-activo {
+    --color-configuracion: #6f42c1;
+}
+
+body.color-naranja-activo .titulo-seccion {
+    color: #F7931E !important;
+}
+
+body.color-azul-activo .titulo-seccion {
+    color: #0d6efd !important;
+}
+
+body.color-verde-activo .titulo-seccion {
+    color: #198754 !important;
+}
+
+body.color-morado-activo .titulo-seccion {
+    color: #6f42c1 !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE CONFIGURACIÓN
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .tarjeta-configuracion {
+        padding: 20px 15px;
+    }
+
+    .opcion-configuracion {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .opcion-configuracion .form-select {
+        width: 100% !important;
+    }
+
+    .colores {
+        margin-top: 5px;
+    }
+
+    .btn-eliminar-cuenta {
+        width: 100%;
+    }
+}
+
+/* =========================================================
+   MY PET - TEMA OSCURO PARA TARJETAS Y RECUADROS
+   Mantiene visible el fondo de patas
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   INFORMACIÓN GENERAL Y CONFIGURACIÓN
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta-configuracion,
+body.tema-oscuro .tarjeta-mascota,
+body.tema-oscuro .informacion-mascota,
+body.tema-oscuro .informacion-historial,
+body.tema-oscuro .estado-historial,
+body.tema-oscuro .formulario-historial,
+body.tema-oscuro .recuadro_gestion_evento,
+body.tema-oscuro .recuadro-transparente,
+body.tema-oscuro .formulario-transparente,
+body.tema-oscuro .tarjeta-transparente {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+
+/* ---------------------------------------------------------
+   INFORMACIÓN DEL USUARIO
+   --------------------------------------------------------- */
+
+body.tema-oscuro #usu-corre,
+body.tema-oscuro #usu-cen,
+body.tema-oscuro .datos-usuario,
+body.tema-oscuro .informacion-usuario {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+
+/* ---------------------------------------------------------
+   TEXTO DENTRO DE LOS RECUADROS
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta-configuracion p,
+body.tema-oscuro .tarjeta-configuracion span,
+body.tema-oscuro .tarjeta-configuracion strong,
+body.tema-oscuro .tarjeta-mascota p,
+body.tema-oscuro .tarjeta-mascota span,
+body.tema-oscuro .tarjeta-mascota strong,
+body.tema-oscuro .informacion-mascota p,
+body.tema-oscuro .informacion-mascota span,
+body.tema-oscuro .informacion-mascota strong,
+body.tema-oscuro .informacion-historial p,
+body.tema-oscuro .informacion-historial span,
+body.tema-oscuro .informacion-historial strong,
+body.tema-oscuro .recuadro-transparente p,
+body.tema-oscuro .recuadro-transparente span,
+body.tema-oscuro .recuadro-transparente strong {
+    color: #ffffff !important;
+}
+
+
+/* ---------------------------------------------------------
+   TABLAS
+   --------------------------------------------------------- */
+
+body.tema-oscuro .table {
+    color: #ffffff !important;
+    --bs-table-bg: transparent;
+    --bs-table-color: #ffffff;
+}
+
+body.tema-oscuro .table thead th,
+body.tema-oscuro .table tbody td,
+body.tema-oscuro .table tbody th {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+body.tema-oscuro .table tbody tr:hover td {
+    background-color: rgba(55, 55, 55, 0.95) !important;
+}
+
+
+/* ---------------------------------------------------------
+   HISTORIAL MÉDICO
+   --------------------------------------------------------- */
+
+body.tema-oscuro .campo-historial {
+    background-color: rgba(35, 35, 35, 0.95) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+body.tema-oscuro .campo-historial h3,
+body.tema-oscuro .campo-historial p,
+body.tema-oscuro .dato-mascota,
+body.tema-oscuro .dato-mascota strong,
+body.tema-oscuro .detalles-texto {
+    color: #ffffff !important;
+}
+
+
+/* ---------------------------------------------------------
+   FORO
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post,
+body.tema-oscuro .comentario-card,
+body.tema-oscuro .respuesta-card {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+body.tema-oscuro .tarjeta_post p,
+body.tema-oscuro .tarjeta_post span,
+body.tema-oscuro .tarjeta_post div,
+body.tema-oscuro .tarjeta_post strong,
+body.tema-oscuro .comentario-card p,
+body.tema-oscuro .comentario-card span,
+body.tema-oscuro .respuesta-card p,
+body.tema-oscuro .respuesta-card span {
+    color: #ffffff !important;
+}
+
+
+/* ---------------------------------------------------------
+   CHATBOT
+   --------------------------------------------------------- */
+
+body.tema-oscuro .chatbot-card,
+body.tema-oscuro .chatbot-contenedor,
+body.tema-oscuro .chatbot-mensajes,
+body.tema-oscuro .chatbot-conversacion {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+body.tema-oscuro .mensaje-chatbot .mensaje-contenido {
+    background-color: #292929 !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+
+/* ---------------------------------------------------------
+   NOTIFICACIONES
+   --------------------------------------------------------- */
+
+body.tema-oscuro .notificaciones-contenedor,
+body.tema-oscuro .notificacion-item,
+body.tema-oscuro .notificacion-no-leida {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+body.tema-oscuro .notificacion-item p,
+body.tema-oscuro .notificacion-item span,
+body.tema-oscuro .notificacion-item strong {
+    color: #ffffff !important;
+}
+
+
+/* ---------------------------------------------------------
+   AGENDA
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_agenda {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+
+/* ---------------------------------------------------------
+   FORMULARIOS DENTRO DE LOS RECUADROS
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta-configuracion input,
+body.tema-oscuro .tarjeta-configuracion select,
+body.tema-oscuro .tarjeta-configuracion textarea,
+body.tema-oscuro .informacion-mascota input,
+body.tema-oscuro .informacion-mascota select,
+body.tema-oscuro .informacion-mascota textarea,
+body.tema-oscuro .formulario-historial input,
+body.tema-oscuro .formulario-historial select,
+body.tema-oscuro .formulario-historial textarea {
+    background-color: #292929 !important;
+    color: #ffffff !important;
+    border-color: #555555 !important;
+}
+
+body.tema-oscuro input::placeholder,
+body.tema-oscuro textarea::placeholder {
+    color: #bbbbbb !important;
+}
+
+
+/* ---------------------------------------------------------
+   TÍTULOS DE MY PET
+   Mantener naranja
+   --------------------------------------------------------- */
+
+body.tema-oscuro .titulo-naranja,
+body.tema-oscuro .titulo-naranja h1,
+body.tema-oscuro .titulo-naranja h2,
+body.tema-oscuro .titulo-naranja h3,
+body.tema-oscuro .titulo-perfil-mascota,
+body.tema-oscuro .encabezado-historial h1,
+body.tema-oscuro .informacion-mascota h2,
+body.tema-oscuro #usu-cen-h1,
+body.tema-oscuro #usu-corre h2,
+body.tema-oscuro #editar-per {
+    color: var(--mypet-orange) !important;
+}
+
+ /* =========================================================
+    TEMA OSCURO - PERFIL DEL USUARIO
+    ========================================================= */
+
+body.tema-oscuro .tarjeta-usuario {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+body.tema-oscuro .tarjeta-usuario .dato-usuario {
+    color: #ffffff !important;
+}
+
+body.tema-oscuro .tarjeta-usuario .titulo-perfil {
+    color: var(--mypet-orange) !important;
+}
+
+body.tema-oscuro .tarjeta-usuario hr {
+    border-color: #666666 !important;
+    opacity: 1 !important;
+}
+
+
+/* Formulario de edición del perfil */
+
+body.tema-oscuro .formulario-usuario {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+body.tema-oscuro .formulario-usuario .titulo-perfil {
+    color: var(--mypet-orange) !important;
+}
+
+body.tema-oscuro .formulario-usuario label {
+    color: #ffffff !important;
+}
+
+body.tema-oscuro .formulario-usuario input,
+body.tema-oscuro .formulario-usuario textarea,
+body.tema-oscuro .formulario-usuario select {
+    background-color: #292929 !important;
+    color: #ffffff !important;
+    border-color: #555555 !important;
+}
+
+body.tema-oscuro .formulario-usuario input::placeholder,
+body.tema-oscuro .formulario-usuario textarea::placeholder {
+    color: #bbbbbb !important;
+}
+
+
+/* Enlaces del perfil */
+
+body.tema-oscuro .enlace-perfil {
+    color: #ffffff !important;
+}
+
+body.tema-oscuro .btn-cancelar {
+    color: #ffffff !important;
+}
+/* =========================================================
+   MY PET - TEXTO VISIBLE EN TEMA OSCURO
+   ========================================================= */
+
+/* Texto general dentro de los recuadros */
+body.tema-oscuro .tarjeta-configuracion,
+body.tema-oscuro .tarjeta-mascota,
+body.tema-oscuro .informacion-mascota,
+body.tema-oscuro .informacion-historial,
+body.tema-oscuro .estado-historial,
+body.tema-oscuro .formulario-historial,
+body.tema-oscuro .tarjeta_agenda,
+body.tema-oscuro .notificacion-item,
+body.tema-oscuro .tarjeta_post,
+body.tema-oscuro .comentario-card,
+body.tema-oscuro .respuesta-card,
+body.tema-oscuro .chatbot-card,
+body.tema-oscuro .chatbot-contenedor,
+body.tema-oscuro .campo-historial {
+    color: #ffffff !important;
+}
+
+/* Todos los textos internos */
+body.tema-oscuro .tarjeta-configuracion *,
+body.tema-oscuro .tarjeta-mascota *,
+body.tema-oscuro .informacion-mascota *,
+body.tema-oscuro .informacion-historial *,
+body.tema-oscuro .estado-historial *,
+body.tema-oscuro .formulario-historial *,
+body.tema-oscuro .tarjeta_agenda *,
+body.tema-oscuro .notificacion-item *,
+body.tema-oscuro .tarjeta_post *,
+body.tema-oscuro .comentario-card *,
+body.tema-oscuro .respuesta-card *,
+body.tema-oscuro .chatbot-card *,
+body.tema-oscuro .chatbot-contenedor *,
+body.tema-oscuro .campo-historial * {
+    color: #ffffff !important;
+}
+
+/* Perfil del usuario */
+body.tema-oscuro #usu-corre,
+body.tema-oscuro #usu-corre * {
+    color: #ffffff !important;
+}
+
+/* Títulos del perfil conservan el naranja */
+body.tema-oscuro #usu-corre h1,
+body.tema-oscuro #usu-corre h2,
+body.tema-oscuro #usu-corre h3,
+body.tema-oscuro #usu-corre h4,
+body.tema-oscuro #usu-corre h5,
+body.tema-oscuro #usu-corre h6 {
+    color: var(--mypet-orange) !important;
+}
+
+/* Campos de texto */
+body.tema-oscuro input,
+body.tema-oscuro select,
+body.tema-oscuro textarea {
+    color: #ffffff !important;
+}
+
+body.tema-oscuro input::placeholder,
+body.tema-oscuro textarea::placeholder {
+    color: #bbbbbb !important;
+}
+
+/* Texto de tablas */
+body.tema-oscuro .table,
+body.tema-oscuro .table th,
+body.tema-oscuro .table td,
+body.tema-oscuro .table tr {
+    color: #ffffff !important;
+}
+
+/* Enlaces dentro de las tarjetas */
+body.tema-oscuro .tarjeta_post a:not(.btn),
+body.tema-oscuro .comentario-card a:not(.btn),
+body.tema-oscuro .respuesta-card a:not(.btn),
+body.tema-oscuro .chatbot-card a:not(.btn) {
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   FORO - TEMA OSCURO
+   Comentarios, respuestas, corazones e iconos
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   PUBLICACIONES
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post {
+    background-color: rgba(30, 30, 30, 0.94) !important;
+    color: #ffffff !important;
+    border-color: #444444 !important;
+}
+
+body.tema-oscuro .tarjeta_post .text-dark {
+    color: #ffffff !important;
+}
+
+body.tema-oscuro .tarjeta_post .text-muted {
+    color: #bbbbbb !important;
+}
+
+body.tema-oscuro .tarjeta_post .text-secondary {
+    color: #cccccc !important;
+}
+
+
+/* ---------------------------------------------------------
+   COMENTARIOS Y RESPUESTAS
+   --------------------------------------------------------- */
+
+/* Los comentarios creados dinámicamente */
+body.tema-oscuro .tarjeta_post .border {
+    background-color: rgba(40, 40, 40, 0.95) !important;
+    border-color: #555555 !important;
+    color: #ffffff !important;
+}
+
+/* Texto de comentarios y respuestas */
+body.tema-oscuro .tarjeta_post .border p,
+body.tema-oscuro .tarjeta_post .border strong {
+    color: #ffffff !important;
+}
+
+/* Fecha de comentarios y respuestas */
+body.tema-oscuro .tarjeta_post .border small {
+    color: #bbbbbb !important;
+}
+
+
+/* ---------------------------------------------------------
+   RESPUESTAS
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post .border-start {
+    color: #ffffff !important;
+    border-color: #666666 !important;
+}
+
+body.tema-oscuro .tarjeta_post .border-start p,
+body.tema-oscuro .tarjeta_post .border-start strong {
+    color: #ffffff !important;
+}
+
+body.tema-oscuro .tarjeta_post .border-start small {
+    color: #bbbbbb !important;
+}
+
+
+/* ---------------------------------------------------------
+   BOTONES DE ACCIÓN
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post .btn_accion_icono {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+body.tema-oscuro .tarjeta_post .btn_accion_icono:hover {
+    color: var(--mypet-orange) !important;
+}
+
+
+/* ---------------------------------------------------------
+   CORAZONES
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post .btn_accion_icono .bi-heart,
+body.tema-oscuro .tarjeta_post .btn_accion_icono .bi-heart-fill {
+    color: #ff4d5a !important;
+}
+
+
+/* ---------------------------------------------------------
+   COMENTARIOS
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post .btn_accion_icono .bi-chat-dots-fill,
+body.tema-oscuro .tarjeta_post .btn_accion_icono .bi-reply {
+    color: #4da3ff !important;
+}
+
+
+/* ---------------------------------------------------------
+   ICONOS DE USUARIO
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post .bi-person-fill,
+body.tema-oscuro .tarjeta_post .bi-person-circle {
+    color: #cccccc !important;
+}
+
+
+/* ---------------------------------------------------------
+   BOTONES EDITAR Y ELIMINAR
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post .btn_editar_hover,
+body.tema-oscuro .tarjeta_post .btn_eliminar_hover {
+    color: #ffffff !important;
+}
+
+
+/* ---------------------------------------------------------
+   CAMPOS PARA ESCRIBIR COMENTARIOS Y RESPUESTAS
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post textarea,
+body.tema-oscuro .tarjeta_post input {
+    background-color: #292929 !important;
+    color: #ffffff !important;
+    border-color: #555555 !important;
+}
+
+body.tema-oscuro .tarjeta_post textarea::placeholder,
+body.tema-oscuro .tarjeta_post input::placeholder {
+    color: #bbbbbb !important;
+}
+
+
+/* ---------------------------------------------------------
+   CONTADORES DE ME GUSTA
+   --------------------------------------------------------- */
+
+body.tema-oscuro .tarjeta_post [data-me-gusta-publicacion],
+body.tema-oscuro .tarjeta_post [data-me-gusta-comentario] {
+    color: #ffffff !important;
 }

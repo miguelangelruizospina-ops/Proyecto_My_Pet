@@ -1,0 +1,993 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <!-- =====================================================
+         BOOTSTRAP
+
+         Se utiliza Bootstrap para aprovechar sus componentes
+         y estilos generales sin tener que crear nuevamente
+         funcionalidades básicas de la interfaz.
+         ===================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <title>Configuración - My Pet</title>
+
+
+    <!-- =====================================================
+         HOJA DE ESTILOS PRINCIPAL DE MY PET
+
+         Esta hoja contiene los estilos generales y compartidos
+         por las diferentes páginas de la aplicación.
+
+         Los estilos específicos de Configuración permanecen
+         en este archivo porque solamente son utilizados por
+         esta pantalla y no es necesario agregarlos al CSS
+         global de todo el proyecto.
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../mi_pet.css"
+    >
+
+
+    <!-- =====================================================
+         ESTILOS ESPECÍFICOS DE CONFIGURACIÓN
+
+         Estos estilos se mantienen dentro de esta página porque
+         corresponden exclusivamente a los elementos visuales
+         del módulo de Configuración.
+
+         De esta manera se evita modificar o afectar estilos
+         utilizados por otras pantallas de My Pet.
+         ===================================================== -->
+
+    <style>
+
+
+        /* =====================================================
+           CONTENEDOR PRINCIPAL
+
+           Limita el ancho de la pantalla de configuración para
+           mantener el contenido centrado y facilitar la lectura.
+           ===================================================== */
+
+        .contenedor-configuracion {
+
+            max-width: 750px;
+
+            margin: 0 auto;
+
+        }
+
+
+        /* =====================================================
+           FLECHA DE REGRESO
+
+           Permite regresar al inicio de My Pet mediante una
+           flecha ubicada en la parte superior izquierda.
+
+           Se utiliza una flecha en lugar de un botón porque
+           ocupa menos espacio y funciona como navegación
+           secundaria de la pantalla.
+           ===================================================== */
+
+        .flecha-volver {
+
+            position: absolute;
+
+            top: 22px;
+
+            left: 25px;
+
+            font-size: 50px;
+
+            font-weight: bold;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            line-height: 1;
+
+            transition:
+                transform 0.2s,
+                opacity 0.2s;
+
+        }
+
+
+        /* Efecto visual de la flecha cuando el usuario
+           pasa el cursor sobre ella. */
+
+        .flecha-volver:hover {
+
+            transform: translateX(-4px);
+
+            opacity: 0.75;
+
+            color: #ffffff;
+
+        }
+
+
+        /* =====================================================
+           TÍTULO DE CONFIGURACIÓN
+
+           Centra el título principal y genera separación
+           visual entre el encabezado y las tarjetas.
+           ===================================================== */
+
+        .titulo-configuracion {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        /* =====================================================
+           DESCRIPCIÓN PRINCIPAL
+
+           Destaca el mensaje que explica el propósito de esta
+           pantalla de configuración.
+           ===================================================== */
+
+        .descripcion-principal {
+
+            color: white;
+
+            margin-bottom: 0;
+
+            font-weight: 700;
+
+        }
+
+
+        /* En modo oscuro el texto pasa a blanco para mantener
+           una buena legibilidad sobre el fondo oscuro. */
+
+        .tema-oscuro .descripcion-principal {
+
+            color: #ffffff !important;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =====================================================
+           TARJETAS DE CONFIGURACIÓN
+
+           Cada tarjeta agrupa opciones relacionadas.
+
+           Se utiliza un fondo ligeramente transparente para
+           permitir que se perciba sutilmente el fondo de My Pet,
+           manteniendo al mismo tiempo suficiente contraste para
+           leer correctamente el contenido.
+           ===================================================== */
+
+        .tarjeta-configuracion {
+
+            background-color: rgba(255, 255, 255, 0.82);
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.10);
+
+            backdrop-filter: blur(5px);
+
+            -webkit-backdrop-filter: blur(5px);
+
+        }
+
+
+        /* =====================================================
+           TÍTULOS DE SECCIÓN
+
+           Identifican cada grupo de configuraciones para que
+           el usuario pueda distinguir rápidamente las categorías.
+           ===================================================== */
+
+        .titulo-seccion {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* =====================================================
+           OPCIONES DE CONFIGURACIÓN
+
+           Organiza la información de cada opción y coloca su
+           control correspondiente en el lado contrario.
+           ===================================================== */
+
+        .opcion-configuracion {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 15px 0;
+
+            border-bottom: 1px solid #eeeeee;
+
+        }
+
+
+        /* El último elemento no necesita una línea inferior
+           porque ya termina la sección. */
+
+        .opcion-configuracion:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        /* =====================================================
+           DESCRIPCIÓN DE OPCIONES
+
+           Presenta una explicación secundaria debajo del nombre
+           de cada configuración.
+           ===================================================== */
+
+        .descripcion-opcion {
+
+            margin: 0;
+
+            color: #666;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           COLORES DE INTERFAZ
+
+           Organiza los colores disponibles para que el usuario
+           pueda seleccionar el color principal de My Pet.
+           ===================================================== */
+
+        .colores {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        /* Cada color se representa mediante un botón circular
+           para facilitar su identificación visual. */
+
+        .color-opcion {
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 50%;
+
+            border: 3px solid white;
+
+            box-shadow:
+                0 0 0 1px #cccccc;
+
+            cursor: pointer;
+
+            padding: 0;
+
+        }
+
+
+        /* Color principal predeterminado de My Pet. */
+
+        .color-naranja {
+
+            background-color: #F7931E;
+
+        }
+
+
+        /* Color azul disponible para personalizar la interfaz. */
+
+        .color-azul {
+
+            background-color: #0d6efd;
+
+        }
+
+
+        /* Color verde disponible para personalizar la interfaz. */
+
+        .color-verde {
+
+            background-color: #198754;
+
+        }
+
+
+        /* Color morado disponible para personalizar la interfaz. */
+
+        .color-morado {
+
+            background-color: #6f42c1;
+
+        }
+
+
+        /* =====================================================
+           BOTÓN DE ELIMINAR CUENTA
+
+           Se diferencia visualmente porque representa una acción
+           destructiva que afecta permanentemente a la cuenta.
+           ===================================================== */
+
+        .btn-eliminar-cuenta {
+
+            color: #dc3545;
+
+            border: 1px solid #dc3545;
+
+            background-color: rgba(255, 255, 255, 0.75);
+
+            white-space: nowrap;
+
+        }
+
+
+        /* Al pasar el cursor se resalta la acción destructiva. */
+
+        .btn-eliminar-cuenta:hover {
+
+            background-color: #dc3545;
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           TEMA OSCURO
+
+           Cambia el fondo general de la pantalla y adapta los
+           elementos para que mantengan una buena legibilidad.
+           ===================================================== */
+
+        .tema-oscuro {
+
+            background-color: #121212 !important;
+
+            color: #ffffff;
+
+        }
+
+
+        /* Las tarjetas mantienen cierta transparencia en modo
+           oscuro para conservar el efecto visual de profundidad. */
+
+        .tema-oscuro .tarjeta-configuracion {
+
+            background-color: rgba(31, 31, 31, 0.82);
+
+            color: #ffffff;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.35);
+
+        }
+
+
+        /* Aumenta la claridad de las descripciones secundarias
+           cuando el fondo es oscuro. */
+
+        .tema-oscuro .descripcion-opcion {
+
+            color: #cccccc;
+
+        }
+
+
+        /* Las líneas divisorias se oscurecen para integrarse
+           con las tarjetas del tema oscuro. */
+
+        .tema-oscuro .opcion-configuracion {
+
+            border-bottom-color: #444444;
+
+        }
+
+
+        /* =====================================================
+           TAMAÑO DE LETRA
+
+           Estas clases permiten aplicar los diferentes tamaños
+           seleccionados por el usuario desde la configuración.
+           ===================================================== */
+
+        .letra-pequena {
+
+            font-size: 14px;
+
+        }
+
+
+        .letra-normal {
+
+            font-size: 16px;
+
+        }
+
+
+        .letra-grande {
+
+            font-size: 18px;
+
+        }
+
+
+        .letra-muy-grande {
+
+            font-size: 21px;
+
+        }
+
+
+        /* =====================================================
+           ALTO CONTRASTE
+
+           Incrementa el contraste visual para usuarios que
+           necesitan una diferenciación más fuerte entre fondo,
+           tarjetas y contenido.
+           ===================================================== */
+
+        .alto-contraste {
+
+            background-color: #000000 !important;
+
+            color: #ffffff !important;
+
+        }
+
+
+        .alto-contraste .tarjeta-configuracion {
+
+            background-color: #000000;
+
+            color: #ffffff;
+
+            border: 2px solid #ffffff;
+
+        }
+
+
+        .alto-contraste .descripcion-opcion {
+
+            color: #ffffff;
+
+        }
+
+
+        .alto-contraste .opcion-configuracion {
+
+            border-bottom-color: #ffffff;
+
+        }
+
+
+        /* =====================================================
+           COLORES ACTIVOS
+
+           Estas clases permiten identificar visualmente cuál
+           color de interfaz fue seleccionado por el usuario.
+           ===================================================== */
+
+        .color-naranja-activo {
+
+            --color-principal: #F7931E;
+
+        }
+
+
+        .color-azul-activo {
+
+            --color-principal: #0d6efd;
+
+        }
+
+
+        .color-verde-activo {
+
+            --color-principal: #198754;
+
+        }
+
+
+        .color-morado-activo {
+
+            --color-principal: #6f42c1;
+
+        }
+
+
+        /* El color seleccionado también se refleja en los
+           títulos de las secciones. */
+
+        .color-naranja-activo .titulo-seccion {
+
+            color: #F7931E;
+
+        }
+
+
+        .color-azul-activo .titulo-seccion {
+
+            color: #0d6efd;
+
+        }
+
+
+        .color-verde-activo .titulo-seccion {
+
+            color: #198754;
+
+        }
+
+
+        .color-morado-activo .titulo-seccion {
+
+            color: #6f42c1;
+
+        }
+
+
+        /* =====================================================
+           DISEÑO RESPONSIVE
+
+           En pantallas pequeñas las opciones se organizan
+           verticalmente para evitar que los controles queden
+           comprimidos o se desborden horizontalmente.
+           ===================================================== */
+
+        @media (max-width: 576px) {
+
+            .opcion-configuracion {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+
+            .opcion-configuracion .form-select {
+
+                width: 100% !important;
+
+            }
+
+
+            .colores {
+
+                margin-top: 5px;
+
+            }
+
+
+            .flecha-volver {
+
+                top: 18px;
+
+                left: 18px;
+
+                font-size: 36px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="fondo_pata">
+
+
+    <!-- =====================================================
+         NAVEGACIÓN DE REGRESO
+
+         La flecha permite volver directamente a home.html.
+         Se utiliza como navegación secundaria y evita agregar
+         un botón adicional al final de la página.
+         ===================================================== -->
+
+    <a
+        href="home.html"
+        class="flecha-volver"
+        aria-label="Volver al inicio"
+        title="Volver al inicio"
+    >
+        ←
+    </a>
+
+
+    <!-- =====================================================
+         CONTENEDOR PRINCIPAL
+
+         Agrupa todas las opciones disponibles para personalizar
+         la experiencia del usuario dentro de My Pet.
+         ===================================================== -->
+
+    <div class="container py-5">
+
+        <div class="contenedor-configuracion">
+
+
+            <!-- =================================================
+                 ENCABEZADO
+
+                 Presenta el nombre de la pantalla y una breve
+                 descripción de las funciones disponibles.
+                 ================================================= -->
+
+            <div class="titulo-configuracion">
+
+                <h1>
+                    Configuración
+                </h1>
+
+                <p class="descripcion-principal">
+                    Personaliza tu experiencia en My Pet
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 APARIENCIA
+
+                 Contiene las opciones relacionadas con el aspecto
+                 visual de la aplicación.
+                 ================================================= -->
+
+            <div class="tarjeta-configuracion">
+
+                <div class="titulo-seccion">
+                    Apariencia
+                </div>
+
+
+                <!-- TEMA -->
+
+                <div class="opcion-configuracion">
+
+                    <div>
+
+                        <strong>
+                            Tema
+                        </strong>
+
+                        <p class="descripcion-opcion">
+                            Selecciona el modo de visualización.
+                        </p>
+
+                    </div>
+
+
+                    <select
+                        id="tema"
+                        class="form-select"
+                        style="width: 150px;"
+                    >
+
+                        <option value="claro">
+                            Claro
+                        </option>
+
+                        <option value="oscuro">
+                            Oscuro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- COLOR -->
+
+                <div class="opcion-configuracion">
+
+                    <div>
+
+                        <strong>
+                            Color de interfaz
+                        </strong>
+
+                        <p class="descripcion-opcion">
+                            Selecciona el color principal de My Pet.
+                        </p>
+
+                    </div>
+
+
+                    <div class="colores">
+
+                        <button
+                            type="button"
+                            class="color-opcion color-naranja"
+                            title="Naranja"
+                            aria-label="Color naranja"
+                        ></button>
+
+
+                        <button
+                            type="button"
+                            class="color-opcion color-azul"
+                            title="Azul"
+                            aria-label="Color azul"
+                        ></button>
+
+
+                        <button
+                            type="button"
+                            class="color-opcion color-verde"
+                            title="Verde"
+                            aria-label="Color verde"
+                        ></button>
+
+
+                        <button
+                            type="button"
+                            class="color-opcion color-morado"
+                            title="Morado"
+                            aria-label="Color morado"
+                        ></button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACCESIBILIDAD
+
+                 Agrupa las opciones relacionadas con el tamaño
+                 de letra y el contraste visual.
+                 ================================================= -->
+
+            <div class="tarjeta-configuracion">
+
+                <div class="titulo-seccion">
+                    Accesibilidad
+                </div>
+
+
+                <!-- TAMAÑO DE LETRA -->
+
+                <div class="opcion-configuracion">
+
+                    <div>
+
+                        <strong>
+                            Tamaño de letra
+                        </strong>
+
+                        <p class="descripcion-opcion">
+                            Ajusta el tamaño del texto.
+                        </p>
+
+                    </div>
+
+
+                    <select
+                        id="tamanoLetra"
+                        class="form-select"
+                        style="width: 150px;"
+                    >
+
+                        <option value="pequena">
+                            Pequeña
+                        </option>
+
+                        <option
+                            value="normal"
+                            selected
+                        >
+                            Normal
+                        </option>
+
+                        <option value="grande">
+                            Grande
+                        </option>
+
+                        <option value="muy-grande">
+                            Muy grande
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ALTO CONTRASTE -->
+
+                <div class="opcion-configuracion">
+
+                    <div>
+
+                        <strong>
+                            Alto contraste
+                        </strong>
+
+                        <p class="descripcion-opcion">
+                            Mejora el contraste para facilitar la lectura.
+                        </p>
+
+                    </div>
+
+
+                    <div class="form-check form-switch">
+
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="altoContraste"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 NOTIFICACIONES
+
+                 Permite activar o desactivar las notificaciones
+                 de My Pet.
+                 ================================================= -->
+
+            <div class="tarjeta-configuracion">
+
+                <div class="titulo-seccion">
+                    Notificaciones
+                </div>
+
+
+                <div class="opcion-configuracion">
+
+                    <div>
+
+                        <strong>
+                            Activar notificaciones
+                        </strong>
+
+                        <p class="descripcion-opcion">
+                            Permite recibir notificaciones de My Pet.
+                        </p>
+
+                    </div>
+
+
+                    <div class="form-check form-switch">
+
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            id="notificaciones"
+                            checked
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CUENTA
+
+                 Contiene las opciones relacionadas con la cuenta
+                 y la eliminación de los datos del usuario.
+                 ================================================= -->
+
+            <div class="tarjeta-configuracion">
+
+                <div class="titulo-seccion">
+                    Cuenta
+                </div>
+
+
+                <div class="opcion-configuracion">
+
+                    <div>
+
+                        <strong>
+                            Eliminar cuenta
+                        </strong>
+
+                        <p class="descripcion-opcion">
+                            Elimina permanentemente tu cuenta y sus datos.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="btnEliminarCuenta"
+                        class="btn btn-eliminar-cuenta"
+                    >
+                        Eliminar cuenta
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT DE CONFIGURACIÓN
+
+         Este archivo controla el comportamiento de las opciones
+         de configuración, incluyendo tema, tamaño de letra,
+         colores, contraste, notificaciones y cuenta.
+
+         Se carga al final del documento para garantizar que los
+         elementos HTML ya estén disponibles cuando JavaScript
+         comience a trabajar con ellos.
+         ===================================================== -->
+
+   
+    <script src="/JS/configuracion_global.js"></script>
+    <script src="/JS/configuracion.js"></script>
+
+
+</body>
+
+</html>

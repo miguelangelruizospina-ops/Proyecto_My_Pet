@@ -11,7 +11,13 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <!-- Bootstrap -->
+    <!-- =====================================================
+         BOOTSTRAP
+
+         Se utiliza Bootstrap para los componentes generales
+         de la interfaz.
+         ===================================================== -->
+
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -19,62 +25,144 @@
 
     <title>Inicio</title>
 
-    <!-- Hoja de estilos principal de My Pet -->
-    <link rel="stylesheet" href="../mi_pet.css">
 
+    <!-- =====================================================
+         HOJA DE ESTILOS PRINCIPAL DE MY PET
+
+         Contiene los estilos generales y compartidos
+         por las diferentes páginas de la aplicación.
+         ===================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../mi_pet.css"
+    >
+
+
+    <!-- =====================================================
+         ESTILOS ESPECÍFICOS DEL HOME
+
+         Estos estilos solamente organizan los botones
+         inferiores de esta pantalla.
+         ===================================================== -->
 
     <style>
 
         /* =====================================================
            BOTONES INFERIORES
+
+           Organiza Panel administrativo y Ayuda en los
+           extremos de la misma fila.
            ===================================================== */
 
         .botones-inferiores {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             width: 100%;
+
         }
 
 
-        /*
-         * Ambos botones tienen exactamente
-         * el mismo tamaño.
-         */
+        /* =====================================================
+           TAMAÑO DE BOTONES INFERIORES
+
+           Mantiene Panel administrativo y Ayuda con las
+           mismas dimensiones.
+           ===================================================== */
 
         .btn-inferior {
+
             width: 190px;
+
             height: 45px;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             text-align: center;
 
             padding: 0 10px;
+
         }
 
 
-        /*
-         * Texto del panel administrativo
-         * ligeramente más pequeño.
-         */
+        /* =====================================================
+           TEXTO DEL PANEL ADMINISTRATIVO
+
+           Se reduce ligeramente para que el texto completo
+           pueda mantenerse dentro del botón.
+           ===================================================== */
 
         .texto-panel-admin {
+
             font-size: 14px;
+
             white-space: nowrap;
+
         }
 
 
-        /*
-         * Texto de Ayuda.
-         */
+        /* =====================================================
+           TEXTO DE AYUDA
+
+           Mantiene el tamaño normal del texto del botón.
+           ===================================================== */
 
         .texto-ayuda {
+
             font-size: 16px;
+
         }
 
+
+        /* =====================================================
+           CONFIGURACIÓN
+
+           Utiliza exactamente la misma clase que Cerrar sesión
+           para conservar su tamaño, altura, tipografía,
+           espaciado y comportamiento.
+
+           Aquí solamente se modifica el color del botón.
+           ===================================================== */
+
+        .btn-configuracion {
+            background-color: var(--mypet-orange) !important;
+            border-color: var(--mypet-orange) !important;
+            color: #030303 !important;
+
+        }
+
+
+        /* =====================================================
+           CONFIGURACIÓN AL PASAR EL CURSOR
+
+           Mantiene el botón naranja y el texto blanco.
+           ===================================================== */
+
+        .btn-configuracion:hover {
+            background-color: var(--mypet-orange-hover) !important;
+            border-color: var(--mypet-orange-hover) !important;
+            color: #ffffff !important;
+
+        }
+        /* =====================================================
+        CENTRAR CONFIGURACIÓN
+
+        Centra el botón horizontalmente debajo de Cerrar sesión
+        sin modificar su tamaño ni sus demás estilos.
+        ===================================================== */
+
+        .contenedor-configuracion {
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -85,6 +173,8 @@
 
     <!-- =====================================================
          BOTÓN DE NOTIFICACIONES
+
+         Permite acceder a las notificaciones de My Pet.
          ===================================================== -->
 
     <div class="notificaciones-inicio">
@@ -98,7 +188,9 @@
 
             &#128276;
 
+
             <!-- Indicador de notificaciones de emergencias -->
+
             <span
                 id="indicadorNotificaciones"
                 class="indicador-notificaciones"
@@ -106,7 +198,9 @@
             >
             </span>
 
+
             <!-- Indicador de notificaciones de agenda -->
+
             <span
                 id="indicadorAgenda"
                 class="indicador-agenda"
@@ -121,6 +215,8 @@
 
     <!-- =====================================================
          MENÚ PRINCIPAL
+
+         Contiene las funciones principales de My Pet.
          ===================================================== -->
 
     <div class="container my-5 pt-5">
@@ -236,11 +332,19 @@
 
         <div class="text-center mt-5">
 
+
+            <!-- =================================================
+                 PANEL ADMINISTRATIVO Y AYUDA
+                 ================================================= -->
+
             <div class="botones-inferiores">
 
 
                 <!-- =================================================
                      PANEL ADMINISTRATIVO
+
+                     Solo se muestra cuando el usuario tiene
+                     permisos de administrador.
                      ================================================= -->
 
                 <a
@@ -275,9 +379,11 @@
             </div>
 
 
-            <!-- =================================================
+            <!-- =====================================================
                  CERRAR SESIÓN
-                 ================================================= -->
+
+                 Mantiene su diseño original.
+                 ===================================================== -->
 
             <div class="mt-4">
 
@@ -286,10 +392,30 @@
                     id="btnCerrarSesion"
                     class="btn btn-cerrar-sesion"
                 >
-
                     Cerrar sesión
-
                 </button>
+
+            </div>
+
+
+            <!-- =====================================================
+                 CONFIGURACIÓN
+
+                 Utiliza exactamente la misma clase de Cerrar sesión
+                 para conservar sus dimensiones y posición.
+
+                 La clase btn-configuracion solamente cambia
+                 el color a naranja.
+                 ===================================================== -->
+
+            <div class="mt-2 contenedor-configuracion">
+
+                <a
+                    href="configuracion.html"
+                    class="btn btn-cerrar-sesion btn-configuracion"
+                >
+                         Configuración   
+                </a>
 
             </div>
 
@@ -314,6 +440,9 @@
 
     <!-- =====================================================
          VERIFICAR ROL DEL USUARIO
+
+         Determina si el usuario actual es administrador
+         y muestra el botón correspondiente.
          ===================================================== -->
 
     <script>
@@ -329,13 +458,13 @@
 
 
                 if (!btnPanelAdministrador) {
+
                     return;
+
                 }
 
 
-                /*
-                 * Obtener usuario almacenado.
-                 */
+                /* Obtener usuario almacenado. */
 
                 const datosUsuario =
                     localStorage.getItem(
@@ -349,10 +478,7 @@
                 );
 
 
-                /*
-                 * Si no existe usuario,
-                 * no mostrar el botón.
-                 */
+                /* Si no existe usuario, no mostrar el botón. */
 
                 if (!datosUsuario) {
 
@@ -361,16 +487,14 @@
                     );
 
                     return;
+
                 }
 
 
                 let usuarioLogueado;
 
 
-                /*
-                 * Convertir el JSON almacenado
-                 * nuevamente en objeto.
-                 */
+                /* Convertir el JSON almacenado nuevamente en objeto. */
 
                 try {
 
@@ -385,6 +509,7 @@
                     );
 
                     return;
+
                 }
 
 
@@ -394,9 +519,7 @@
                 );
 
 
-                /*
-                 * Obtener el rol.
-                 */
+                /* Obtener el rol. */
 
                 let rol = "";
 
@@ -424,9 +547,7 @@
                 }
 
 
-                /*
-                 * Normalizar el rol.
-                 */
+                /* Normalizar el rol. */
 
                 rol =
                     String(rol)
@@ -440,10 +561,7 @@
                 );
 
 
-                /*
-                 * Mostrar el botón
-                 * si es administrador.
-                 */
+                /* Mostrar el botón si el usuario es administrador. */
 
                 if (
                     rol === "administrador" ||
@@ -477,6 +595,9 @@
 
     <!-- =====================================================
          CERRAR SESIÓN
+
+         Elimina la sesión almacenada y regresa
+         al formulario de inicio de sesión.
          ===================================================== -->
 
     <script>
@@ -486,7 +607,6 @@
             .addEventListener(
                 "click",
                 function () {
-
 
                     const confirmar =
                         confirm(
@@ -501,18 +621,14 @@
                     }
 
 
-                    /*
-                     * Eliminar sesión.
-                     */
+                    /* Eliminar sesión. */
 
                     localStorage.removeItem(
                         "usuarioLogueado"
                     );
 
 
-                    /*
-                     * Regresar al login.
-                     */
+                    /* Regresar al login. */
 
                     window.location.href =
                         "iniciar_sesion.html";
@@ -522,7 +638,7 @@
 
     </script>
 
-
+    <script src="/JS/configuracion_global.js"></script>
 </body>
 
 </html>
