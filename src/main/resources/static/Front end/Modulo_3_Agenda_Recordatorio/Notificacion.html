@@ -1,159 +1,194 @@
 <!DOCTYPE html>
-
 <html lang="es">
 
 <head>
 
+    <!-- Carga el cliente encargado de las solicitudes a la API. -->
 
-<script src="/JS/api-client.js"></script>
+    <script src="/JS/api-client.js"></script>
 
-<meta charset="UTF-8">
+    <!-- Configura la codificación de caracteres y la adaptación a dispositivos móviles. -->
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>Notificaciones - My Pet</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-<link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-    rel="stylesheet">
+    <!-- Define el título de la página en el navegador. -->
 
-<link rel="stylesheet" href="../mi_pet.css">
-```
+    <title>Notificaciones - My Pet</title>
+
+    <!-- Importa Bootstrap para los estilos y componentes de la interfaz. -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Importa los estilos personalizados de My Pet. -->
+
+    <link rel="stylesheet" href="../mi_pet.css">
 
 </head>
 
+<!-- Aplica el fondo y la altura mínima de la página. -->
+
 <body class="fondo_pata min-vh-100">
 
-```
-<main class="container py-4">
+    <!-- ===================================================== -->
+    <!-- CONTENIDO PRINCIPAL -->
+    <!-- ===================================================== -->
 
+    <main class="container py-4">
 
-    <!-- ENCABEZADO -->
+        <!-- ===================================================== -->
+        <!-- ENCABEZADO -->
+        <!-- ===================================================== -->
 
-    <div class="position-relative text-center mb-4">
+        <!-- Presenta el título, la descripción y el acceso para regresar al inicio. -->
 
-        <a
-            href="../Modulo_1_gestion_usuario/home.html"
-            class="flecha position-absolute start-0 top-50 translate-middle-y"
-            aria-label="Regresar">
+        <div class="position-relative text-center mb-4">
 
-            ←
+            <a
+                href="../Modulo_1_gestion_usuario/home.html"
+                class="flecha position-absolute start-0 top-50 translate-middle-y"
+                aria-label="Regresar">
 
-        </a>
+                ←
 
-        <h2 class="text-white mb-1">
+            </a>
 
-            Notificaciones
+            <h2 class="text-white mb-1">
 
-        </h2>
+                Notificaciones
 
-        <p class="text-white mb-0">
+            </h2>
 
-            Mantente al día con el cuidado de tu mascota
+            <p class="text-white mb-0">
 
-        </p>
+                Mantente al día con el cuidado de tu mascota
 
-    </div>
+            </p>
 
+        </div>
 
-    <!-- CONTENEDOR -->
+        <!-- ===================================================== -->
+        <!-- CONTENEDOR DE NOTIFICACIONES -->
+        <!-- ===================================================== -->
 
-    <div class="notificaciones-contenedor">
+        <!-- Agrupa la información, las acciones y la lista de notificaciones. -->
 
+        <div class="notificaciones-contenedor">
 
-        <!-- CABECERA -->
+            <!-- ===================================================== -->
+            <!-- CABECERA -->
+            <!-- ===================================================== -->
 
-        <div class="notificaciones-cabecera">
+            <!-- Muestra el nombre de la sección y el contador de notificaciones. -->
 
-            <div>
+            <div class="notificaciones-cabecera">
 
-                <h5 class="mb-1">
+                <div>
 
-                    Mis notificaciones
+                    <h5 class="mb-1">
 
-                </h5>
+                        Mis notificaciones
 
-                <span id="contadorNotificaciones">
+                    </h5>
 
-                    0 notificaciones
+                    <span id="contadorNotificaciones">
 
-                </span>
+                        0 notificaciones
+
+                    </span>
+
+                </div>
+
+                <!-- ===================================================== -->
+                <!-- BOTONES DE GESTIÓN -->
+                <!-- ===================================================== -->
+
+                <!-- Agrupa las acciones para administrar las notificaciones. -->
+
+                <div class="d-flex gap-2 flex-wrap justify-content-end">
+
+                    <!-- Permite marcar todas las notificaciones como leídas. -->
+
+                    <button
+                        type="button"
+                        id="btnMarcarTodasComoLeidas"
+                        class="btn-notificaciones">
+
+                        Marcar todas como leídas
+
+                    </button>
+
+                    <!-- Permite eliminar todas las notificaciones. -->
+
+                    <button
+                        type="button"
+                        id="btnEliminarTodas"
+                        class="btn-notificaciones">
+
+                        Eliminar todas
+
+                    </button>
+
+                </div>
 
             </div>
 
+            <!-- ===================================================== -->
+            <!-- LISTA DE NOTIFICACIONES -->
+            <!-- ===================================================== -->
 
-            <!-- BOTONES DE GESTIÓN -->
+            <!-- Contenedor donde JavaScript carga las notificaciones disponibles. -->
 
-            <div class="d-flex gap-2 flex-wrap justify-content-end">
+            <div
+                id="listaNotificaciones"
+                class="notificaciones-lista">
 
-                <!-- Marca todas como leídas -->
+            </div>
 
-                <button
-                    type="button"
-                    id="btnMarcarTodasComoLeidas"
-                    class="btn-notificaciones">
+            <!-- ===================================================== -->
+            <!-- MENSAJE SIN NOTIFICACIONES -->
+            <!-- ===================================================== -->
 
-                    Marcar todas como leídas
+            <!-- Informa al usuario cuando no hay notificaciones para mostrar. -->
 
-                </button>
+            <div
+                id="mensajeSinNotificaciones"
+                class="notificaciones-vacio">
 
-
-                <!-- Elimina todas las notificaciones -->
-
-                <button
-                    type="button"
-                    id="btnEliminarTodas"
-                    class="btn-notificaciones">
-
-                    Eliminar todas
-
-                </button>
+                No tienes notificaciones por el momento.
 
             </div>
 
         </div>
 
+    </main>
 
-        <!-- LISTA -->
+    <!-- ===================================================== -->
+    <!-- BOOTSTRAP -->
+    <!-- ===================================================== -->
 
-        <div
-            id="listaNotificaciones"
-            class="notificaciones-lista">
+    <!-- Carga los componentes interactivos de Bootstrap. -->
 
-        </div>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
+    <!-- ===================================================== -->
+    <!-- JAVASCRIPT DE NOTIFICACIONES -->
+    <!-- ===================================================== -->
 
-        <!-- MENSAJE SIN NOTIFICACIONES -->
+    <!-- Gestiona la carga, lectura y eliminación de las notificaciones. -->
 
-        <div
-            id="mensajeSinNotificaciones"
-            class="notificaciones-vacio">
+    <script src="/JS/Notificacion.js"></script>
 
-            No tienes notificaciones por el momento.
+    <!-- Carga la configuración global de la aplicación. -->
 
-        </div>
-
-
-    </div>
-
-
-</main>
-
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
-
-
-<!-- IMPORTANTE:
-     El JS está fuera de la carpeta Front end -->
-
-<script src="/JS/Notificacion.js"></script>
-
-<script src="/JS/configuracion_global.js"></script>
-
+    <script src="/JS/configuracion_global.js"></script>
 
 </body>
 

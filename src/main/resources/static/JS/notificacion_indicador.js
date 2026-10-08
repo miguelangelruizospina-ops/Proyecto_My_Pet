@@ -1,10 +1,8 @@
+// Configuración de la ruta principal de la API.
 
 const API_BASE = `${window.location.origin}/api`;
 
-
-/* ==========================================
-   OBTENER ID DEL USUARIO
-   ========================================== */
+// Obtiene el ID del usuario almacenado en la sesión local.
 
 function obtenerIdUsuarioIndicador() {
 
@@ -47,10 +45,7 @@ function obtenerIdUsuarioIndicador() {
     return null;
 }
 
-
-/* ==========================================
-   ACTUALIZAR INDICADOR DE NOTIFICACIONES
-   ========================================== */
+// Actualiza el indicador según las notificaciones no leídas del usuario.
 
 async function actualizarIndicadorNotificaciones() {
 
@@ -99,10 +94,7 @@ async function actualizarIndicadorNotificaciones() {
 
         }
 
-
-        /* ==========================================
-           CONTAR NOTIFICACIONES NO LEÍDAS
-           ========================================== */
+        // Cuenta las notificaciones que todavía no han sido leídas.
 
         const noLeidas =
             notificaciones.filter(
@@ -115,10 +107,7 @@ async function actualizarIndicadorNotificaciones() {
                 }
             ).length;
 
-
-        /* ==========================================
-           MOSTRAR U OCULTAR INDICADOR
-           ========================================== */
+        // Muestra u oculta el indicador según existan notificaciones pendientes.
 
         if (noLeidas > 0) {
 
@@ -129,7 +118,6 @@ async function actualizarIndicadorNotificaciones() {
             indicador.style.display = "none";
 
         }
-
 
     } catch (error) {
 
@@ -144,10 +132,7 @@ async function actualizarIndicadorNotificaciones() {
 
 }
 
-
-/* ==========================================
-   NORMALIZAR ESTADO
-   ========================================== */
+// Normaliza el estado de una notificación para facilitar su comparación.
 
 function obtenerEstadoIndicador(estado) {
 
@@ -179,10 +164,7 @@ function obtenerEstadoIndicador(estado) {
     return estadoNormalizado;
 }
 
-
-/* ==========================================
-   INICIALIZAR
-   ========================================== */
+// Actualiza el indicador de notificaciones cuando termina de cargar la página.
 
 document.addEventListener(
     "DOMContentLoaded",

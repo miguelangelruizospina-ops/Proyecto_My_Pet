@@ -17,12 +17,8 @@ const btnMarcarTodasComoLeidas =
 const btnEliminarTodas =
     document.getElementById("btnEliminarTodas");
 
-
-// =========================================================
-// OBTENCIÓN DEL USUARIO
-// =========================================================
-
 // Obtiene el ID del usuario actualmente autenticado.
+
 function obtenerIdUsuario() {
 
     const usuarioGuardado =
@@ -54,12 +50,8 @@ function obtenerIdUsuario() {
     }
 }
 
-
-// =========================================================
-// PETICIONES AL BACKEND
-// =========================================================
-
 // Realiza las solicitudes al backend de notificaciones.
+
 async function solicitar(url, opciones = {}) {
 
     const headers = {
@@ -111,12 +103,8 @@ async function solicitar(url, opciones = {}) {
     return texto;
 }
 
-
-// =========================================================
-// CARGA DE NOTIFICACIONES
-// =========================================================
-
 // Consulta las notificaciones actuales del usuario.
+
 async function cargarNotificaciones() {
 
     const idUsuario =
@@ -151,12 +139,8 @@ async function cargarNotificaciones() {
     }
 }
 
-
-// =========================================================
-// MOSTRAR NOTIFICACIONES
-// =========================================================
-
 // Construye visualmente la lista de notificaciones.
+
 function mostrarNotificaciones(
     notificaciones
 ) {
@@ -209,12 +193,8 @@ function mostrarNotificaciones(
     );
 }
 
-
-// =========================================================
-// CREACIÓN DE TARJETAS
-// =========================================================
-
 // Crea la tarjeta visual de cada notificación.
+
 function crearNotificacion(
     notificacion
 ) {
@@ -228,7 +208,6 @@ function crearNotificacion(
 
     tarjeta.dataset.idNotificacion =
         notificacion.idNotificacion;
-
 
     const estado =
         obtenerEstado(
@@ -244,7 +223,6 @@ function crearNotificacion(
         );
     }
 
-
     const mensaje =
         document.createElement("div");
 
@@ -255,7 +233,6 @@ function crearNotificacion(
     mensaje.textContent =
         notificacion.mensaje ||
         "Sin mensaje";
-
 
     const fecha =
         document.createElement("span");
@@ -269,14 +246,12 @@ function crearNotificacion(
             notificacion.fecha
         );
 
-
     const estadoTexto =
         document.createElement("span");
 
     estadoTexto.classList.add(
         "notificacion-estado"
     );
-
 
     if (
         estado === "leida"
@@ -299,7 +274,6 @@ function crearNotificacion(
             "No leída";
     }
 
-
     const informacion =
         document.createElement("div");
 
@@ -311,7 +285,6 @@ function crearNotificacion(
         estadoTexto
     );
 
-
     const acciones =
         document.createElement("div");
 
@@ -319,8 +292,8 @@ function crearNotificacion(
         "notificacion-acciones"
     );
 
+    // Configura el botón para marcar una notificación individual como leída.
 
-    // Botón para marcar una notificación individual como leída.
     if (
         estado === "no-leida"
     ) {
@@ -339,7 +312,6 @@ function crearNotificacion(
 
         btnLeer.textContent =
             "Marcar como leída";
-
 
         btnLeer.addEventListener(
             "click",
@@ -367,8 +339,8 @@ function crearNotificacion(
         );
     }
 
+    // Configura el botón para eliminar la notificación.
 
-    // Botón para eliminar la notificación.
     const btnEliminar =
         document.createElement("button");
 
@@ -381,7 +353,6 @@ function crearNotificacion(
 
     btnEliminar.textContent =
         "Eliminar";
-
 
     btnEliminar.addEventListener(
         "click",
@@ -411,7 +382,6 @@ function crearNotificacion(
         btnEliminar
     );
 
-
     tarjeta.appendChild(
         mensaje
     );
@@ -424,18 +394,13 @@ function crearNotificacion(
         acciones
     );
 
-
     listaNotificaciones.appendChild(
         tarjeta
     );
 }
 
-
-// =========================================================
-// ESTADO DE LAS NOTIFICACIONES
-// =========================================================
-
 // Normaliza los diferentes formatos de estado.
+
 function obtenerEstado(
     estado
 ) {
@@ -448,7 +413,6 @@ function obtenerEstado(
                 .toUpperCase()
             : "NO_LEIDA";
 
-
     if (
         valor === "LEIDA" ||
         valor === "LEÍDA"
@@ -460,12 +424,8 @@ function obtenerEstado(
     return "no-leida";
 }
 
+// Convierte la fecha recibida del backend al formato colombiano.
 
-// =========================================================
-// FORMATO DE FECHA
-// =========================================================
-
-// Convierte la fecha recibida del backend a formato colombiano.
 function formatearFecha(
     fecha
 ) {
@@ -475,10 +435,8 @@ function formatearFecha(
         return "Fecha no disponible";
     }
 
-
     const fechaObjeto =
         new Date(fecha);
-
 
     if (
         Number.isNaN(
@@ -489,18 +447,13 @@ function formatearFecha(
         return fecha;
     }
 
-
     return fechaObjeto.toLocaleString(
         "es-CO"
     );
 }
 
-
-// =========================================================
-// CONTADOR
-// =========================================================
-
 // Actualiza el contador de notificaciones no leídas.
+
 function actualizarContador(
     cantidad
 ) {
@@ -512,19 +465,14 @@ function actualizarContador(
         return;
     }
 
-
     contadorNotificaciones.textContent =
         cantidad === 1
             ? "1 notificación"
             : `${cantidad} notificaciones`;
 }
 
-
-// =========================================================
-// MARCAR COMO LEÍDA
-// =========================================================
-
 // Marca una notificación individual como leída.
+
 async function marcarComoLeida(
     id,
     tarjeta
@@ -533,7 +481,6 @@ async function marcarComoLeida(
     if (!id) {
         return false;
     }
-
 
     try {
 
@@ -544,20 +491,18 @@ async function marcarComoLeida(
             }
         );
 
+        // Actualiza inmediatamente la tarjeta después de marcarla como leída.
 
-        // Actualiza inmediatamente la tarjeta.
         if (tarjeta) {
 
             tarjeta.classList.remove(
                 "notificacion-no-leida"
             );
 
-
             const estadoTexto =
                 tarjeta.querySelector(
                     ".notificacion-estado"
                 );
-
 
             if (estadoTexto) {
 
@@ -573,12 +518,10 @@ async function marcarComoLeida(
                     "Leída";
             }
 
-
             const botonLeer =
                 tarjeta.querySelector(
                     ".btn-success"
                 );
-
 
             if (botonLeer) {
 
@@ -586,17 +529,14 @@ async function marcarComoLeida(
             }
         }
 
-
         const noLeidas =
             listaNotificaciones.querySelectorAll(
                 ".notificacion-no-leida"
             ).length;
 
-
         actualizarContador(
             noLeidas
         );
-
 
         return true;
 
@@ -615,13 +555,8 @@ async function marcarComoLeida(
     }
 }
 
+// Elimina una notificación de la base de datos y posteriormente de la interfaz.
 
-// =========================================================
-// ELIMINACIÓN INDIVIDUAL
-// =========================================================
-
-// Elimina una notificación de la base de datos
-// y posteriormente la quita de la interfaz.
 async function eliminarNotificacion(
     id,
     tarjeta
@@ -635,18 +570,15 @@ async function eliminarNotificacion(
         return false;
     }
 
-
     const confirmar =
         window.confirm(
             "¿Quieres eliminar esta notificación?"
         );
 
-
     if (!confirmar) {
 
         return false;
     }
-
 
     try {
 
@@ -660,7 +592,6 @@ async function eliminarNotificacion(
                 }
             );
 
-
         if (!respuesta.ok) {
 
             const mensaje =
@@ -672,30 +603,27 @@ async function eliminarNotificacion(
             );
         }
 
+        // Elimina la tarjeta después de confirmar la eliminación en el backend.
 
-        // El backend confirmó la eliminación.
-        // Ahora se elimina la tarjeta de la interfaz.
         tarjeta.remove();
 
+        // Actualiza el contador de notificaciones no leídas.
 
-        // Actualiza el contador de no leídas.
         const noLeidas =
             listaNotificaciones.querySelectorAll(
                 ".notificacion-no-leida"
             ).length;
 
-
         actualizarContador(
             noLeidas
         );
 
+        // Comprueba si ya no quedan notificaciones en la lista.
 
-        // Comprueba si ya no quedan notificaciones.
         const cantidadTarjetas =
             listaNotificaciones.querySelectorAll(
                 ".notificacion-item"
             ).length;
-
 
         if (
             cantidadTarjetas === 0
@@ -705,7 +633,6 @@ async function eliminarNotificacion(
 
             actualizarContador(0);
         }
-
 
         return true;
 
@@ -724,22 +651,16 @@ async function eliminarNotificacion(
     }
 }
 
-
-// =========================================================
-// MARCAR TODAS COMO LEÍDAS
-// =========================================================
-
 // Marca todas las notificaciones del usuario como leídas.
+
 async function marcarTodasComoLeidas() {
 
     const idUsuario =
         obtenerIdUsuario();
 
-
     if (!idUsuario) {
         return;
     }
-
 
     try {
 
@@ -750,13 +671,12 @@ async function marcarTodasComoLeidas() {
             }
         );
 
+        // Actualiza todas las tarjetas después de marcarlas como leídas.
 
-        // Actualiza todas las tarjetas directamente.
         const tarjetas =
             listaNotificaciones.querySelectorAll(
                 ".notificacion-item"
             );
-
 
         tarjetas.forEach(
             function (tarjeta) {
@@ -765,12 +685,10 @@ async function marcarTodasComoLeidas() {
                     "notificacion-no-leida"
                 );
 
-
                 const estadoTexto =
                     tarjeta.querySelector(
                         ".notificacion-estado"
                     );
-
 
                 if (estadoTexto) {
 
@@ -786,12 +704,10 @@ async function marcarTodasComoLeidas() {
                         "Leída";
                 }
 
-
                 const botonLeer =
                     tarjeta.querySelector(
                         ".btn-success"
                     );
-
 
                 if (botonLeer) {
 
@@ -799,7 +715,6 @@ async function marcarTodasComoLeidas() {
                 }
             }
         );
-
 
         actualizarContador(0);
 
@@ -816,33 +731,25 @@ async function marcarTodasComoLeidas() {
     }
 }
 
-
-// =========================================================
-// ELIMINAR TODAS
-// =========================================================
-
 // Elimina todas las notificaciones del usuario.
+
 async function eliminarTodas() {
 
     const idUsuario =
         obtenerIdUsuario();
 
-
     if (!idUsuario) {
         return;
     }
-
 
     const confirmar =
         window.confirm(
             "¿Quieres eliminar todas las notificaciones? Esta acción no se puede deshacer."
         );
 
-
     if (!confirmar) {
         return;
     }
-
 
     try {
 
@@ -856,7 +763,6 @@ async function eliminarTodas() {
                 }
             );
 
-
         if (!respuesta.ok) {
 
             const mensaje =
@@ -868,13 +774,11 @@ async function eliminarTodas() {
             );
         }
 
+        // Limpia la lista después de confirmar la eliminación en el backend.
 
-        // El backend confirmó la eliminación.
-        // Se limpia la lista inmediatamente.
         mostrarSinNotificaciones();
 
         actualizarContador(0);
-
 
     } catch (error) {
 
@@ -889,12 +793,8 @@ async function eliminarTodas() {
     }
 }
 
-
-// =========================================================
-// ESTADO VACÍO
-// =========================================================
-
 // Muestra el mensaje cuando no existen notificaciones.
+
 function mostrarSinNotificaciones() {
 
     if (
@@ -903,7 +803,6 @@ function mostrarSinNotificaciones() {
 
         listaNotificaciones.replaceChildren();
     }
-
 
     if (
         mensajeSinNotificaciones
@@ -914,17 +813,14 @@ function mostrarSinNotificaciones() {
     }
 }
 
+// Inicializa la gestión de notificaciones cuando la página termina de cargar.
 
-// =========================================================
-// INICIALIZACIÓN
-// =========================================================
-
-// Carga las notificaciones cuando la página está lista.
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        // Botón para marcar todas como leídas.
+        // Configura el botón para marcar todas las notificaciones como leídas.
+
         if (
             btnMarcarTodasComoLeidas
         ) {
@@ -935,8 +831,8 @@ document.addEventListener(
             );
         }
 
+        // Configura el botón para eliminar todas las notificaciones.
 
-        // Botón para eliminar todas definitivamente.
         if (
             btnEliminarTodas
         ) {
@@ -946,7 +842,6 @@ document.addEventListener(
                 eliminarTodas
             );
         }
-
 
         cargarNotificaciones();
     }

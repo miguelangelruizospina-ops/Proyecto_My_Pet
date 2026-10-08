@@ -1,53 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
+    <!-- Carga el cliente encargado de las solicitudes a la API. -->
+
     <script src="/JS/api-client.js"></script>
+
+    <!-- Configura la codificación de caracteres y la adaptación a dispositivos móviles. -->
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Define el título de la página en el navegador. -->
+
     <title>Agenda Personalizada - Mi Pet</title>
 
-    <!-- Bootstrap CSS CDN -->
+    <!-- Importa Bootstrap para los estilos y componentes de la interfaz. -->
+
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
-    <!-- Estilos generales de Mi Pet -->
+    <!-- Importa los estilos generales de My Pet. -->
+
     <link rel="stylesheet" href="../mi_pet.css">
+
 </head>
+
+<!-- Aplica el fondo general de la página. -->
 
 <body class="fondo_pata">
 
+    <!-- ===================================================== -->
+    <!-- ENCABEZADO Y NAVEGACIÓN -->
+    <!-- ===================================================== -->
+
     <header>
 
-        <!-- Flecha para regresar a la agenda general -->
+        <!-- Permite regresar a la agenda general. -->
+
         <a
             class="flecha"
             href="agenda_general.html"
             aria-label="Volver a la agenda general">
+
             ←
+
         </a>
 
-        <!-- Título -->
+        <!-- Muestra el título correspondiente a la agenda de la mascota seleccionada. -->
+
         <div class="titulo-naranja">
+
             <h1 id="tituloAgendaMascota">
+
                 Agenda de mascota
+
             </h1>
+
         </div>
 
-        <!-- Contenedor principal de la agenda -->
+        <!-- ===================================================== -->
+        <!-- CONTENEDOR PRINCIPAL DE LA AGENDA -->
+        <!-- ===================================================== -->
+
         <div class="contenedor_agenda_personalizada">
 
             <main class="recuadro_gestion_evento">
 
-                <!-- Mensajes de estado -->
+                <!-- Informa el estado de carga y los resultados de la agenda. -->
+
                 <p
                     id="estadoAgenda"
                     aria-live="polite">
                 </p>
 
-                <!-- Eventos de la mascota -->
+                <!-- Contenedor donde JavaScript muestra los eventos de la mascota. -->
+
                 <section
                     id="eventosMascota"
                     class="d-grid gap-3">
@@ -55,7 +85,12 @@
 
             </main>
 
-            <!-- Botón para agregar evento -->
+            <!-- ===================================================== -->
+            <!-- BOTÓN AGREGAR EVENTO -->
+            <!-- ===================================================== -->
+
+            <!-- Permite abrir el formulario para registrar una nueva actividad. -->
+
             <aside class="control_inferior">
 
                 <div class="boton_agregar_a">
@@ -66,7 +101,9 @@
                         class="btn_agregar_debajo"
                         title="Agregar nuevo evento"
                         aria-label="Agregar nuevo evento">
+
                         +
+
                     </button>
 
                 </div>
@@ -77,10 +114,11 @@
 
     </header>
 
+    <!-- ===================================================== -->
+    <!-- MODAL PARA REGISTRAR UN NUEVO EVENTO -->
+    <!-- ===================================================== -->
 
-    <!-- =====================================================
-         MODAL NUEVO EVENTO
-         ===================================================== -->
+    <!-- Presenta el formulario para programar una actividad en la agenda. -->
 
     <dialog id="dialogo_nuevo_evento">
 
@@ -88,11 +126,16 @@
 
             <h2>Nuevo Evento</h2>
 
+            <!-- Recopila los datos necesarios para registrar el evento. -->
+
             <form id="formNuevoEvento">
 
-                <!-- Mascota -->
+                <!-- Permite seleccionar la mascota asociada al evento. -->
+
                 <label for="mascotaEvento">
+
                     Mascota:
+
                 </label>
 
                 <select
@@ -100,10 +143,12 @@
                     required>
                 </select>
 
+                <!-- Permite indicar el tipo de actividad programada. -->
 
-                <!-- Tipo de evento -->
                 <label for="tipoEvento">
+
                     Tipo:
+
                 </label>
 
                 <input
@@ -112,10 +157,12 @@
                     placeholder="Ej: Peluquería"
                     required>
 
+                <!-- Permite seleccionar la fecha del evento. -->
 
-                <!-- Fecha -->
                 <label for="fechaEvento">
+
                     Fecha:
+
                 </label>
 
                 <input
@@ -123,10 +170,12 @@
                     type="date"
                     required>
 
+                <!-- Permite establecer la hora programada. -->
 
-                <!-- Hora -->
                 <label for="horaEvento">
+
                     Hora:
+
                 </label>
 
                 <input
@@ -134,10 +183,12 @@
                     type="time"
                     required>
 
+                <!-- Permite agregar notas adicionales sobre la actividad. -->
 
-                <!-- Descripción -->
                 <label for="descripcionEvento">
+
                     Notas:
+
                 </label>
 
                 <textarea
@@ -146,19 +197,23 @@
                     rows="3">
                 </textarea>
 
+                <!-- Agrupa las opciones para guardar el evento o cerrar el formulario. -->
 
-                <!-- Botones -->
                 <div class="botones_form">
 
                     <button
                         type="submit">
+
                         Guardar
+
                     </button>
 
                     <button
                         type="button"
                         id="cerrarDialogoEvento">
+
                         Cerrar
+
                     </button>
 
                 </div>
@@ -169,10 +224,18 @@
 
     </dialog>
 
+    <!-- ===================================================== -->
+    <!-- JAVASCRIPT DE LA AGENDA -->
+    <!-- ===================================================== -->
 
-    <!-- JavaScript de agenda -->
+    <!-- Gestiona la consulta, visualización y creación de eventos de la agenda. -->
+
     <script src="/JS/agenda.js"></script>
+
+    <!-- Carga la configuración global de la aplicación. -->
+
     <script src="/JS/configuracion_global.js"></script>
 
 </body>
+
 </html>

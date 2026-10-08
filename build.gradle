@@ -1,23 +1,37 @@
+// Configuración de los plugins utilizados por el proyecto.
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.14'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
+// Información general del proyecto.
+
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
+
+// Configuración de Java utilizada por el proyecto.
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
+
+// Configura los parámetros de los métodos para que Spring pueda obtener sus nombres correctamente.
+
 tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += ['-parameters']
 }
+
+// Configura el repositorio desde el cual se obtienen las dependencias.
+
 repositories {
     mavenCentral()
 }
+
+// Dependencias utilizadas por la aplicación.
 
 dependencies {
 

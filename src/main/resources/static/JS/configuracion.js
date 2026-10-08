@@ -1,13 +1,8 @@
-
-// =====================================================
-// CONFIGURACIÓN GLOBAL - MY PET
-// =====================================================
+// Inicializa la configuración de My Pet cuando el contenido de la página ha terminado de cargar.
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // =====================================================
-    // CONTROLES
-    // =====================================================
+    // Controles principales de la configuración.
 
     const tema = document.getElementById("tema");
 
@@ -26,10 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const botonesColor =
         document.querySelectorAll(".color-opcion");
 
-
-    // =====================================================
-    // CARGAR CONFIGURACIÓN GUARDADA
-    // =====================================================
+    // Carga la configuración guardada del usuario.
 
     cargarTema();
     cargarTamanoLetra();
@@ -37,11 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
     cargarContraste();
     cargarNotificaciones();
 
-
-    // =====================================================
-    // TEMA
-    // =====================================================
-
+    // Gestiona el cambio del tema de la aplicación.
+    
     if (tema) {
 
         tema.addEventListener("change", function () {
@@ -59,7 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
+    // Carga el tema almacenado y lo aplica a la página.
+    
     function cargarTema() {
 
         const valor =
@@ -73,7 +63,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
+    // Aplica el tema seleccionado a la interfaz.
+   
     function aplicarTema(valor) {
 
         document.body.classList.remove(
@@ -94,10 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-    // =====================================================
-    // TAMAÑO DE LETRA
-    // =====================================================
+    // Gestiona el cambio del tamaño de letra.
 
     if (tamanoLetra) {
 
@@ -120,7 +108,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
+    // Carga el tamaño de letra almacenado y lo aplica a la página.
+    
     function cargarTamanoLetra() {
 
         const valor =
@@ -136,7 +125,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
+    // Aplica el tamaño de letra seleccionado a la interfaz.
+    
     function aplicarTamanoLetra(valor) {
 
         document.body.classList.remove(
@@ -157,11 +147,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-    // =====================================================
-    // COLOR DE INTERFAZ
-    // =====================================================
-
+    // Gestiona la selección del color principal de la interfaz.
+    
     botonesColor.forEach(function (boton) {
 
         boton.addEventListener(
@@ -224,7 +211,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-
+    // Carga el color almacenado y lo aplica a la interfaz.
+    
     function cargarColor() {
 
         const color =
@@ -236,13 +224,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
+    // Valida y aplica el color seleccionado a la interfaz.
+    
     function aplicarColor(color) {
 
-        // =================================================
-        // VALIDAR COLOR
-        // =================================================
-
+        // Valida que el color seleccionado pertenezca a las opciones disponibles.
+        
         const coloresValidos = [
             "naranja",
             "azul",
@@ -257,11 +244,8 @@ document.addEventListener("DOMContentLoaded", function () {
             color = "naranja";
         }
 
-
-        // =================================================
-        // CLASE DE COLOR EN BODY
-        // =================================================
-
+        // Aplica la clase correspondiente al color seleccionado.
+        
         document.body.classList.remove(
             "color-naranja-activo",
             "color-azul-activo",
@@ -273,21 +257,15 @@ document.addEventListener("DOMContentLoaded", function () {
             "color-" + color + "-activo"
         );
 
-
-        // =================================================
-        // IDENTIFICACIÓN DEL COLOR ACTIVO
-        // =================================================
-
+        // Identifica el color activo en la configuración de la página.
+        
         document.documentElement.setAttribute(
             "data-color",
             color
         );
 
-
-        // =================================================
-        // MARCAR BOTÓN SELECCIONADO
-        // =================================================
-
+        // Actualiza el botón que corresponde al color seleccionado.
+       
         botonesColor.forEach(function (boton) {
 
             boton.classList.remove(
@@ -296,12 +274,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
 
-
         const botonActivo =
             document.querySelector(
                 ".color-" + color
             );
-
 
         if (botonActivo) {
 
@@ -313,11 +289,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-    // =====================================================
-    // ALTO CONTRASTE
-    // =====================================================
-
+    // Gestiona el cambio de la configuración de alto contraste.
+    
     if (altoContraste) {
 
         altoContraste.addEventListener(
@@ -341,7 +314,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
+    // Carga la configuración de contraste almacenada y la aplica.
+   
     function cargarContraste() {
 
         const guardado =
@@ -349,10 +323,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 "altoContrasteMyPet"
             );
 
-
         const activado =
             guardado === "true";
-
 
         if (altoContraste) {
 
@@ -361,14 +333,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
-
         aplicarContraste(
             activado
         );
 
     }
 
-
+    // Aplica o desactiva el modo de alto contraste.
+    
     function aplicarContraste(activado) {
 
         document.body.classList.toggle(
@@ -385,11 +357,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-    // =====================================================
-    // NOTIFICACIONES
-    // =====================================================
-
+    // Gestiona el cambio de la configuración de notificaciones.
+    
     if (notificaciones) {
 
         notificaciones.addEventListener(
@@ -409,7 +378,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
+    // Carga el estado de las notificaciones almacenado por el usuario.
+    
     function cargarNotificaciones() {
 
         const guardado =
@@ -417,11 +387,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 "notificacionesMyPet"
             );
 
-
         if (!notificaciones) {
             return;
         }
-
 
         if (guardado === null) {
 
@@ -441,11 +409,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-    // =====================================================
-    // ELIMINAR CUENTA
-    // =====================================================
-
+    // Gestiona la eliminación de la cuenta y el cierre de la sesión local.
+    
     if (btnEliminarCuenta) {
 
         btnEliminarCuenta.addEventListener(
@@ -457,17 +422,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         "¿Está seguro de que desea eliminar su cuenta? Esta acción no se puede deshacer."
                     );
 
-
                 if (!confirmar) {
                     return;
                 }
 
-
                 /*
                  * Por ahora solamente se cierra la sesión local.
-                 *
                  * La eliminación física de la cuenta se conectará
                  * posteriormente con el backend.
+                 * La eliminación definitiva queda pendiente durante el periodo de pruebas para evitar pérdida de datos.
                  */
 
                 localStorage.removeItem(
@@ -478,11 +441,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     "idUsuario"
                 );
 
-
                 alert(
                     "Sesión cerrada."
                 );
-
 
                 window.location.href =
                     "iniciar_sesion.html";
@@ -493,4 +454,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
-

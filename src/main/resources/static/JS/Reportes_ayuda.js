@@ -1,14 +1,9 @@
-// ========================================
-// REPORTES DE AYUDA - PANEL ADMINISTRADOR
-// ========================================
+// Gestiona los reportes de ayuda desde el panel del administrador.
 
 let reporteSeleccionado = null;
 let modalReporte = null;
 
-
-// ========================================
-// INICIO
-// ========================================
+// Inicializa el panel de reportes cuando la página termina de cargar.
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -28,10 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-
-// ========================================
-// CARGAR TODOS LOS REPORTES
-// ========================================
+// Carga todos los reportes registrados en el sistema.
 
 async function cargarReportes() {
 
@@ -92,10 +84,7 @@ async function cargarReportes() {
     }
 }
 
-
-// ========================================
-// MOSTRAR REPORTES
-// ========================================
+// Muestra los reportes dentro del contenedor principal.
 
 function mostrarReportes(reportes) {
 
@@ -113,10 +102,7 @@ function mostrarReportes(reportes) {
     });
 }
 
-
-// ========================================
-// CREAR TARJETA DE REPORTE
-// ========================================
+// Construye la tarjeta visual correspondiente a un reporte.
 
 function crearTarjetaReporte(reporte) {
 
@@ -241,7 +227,6 @@ function crearTarjetaReporte(reporte) {
 
     `;
 
-
     const boton =
         tarjeta.querySelector("button");
 
@@ -251,14 +236,10 @@ function crearTarjetaReporte(reporte) {
 
     });
 
-
     return tarjeta;
 }
 
-
-// ========================================
-// ABRIR REPORTE
-// ========================================
+// Abre el reporte seleccionado y carga su información en el formulario.
 
 function abrirReporte(reporte) {
 
@@ -292,10 +273,7 @@ function abrirReporte(reporte) {
     }
 }
 
-
-// ========================================
-// GUARDAR CAMBIOS
-// ========================================
+// Guarda los cambios realizados en el reporte seleccionado.
 
 async function guardarCambiosReporte() {
 
@@ -317,7 +295,6 @@ async function guardarCambiosReporte() {
     boton.disabled = true;
     boton.textContent = "Guardando...";
 
-
     try {
 
         const id =
@@ -331,7 +308,6 @@ async function guardarCambiosReporte() {
             parametros.append("respuesta", respuesta);
         }
 
-
         const response = await fetch(
             `/api/reportes/actualizar/${id}?${parametros.toString()}`,
             {
@@ -339,7 +315,6 @@ async function guardarCambiosReporte() {
                 credentials: "include"
             }
         );
-
 
         if (!response.ok) {
 
@@ -356,15 +331,12 @@ async function guardarCambiosReporte() {
             );
         }
 
-
         await response.json();
-
 
         mostrarMensajeModal(
             "Reporte actualizado correctamente.",
             "success"
         );
-
 
         setTimeout(() => {
 
@@ -375,7 +347,6 @@ async function guardarCambiosReporte() {
             cargarReportes();
 
         }, 800);
-
 
     } catch (error) {
 
@@ -398,10 +369,7 @@ async function guardarCambiosReporte() {
     }
 }
 
-
-// ========================================
-// OBTENER NOMBRE DEL USUARIO
-// ========================================
+// Obtiene el nombre disponible del usuario que realizó el reporte.
 
 function obtenerNombreUsuario(reporte) {
 
@@ -432,10 +400,7 @@ function obtenerNombreUsuario(reporte) {
     return "Usuario no disponible";
 }
 
-
-// ========================================
-// FORMATEAR FECHA
-// ========================================
+// Convierte la fecha del reporte al formato utilizado en la interfaz.
 
 function formatearFecha(fecha) {
 
@@ -467,10 +432,7 @@ function formatearFecha(fecha) {
     }
 }
 
-
-// ========================================
-// ESTADO
-// ========================================
+// Obtiene el texto correspondiente al estado del reporte.
 
 function obtenerTextoEstado(estado) {
 
@@ -490,6 +452,7 @@ function obtenerTextoEstado(estado) {
     }
 }
 
+// Obtiene la clase visual correspondiente al estado del reporte.
 
 function obtenerClaseEstado(estado) {
 
@@ -509,10 +472,7 @@ function obtenerClaseEstado(estado) {
     }
 }
 
-
-// ========================================
-// MENSAJES DEL MODAL
-// ========================================
+// Muestra un mensaje dentro del modal según el resultado de la operación.
 
 function mostrarMensajeModal(mensaje, tipo) {
 
@@ -526,6 +486,7 @@ function mostrarMensajeModal(mensaje, tipo) {
 
 }
 
+// Oculta el mensaje mostrado dentro del modal.
 
 function ocultarMensajeModal() {
 
@@ -539,10 +500,7 @@ function ocultarMensajeModal() {
 
 }
 
-
-// ========================================
-// SEGURIDAD PARA MOSTRAR TEXTO HTML
-// ========================================
+// Escapa el contenido antes de mostrarlo como HTML.
 
 function escaparHTML(texto) {
 

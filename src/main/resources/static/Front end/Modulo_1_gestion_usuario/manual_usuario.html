@@ -1,75 +1,30 @@
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
+    <!-- Configuración básica del documento y adaptación a dispositivos móviles. -->
 
-    <!-- CONFIGURACIÓN BÁSICA DEL DOCUMENTO -->
     <meta charset="UTF-8">
-
-    <!-- Permite adaptar la página a computadores, tablets y celulares. -->
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Manual de Usuario | My Pet</title>
 
+    <!-- Carga Bootstrap para utilizar sus estilos y componentes. -->
 
-    <!--
-        BOOTSTRAP
-
-        Se utiliza para aprovechar las clases y utilidades de Bootstrap,
-        especialmente para espaciado, tamaños y diseño adaptable.
-    -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
+    <!-- Carga los estilos generales de My Pet. -->
 
-    <!--
-        CSS GENERAL DE MY PET
-
-        Este archivo contiene los estilos compartidos por las diferentes
-        pantallas de la aplicación, como el fondo, títulos y flechas.
-    -->
     <link rel="stylesheet" href="../mi_pet.css">
 
+    <!-- Define los estilos específicos de los componentes del manual. -->
 
-    <!--
-        CSS EXCLUSIVO DEL MANUAL
-
-        Estos estilos pertenecen únicamente a esta página.
-
-        Se mantienen aquí porque las clases:
-        - manual_item
-        - manual_contenido
-        - manual_paso
-        - manual_nota
-
-        son componentes específicos del manual y no forman parte del
-        diseño general de toda la aplicación.
-
-        De esta manera no se aumenta innecesariamente mi_pet.css ni se
-        corre el riesgo de modificar accidentalmente otras pantallas.
-
-        Si posteriormente alguno de estos estilos se reutiliza en varias
-        páginas, entonces sí sería conveniente trasladarlo a mi_pet.css.
-    -->
     <style>
+        /* Define la apariencia de cada sección desplegable del manual. */
 
-        /* =========================================================
-           CUADROS PRINCIPALES DEL MANUAL
-           =========================================================
-
-           Se utiliza blanco semitransparente para que el fondo de My Pet
-           pueda seguir viéndose detrás del contenido.
-
-           0.88 significa aproximadamente 88 % de opacidad.
-           Esto permite conservar buena lectura sin ocultar completamente
-           el fondo.
-        */
         .manual_item {
             background: rgba(255, 255, 255, 0.88);
             border-radius: 12px;
@@ -77,8 +32,8 @@
             overflow: hidden;
         }
 
+        /* Define la apariencia del encabezado de cada sección. */
 
-        /* ENCABEZADO CLICKEABLE DE CADA SECCIÓN */
         .manual_item summary {
             cursor: pointer;
             list-style: none;
@@ -88,15 +43,14 @@
             color: #333;
         }
 
+        /* Oculta el marcador predeterminado del encabezado. */
 
-        /* OCULTA EL MARCADOR TRIANGULAR PREDETERMINADO
-           DEL ELEMENTO <summary> EN NAVEGADORES WEBKIT. */
         .manual_item summary::-webkit-details-marker {
             display: none;
         }
 
+        /* Muestra el signo más cuando la sección está cerrada. */
 
-        /* MUESTRA UN SIGNO + CUANDO LA SECCIÓN ESTÁ CERRADA. */
         .manual_item summary::after {
             content: "+";
             float: right;
@@ -104,21 +58,21 @@
             font-weight: bold;
         }
 
+        /* Muestra el signo menos cuando la sección está abierta. */
 
-        /* CAMBIA EL SIGNO + POR − CUANDO LA SECCIÓN ESTÁ ABIERTA. */
         .manual_item[open] summary::after {
             content: "−";
         }
 
+        /* Define el espaciado y el color del contenido de cada sección. */
 
-        /* CONTENIDO INTERNO DE CADA SECCIÓN */
         .manual_contenido {
             padding: 0 20px 22px 20px;
             color: #333;
         }
 
+        /* Define la apariencia de los subtítulos del manual. */
 
-        /* SUBTÍTULOS DENTRO DE LAS SECCIONES */
         .manual_contenido h3 {
             font-size: 1rem;
             font-weight: 600;
@@ -126,20 +80,15 @@
             margin-bottom: 10px;
         }
 
+        /* Separa los elementos de las listas para facilitar la lectura. */
 
-        /* ESPACIADO ENTRE LOS ELEMENTOS DE LAS LISTAS */
         .manual_contenido ol li,
         .manual_contenido ul li {
             margin-bottom: 8px;
         }
 
+        /* Destaca visualmente cada paso de las instrucciones. */
 
-        /*
-            CADA PASO SE PRESENTA COMO UNA PEQUEÑA TARJETA.
-
-            También tiene una transparencia ligera para conservar el efecto
-            visual del manual sin afectar la lectura.
-        */
         .manual_paso {
             background: rgba(248, 249, 250, 0.82);
             border-radius: 8px;
@@ -147,14 +96,8 @@
             margin-bottom: 8px;
         }
 
+        /* Resalta las notas importantes mediante un fondo y un borde naranja. */
 
-        /*
-            NOTAS IMPORTANTES
-
-            El fondo naranja muy claro y el borde naranja permiten destacar
-            advertencias y recomendaciones sin utilizar colores demasiado
-            fuertes.
-        */
         .manual_nota {
             border-left: 4px solid #F7931E;
             background: rgba(255, 248, 239, 0.92);
@@ -162,45 +105,21 @@
             border-radius: 6px;
             margin-top: 15px;
         }
-
     </style>
 
 </head>
 
-
-<!--
-    CUERPO PRINCIPAL
-
-    fondo_pata pertenece a mi_pet.css y proporciona el fondo general
-    utilizado por My Pet.
-
-    min-vh-100 hace que la página ocupe como mínimo toda la altura
-    disponible de la ventana.
--->
 <body class="fondo_pata min-vh-100">
 
+    <!-- Contiene el manual y limita su ancho para facilitar la lectura. -->
 
-    <!--
-        CONTENEDOR PRINCIPAL
-
-        Bootstrap controla el ancho y el espaciado.
-
-        El ancho máximo de 900px evita que las líneas de texto sean
-        demasiado largas y facilita la lectura del manual.
-    -->
     <main
         class="container py-4"
         style="max-width: 900px"
     >
 
+        <!-- Permite regresar a la página de ayuda. -->
 
-        <!--
-            BOTÓN PARA REGRESAR
-
-            La clase flecha pertenece a mi_pet.css.
-
-            Al seleccionarlo, el usuario vuelve a la pantalla de ayuda.
-        -->
         <a
             class="flecha"
             href="ayuda.html"
@@ -210,8 +129,8 @@
             ←
         </a>
 
+        <!-- Presenta el título y la descripción del manual. -->
 
-        <!-- ENCABEZADO DEL MANUAL -->
         <header class="text-center my-4">
 
             <h1 class="titulo-naranja">
@@ -224,10 +143,8 @@
 
         </header>
 
+        <!-- Explica el propósito y las funciones principales de My Pet. -->
 
-        <!-- =========================================================
-             1. INTRODUCCIÓN
-             ========================================================= -->
         <details class="manual_item" open>
 
             <summary>
@@ -276,10 +193,8 @@
 
         </details>
 
+        <!-- Explica cómo crear una cuenta de usuario. -->
 
-        <!-- =========================================================
-             2. CREAR CUENTA
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -342,10 +257,8 @@
 
         </details>
 
+        <!-- Explica cómo acceder a la aplicación con una cuenta registrada. -->
 
-        <!-- =========================================================
-             3. INICIAR SESIÓN
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -400,10 +313,8 @@
 
         </details>
 
+        <!-- Describe las opciones disponibles para consultar y actualizar el perfil. -->
 
-        <!-- =========================================================
-             4. PERFIL DEL USUARIO
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -458,10 +369,8 @@
 
         </details>
 
+        <!-- Explica cómo registrar y consultar las mascotas del usuario. -->
 
-        <!-- =========================================================
-             5. REGISTRAR Y ADMINISTRAR MASCOTAS
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -540,10 +449,8 @@
 
         </details>
 
+        <!-- Describe la información y las herramientas del perfil de cada mascota. -->
 
-        <!-- =========================================================
-             6. PERFIL DE LA MASCOTA
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -593,10 +500,8 @@
 
         </details>
 
+        <!-- Explica cómo agregar y consultar documentos de una mascota. -->
 
-        <!-- =========================================================
-             7. DOCUMENTOS
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -666,10 +571,8 @@
 
         </details>
 
+        <!-- Explica cómo consultar y actualizar la información médica de la mascota. -->
 
-        <!-- =========================================================
-             8. HISTORIAL MÉDICO
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -743,10 +646,8 @@
 
         </details>
 
+        <!-- Describe cómo consultar los eventos de todas las mascotas registradas. -->
 
-        <!-- =========================================================
-             9. AGENDA GENERAL
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -792,10 +693,8 @@
 
         </details>
 
+        <!-- Explica cómo administrar los eventos de una mascota específica. -->
 
-        <!-- =========================================================
-             10. AGENDA PERSONALIZADA
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -854,10 +753,8 @@
 
         </details>
 
+        <!-- Presenta las funciones de interacción disponibles en la comunidad. -->
 
-        <!-- =========================================================
-             11. COMUNIDAD
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -911,10 +808,8 @@
 
         </details>
 
+        <!-- Explica cómo realizar consultas mediante el chatbot. -->
 
-        <!-- =========================================================
-             12. CHATBOT
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -971,10 +866,8 @@
 
         </details>
 
+        <!-- Explica cómo consultar la información de emergencias y primeros auxilios. -->
 
-        <!-- =========================================================
-             13. EMERGENCIAS
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -1033,10 +926,8 @@
 
         </details>
 
+        <!-- Presenta las opciones de ayuda para resolver problemas de funcionamiento. -->
 
-        <!-- =========================================================
-             14. AYUDA Y SOLUCIÓN DE PROBLEMAS
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -1076,10 +967,8 @@
 
         </details>
 
+        <!-- Explica cómo enviar un reporte sobre un problema de la aplicación. -->
 
-        <!-- =========================================================
-             15. REPORTAR UN PROBLEMA
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -1139,10 +1028,8 @@
 
         </details>
 
+        <!-- Describe cómo consultar el estado y las respuestas de los reportes enviados. -->
 
-        <!-- =========================================================
-             16. MIS REPORTES
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -1207,10 +1094,8 @@
 
         </details>
 
+        <!-- Explica el procedimiento general para recuperar o cambiar la contraseña. -->
 
-        <!-- =========================================================
-             17. RECUPERAR O CAMBIAR CONTRASEÑA
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -1265,10 +1150,8 @@
 
         </details>
 
+        <!-- Describe las funciones administrativas para gestionar los reportes. -->
 
-        <!-- =========================================================
-             18. FUNCIONES DEL ADMINISTRADOR
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -1363,10 +1246,8 @@
 
         </details>
 
+        <!-- Reúne recomendaciones para mantener organizada y segura la información. -->
 
-        <!-- =========================================================
-             19. RECOMENDACIONES
-             ========================================================= -->
         <details class="manual_item">
 
             <summary>
@@ -1416,15 +1297,8 @@
 
         </details>
 
+        <!-- Presenta el cierre del manual con una descripción general de su propósito. -->
 
-        <!--
-            CIERRE DEL MANUAL
-
-            Esta tarjeta no necesita ser desplegable. Funciona como cierre
-            visual del documento y mantiene el estilo general de My Pet.
-
-            También utiliza transparencia para conservar visible el fondo.
-        -->
         <section
             class="p-4 rounded mt-4 text-center"
             style="background: rgba(255, 255, 255, 0.88);"
@@ -1441,9 +1315,12 @@
 
         </section>
 
-
     </main>
-        <script src="/JS/configuracion_global.js"></script>
+
+    <!-- Carga la configuración global de My Pet. -->
+
+    <script src="/JS/configuracion_global.js"></script>
+
 </body>
 
 </html>

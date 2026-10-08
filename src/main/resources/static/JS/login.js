@@ -1,283 +1,250 @@
+// Inicializa las funciones de inicio de sesión cuando la página termina de cargar.
+
 document.addEventListener("DOMContentLoaded", function () {
 
-// ============================================================
-// REFERENCIA AL BOTÓN DE INICIO DE SESIÓN
-// ============================================================
+    // Obtiene el botón utilizado para iniciar sesión.
 
-const boton =
-    document.getElementById("btnIniciarSesion");
+    const boton =
+        document.getElementById("btnIniciarSesion");
 
+    // Obtiene el token CSRF almacenado en la cookie del navegador.
 
-// ============================================================
-// OBTENER EL TOKEN CSRF DESDE LA COOKIE
-// ============================================================
+    function obtenerTokenCsrf() {
 
-function obtenerTokenCsrf() {
+        const nombreCookie = "XSRF-TOKEN";
 
-    const nombreCookie = "XSRF-TOKEN";
+        const cookies =
+            document.cookie.split(";");
 
-    const cookies =
-        document.cookie.split(";");
+        for (const cookie of cookies) {
 
-    for (const cookie of cookies) {
+            const parte = cookie.trim();
 
-        const parte = cookie.trim();
+            if (parte.startsWith(nombreCookie + "=")) {
 
-        if (parte.startsWith(nombreCookie + "=")) {
-
-            return decodeURIComponent(
-                parte.substring(
-                    nombreCookie.length + 1
-                )
-            );
-        }
-    }
-
-    return null;
-}
-
-
-// ============================================================
-// SOLICITAR EL TOKEN CSRF AL SERVIDOR
-// ============================================================
-
-async function obtenerCsrf() {
-
-    const respuesta =
-        await fetch(
-            "/api/usuario/csrf",
-            {
-                method: "GET",
-
-                // Permite conservar las cookies de sesión.
-                credentials: "include"
+                return decodeURIComponent(
+                    parte.substring(
+                        nombreCookie.length + 1
+                    )
+                );
             }
-        );
-
-    if (!respuesta.ok) {
-
-        throw new Error(
-            "No se pudo obtener el token de seguridad."
-        );
-    }
-
-    return obtenerTokenCsrf();
-}
-
-
-// ============================================================
-// INICIO DE SESIÓN
-// ============================================================
-
-boton.addEventListener(
-    "click",
-    async function (e) {
-
-        // Evita que el formulario recargue la página.
-        e.preventDefault();
-
-
-        // ====================================================
-        // OBTENER LOS DATOS DEL FORMULARIO
-        // ====================================================
-
-        const correo =
-            document
-                .getElementById("correo")
-                .value
-                .trim();
-
-        const contrasena =
-            document
-                .getElementById("contrasena")
-                .value;
-
-
-        // ====================================================
-        // VALIDAR LOS CAMPOS
-        // ====================================================
-
-        if (
-            correo === "" ||
-            contrasena === ""
-        ) {
-
-            alert(
-                "Por favor, ingresa el correo y la contraseña."
-            );
-
-            return;
         }
 
-
-        try {
-
-            // =================================================
-            // OBTENER EL TOKEN CSRF
-            // =================================================
-
-            let tokenCsrf =
-                obtenerTokenCsrf();
-
-            if (!tokenCsrf) {
-
-                tokenCsrf =
-                    await obtenerCsrf();
-            }
-
-            if (!tokenCsrf) {
-
-                throw new Error(
-                    "No se pudo obtener el token CSRF."
-                );
-            }
+        return null;
+    }
 
 
-            // =================================================
-            // ENVIAR LAS CREDENCIALES AL BACKEND
-            // =================================================
+    // Solicita al servidor un nuevo token CSRF cuando no existe uno disponible.
 
-            const respuesta =
-                await fetch(
-                    "/api/usuario/login",
-                    {
-                        method: "POST",
+    async function obtenerCsrf() {
 
-                        // Mantiene la cookie de sesión
-                        // utilizada por Spring Security.
-                        credentials: "include",
+        const respuesta =
+            await fetch(
+                "/api/usuario/csrf",
+                {
+                    method: "GET",
 
-                        headers: {
-                            "Content-Type":
-                                "application/json",
+                    // Permite conservar las cookies de sesión.
+                    credentials: "include"
+                }
+            );
 
-                            "X-XSRF-TOKEN":
-                                tokenCsrf
-                        },
+        if (!respuesta.ok) {
 
-                        body: JSON.stringify({
+            throw new Error(
+                "No se pudo obtener el token de seguridad."
+            );
+        }
 
-                            correo:
-                                correo,
+        return obtenerTokenCsrf();
+    }
 
-                            contrasena:
-                                contrasena
-                        })
-                    }
-                );
+    // Gestiona el proceso de inicio de sesión del usuario.
 
+    boton.addEventListener(
+        "click",
+        async function (e) {
 
-            // =================================================
-            // LOGIN EXITOSO
-            // =================================================
+            // Evita que el formulario recargue la página.
+            e.preventDefault();
 
-            if (respuesta.ok) {
+            // Obtiene los datos ingresados en el formulario.
 
-                const usuario =
-                    await respuesta.json();
+            const correo =
+                document
+                    .getElementById("correo")
+                    .value
+                    .trim();
 
+            const contrasena =
+                document
+                    .getElementById("contrasena")
+                    .value;
 
-                console.log(
-                    "Usuario encontrado:",
-                    usuario
-                );
+            // Verifica que el correo y la contraseña hayan sido ingresados.
 
-
-                // =================================================
-                // GUARDAR INFORMACIÓN DEL USUARIO EN EL NAVEGADOR
-                // =================================================
-
-                localStorage.setItem(
-                    "usuarioLogueado",
-                    JSON.stringify(usuario)
-                );
-
-                localStorage.setItem(
-                    "idUsuario",
-                    usuario.idUsuario
-                );
-
-
-                console.log(
-                    "ID del usuario guardado:",
-                    usuario.idUsuario
-                );
-
+            if (
+                correo === "" ||
+                contrasena === ""
+            ) {
 
                 alert(
-                    "Inicio de sesión exitoso"
+                    "Por favor, ingresa el correo y la contraseña."
                 );
 
+                return;
+            }
 
-                // =================================================
-                // IDENTIFICAR EL ROL DEL USUARIO
-                // =================================================
+            try {
 
-                const rol =
-                    usuario.rol
-                        ? usuario.rol
-                            .toString()
-                            .trim()
-                            .toUpperCase()
-                        : "";
+                // Obtiene el token CSRF necesario para realizar el inicio de sesión.
 
+                let tokenCsrf =
+                    obtenerTokenCsrf();
 
-                // =================================================
-                // REDIRECCIONAR SEGÚN EL ROL
-                // =================================================
+                if (!tokenCsrf) {
 
-                if (
-                    rol === "ADMINISTRADOR"
-                ) {
+                    tokenCsrf =
+                        await obtenerCsrf();
+                }
 
-                    window.location.href =
-                        "/Front%20end/Modulo_1_gestion_usuario/admin.html";
+                if (!tokenCsrf) {
 
-                } else {
-
-                    window.location.href =
-                        "/Front%20end/Modulo_1_gestion_usuario/home.html";
+                    throw new Error(
+                        "No se pudo obtener el token CSRF."
+                    );
                 }
 
 
-            } else {
+                // Envía las credenciales del usuario al backend.
 
-                // =================================================
-                // LOGIN INCORRECTO
-                // =================================================
+                const respuesta =
+                    await fetch(
+                        "/api/usuario/login",
+                        {
+                            method: "POST",
 
-                const mensaje =
-                    await respuesta.text();
+                            // Mantiene la cookie de sesión utilizada por Spring Security.
+                            credentials: "include",
 
-                alert(
-                    "Correo o contraseña incorrectos."
-                );
+                            headers: {
+                                "Content-Type":
+                                    "application/json",
+
+                                "X-XSRF-TOKEN":
+                                    tokenCsrf
+                            },
+
+                            body: JSON.stringify({
+
+                                correo:
+                                    correo,
+
+                                contrasena:
+                                    contrasena
+                            })
+                        }
+                    );
+
+
+                // Procesa la respuesta cuando el inicio de sesión es exitoso.
+
+                if (respuesta.ok) {
+
+                    const usuario =
+                        await respuesta.json();
+
+
+                    console.log(
+                        "Usuario encontrado:",
+                        usuario
+                    );
+
+
+                    // Guarda la información del usuario en el almacenamiento local.
+
+                    localStorage.setItem(
+                        "usuarioLogueado",
+                        JSON.stringify(usuario)
+                    );
+
+                    localStorage.setItem(
+                        "idUsuario",
+                        usuario.idUsuario
+                    );
+
+
+                    console.log(
+                        "ID del usuario guardado:",
+                        usuario.idUsuario
+                    );
+
+
+                    alert(
+                        "Inicio de sesión exitoso"
+                    );
+
+
+                    // Obtiene y normaliza el rol del usuario.
+
+                    const rol =
+                        usuario.rol
+                            ? usuario.rol
+                                .toString()
+                                .trim()
+                                .toUpperCase()
+                            : "";
+
+
+                    // Redirige al usuario según el rol registrado.
+
+                    if (
+                        rol === "ADMINISTRADOR"
+                    ) {
+
+                        window.location.href =
+                            "/Front%20end/Modulo_1_gestion_usuario/admin.html";
+
+                    } else {
+
+                        window.location.href =
+                            "/Front%20end/Modulo_1_gestion_usuario/home.html";
+                    }
+
+
+                } else {
+
+                    // Obtiene el mensaje enviado por el servidor cuando las credenciales son incorrectas.
+
+                    const mensaje =
+                        await respuesta.text();
+
+                    alert(
+                        "Correo o contraseña incorrectos."
+                    );
+
+                    console.error(
+                        "Error:",
+                        mensaje
+                    );
+                }
+
+
+            } catch (error) {
+
+                // Muestra el error cuando ocurre un problema de conexión o del servidor.
 
                 console.error(
-                    "Error:",
-                    mensaje
+                    "Error de conexión:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "No se pudo conectar con el servidor."
                 );
             }
-
-
-        } catch (error) {
-
-            // ====================================================
-            // ERROR DE CONEXIÓN O DEL SERVIDOR
-            // ====================================================
-
-            console.error(
-                "Error de conexión:",
-                error
-            );
-
-            alert(
-                error.message ||
-                "No se pudo conectar con el servidor."
-            );
         }
-    }
-);
-
+    );
 
 });

@@ -1,3 +1,5 @@
+// Inicializa el cambio de contraseña cuando la página termina de cargar.
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const correo =
@@ -24,8 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const mensaje =
         document.getElementById("mensajeRecuperacion");
 
+    // Genera una pregunta de seguridad para validar la solicitud.
 
-    // Crear pregunta de seguridad
     const numero1 = Math.floor(Math.random() * 10) + 1;
     const numero2 = Math.floor(Math.random() * 10) + 1;
 
@@ -34,13 +36,14 @@ document.addEventListener("DOMContentLoaded", function () {
     captchaPregunta.textContent =
         "¿Cuánto es " + numero1 + " + " + numero2 + "?";
 
+    // Gestiona el proceso para cambiar la contraseña.
 
     boton.addEventListener("click", async function () {
 
         mensaje.textContent = "";
 
+        // Verifica que se haya ingresado el correo.
 
-        // Validar correo
         if (correo.value.trim() === "") {
 
             mensaje.textContent =
@@ -49,13 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // Verifica que se haya ingresado la contraseña actual.
 
         if (contrasenaActual.value === "") {
             mensaje.textContent = "Ingresa tu contraseña actual.";
             return;
         }
 
-        // Validar nueva contraseña
+        // Verifica que se haya ingresado una nueva contraseña.
+
         if (nuevaContrasena.value.trim() === "") {
 
             mensaje.textContent =
@@ -64,8 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // Verifica que se haya confirmado la nueva contraseña.
 
-        // Validar confirmación
         if (confirmarContrasena.value.trim() === "") {
 
             mensaje.textContent =
@@ -74,8 +79,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // Comprueba que las contraseñas coincidan.
 
-        // Comprobar que las contraseñas coincidan
         if (
             nuevaContrasena.value !==
             confirmarContrasena.value
@@ -87,8 +92,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // Verifica que se haya respondido la pregunta de seguridad.
 
-        // Validar CAPTCHA
         if (captchaRespuesta.value.trim() === "") {
 
             mensaje.textContent =
@@ -97,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // Comprueba que la respuesta de seguridad sea correcta.
 
         if (
             parseInt(captchaRespuesta.value) !==
@@ -109,8 +115,10 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-
         try {
+
+            // Envía al backend los datos necesarios para cambiar la contraseña.
+
             const respuesta = await fetch(
                 "http://localhost:8082/api/usuario/cambiar-contrasena",
                 {
@@ -129,11 +137,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            // Informa que el cambio de contraseña se realizó correctamente.
+
             mensaje.textContent = "La contraseña se cambió correctamente.";
             nuevaContrasena.value = "";
             confirmarContrasena.value = "";
             contrasenaActual.value = "";
+
         } catch (error) {
+
             console.error("Error cambiando la contraseña:", error);
             mensaje.textContent = "No se pudo conectar con el servidor.";
         }

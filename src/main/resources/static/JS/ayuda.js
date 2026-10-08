@@ -1,4 +1,7 @@
+ // Configuración y elementos principales de la página de ayuda.
+ 
 document.addEventListener("DOMContentLoaded", function () {
+   
     const estadoConexion = document.getElementById("estadoConexion");
     const estadoReporte = document.getElementById("estadoReporte");
     const botonConexion = document.getElementById("btnProbarConexion");
@@ -7,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const descripcionProblema = document.getElementById("descripcionProblema");
     const listaMisReportes = document.getElementById("listaMisReportes");
 
+    // Obtiene los datos del usuario almacenados en la sesión local.
+   
     function obtenerUsuario() {
         try {
             return JSON.parse(
@@ -18,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Obtiene el ID del usuario que inició sesión.
+   
     function obtenerIdUsuario() {
         const usuario = obtenerUsuario();
 
@@ -29,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Convierte el estado interno del reporte en el texto mostrado al usuario.
+   
     function obtenerTextoEstado(estado) {
         switch (estado) {
             case "pendiente":
@@ -46,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Asigna una clase de Bootstrap según el estado del reporte.
+   
     function obtenerClaseEstado(estado) {
         switch (estado) {
             case "pendiente":
@@ -62,7 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Evita insertar directamente contenido enviado desde la base de datos en HTML.
+    // Protege el contenido recibido antes de mostrarlo dentro del HTML.
+   
     function escaparHTML(texto) {
         return String(texto ?? "")
             .replace(/&/g, "&amp;")
@@ -72,7 +81,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .replace(/'/g, "&#039;");
     }
 
-    // Carga los reportes realizados por el usuario autenticado.
+    // Carga y muestra los reportes realizados por el usuario autenticado.
+   
     async function cargarMisReportes() {
         const idUsuario = obtenerIdUsuario();
 
@@ -181,8 +191,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
     // Comprueba que el servidor y la sesión respondan correctamente.
+
     botonConexion.addEventListener("click", async function () {
         botonConexion.disabled = true;
         estadoConexion.textContent = "Comprobando...";
@@ -221,7 +231,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    // Envía el reporte al backend.
+    // Envía un nuevo reporte al backend con la información del problema.
+ 
     botonEnviarReporte.addEventListener("click", async function () {
         const descripcion = descripcionProblema.value.trim();
 
@@ -271,6 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Reporte enviado correctamente. El administrador podrá revisarlo.";
 
             // Actualiza inmediatamente la lista con el nuevo reporte.
+         
             await cargarMisReportes();
 
         } catch (error) {
@@ -287,8 +299,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-
-    // Copia la información técnica del problema.
+    // Copia la información técnica del problema para facilitar su reporte.
+    
     botonCopiarReporte.addEventListener("click", async function () {
         const usuario = obtenerUsuario();
 
@@ -317,8 +329,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 "El navegador no permitió copiarlo. Selecciona y copia manualmente el texto de descripción.";
         }
     });
-
-
-    // Carga los reportes cuando se abre la página de ayuda.
+    
+    // Carga los reportes del usuario al abrir la página de ayuda.
+    
     cargarMisReportes();
 });

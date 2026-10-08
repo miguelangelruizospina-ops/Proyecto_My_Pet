@@ -1,3 +1,5 @@
+// Configuración y elementos principales del chatbot.
+
 const API_BASE = `${window.location.origin}/api`;
 
 const formularioChatbot = document.getElementById("formChatbot");
@@ -9,10 +11,7 @@ const indicadorChatbot = document.getElementById("indicadorChatbot");
 
 let historialChatbot = [];
 
-
-/* ==========================================
-   OBTENER ID DEL USUARIO
-   ========================================== */
+// Obtiene el ID del usuario que inició sesión.
 
 function obtenerIdUsuario() {
 
@@ -51,10 +50,7 @@ function obtenerIdUsuario() {
     return null;
 }
 
-
-/* ==========================================
-   CREAR MENSAJE EN LA CONVERSACIÓN
-   ========================================== */
+// Crea y muestra un mensaje dentro de la conversación.
 
 function agregarMensaje(tipo, texto) {
 
@@ -73,10 +69,7 @@ function agregarMensaje(tipo, texto) {
         conversacionChatbot.scrollHeight;
 }
 
-
-/* ==========================================
-   MOSTRAR MENSAJE INICIAL
-   ========================================== */
+// Muestra el mensaje inicial del asistente virtual.
 
 function mostrarMensajeInicial() {
 
@@ -88,10 +81,7 @@ function mostrarMensajeInicial() {
     );
 }
 
-
-/* ==========================================
-   CARGAR HISTORIAL
-   ========================================== */
+// Carga el historial de conversaciones asociado al usuario.
 
 async function cargarHistorial() {
 
@@ -158,10 +148,7 @@ async function cargarHistorial() {
     }
 }
 
-
-/* ==========================================
-   ENVIAR MENSAJE A GEMINI
-   ========================================== */
+// Envía el mensaje del usuario al chatbot y muestra su respuesta.
 
 async function enviarMensaje() {
 
@@ -255,10 +242,7 @@ async function enviarMensaje() {
     }
 }
 
-
-/* ==========================================
-   ELIMINAR UN MENSAJE DEL HISTORIAL
-   ========================================== */
+// Elimina un mensaje específico del historial del chatbot.
 
 async function eliminarMensaje(idChatbot) {
 
@@ -277,10 +261,7 @@ async function eliminarMensaje(idChatbot) {
     }
 }
 
-
-/* ==========================================
-   LIMPIAR TODA LA CONVERSACIÓN
-   ========================================== */
+// Elimina todos los mensajes almacenados en la conversación.
 
 async function limpiarConversacion() {
 
@@ -336,10 +317,7 @@ async function limpiarConversacion() {
     }
 }
 
-
-/* ==========================================
-   EVENTO DEL FORMULARIO
-   ========================================== */
+// Gestiona el envío de mensajes desde el formulario del chatbot.
 
 if (formularioChatbot) {
 
@@ -354,10 +332,7 @@ if (formularioChatbot) {
     );
 }
 
-
-/* ==========================================
-   BOTÓN LIMPIAR CONVERSACIÓN
-   ========================================== */
+// Gestiona el botón para eliminar toda la conversación.
 
 if (btnEliminarConversacion) {
 
@@ -370,10 +345,7 @@ if (btnEliminarConversacion) {
     );
 }
 
-
-/* ==========================================
-   INICIAR CHATBOT
-   ========================================== */
+// Inicializa el chatbot y carga el historial cuando termina de cargar la página.
 
 document.addEventListener(
     "DOMContentLoaded",

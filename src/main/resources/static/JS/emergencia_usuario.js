@@ -4,7 +4,7 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // URL base de la API del proyecto.
+    // Configuración y elementos principales de la página.
 
     const apiBase = `${window.location.origin}/api`;
 
@@ -36,11 +36,8 @@ document.addEventListener("DOMContentLoaded", function () {
         new URLSearchParams(window.location.search)
             .get("idMascota");
 
-
-    // =========================================================
-    // VERIFICAR SESIÓN
-    // =========================================================
-
+    // Verifica que exista una sesión de usuario.
+    
     if (!usuarioGuardado) {
 
         window.location.href =
@@ -69,10 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-
-    // =========================================================
-    // OBTENER ID DEL USUARIO
-    // =========================================================
+    // Obtiene el ID del usuario que inició sesión.
 
     const idUsuario =
         usuario.idUsuario ||
@@ -87,10 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-
-    // =========================================================
-    // TOKEN CSRF
-    // =========================================================
+    // Obtiene el token CSRF almacenado en las cookies.
 
     function obtenerTokenCsrf() {
 
@@ -122,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return null;
     }
 
-
     // Solicita un nuevo token CSRF al backend.
 
     async function inicializarCsrf() {
@@ -146,10 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return obtenerTokenCsrf();
     }
 
-
-    // =========================================================
-    // FUNCIÓN GENERAL PARA LA API
-    // =========================================================
+    // Gestiona las solicitudes a la API y agrega el token CSRF cuando corresponde.
 
     async function solicitar(
         url,
@@ -174,8 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ...(opciones.headers || {})
         };
 
-
-        // Agregar token CSRF a las operaciones que modifican datos.
+        // Agrega el token CSRF a las operaciones que modifican datos.
 
         if (
             metodo !== "GET" &&
@@ -205,7 +191,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-
         const respuesta =
             await fetch(
                 `${apiBase}${url}`,
@@ -215,7 +200,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     headers
                 }
             );
-
 
         if (!respuesta.ok) {
 
@@ -228,7 +212,6 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         }
 
-
         const texto =
             await respuesta.text();
 
@@ -237,10 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
             : null;
     }
 
-
-    // =========================================================
-    // CARGAR MASCOTAS DEL USUARIO
-    // =========================================================
+    // Carga las mascotas pertenecientes al usuario autenticado.
 
     async function cargarMascotas() {
 
@@ -263,15 +243,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 opcionInicial
             );
 
-
-            // Obtiene únicamente las mascotas pertenecientes
-            // al usuario autenticado.
+            // Obtiene únicamente las mascotas pertenecientes al usuario autenticado.
 
             const mascotas =
                 await solicitar(
                     `/mascotas/usuario/${encodeURIComponent(idUsuario)}`
                 );
-
 
             if (
                 !Array.isArray(mascotas) ||
@@ -294,7 +271,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-
             // Agrega cada mascota al selector.
 
             mascotas.forEach(
@@ -316,9 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             );
 
-
-            // Si se ingresó desde el perfil de una mascota,
-            // selecciona automáticamente esa mascota.
+            // Selecciona automáticamente la mascota indicada en la URL.
 
             if (idMascotaUrl) {
 
@@ -333,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             );
                         }
                     );
-
 
                 if (mascotaExiste) {
 
@@ -373,10 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-    // =========================================================
-    // SOLUCIONAR EMERGENCIA
-    // =========================================================
+    // Marca una emergencia como solucionada en el backend.
 
     async function solucionarEmergencia(
         idEmergencia
@@ -409,17 +379,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-    // =========================================================
-    // MOSTRAR EMERGENCIAS
-    // =========================================================
+    // Muestra las emergencias pendientes registradas para el usuario.
 
     function mostrarEmergencias(
         emergencias
     ) {
 
         lista.replaceChildren();
-
 
         const emergenciasPendientes =
             emergencias.filter(
@@ -434,7 +400,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             );
 
-
         if (!emergenciasPendientes.length) {
 
             lista.textContent =
@@ -442,7 +407,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return;
         }
-
 
         emergenciasPendientes.forEach(
             function (emergencia) {
@@ -452,7 +416,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "article"
                     );
 
-                // Recuadro semitransparente.
+                // Configura el recuadro de la emergencia.
 
                 articulo.className =
                     "p-3 rounded shadow-sm mb-3";
@@ -466,10 +430,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 articulo.style.webkitBackdropFilter =
                     "blur(3px)";
 
-
-                // =================================================
-                // TÍTULO
-                // =================================================
+                // Configura el título de la sección.
 
                 const titulo =
                     document.createElement(
@@ -483,10 +444,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     emergencia.tipo ||
                     "Emergencia";
 
-
-                // =================================================
-                // DESCRIPCIÓN
-                // =================================================
+                // Configura el contenido de la emergencia.
 
                 const descripcion =
                     document.createElement(
@@ -500,10 +458,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     emergencia.descripcion ||
                     "Sin descripción";
 
-
-                // =================================================
-                // INFORMACIÓN ADICIONAL
-                // =================================================
+                // Muestra la información adicional de la emergencia.
 
                 const detalle =
                     document.createElement(
@@ -521,10 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .filter(Boolean)
                     .join(" · ");
 
-
-                // =================================================
-                // BOTÓN SOLUCIONAR
-                // =================================================
+                // Configura el botón para solucionar la emergencia.
 
                 const botonResolver =
                     document.createElement(
@@ -549,7 +501,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 botonResolver.textContent =
                     "Marcar como solucionada";
 
-
                 botonResolver.addEventListener(
                     "mouseenter",
                     function () {
@@ -562,7 +513,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 );
 
-
                 botonResolver.addEventListener(
                     "mouseleave",
                     function () {
@@ -574,7 +524,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             "#F7931E";
                     }
                 );
-
 
                 botonResolver.addEventListener(
                     "click",
@@ -589,20 +538,17 @@ document.addEventListener("DOMContentLoaded", function () {
                             return;
                         }
 
-
                         botonResolver.disabled =
                             true;
 
                         botonResolver.textContent =
                             "Guardando...";
 
-
                         await solucionarEmergencia(
                             emergencia.idEmergencia
                         );
                     }
                 );
-
 
                 articulo.append(
                     titulo,
@@ -611,7 +557,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     botonResolver
                 );
 
-
                 lista.append(
                     articulo
                 );
@@ -619,10 +564,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // =========================================================
-    // CARGAR EMERGENCIAS
-    // =========================================================
+    // Carga las emergencias registradas para el usuario.
 
     async function cargarEmergencias() {
 
@@ -649,10 +591,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-    // =========================================================
-    // MASCOTA RECIBIDA DESDE EL PERFIL
-    // =========================================================
+    // Configura el regreso al perfil de la mascota cuando fue indicada en la URL.
 
     if (idMascotaUrl) {
 
@@ -661,17 +600,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 "volverEmergencia"
             );
 
-
         if (enlaceVolver) {
 
             enlaceVolver.href =
                 `/Front%20end/Modulo_2_gestion_mascotas/perfil_mascota.html?id=${encodeURIComponent(idMascotaUrl)}`;
         }
 
-
-        // Consulta la información de la mascota
-        // para mostrarla en el encabezado.
-
+        // Consulta la información de la mascota para mostrarla en el encabezado.
         solicitar(
             `/mascotas/${encodeURIComponent(idMascotaUrl)}`
         )
@@ -704,10 +639,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
     }
 
-
-    // =========================================================
-    // REGISTRAR NUEVA EMERGENCIA
-    // =========================================================
+    // Registra una nueva emergencia asociada a la mascota seleccionada.
 
     formulario.addEventListener(
         "submit",
@@ -721,7 +653,6 @@ document.addEventListener("DOMContentLoaded", function () {
             boton.disabled =
                 true;
 
-
             const descripcion =
                 document
                     .getElementById(
@@ -730,14 +661,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     .value
                     .trim();
 
-
             // Obtiene la mascota seleccionada en el formulario.
 
             const idMascotaSeleccionada =
                 selectorMascota
                     ? selectorMascota.value
                     : "";
-
 
             // Verifica que se haya seleccionado una mascota.
 
@@ -755,7 +684,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 return;
             }
-
 
             // Construye el objeto de la emergencia.
 
@@ -779,7 +707,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             };
 
-
             try {
 
                 // Envía la emergencia al backend.
@@ -795,15 +722,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 );
 
-
                 // Limpia el formulario.
 
                 formulario.reset();
 
-
-                // Si la página fue abierta desde el perfil
-                // de una mascota, conserva esa selección.
-
+                // Conserva la mascota seleccionada cuando se abrió desde su perfil.
+                
                 if (
                     idMascotaUrl &&
                     selectorMascota
@@ -813,10 +737,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         String(idMascotaUrl);
                 }
 
-
                 estado.textContent =
                     "Reporte guardado en tu cuenta.";
-
 
                 await cargarEmergencias();
 
@@ -839,16 +761,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     );
 
-
-    // =========================================================
-    // INICIO
-    // =========================================================
-
-    // Primero carga las mascotas para llenar el selector.
+    // Carga inicialmente las mascotas para llenar el selector.
 
     cargarMascotas();
 
-    // Después carga las emergencias existentes.
+    // Carga las emergencias existentes del usuario.
 
     cargarEmergencias();
 

@@ -2,35 +2,42 @@
 <html lang="es">
 
 <head>
+
+    <!-- Carga el cliente encargado de las solicitudes a la API. -->
+
     <script src="/JS/api-client.js"></script>
+
+    <!-- Configura la codificación de caracteres y la adaptación a dispositivos móviles. -->
 
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <!-- BOOTSTRAP -->
+    <!-- Importa Bootstrap para los estilos y componentes de la interfaz. -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
+    <!-- Define el título de la página en el navegador. -->
+
     <title>Perfil de mascota</title>
 
-    <!-- CSS PRINCIPAL -->
+    <!-- Importa los estilos principales de My Pet. -->
 
-   <link rel="stylesheet" href="../mi_pet.css">
-
-    
+    <link rel="stylesheet" href="../mi_pet.css">
 
 </head>
 
+<!-- Organiza los elementos verticalmente y aplica el fondo y los espacios generales. -->
 
 <body class="fondo_pata min-vh-100 d-flex flex-column align-items-center py-3">
-
 
     <!-- ========================================== -->
     <!-- FLECHA PARA VOLVER -->
     <!-- ========================================== -->
+
+    <!-- Permite regresar a la lista de mascotas. -->
 
     <div class="w-100 px-4">
 
@@ -43,10 +50,11 @@
 
     </div>
 
+    <!-- ========================================== -->
+    <!-- BOTÓN SOS -->
+    <!-- ========================================== -->
 
-    <!-- ========================================== -->
-    <!-- BOTON SOS -->
-    <!-- ========================================== -->
+    <!-- Proporciona acceso directo al módulo de emergencias. -->
 
     <a id="enlaceEmergencia" href="/Front%20end/Modulo_5_emergencia/emergencia.html"
        class="boton-sos">
@@ -55,28 +63,34 @@
 
     </a>
 
-
     <!-- ========================================== -->
     <!-- FOTO Y NOMBRE -->
     <!-- ========================================== -->
 
+    <!-- Muestra la fotografía y el nombre de la mascota seleccionada. -->
+
     <header class="text-center d-flex flex-column align-items-center my-2">
+
+        <!-- Permite seleccionar una fotografía nueva al hacer clic en el marco. -->
 
         <label for="input-foto-mascota"
                class="marco-foto-per"
                title="Haz clic para cambiar la foto">
 
+            <!-- Presenta la fotografía actual de la mascota. -->
 
             <img src="fotos/anny.jpg"
                  alt="Foto de la mascota"
                  id="fotoMascota">
 
+            <!-- Campo para seleccionar una imagen desde el dispositivo. -->
 
             <input type="file"
                    id="input-foto-mascota"
                    class="d-none"
                    accept="image/*">
 
+            <!-- Muestra la indicación para cambiar la fotografía. -->
 
             <div class="overlay-cambiar-foto">
 
@@ -84,9 +98,9 @@
 
             </div>
 
-
         </label>
 
+        <!-- Muestra el nombre de la mascota en el encabezado del perfil. -->
 
         <h1 id="nombreMascotaTitulo"
             class="mt-3"
@@ -98,14 +112,14 @@
 
     </header>
 
+    <!-- ========================================== -->
+    <!-- INFORMACIÓN DE LA MASCOTA -->
+    <!-- ========================================== -->
 
-    <!-- ========================================== -->
-    <!-- INFORMACION DE LA MASCOTA -->
-    <!-- ========================================== -->
+    <!-- Presenta los datos registrados de la mascota. -->
 
     <div id="informacionMascota"
          class="tarjeta-mascota">
-
 
         <h2 class="titulo-perfil-mascota text-center">
 
@@ -113,6 +127,7 @@
 
         </h2>
 
+        <!-- Muestra el nombre registrado. -->
 
         <p id="nombreMascota"
            class="dato-mascota">
@@ -121,6 +136,7 @@
 
         </p>
 
+        <!-- Muestra la especie de la mascota. -->
 
         <p id="especieMascota"
            class="dato-mascota">
@@ -129,6 +145,7 @@
 
         </p>
 
+        <!-- Muestra la raza registrada. -->
 
         <p id="razaMascota"
            class="dato-mascota">
@@ -137,6 +154,7 @@
 
         </p>
 
+        <!-- Presenta la fecha de nacimiento registrada. -->
 
         <p id="fechaNacimientoMascota"
            class="dato-mascota">
@@ -145,6 +163,7 @@
 
         </p>
 
+        <!-- Muestra la edad calculada o recuperada por JavaScript. -->
 
         <p id="edadMascota"
            class="dato-mascota">
@@ -153,9 +172,9 @@
 
         </p>
 
-
         <hr>
 
+        <!-- Presenta las características particulares de la mascota. -->
 
         <p id="caracteristicasInformacion"
            class="dato-mascota">
@@ -164,6 +183,7 @@
 
         </p>
 
+        <!-- Muestra la información relacionada con su comportamiento. -->
 
         <p id="comportamientoInformacion"
            class="dato-mascota">
@@ -172,6 +192,7 @@
 
         </p>
 
+        <!-- Presenta las actividades y preferencias de la mascota. -->
 
         <p id="gustosInformacion"
            class="dato-mascota">
@@ -180,6 +201,7 @@
 
         </p>
 
+        <!-- Muestra los cuidados especiales que necesita la mascota. -->
 
         <p id="cuidadosInformacion"
            class="dato-mascota">
@@ -188,18 +210,17 @@
 
         </p>
 
-
     </div>
 
+    <!-- ========================================== -->
+    <!-- FORMULARIO PARA EDITAR INFORMACIÓN -->
+    <!-- ========================================== -->
 
-    <!-- ========================================== -->
-    <!-- FORMULARIO EDITAR INFORMACION -->
-    <!-- ========================================== -->
+    <!-- Permite modificar los datos de la mascota cuando se activa la edición. -->
 
     <div id="formularioEdicion"
          class="formulario-mascota"
          style="display: none;">
-
 
         <h2 class="titulo-perfil-mascota text-center">
 
@@ -207,9 +228,11 @@
 
         </h2>
 
+        <!-- Recopila los cambios que se guardarán en el perfil. -->
 
         <form id="formEditarMascota">
 
+            <!-- Campo para modificar el nombre de la mascota. -->
 
             <div class="mb-3">
 
@@ -227,6 +250,7 @@
 
             </div>
 
+            <!-- Campo para modificar la especie. -->
 
             <div class="mb-3">
 
@@ -244,6 +268,7 @@
 
             </div>
 
+            <!-- Campo para modificar la raza. -->
 
             <div class="mb-3">
 
@@ -261,6 +286,7 @@
 
             </div>
 
+            <!-- Campo para actualizar la fecha de nacimiento. -->
 
             <div class="mb-3">
 
@@ -278,6 +304,7 @@
 
             </div>
 
+            <!-- Campo para editar las características de la mascota. -->
 
             <div class="mb-3">
 
@@ -294,6 +321,7 @@
 
             </div>
 
+            <!-- Campo para editar la descripción del comportamiento. -->
 
             <div class="mb-3">
 
@@ -310,6 +338,7 @@
 
             </div>
 
+            <!-- Campo para modificar los gustos y las preferencias. -->
 
             <div class="mb-3">
 
@@ -326,6 +355,7 @@
 
             </div>
 
+            <!-- Campo para actualizar los cuidados especiales. -->
 
             <div class="mb-3">
 
@@ -342,9 +372,9 @@
 
             </div>
 
+            <!-- Agrupa las opciones para guardar o cancelar la edición. -->
 
             <div class="text-center mt-4">
-
 
                 <button type="submit"
                         class="btn-guardar">
@@ -353,10 +383,8 @@
 
                 </button>
 
-
                 <br>
                 <br>
-
 
                 <button type="button"
                         id="cancelarEdicion"
@@ -366,25 +394,22 @@
 
                 </button>
 
-
             </div>
-
 
         </form>
 
-
     </div>
-
 
     <!-- ========================================== -->
     <!-- ACCIONES -->
     <!-- ========================================== -->
 
+    <!-- Agrupa las opciones disponibles para gestionar la mascota. -->
+
     <div id="accionesMascota"
          class="acciones-mascota">
 
-
-        <!-- EDITAR INFORMACION -->
+        <!-- Permite activar el formulario de edición del perfil. -->
 
         <button type="button"
                 id="editarInformacion"
@@ -394,11 +419,15 @@
 
         </button>
 
-
+        <!-- ========================================== -->
         <!-- DOCUMENTOS E HISTORIAL -->
+        <!-- ========================================== -->
+
+        <!-- Contiene los accesos a los documentos y al historial médico. -->
 
         <div class="botones-mascota">
 
+            <!-- Abre la sección de documentos de la mascota. -->
 
             <a id="enlaceDocumentos" href="documento.html"
                class="btn-perfil-mascota boton-grande-mascota">
@@ -407,6 +436,7 @@
 
             </a>
 
+            <!-- Abre el historial médico de la mascota. -->
 
             <a id="enlaceHistorial" href="Historial_medico.html"
                class="btn-perfil-mascota boton-grande-mascota">
@@ -415,16 +445,15 @@
 
             </a>
 
-
         </div>
 
-
     </div>
-
 
     <!-- ========================================== -->
     <!-- CHATBOT -->
     <!-- ========================================== -->
+
+    <!-- Proporciona acceso al chatbot del módulo de comunidad. -->
 
     <a href="/Front%20end/Modulo_4_servicio_comunidad/chat_bot.html"
        class="boton-chatbot">
@@ -433,9 +462,14 @@
 
     </a>
 
+    <!-- Carga la lógica JavaScript para gestionar los datos y las acciones de las mascotas. -->
 
     <script src="/JS/mascota.js"></script>
+
+    <!-- Carga la configuración global de la aplicación. -->
+
     <script src="/JS/configuracion_global.js"></script>
+
 </body>
 
 </html>

@@ -1,16 +1,11 @@
-// ==========================================================
-// CONFIGURACIÓN
-// ==========================================================
+// Configuración de las rutas principales de la API del historial médico.
 
 const API_BASE_HISTORIAL = "http://localhost:8082/api";
 
 const API_CSRF =
     "http://localhost:8082/api/usuario/csrf";
 
-
-// ==========================================================
-// VARIABLES GLOBALES
-// ==========================================================
+// Variables utilizadas para controlar el historial médico actual y su modo de edición.
 
 let historialActual = null;
 
@@ -18,30 +13,24 @@ let idMascotaHistorial = null;
 
 let modoEdicion = false;
 
-
-// ==========================================================
-// INICIO
-// ==========================================================
+// Inicializa la página del historial médico cuando termina de cargar.
 
 document.addEventListener("DOMContentLoaded", function () {
 
     const parametros =
         new URLSearchParams(window.location.search);
 
-
-    // Obtener el ID de la mascota desde la URL
+    // Obtiene el ID de la mascota desde la URL.
 
     idMascotaHistorial =
         parametros.get("idMascota");
-
 
     console.log(
         "ID de mascota recibido:",
         idMascotaHistorial
     );
 
-
-    // Verificar que exista el ID de la mascota
+    // Verifica que exista el ID de la mascota.
 
     if (!idMascotaHistorial) {
 
@@ -51,15 +40,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         return;
     }
-// ======================================================
-// FLECHA PARA REGRESAR AL PERFIL DE LA MASCOTA
-// ======================================================
+
+    // Configura la flecha para regresar al perfil de la mascota.
 
     const flechaVolverPerfil =
         document.getElementById(
             "flechaVolverPerfil"
          );
-
 
     if (flechaVolverPerfil) {
 
@@ -69,21 +56,16 @@ document.addEventListener("DOMContentLoaded", function () {
             )}`;
     }
 
-
-    // Cargar el historial médico
+    // Carga el historial médico de la mascota.
 
     cargarHistorialMedico();
 
-
-    // ======================================================
-    // BOTÓN CREAR HISTORIAL
-    // ======================================================
+    // Configura el botón para crear un nuevo historial.
 
     const btnCrearHistorial =
         document.getElementById(
             "btnCrearHistorial"
         );
-
 
     if (btnCrearHistorial) {
 
@@ -93,16 +75,12 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // ======================================================
-    // BOTÓN EDITAR INFORMACIÓN
-    // ======================================================
+    // Configura el botón para editar la información del historial.
 
     const btnEditarInformacion =
         document.getElementById(
             "btnEditarInformacion"
         );
-
 
     if (btnEditarInformacion) {
 
@@ -112,16 +90,12 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // ======================================================
-    // BOTÓN CANCELAR EDICIÓN
-    // ======================================================
+    // Configura el botón para cancelar la edición.
 
     const btnCancelarEdicion =
         document.getElementById(
             "btnCancelarEdicion"
         );
-
 
     if (btnCancelarEdicion) {
 
@@ -131,16 +105,12 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // ======================================================
-    // FORMULARIO PRINCIPAL
-    // ======================================================
+    // Configura el formulario principal para guardar el historial.
 
     const formulario =
         document.getElementById(
             "formHistorial"
         );
-
 
     if (formulario) {
 
@@ -152,10 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-
-// ==========================================================
-// OBTENER TOKEN CSRF
-// ==========================================================
+// Obtiene el token CSRF necesario para realizar solicitudes protegidas.
 
 async function obtenerTokenCSRF() {
 
@@ -168,7 +135,6 @@ async function obtenerTokenCSRF() {
         }
     );
 
-
     if (!respuesta.ok) {
 
         throw new Error(
@@ -176,14 +142,10 @@ async function obtenerTokenCSRF() {
         );
     }
 
-
     return await respuesta.json();
 }
 
-
-// ==========================================================
-// CARGAR HISTORIAL MÉDICO
-// ==========================================================
+// Carga el historial médico asociado a la mascota.
 
 async function cargarHistorialMedico() {
 
@@ -198,7 +160,6 @@ async function cargarHistorialMedico() {
             }
         );
 
-
         if (!respuesta.ok) {
 
             throw new Error(
@@ -206,14 +167,10 @@ async function cargarHistorialMedico() {
             );
         }
 
-
         const historiales =
             await respuesta.json();
 
-
-        // ==================================================
-        // NO EXISTE HISTORIAL
-        // ==================================================
+        // Muestra el estado correspondiente cuando la mascota no tiene historial.
 
         if (
             !historiales ||
@@ -227,10 +184,7 @@ async function cargarHistorialMedico() {
             return;
         }
 
-
-        // ==================================================
-        // EXISTE HISTORIAL
-        // ==================================================
+        // Selecciona el historial más reciente cuando existen varios registros.
 
         historialActual =
             historiales.reduce(
@@ -241,7 +195,6 @@ async function cargarHistorialMedico() {
                         return historial;
                     }
 
-
                     return historial.idHistorial >
                         actual.idHistorial
                         ? historial
@@ -251,9 +204,7 @@ async function cargarHistorialMedico() {
                 null
             );
 
-
         mostrarHistorial();
-
 
     } catch (error) {
 
@@ -262,15 +213,11 @@ async function cargarHistorialMedico() {
             error
         );
 
-
         mostrarEstadoSinHistorial();
     }
 }
 
-
-// ==========================================================
-// MOSTRAR ESTADO SIN HISTORIAL
-// ==========================================================
+// Muestra la interfaz correspondiente cuando no existe un historial médico.
 
 function mostrarEstadoSinHistorial() {
 
@@ -289,13 +236,11 @@ function mostrarEstadoSinHistorial() {
             "informacionHistorial"
         );
 
-
     if (estadoSinHistorial) {
 
         estadoSinHistorial.style.display =
             "block";
     }
-
 
     if (formularioHistorial) {
 
@@ -303,21 +248,16 @@ function mostrarEstadoSinHistorial() {
             "none";
     }
 
-
     if (informacionHistorial) {
 
         informacionHistorial.style.display =
             "none";
     }
 
-
     modoEdicion = false;
 }
 
-
-// ==========================================================
-// MOSTRAR HISTORIAL
-// ==========================================================
+// Muestra la información registrada en el historial médico.
 
 function mostrarHistorial() {
 
@@ -328,16 +268,12 @@ function mostrarHistorial() {
         return;
     }
 
-
-    // ======================================================
-    // OCULTAR ESTADO SIN HISTORIAL
-    // ======================================================
+    // Oculta el mensaje que indica que no existe historial.
 
     const estadoSinHistorial =
         document.getElementById(
             "estadoSinHistorial"
         );
-
 
     if (estadoSinHistorial) {
 
@@ -345,16 +281,12 @@ function mostrarHistorial() {
             "none";
     }
 
-
-    // ======================================================
-    // OCULTAR FORMULARIO
-    // ======================================================
+    // Oculta el formulario del historial.
 
     const formularioHistorial =
         document.getElementById(
             "formularioHistorial"
         );
-
 
     if (formularioHistorial) {
 
@@ -362,16 +294,12 @@ function mostrarHistorial() {
             "none";
     }
 
-
-    // ======================================================
-    // MOSTRAR INFORMACIÓN REGISTRADA
-    // ======================================================
+    // Muestra la información registrada del historial.
 
     const informacionHistorial =
         document.getElementById(
             "informacionHistorial"
         );
-
 
     if (informacionHistorial) {
 
@@ -379,10 +307,7 @@ function mostrarHistorial() {
             "block";
     }
 
-
-    // ======================================================
-    // MOSTRAR ANTECEDENTES
-    // ======================================================
+    // Muestra los antecedentes médicos registrados.
 
     mostrarTexto(
         "mostrarAntecedentes",
@@ -390,10 +315,7 @@ function mostrarHistorial() {
         "No se han registrado antecedentes médicos."
     );
 
-
-    // ======================================================
-    // MOSTRAR ALERGIAS
-    // ======================================================
+    // Muestra las alergias registradas.
 
     mostrarTexto(
         "mostrarAlergias",
@@ -401,10 +323,7 @@ function mostrarHistorial() {
         "No se han registrado alergias."
     );
 
-
-    // ======================================================
-    // MOSTRAR MEDICAMENTOS
-    // ======================================================
+    // Muestra los medicamentos o tratamientos registrados.
 
     mostrarTexto(
         "mostrarMedicamentos",
@@ -412,10 +331,7 @@ function mostrarHistorial() {
         "No se han registrado medicamentos."
     );
 
-
-    // ======================================================
-    // MOSTRAR VACUNAS
-    // ======================================================
+    // Muestra las vacunas registradas.
 
     mostrarTexto(
         "mostrarVacunas",
@@ -423,10 +339,7 @@ function mostrarHistorial() {
         "No se han registrado vacunas."
     );
 
-
-    // ======================================================
-    // MOSTRAR CIRUGÍAS
-    // ======================================================
+    // Muestra las cirugías y procedimientos registrados.
 
     mostrarTexto(
         "mostrarCirugias",
@@ -434,10 +347,7 @@ function mostrarHistorial() {
         "No se han registrado cirugías."
     );
 
-
-    // ======================================================
-    // MOSTRAR OBSERVACIONES
-    // ======================================================
+    // Muestra las consultas y observaciones registradas.
 
     mostrarTexto(
         "mostrarObservaciones",
@@ -445,14 +355,10 @@ function mostrarHistorial() {
         "No se han registrado observaciones."
     );
 
-
     modoEdicion = false;
 }
 
-
-// ==========================================================
-// MOSTRAR TEXTO
-// ==========================================================
+// Muestra un valor del historial o un texto cuando el campo está vacío.
 
 function mostrarTexto(
     idElemento,
@@ -465,12 +371,10 @@ function mostrarTexto(
             idElemento
         );
 
-
     if (!elemento) {
 
         return;
     }
-
 
     if (
         valor !== null &&
@@ -486,17 +390,13 @@ function mostrarTexto(
     }
 }
 
-
-// ==========================================================
-// MOSTRAR FORMULARIO PARA CREAR
-// ==========================================================
+// Muestra el formulario para crear un nuevo historial médico.
 
 function mostrarFormularioCrear() {
 
     modoEdicion = false;
 
     historialActual = null;
-
 
     const estadoSinHistorial =
         document.getElementById(
@@ -518,8 +418,7 @@ function mostrarFormularioCrear() {
             "btnCancelarEdicion"
         );
 
-
-    // Ocultar estado sin historial
+    // Oculta el estado que indica que no existe historial.
 
     if (estadoSinHistorial) {
 
@@ -527,8 +426,7 @@ function mostrarFormularioCrear() {
             "none";
     }
 
-
-    // Ocultar información existente
+    // Oculta la información existente.
 
     if (informacionHistorial) {
 
@@ -536,8 +434,7 @@ function mostrarFormularioCrear() {
             "none";
     }
 
-
-    // Mostrar formulario
+    // Muestra el formulario del historial.
 
     if (formularioHistorial) {
 
@@ -545,8 +442,7 @@ function mostrarFormularioCrear() {
             "block";
     }
 
-
-    // Ocultar botón cancelar al crear
+    // Oculta el botón cancelar mientras se crea un historial.
 
     if (btnCancelarEdicion) {
 
@@ -554,16 +450,12 @@ function mostrarFormularioCrear() {
             "none";
     }
 
-
-    // Limpiar formulario
+    // Limpia los campos del formulario.
 
     limpiarFormulario();
 }
 
-
-// ==========================================================
-// MOSTRAR FORMULARIO PARA EDITAR
-// ==========================================================
+// Muestra el formulario con la información del historial para editarla.
 
 function mostrarFormularioEditar() {
 
@@ -572,9 +464,7 @@ function mostrarFormularioEditar() {
         return;
     }
 
-
     modoEdicion = true;
-
 
     const informacionHistorial =
         document.getElementById(
@@ -596,8 +486,7 @@ function mostrarFormularioEditar() {
             "btnCancelarEdicion"
         );
 
-
-    // Ocultar información registrada
+    // Oculta la información registrada.
 
     if (informacionHistorial) {
 
@@ -605,8 +494,7 @@ function mostrarFormularioEditar() {
             "none";
     }
 
-
-    // Ocultar estado sin historial
+    // Oculta el estado sin historial.
 
     if (estadoSinHistorial) {
 
@@ -614,8 +502,7 @@ function mostrarFormularioEditar() {
             "none";
     }
 
-
-    // Mostrar formulario
+    // Muestra el formulario para editar la información.
 
     if (formularioHistorial) {
 
@@ -623,8 +510,7 @@ function mostrarFormularioEditar() {
             "block";
     }
 
-
-    // Mostrar botón cancelar
+    // Muestra el botón para cancelar la edición.
 
     if (btnCancelarEdicion) {
 
@@ -632,16 +518,12 @@ function mostrarFormularioEditar() {
             "inline-block";
     }
 
-
-    // Cargar información existente
+    // Carga en el formulario la información existente.
 
     cargarDatosFormulario();
 }
 
-
-// ==========================================================
-// CARGAR DATOS EN EL FORMULARIO
-// ==========================================================
+// Carga los datos del historial actual en los campos del formulario.
 
 function cargarDatosFormulario() {
 
@@ -650,36 +532,30 @@ function cargarDatosFormulario() {
         return;
     }
 
-
     document.getElementById(
         "antecedentes"
     ).value =
         historialActual.antecedentesMedicos || "";
-
 
     document.getElementById(
         "alergias"
     ).value =
         historialActual.alergias || "";
 
-
     document.getElementById(
         "medicamentos"
     ).value =
         historialActual.tratamientos || "";
-
 
     document.getElementById(
         "vacunas"
     ).value =
         historialActual.vacunacion || "";
 
-
     document.getElementById(
         "cirugias"
     ).value =
         historialActual.cirugiasProcedimientos || "";
-
 
     document.getElementById(
         "observaciones"
@@ -687,10 +563,7 @@ function cargarDatosFormulario() {
         historialActual.consultasAtenciones || "";
 }
 
-
-// ==========================================================
-// LIMPIAR FORMULARIO
-// ==========================================================
+// Limpia todos los campos del formulario del historial.
 
 function limpiarFormulario() {
 
@@ -698,36 +571,28 @@ function limpiarFormulario() {
         "antecedentes"
     ).value = "";
 
-
     document.getElementById(
         "alergias"
     ).value = "";
-
 
     document.getElementById(
         "medicamentos"
     ).value = "";
 
-
     document.getElementById(
         "vacunas"
     ).value = "";
 
-
     document.getElementById(
         "cirugias"
     ).value = "";
-
 
     document.getElementById(
         "observaciones"
     ).value = "";
 }
 
-
-// ==========================================================
-// CANCELAR EDICIÓN
-// ==========================================================
+// Cancela la edición y regresa a la información disponible.
 
 function cancelarEdicion() {
 
@@ -741,29 +606,20 @@ function cancelarEdicion() {
     }
 }
 
-
-// ==========================================================
-// GUARDAR HISTORIAL MÉDICO
-// ==========================================================
+// Guarda un nuevo historial o actualiza el historial existente.
 
 async function guardarHistorial(evento) {
 
     evento.preventDefault();
 
-
     try {
 
-        // ==================================================
-        // OBTENER TOKEN CSRF
-        // ==================================================
+        // Obtiene el token CSRF para proteger la solicitud.
 
         const csrf =
             await obtenerTokenCSRF();
 
-
-        // ==================================================
-        // CONSTRUIR DATOS
-        // ==================================================
+        // Construye los datos que serán enviados al backend.
 
         const datos = {
 
@@ -812,13 +668,9 @@ async function guardarHistorial(evento) {
             }
         };
 
-
         let respuesta;
 
-
-        // ==================================================
-        // ACTUALIZAR HISTORIAL EXISTENTE
-        // ==================================================
+        // Actualiza el historial existente cuando ya tiene un identificador.
 
         if (
             historialActual &&
@@ -847,10 +699,7 @@ async function guardarHistorial(evento) {
                 }
             );
 
-
-        // ==================================================
-        // CREAR HISTORIAL
-        // ==================================================
+        // Crea un nuevo historial cuando todavía no existe uno.
 
         } else {
 
@@ -877,16 +726,12 @@ async function guardarHistorial(evento) {
             );
         }
 
-
-        // ==================================================
-        // VALIDAR RESPUESTA
-        // ==================================================
+        // Verifica que el backend haya procesado correctamente la solicitud.
 
         if (!respuesta.ok) {
 
             const mensaje =
                 await respuesta.text();
-
 
             throw new Error(
                 mensaje ||
@@ -894,18 +739,12 @@ async function guardarHistorial(evento) {
             );
         }
 
-
-        // ==================================================
-        // ACTUALIZAR HISTORIAL ACTUAL
-        // ==================================================
+        // Actualiza el historial local con la respuesta del servidor.
 
         historialActual =
             await respuesta.json();
 
-
-        // ==================================================
-        // MOSTRAR MENSAJE
-        // ==================================================
+        // Informa al usuario que la operación terminó correctamente.
 
         alert(
             modoEdicion
@@ -913,13 +752,9 @@ async function guardarHistorial(evento) {
                 : "Historial médico creado correctamente."
         );
 
-
-        // ==================================================
-        // MOSTRAR INFORMACIÓN
-        // ==================================================
+        // Muestra nuevamente la información registrada.
 
         mostrarHistorial();
-
 
     } catch (error) {
 
@@ -928,17 +763,13 @@ async function guardarHistorial(evento) {
             error
         );
 
-
         alert(
             "No se pudo guardar el historial médico."
         );
     }
 }
 
-
-// ==========================================================
-// OBTENER VALOR DEL CAMPO
-// ==========================================================
+// Obtiene y limpia el valor de un campo del formulario.
 
 function obtenerValor(idCampo) {
 
@@ -947,21 +778,15 @@ function obtenerValor(idCampo) {
             idCampo
         );
 
-
     if (!campo) {
 
         return "";
     }
 
-
     return campo.value.trim();
 }
 
-
-// ==========================================================
-// AGREGAR REGISTRO INDIVIDUAL
-// Compatibilidad con otras partes de My Pet
-// ==========================================================
+// Agrega un registro individual desde otras partes de My Pet.
 
 async function agregarRegistro(tipo) {
 
@@ -971,12 +796,10 @@ async function agregarRegistro(tipo) {
             tipo
         );
 
-
     if (valor === null) {
 
         return;
     }
-
 
     if (valor.trim() === "") {
 
@@ -987,39 +810,31 @@ async function agregarRegistro(tipo) {
         return;
     }
 
-
-    // Si no existe historial, abrir formulario
+    // Abre el formulario si todavía no existe un historial.
 
     if (!historialActual) {
 
         mostrarFormularioCrear();
-
 
         asignarValorFormulario(
             tipo,
             valor.trim()
         );
 
-
         return;
     }
 
-
-    // Actualizar historial existente
+    // Actualiza el campo correspondiente del historial existente.
 
     asignarValorHistorial(
         tipo,
         valor.trim()
     );
 
-
     await actualizarHistorial();
 }
 
-
-// ==========================================================
-// EDITAR REGISTRO INDIVIDUAL
-// ==========================================================
+// Permite editar individualmente un registro del historial.
 
 async function editarRegistro(tipo) {
 
@@ -1028,10 +843,8 @@ async function editarRegistro(tipo) {
         return;
     }
 
-
     const valorActual =
         obtenerValorPorTipo(tipo);
-
 
     const nuevoValor =
         prompt(
@@ -1040,12 +853,10 @@ async function editarRegistro(tipo) {
             valorActual
         );
 
-
     if (nuevoValor === null) {
 
         return;
     }
-
 
     if (nuevoValor.trim() === "") {
 
@@ -1056,20 +867,15 @@ async function editarRegistro(tipo) {
         return;
     }
 
-
     asignarValorHistorial(
         tipo,
         nuevoValor.trim()
     );
 
-
     await actualizarHistorial();
 }
 
-
-// ==========================================================
-// OBTENER VALOR ACTUAL SEGÚN TIPO
-// ==========================================================
+// Obtiene el valor actual del historial según el tipo de registro.
 
 function obtenerValorPorTipo(tipo) {
 
@@ -1078,7 +884,6 @@ function obtenerValorPorTipo(tipo) {
         return "";
     }
 
-
     switch (tipo) {
 
         case "Peso":
@@ -1086,48 +891,40 @@ function obtenerValorPorTipo(tipo) {
             return
                 historialActual.peso || "";
 
-
         case "Enfermedad":
 
             return
                 historialActual.diagnosticos || "";
-
 
         case "Antecedente":
 
             return
                 historialActual.antecedentesMedicos || "";
 
-
         case "Alergia":
 
             return
                 historialActual.alergias || "";
-
 
         case "Medicamento":
 
             return
                 historialActual.tratamientos || "";
 
-
         case "Cirugía":
 
             return
                 historialActual.cirugiasProcedimientos || "";
-
 
         case "Vacuna":
 
             return
                 historialActual.vacunacion || "";
 
-
         case "Consulta":
 
             return
                 historialActual.consultasAtenciones || "";
-
 
         default:
 
@@ -1135,10 +932,7 @@ function obtenerValorPorTipo(tipo) {
     }
 }
 
-
-// ==========================================================
-// ASIGNAR VALOR AL HISTORIAL
-// ==========================================================
+// Asigna un valor al campo correspondiente del historial actual.
 
 function asignarValorHistorial(
     tipo,
@@ -1154,14 +948,12 @@ function asignarValorHistorial(
 
             break;
 
-
         case "Enfermedad":
 
             historialActual.diagnosticos =
                 valor;
 
             break;
-
 
         case "Antecedente":
 
@@ -1170,14 +962,12 @@ function asignarValorHistorial(
 
             break;
 
-
         case "Alergia":
 
             historialActual.alergias =
                 valor;
 
             break;
-
 
         case "Medicamento":
 
@@ -1186,14 +976,12 @@ function asignarValorHistorial(
 
             break;
 
-
         case "Cirugía":
 
             historialActual.cirugiasProcedimientos =
                 valor;
 
             break;
-
 
         case "Vacuna":
 
@@ -1202,14 +990,12 @@ function asignarValorHistorial(
 
             break;
 
-
         case "Consulta":
 
             historialActual.consultasAtenciones =
                 valor;
 
             break;
-
 
         default:
 
@@ -1220,10 +1006,7 @@ function asignarValorHistorial(
     }
 }
 
-
-// ==========================================================
-// ASIGNAR VALOR AL FORMULARIO
-// ==========================================================
+// Asigna un valor al campo correspondiente del formulario.
 
 function asignarValorFormulario(
     tipo,
@@ -1240,7 +1023,6 @@ function asignarValorFormulario(
 
             break;
 
-
         case "Alergia":
 
             document.getElementById(
@@ -1248,7 +1030,6 @@ function asignarValorFormulario(
             ).value = valor;
 
             break;
-
 
         case "Medicamento":
 
@@ -1258,7 +1039,6 @@ function asignarValorFormulario(
 
             break;
 
-
         case "Vacuna":
 
             document.getElementById(
@@ -1266,7 +1046,6 @@ function asignarValorFormulario(
             ).value = valor;
 
             break;
-
 
         case "Cirugía":
 
@@ -1276,7 +1055,6 @@ function asignarValorFormulario(
 
             break;
 
-
         case "Consulta":
 
             document.getElementById(
@@ -1284,7 +1062,6 @@ function asignarValorFormulario(
             ).value = valor;
 
             break;
-
 
         default:
 
@@ -1295,10 +1072,7 @@ function asignarValorFormulario(
     }
 }
 
-
-// ==========================================================
-// ACTUALIZAR HISTORIAL
-// ==========================================================
+// Actualiza el historial médico existente mediante el backend.
 
 async function actualizarHistorial() {
 
@@ -1307,20 +1081,14 @@ async function actualizarHistorial() {
         return;
     }
 
-
     try {
 
-        // ==================================================
-        // OBTENER TOKEN CSRF
-        // ==================================================
+        // Obtiene el token CSRF para proteger la solicitud.
 
         const csrf =
             await obtenerTokenCSRF();
 
-
-        // ==================================================
-        // CONSTRUIR DATOS
-        // ==================================================
+        // Construye los datos actuales del historial.
 
         const datos = {
 
@@ -1357,10 +1125,7 @@ async function actualizarHistorial() {
             }
         };
 
-
-        // ==================================================
-        // ACTUALIZAR
-        // ==================================================
+        // Envía la actualización del historial al backend.
 
         const respuesta =
             await fetch(
@@ -1385,16 +1150,12 @@ async function actualizarHistorial() {
                 }
             );
 
-
-        // ==================================================
-        // VALIDAR RESPUESTA
-        // ==================================================
+        // Verifica que la actualización haya sido procesada correctamente.
 
         if (!respuesta.ok) {
 
             const mensaje =
                 await respuesta.text();
-
 
             throw new Error(
                 mensaje ||
@@ -1402,22 +1163,16 @@ async function actualizarHistorial() {
             );
         }
 
-
-        // ==================================================
-        // ACTUALIZAR INFORMACIÓN LOCAL
-        // ==================================================
+        // Actualiza la información local con la respuesta del servidor.
 
         historialActual =
             await respuesta.json();
 
-
         mostrarHistorial();
-
 
         alert(
             "Información actualizada correctamente."
         );
-
 
     } catch (error) {
 
@@ -1426,17 +1181,13 @@ async function actualizarHistorial() {
             error
         );
 
-
         alert(
             "No se pudo actualizar la información."
         );
     }
 }
 
-
-// ==========================================================
-// ELIMINAR HISTORIAL
-// ==========================================================
+// Elimina el historial médico después de confirmar la acción.
 
 async function eliminarHistorial() {
 
@@ -1449,32 +1200,24 @@ async function eliminarHistorial() {
         return;
     }
 
-
     const confirmar =
         confirm(
             "¿Está seguro de eliminar el historial médico?"
         );
-
 
     if (!confirmar) {
 
         return;
     }
 
-
     try {
 
-        // ==================================================
-        // OBTENER TOKEN CSRF
-        // ==================================================
+        // Obtiene el token CSRF para proteger la solicitud.
 
         const csrf =
             await obtenerTokenCSRF();
 
-
-        // ==================================================
-        // ELIMINAR
-        // ==================================================
+        // Envía la solicitud para eliminar el historial.
 
         const respuesta =
             await fetch(
@@ -1493,16 +1236,12 @@ async function eliminarHistorial() {
                 }
             );
 
-
-        // ==================================================
-        // VALIDAR RESPUESTA
-        // ==================================================
+        // Verifica que la eliminación haya sido procesada correctamente.
 
         if (!respuesta.ok) {
 
             const mensaje =
                 await respuesta.text();
-
 
             throw new Error(
                 mensaje ||
@@ -1510,24 +1249,17 @@ async function eliminarHistorial() {
             );
         }
 
-
-        // ==================================================
-        // ACTUALIZAR INTERFAZ
-        // ==================================================
+        // Actualiza la interfaz después de eliminar el historial.
 
         historialActual = null;
 
-
         mostrarEstadoSinHistorial();
 
-
         limpiarFormulario();
-
 
         alert(
             "Historial médico eliminado correctamente."
         );
-
 
     } catch (error) {
 
@@ -1536,25 +1268,19 @@ async function eliminarHistorial() {
             error
         );
 
-
         alert(
             "No se pudo eliminar el historial médico."
         );
     }
 }
 
-
-// ==========================================================
-// FUNCIONES DISPONIBLES PARA EL HTML
-// ==========================================================
+// Expone las funciones utilizadas directamente desde el HTML.
 
 window.agregarRegistro =
     agregarRegistro;
 
-
 window.editarRegistro =
     editarRegistro;
-
 
 window.eliminarHistorial =
     eliminarHistorial;

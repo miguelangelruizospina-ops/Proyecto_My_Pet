@@ -1,15 +1,9 @@
-
-// =====================================================
-// CONFIGURACIÓN GLOBAL - MY PET
-// Aplica las preferencias guardadas en toda la aplicación
-// =====================================================
+// Configuración global de My Pet.
 
 (function () {
 
-    // =================================================
-    // APLICAR CONFIGURACIÓN
-    // =================================================
-
+    // Aplica la configuración general de la aplicación.
+   
     function aplicarConfiguracionGlobal() {
 
         const body = document.body;
@@ -18,11 +12,8 @@
             return;
         }
 
-
-        // =================================================
-        // TEMA
-        // =================================================
-
+        // Aplica el tema seleccionado por el usuario.
+       
         let tema =
             localStorage.getItem("temaMyPet") || "claro";
 
@@ -49,11 +40,8 @@
             tema
         );
 
-
-        // =================================================
-        // TAMAÑO DE LETRA
-        // =================================================
-
+        // Aplica el tamaño de letra seleccionado por el usuario.
+       
         let tamanoLetra =
             localStorage.getItem("tamanoLetraMyPet")
             || "normal";
@@ -85,11 +73,8 @@
             tamanoLetra
         );
 
-
-        // =================================================
-        // COLOR PRINCIPAL
-        // =================================================
-
+        // Aplica el color principal seleccionado por el usuario.
+       
         let color =
             localStorage.getItem("colorMyPet")
             || "naranja";
@@ -121,11 +106,8 @@
             color
         );
 
-
-        // =================================================
-        // ALTO CONTRASTE
-        // =================================================
-
+        // Aplica la configuración de alto contraste.
+        
         const altoContraste =
             localStorage.getItem(
                 "altoContrasteMyPet"
@@ -143,11 +125,8 @@
                 : "normal"
         );
 
-
-        // =================================================
-        // NOTIFICACIONES
-        // =================================================
-
+        // Verifica y configura el estado de las notificaciones.
+       
         const notificaciones =
             localStorage.getItem(
                 "notificacionesMyPet"
@@ -155,6 +134,7 @@
 
         // Si nunca se ha configurado,
         // las notificaciones quedan activadas.
+       
         if (notificaciones === null) {
 
             localStorage.setItem(
@@ -164,22 +144,16 @@
 
         }
 
-
-        // =================================================
-        // MARCAR CONFIGURACIÓN APLICADA
-        // =================================================
-
+        // Marca que la configuración global de My Pet ya fue aplicada.
+        
         body.classList.add(
             "configuracion-mypet-aplicada"
         );
 
     }
 
-
-    // =====================================================
-    // EJECUTAR AL CARGAR LA PÁGINA
-    // =====================================================
-
+    // Ejecuta la configuración cuando termina de cargar la página.
+    
     if (document.readyState === "loading") {
 
         document.addEventListener(

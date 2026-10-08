@@ -1,6 +1,7 @@
 // JavaScript encargado de gestionar los documentos de una mascota.
 
 // Configuración de los servicios.
+
 const API_DOCUMENTOS =
     "http://localhost:8082/api/documentos";
 
@@ -8,10 +9,12 @@ const API_CSRF =
     "http://localhost:8082/api/usuario/csrf";
 
 // ID de la mascota seleccionada.
+
 let idMascotaDocumento = null;
 
 
 // Inicializa la página de documentos.
+
 document.addEventListener(
     "DOMContentLoaded",
     function () {
@@ -38,6 +41,7 @@ document.addEventListener(
         }
 
         // Configura el regreso al perfil de la mascota.
+
         const flechaVolverPerfil =
             document.getElementById(
                 "flechaVolverPerfil"
@@ -52,6 +56,7 @@ document.addEventListener(
         }
 
         // Configura el botón para agregar documentos.
+
         const btnAgregarDocumento =
             document.getElementById(
                 "btnAgregarDocumento"
@@ -69,8 +74,8 @@ document.addEventListener(
     }
 );
 
-
 // Obtiene el token CSRF para las solicitudes protegidas.
+
 async function obtenerTokenCSRF() {
 
     const respuesta =
@@ -92,8 +97,8 @@ async function obtenerTokenCSRF() {
     return await respuesta.json();
 }
 
-
 // Obtiene el ID del usuario que inició sesión.
+
 function obtenerIdUsuario() {
 
     const usuarioGuardado =
@@ -135,8 +140,8 @@ function obtenerIdUsuario() {
         : null;
 }
 
-
 // Carga los documentos registrados para la mascota.
+
 async function cargarDocumentos() {
 
     const listaDocumentos =
@@ -189,8 +194,8 @@ async function cargarDocumentos() {
     }
 }
 
-
 // Muestra los documentos registrados en la interfaz.
+
 function mostrarDocumentos(
     documentos
 ) {
@@ -319,8 +324,8 @@ function mostrarDocumentos(
     );
 }
 
-
 // Registra un nuevo documento y su archivo.
+
 async function agregarDocumento() {
 
     const tipoDocumento =
@@ -378,6 +383,7 @@ async function agregarDocumento() {
         archivoInput.files[0];
 
     // Valida los formatos permitidos.
+
     const extensionesPermitidas = [
         "pdf",
         "jpg",
@@ -424,6 +430,7 @@ async function agregarDocumento() {
             await obtenerTokenCSRF();
 
         // Prepara los datos como formulario multipart.
+
         const formData =
             new FormData();
 
@@ -461,6 +468,7 @@ async function agregarDocumento() {
         );
 
         // Envía el documento al servidor.
+
         const respuesta =
             await fetch(
                 `${API_DOCUMENTOS}/guardar`,
@@ -490,6 +498,7 @@ async function agregarDocumento() {
         }
 
         // Limpia el formulario después de guardar.
+
         document.getElementById(
             "tipoDocumento"
         ).value = "";
@@ -524,8 +533,8 @@ async function agregarDocumento() {
     }
 }
 
-
 // Elimina un documento registrado.
+
 async function eliminarDocumento(
     idDocumento
 ) {
@@ -596,8 +605,8 @@ async function eliminarDocumento(
     }
 }
 
-
 // Evita que los datos mostrados se interpreten como HTML.
+
 function escaparHTML(
     valor
 ) {
@@ -613,8 +622,8 @@ function escaparHTML(
     return elemento.innerHTML;
 }
 
-
 // Muestra mensajes dentro de la lista de documentos.
+
 function mostrarMensaje(
     mensaje
 ) {
@@ -636,8 +645,8 @@ function mostrarMensaje(
     `;
 }
 
-
 // Funciones disponibles para el HTML.
+
 window.agregarDocumento =
     agregarDocumento;
 

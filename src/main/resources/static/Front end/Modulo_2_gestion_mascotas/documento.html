@@ -3,80 +3,78 @@
 
 <head>
 
-    <meta charset="UTF-8">
+    <!-- Configuración básica del documento y adaptación a dispositivos móviles. -->
 
+    <meta charset="UTF-8">
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
+    <!-- Título de la página en la pestaña del navegador. -->
+
     <title>Documentos - My Pet</title>
 
+    <!-- Carga Bootstrap para utilizar sus estilos y componentes. -->
 
-    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
+    <!-- Carga los estilos generales de My Pet. -->
 
-    <!-- Estilos generales de My Pet -->
     <link
         rel="stylesheet"
         href="../mi_pet.css">
 
+    <!-- Carga los estilos específicos de la página de documentos. -->
 
-    <!-- Estilos específicos de documentos -->
     <link
         rel="stylesheet"
         href="CSS/estilos.css">
 
 </head>
 
-
 <body class="fondo_pata">
 
+    <!-- Permite regresar al perfil de la mascota. -->
 
-    <!-- Flecha para regresar al perfil de la mascota. -->
     <a
         id="flechaVolverPerfil"
         href="perfil_mascota.html"
-         class="flecha flecha-back"
+        class="flecha flecha-back"
         aria-label="Volver al perfil de la mascota">
-         ←
+        ←
     </a>
 
-    <!-- Contenido principal de la gestión de documentos. -->
+    <!-- Contiene el formulario y la lista de documentos. -->
+
     <main class="container py-5">
 
+        <!-- Muestra el título principal de la página. -->
 
-        <!-- Título de la página. -->
         <div class="text-center mb-4">
-
             <h1 class="text-white fw-bold">
                 Documentos
             </h1>
-
         </div>
 
+        <!-- Contiene el formulario para registrar nuevos documentos. -->
 
-        <!-- Formulario para agregar documentos. -->
         <section class="tarjeta-mascota mx-auto">
 
             <h2 class="titulo-perfil-mascota text-center">
                 Agregar documento
             </h2>
 
+            <!-- Permite seleccionar el tipo de documento que se va a registrar. -->
 
-            <!-- Tipo de documento. -->
             <div class="mb-3">
 
                 <label
                     for="tipoDocumento"
                     class="form-label">
-
                     Tipo de documento
-
                 </label>
-
 
                 <select
                     id="tipoDocumento"
@@ -86,6 +84,7 @@
                         Selecciona un tipo
                     </option>
 
+                    <!-- Agrupa los documentos generales de identificación y registro. -->
 
                     <optgroup label="Documentos generales">
 
@@ -107,6 +106,7 @@
 
                     </optgroup>
 
+                    <!-- Agrupa los documentos relacionados con la salud de la mascota. -->
 
                     <optgroup label="Documentos médicos">
 
@@ -132,6 +132,7 @@
 
                     </optgroup>
 
+                    <!-- Agrupa las opciones para registrar fotografías. -->
 
                     <optgroup label="Fotos">
 
@@ -149,18 +150,15 @@
 
             </div>
 
+            <!-- Permite ingresar el nombre con el que se identificará el documento. -->
 
-            <!-- Nombre que tendrá el documento. -->
             <div class="mb-3">
 
                 <label
                     for="nombreDocumento"
                     class="form-label">
-
                     Nombre del documento
-
                 </label>
-
 
                 <input
                     type="text"
@@ -170,18 +168,15 @@
 
             </div>
 
+            <!-- Permite seleccionar la fecha asociada al documento. -->
 
-            <!-- Fecha asociada al documento. -->
             <div class="mb-3">
 
                 <label
                     for="fechaDocumento"
                     class="form-label">
-
                     Fecha del documento
-
                 </label>
-
 
                 <input
                     type="date"
@@ -190,18 +185,15 @@
 
             </div>
 
+            <!-- Permite seleccionar el archivo que se desea adjuntar. -->
 
-            <!-- Archivo que será almacenado en el servidor. -->
             <div class="mb-3">
 
                 <label
                     for="archivoDocumento"
                     class="form-label">
-
                     Archivo
-
                 </label>
-
 
                 <input
                     type="file"
@@ -209,57 +201,49 @@
                     class="form-control"
                     accept=".pdf,.jpg,.jpeg,.png">
 
+                <!-- Informa los formatos de archivo permitidos. -->
 
                 <small class="text-white">
-
                     Formatos permitidos:
                     PDF, JPG, JPEG y PNG.
-
                 </small>
 
             </div>
 
+            <!-- Contiene el botón para guardar el documento. -->
 
-            <!-- Botón para guardar el documento. -->
             <div class="text-center">
 
                 <button
                     type="button"
                     id="btnAgregarDocumento"
                     class="btn-perfil-mascota">
-
                     Agregar documento
-
                 </button>
 
             </div>
 
         </section>
 
+        <!-- Contiene la lista de documentos registrados. -->
 
-        <!-- Lista de documentos guardados. -->
         <section
             id="ventanaDocumentos"
             class="tarjeta-mascota mx-auto mt-4">
 
-
             <h2
                 class="text-center titulo-documentos-guardados">
-
                 Documentos guardados
-
             </h2>
 
+            <!-- Muestra los documentos cargados mediante documento.js. -->
 
-            <!-- Los documentos se cargan mediante documento.js. -->
             <div
                 id="listaDocumentos"
                 class="lista-documentos">
 
                 <p class="text-center text-white">
-
                     Cargando documentos...
-
                 </p>
 
             </div>
@@ -268,12 +252,13 @@
 
     </main>
 
+    <!-- Carga la lógica JavaScript encargada de gestionar los documentos. -->
 
-    <!-- JavaScript encargado de gestionar los documentos. -->
     <script src="/JS/documento.js"></script>
 
-    <script src="/JS/configuracion_global.js"></script>
+    <!-- Carga la configuración global de la aplicación. -->
 
+    <script src="/JS/configuracion_global.js"></script>
 
 </body>
 

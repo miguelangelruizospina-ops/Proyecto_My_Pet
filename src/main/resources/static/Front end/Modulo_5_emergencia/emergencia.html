@@ -3,12 +3,18 @@
 
 <head>
 
+    <!-- Configuración de caracteres y adaptación a dispositivos móviles. -->
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
+    <!-- Cliente API para las solicitudes al backend. -->
+
     <script src="/JS/api-client.js"></script>
+
+    <!-- Estilos de Bootstrap y hoja de estilos principal de My Pet. -->
 
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
@@ -16,11 +22,16 @@
     <link rel="stylesheet"
           href="../mi_pet.css">
 
+    <!-- Título de la página de emergencias y primeros auxilios. -->
+
     <title>Emergencias y primeros auxilios | My Pet</title>
+
+    <!-- Estilos específicos de los botones y recuadros de esta página. -->
 
     <style>
 
-        /* Botones principales de My Pet */
+        /* Botones principales de My Pet. */
+
         .btn-naranja {
             background-color: #F7931E;
             border-color: #F7931E;
@@ -34,7 +45,8 @@
             color: #ffffff;
         }
 
-        /* Botón naranja para acciones secundarias */
+        /* Botón naranja para acciones secundarias. */
+
         .btn-naranja-outline {
             background-color: transparent;
             border: 1px solid #F7931E;
@@ -48,7 +60,8 @@
             color: #ffffff;
         }
 
-        /* Recuadros semitransparentes */
+        /* Recuadros con fondo blanco semitransparente y efecto de desenfoque. */
+
         .recuadro-transparente {
             background-color: rgba(255, 255, 255, 0.78);
             backdrop-filter: blur(3px);
@@ -61,10 +74,13 @@
 
 <body class="fondo_pata min-vh-100">
 
+    <!-- Contenedor principal de la página. -->
+
     <main class="container py-4"
           style="max-width: 760px">
 
-        <!-- Regresar al perfil -->
+        <!-- Enlace para regresar a la página principal. -->
+
         <a id="volverEmergencia"
            class="flecha"
            href="/Front%20end/Modulo_1_gestion_usuario/home.html"
@@ -72,8 +88,8 @@
             ←
         </a>
 
+        <!-- Encabezado con el título y el nombre de la mascota seleccionada. -->
 
-        <!-- Encabezado -->
         <header class="text-center my-4">
 
             <h1 class="titulo-naranja">
@@ -86,8 +102,8 @@
 
         </header>
 
+        <!-- Aviso sobre el alcance de la información y la atención veterinaria. -->
 
-        <!-- Aviso principal -->
         <div class="alert alert-warning"
              role="alert">
 
@@ -101,7 +117,6 @@
             con una clínica o servicio veterinario.
 
         </div>
-
 
         <!-- ==========================================
              GUÍA DE PRIMEROS AUXILIOS
@@ -126,8 +141,7 @@
 
             </p>
 
-
-            <!-- Sangrado -->
+            <!-- Recomendaciones para controlar el sangrado externo. -->
 
             <details class="mb-3">
 
@@ -173,8 +187,7 @@
 
             </details>
 
-
-            <!-- Dificultad respiratoria -->
+            <!-- Indicaciones ante dificultades respiratorias o atragantamiento. -->
 
             <details class="mb-3">
 
@@ -223,8 +236,7 @@
 
             </details>
 
-
-            <!-- Convulsiones -->
+            <!-- Medidas de protección durante una convulsión. -->
 
             <details class="mb-3">
 
@@ -280,8 +292,7 @@
 
             </details>
 
-
-            <!-- Intoxicación -->
+            <!-- Recomendaciones ante la sospecha de intoxicación. -->
 
             <details class="mb-3">
 
@@ -329,8 +340,7 @@
 
             </details>
 
-
-            <!-- Golpe de calor -->
+            <!-- Medidas iniciales ante signos compatibles con golpe de calor. -->
 
             <details class="mb-3">
 
@@ -379,8 +389,7 @@
 
             </details>
 
-
-            <!-- Traumatismo -->
+            <!-- Precauciones ante caídas, golpes y posibles fracturas. -->
 
             <details class="mb-3">
 
@@ -432,8 +441,7 @@
 
             </details>
 
-
-            <!-- Lesión ocular -->
+            <!-- Cuidados básicos y precauciones ante lesiones oculares. -->
 
             <details class="mb-3">
 
@@ -475,8 +483,7 @@
 
             </details>
 
-
-            <!-- Mordeduras -->
+            <!-- Recomendaciones ante heridas provocadas por mordeduras. -->
 
             <details class="mb-3">
 
@@ -519,8 +526,7 @@
 
             </details>
 
-
-            <!-- Colapso -->
+            <!-- Recomendaciones ante pérdida de conciencia o debilidad repentina. -->
 
             <details class="mb-3">
 
@@ -568,8 +574,7 @@
 
             </details>
 
-
-            <!-- Advertencia final -->
+            <!-- Recordatorio final sobre la atención veterinaria profesional. -->
 
             <div class="alert alert-secondary mt-4 mb-0">
 
@@ -584,13 +589,14 @@
 
         </section>
 
-
         <!-- ==========================================
-             CHATBOT
+             CHATBOT DE PRIMEROS AUXILIOS
              ========================================== -->
 
         <section class="chatbot-contenedor mb-4"
                  aria-labelledby="tituloChatEmergencia">
+
+            <!-- Encabezado del asistente y botón para limpiar la conversación. -->
 
             <div class="chatbot-cabecera">
 
@@ -622,12 +628,14 @@
 
             </div>
 
+            <!-- Área donde se muestran los mensajes de la conversación. -->
 
             <div id="conversacionChatbot"
                  class="chatbot-mensajes"
                  aria-live="polite">
             </div>
 
+            <!-- Indicador visual del estado de respuesta del asistente. -->
 
             <div id="indicadorChatbot"
                  class="chatbot-indicador">
@@ -636,6 +644,7 @@
 
             </div>
 
+            <!-- Formulario para escribir y enviar mensajes al chatbot. -->
 
             <div class="chatbot-escritura">
 
@@ -659,6 +668,7 @@
 
                 </form>
 
+                <!-- Aviso sobre las limitaciones del asistente virtual. -->
 
                 <p class="chatbot-aviso">
 
@@ -671,13 +681,14 @@
 
         </section>
 
-
         <!-- ==========================================
-             FORMULARIO DE EMERGENCIA
+             FORMULARIO PARA REPORTAR UNA EMERGENCIA
              ========================================== -->
 
         <form id="formEmergenciaUsuario"
               class="recuadro-transparente p-4 rounded">
+
+            <!-- Selección de la categoría de la emergencia. -->
 
             <div class="mb-3">
 
@@ -716,8 +727,7 @@
 
             </div>
 
-
-            <!-- Mascota asociada a la emergencia -->
+            <!-- Selección de la mascota relacionada con el reporte. -->
 
             <div class="mb-3">
 
@@ -740,6 +750,7 @@
 
             </div>
 
+            <!-- Campo para describir lo ocurrido. -->
 
             <div class="mb-3">
 
@@ -763,6 +774,7 @@
 
             </div>
 
+            <!-- Botón para enviar el reporte y área para mostrar su estado. -->
 
             <button class="btn btn-naranja"
                     id="btnEnviarEmergencia"
@@ -772,7 +784,6 @@
 
             </button>
 
-
             <p id="estadoEmergencia"
                class="mt-3 mb-0"
                role="status"
@@ -781,9 +792,8 @@
 
         </form>
 
-
         <!-- ==========================================
-             REPORTES DEL USUARIO
+             LISTADO DE REPORTES DEL USUARIO
              ========================================== -->
 
         <section class="mt-4">
@@ -791,6 +801,8 @@
             <h2 class="h4 text-white">
                 Mis reportes
             </h2>
+
+            <!-- Contenedor para mostrar los reportes registrados. -->
 
             <div id="listaEmergencias"
                  class="d-grid gap-2">
@@ -800,13 +812,18 @@
 
     </main>
 
+    <!-- Lógica para registrar emergencias, cargar mascotas y consultar reportes. -->
 
     <script src="/JS/emergencia_usuario.js"></script>
 
-    <!-- El chatbot permanece independiente -->
+    <!-- Funcionalidad del asistente virtual de primeros auxilios. -->
+
     <script src="/JS/chatbot.js"></script>
-    
+
+    <!-- Configuración global de la aplicación. -->
+
     <script src="/JS/configuracion_global.js"></script>
+
 </body>
 
 </html>

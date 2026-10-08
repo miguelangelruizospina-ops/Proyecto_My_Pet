@@ -1,3 +1,11 @@
+# Configura los archivos Gradle para utilizar saltos de línea LF.
+
 /gradlew text eol=lf
+
+# Configura los archivos de comandos de Windows para utilizar saltos de línea CRLF.
+
 *.bat text eol=crlf
+
+# Trata los archivos JAR como archivos binarios.
+
 *.jar binary

@@ -1,3 +1,5 @@
+# Archivos y carpetas generados por Gradle.
+
 HELP.md
 .gradle
 build/
@@ -5,7 +7,8 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### STS ###
+# Archivos generados por Spring Tool Suite.
+
 .apt_generated
 .classpath
 .factorypath
@@ -17,7 +20,8 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
+# Archivos generados por IntelliJ IDEA.
+
 .idea
 *.iws
 *.iml
@@ -26,13 +30,18 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
+# Archivos generados por NetBeans.
+
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# Archivos y configuración generados por Visual Studio Code.
+
 .vscode/
+
+# Archivos cargados por la aplicación.
+
 uploads/

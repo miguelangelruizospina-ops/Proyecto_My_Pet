@@ -3,41 +3,41 @@
 
 <head>
 
+    <!-- Configuración de caracteres y adaptación a dispositivos móviles. -->
+
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
+    <!-- Título de la página del foro. -->
+
     <title>Foro - Mi Pet</title>
 
+    <!-- Bootstrap para los estilos y componentes de la interfaz. -->
 
-    <!-- Bootstrap CSS -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
+    <!-- Iconos utilizados en la interfaz. -->
 
-    <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- Hoja de estilos principal de Mi Pet. -->
 
-    <!-- CSS principal de Mi Pet -->
     <link
         rel="stylesheet"
         href="../mi_pet.css">
 
 </head>
 
-
 <body class="fondo_pata">
 
-
-    <!-- ==========================================
-         ENCABEZADO
-         ========================================== -->
+    <!-- Encabezado de la página con el botón para regresar y el título. -->
 
     <header class="py-3 px-4 mb-4">
 
@@ -54,7 +54,6 @@
 
         </div>
 
-
         <div class="titulo-naranja">
 
             <h1>
@@ -65,28 +64,16 @@
 
     </header>
 
-
-
-    <!-- ==========================================
-         CONTENEDOR DEL FORO
-         ========================================== -->
+    <!-- Contenedor donde foro.js carga las publicaciones de la comunidad. -->
 
     <main
         class="container contenedor_foro">
 
-        <!--
-            Las publicaciones se cargan
-            automáticamente desde el backend
-            mediante foro.js.
-        -->
+        <!-- Las publicaciones se generan dinámicamente desde el backend. -->
 
     </main>
 
-
-
-    <!-- ==========================================
-         BOTÓN FLOTANTE
-         ========================================== -->
+    <!-- Botón flotante que abre el formulario para crear una publicación. -->
 
     <button
         type="button"
@@ -98,18 +85,13 @@
 
     </button>
 
-
-
-    <!-- ==========================================
-         MODAL CREAR PUBLICACIÓN
-         ========================================== -->
+    <!-- Ventana modal para crear y enviar una publicación al foro. -->
 
     <dialog
         id="dialogo_nuevo_post"
         class="rounded-4 shadow-lg border-0">
 
         <div class="p-3">
-
 
             <h3
                 class="titulo_modal_naranja mb-3 fw-bold">
@@ -118,12 +100,12 @@
 
             </h3>
 
+            <!-- Formulario con los campos del título y el contenido. -->
 
             <form
                 id="formulario-nueva-publicacion">
 
-
-                <!-- TÍTULO -->
+                <!-- Campo para ingresar el título de la publicación. -->
 
                 <div class="mb-3">
 
@@ -135,7 +117,6 @@
 
                     </label>
 
-
                     <input
                         type="text"
                         id="titulo-publicacion"
@@ -146,9 +127,7 @@
 
                 </div>
 
-
-
-                <!-- CONTENIDO -->
+                <!-- Campo para redactar el mensaje de la publicación. -->
 
                 <div class="mb-3">
 
@@ -160,7 +139,6 @@
 
                     </label>
 
-
                     <textarea
                         id="contenido-publicacion"
                         class="form-control"
@@ -171,13 +149,10 @@
 
                 </div>
 
-
-
-                <!-- BOTONES -->
+                <!-- Botones para cerrar el formulario o enviar la publicación. -->
 
                 <div
                     class="d-flex justify-content-end gap-2">
-
 
                     <button
                         type="button"
@@ -187,7 +162,6 @@
                         Cerrar
 
                     </button>
-
 
                     <button
                         type="submit"
@@ -199,39 +173,29 @@
 
                 </div>
 
-
             </form>
 
         </div>
 
     </dialog>
 
-
-
-    <!-- ==========================================
-         BOOTSTRAP JS
-         ========================================== -->
+    <!-- Carga de Bootstrap JavaScript para los componentes interactivos. -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
-
-    <!-- ==========================================
-         JAVASCRIPT DEL ME GUSTA DE PUBLICACIONES
-         ========================================== -->
+    <!-- Script encargado de gestionar los "Me gusta" de las publicaciones. -->
 
     <script src="/JS/me_gusta_publicacion.js"></script>
 
-
-    <!-- ==========================================
-         JAVASCRIPT DEL FORO
-         ========================================== -->
+    <!-- Script encargado de cargar y gestionar las publicaciones del foro. -->
 
     <script src="/JS/foro.js"></script>
 
-    <script src="/JS/configuracion_global.js"></script>
+    <!-- Script que aplica la configuración global de la aplicación. -->
 
+    <script src="/JS/configuracion_global.js"></script>
 
 </body>
 

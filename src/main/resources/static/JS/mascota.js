@@ -1,31 +1,13 @@
-/* ============================================================
-   MY PET - MASCOTA.JS
-
-   Maneja:
-
-   - Mis mascotas
-   - Agregar mascota
-   - Perfil de mascota
-   - Edición del perfil
-   - Foto de mascota
-   - Eliminación de mascota
-
-   ============================================================ */
+// Gestiona las mascotas, sus perfiles, fotografías y operaciones relacionadas.
 
 const API_BASE = `${window.location.origin}/api`;
 
 let mascotaActual = null;
-
 let perfilMascotaActual = null;
-
 let idMascotaActual = null;
-
 let fotoMascotaNueva = null;
 
-
-/* ============================================================
-   LEER ARCHIVO COMO DATA URL
-   ============================================================ */
+// Convierte un archivo de imagen en una cadena Data URL.
 
 function leerArchivoComoDataUrl(archivo) {
 
@@ -51,10 +33,7 @@ function leerArchivoComoDataUrl(archivo) {
     });
 }
 
-
-/* ============================================================
-   OBTENER RUTA DE FOTO
-   ============================================================ */
+// Obtiene la ruta correspondiente a la fotografía de la mascota.
 
 function obtenerRutaFoto(foto) {
 
@@ -66,7 +45,7 @@ function obtenerRutaFoto(foto) {
     if (
         foto.startsWith("data:") ||
         foto.startsWith("/") ||
-        /^https?:\/\//.test(foto)
+        /^https?:\/\/.*/.test(foto)
     ) {
 
         return foto;
@@ -75,10 +54,7 @@ function obtenerRutaFoto(foto) {
     return `../fotos/${encodeURIComponent(foto)}`;
 }
 
-
-/* ============================================================
-   INICIO
-   ============================================================ */
+// Inicializa las funciones correspondientes a la lista o al perfil de la mascota.
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -106,10 +82,7 @@ document.addEventListener(
     }
 );
 
-
-/* ============================================================
-   USUARIO LOGUEADO
-   ============================================================ */
+// Obtiene la información del usuario almacenada en el navegador.
 
 function obtenerUsuarioLogueado() {
 
@@ -140,6 +113,7 @@ function obtenerUsuarioLogueado() {
     }
 }
 
+// Obtiene el identificador del usuario que inició sesión.
 
 function obtenerIdUsuario() {
 
@@ -158,10 +132,7 @@ function obtenerIdUsuario() {
     );
 }
 
-
-/* ============================================================
-   MIS MASCOTAS
-   ============================================================ */
+// Inicializa la sección de mascotas del usuario.
 
 function iniciarMisMascotas() {
 
@@ -176,16 +147,11 @@ function iniciarMisMascotas() {
     }
 
     configurarBotonAgregarMascota();
-
     configurarFormularioMascota();
-
     cargarMascotas();
 }
 
-
-/* ============================================================
-   CARGAR MASCOTAS
-   ============================================================ */
+// Carga las mascotas asociadas al usuario.
 
 async function cargarMascotas() {
 
@@ -228,18 +194,14 @@ async function cargarMascotas() {
             error
         );
 
-        /* ====================================================
-           NO BORRAR EL BOTÓN AGREGAR MASCOTA
-           ==================================================== */
+        // Conserva el botón para agregar mascotas aunque ocurra un error.
 
         const columnaAgregar =
             document.getElementById(
                 "columnaAgregarMascota"
             );
 
-        /* ====================================================
-           ELIMINAR MENSAJES ANTERIORES
-           ==================================================== */
+        // Elimina los mensajes anteriores relacionados con las mascotas.
 
         contenedor
             .querySelectorAll(
@@ -249,9 +211,7 @@ async function cargarMascotas() {
                 mensaje => mensaje.remove()
             );
 
-        /* ====================================================
-           MOSTRAR MENSAJE SIN ELIMINAR EL BOTÓN
-           ==================================================== */
+        // Muestra un mensaje de error sin eliminar el botón para agregar mascotas.
 
         const mensaje =
             document.createElement("p");
@@ -281,10 +241,7 @@ async function cargarMascotas() {
     }
 }
 
-
-/* ============================================================
-   MOSTRAR MASCOTAS
-   ============================================================ */
+// Muestra las mascotas registradas dentro de sus respectivas tarjetas.
 
 function mostrarMascotas(mascotas) {
 
@@ -362,10 +319,7 @@ function mostrarMascotas(mascotas) {
             columna.dataset.tarjetaMascota =
                 "true";
 
-
-            /* ====================================================
-               ENLACE AL PERFIL
-               ==================================================== */
+            // Configura el enlace para acceder al perfil de la mascota.
 
             const enlace =
                 document.createElement("a");
@@ -381,10 +335,7 @@ function mostrarMascotas(mascotas) {
                 `Ver perfil de ${mascota.nombre || "mascota"}`
             );
 
-
-            /* ====================================================
-               FOTO
-               ==================================================== */
+            // Configura la fotografía mostrada en la tarjeta de la mascota.
 
             const imagen =
                 document.createElement("img");
@@ -415,10 +366,7 @@ function mostrarMascotas(mascotas) {
                 { once: true }
             );
 
-
-            /* ====================================================
-               TEXTO SOBRE LA FOTO
-               ==================================================== */
+            // Muestra el texto para acceder al perfil desde la fotografía.
 
             const etiqueta =
                 document.createElement("span");
@@ -434,10 +382,7 @@ function mostrarMascotas(mascotas) {
                 etiqueta
             );
 
-
-            /* ====================================================
-               NOMBRE
-               ==================================================== */
+            // Muestra el nombre de la mascota.
 
             const nombre =
                 document.createElement("h2");
@@ -449,10 +394,7 @@ function mostrarMascotas(mascotas) {
                 mascota.nombre ||
                 "Mascota";
 
-
-            /* ====================================================
-               ESPECIE
-               ==================================================== */
+            // Muestra la especie registrada de la mascota.
 
             const especie =
                 document.createElement("p");
@@ -466,10 +408,7 @@ function mostrarMascotas(mascotas) {
                     "No registrada"
                 }`;
 
-
-            /* ====================================================
-               RAZA
-               ==================================================== */
+            // Muestra la raza registrada de la mascota.
 
             const raza =
                 document.createElement("p");
@@ -483,10 +422,7 @@ function mostrarMascotas(mascotas) {
                     "No registrada"
                 }`;
 
-
-            /* ====================================================
-               BOTÓN VER PERFIL
-               ==================================================== */
+            // Configura el botón para acceder al perfil de la mascota.
 
             const botonVerPerfil =
                 document.createElement("a");
@@ -500,10 +436,7 @@ function mostrarMascotas(mascotas) {
             botonVerPerfil.textContent =
                 "Ver perfil";
 
-
-            /* ====================================================
-               BOTÓN ELIMINAR MASCOTA
-               ==================================================== */
+            // Configura el botón para eliminar la mascota.
 
             const botonEliminar =
                 document.createElement("button");
@@ -522,7 +455,6 @@ function mostrarMascotas(mascotas) {
                 async function (evento) {
 
                     evento.preventDefault();
-
                     evento.stopPropagation();
 
                     const confirmar =
@@ -560,10 +492,7 @@ function mostrarMascotas(mascotas) {
                             "Mascota eliminada correctamente."
                         );
 
-
-                        /* ========================================
-                           RECARGAR LA LISTA
-                           ======================================== */
+                        // Recarga la lista después de eliminar la mascota.
 
                         await cargarMascotas();
 
@@ -582,10 +511,7 @@ function mostrarMascotas(mascotas) {
                 }
             );
 
-
-            /* ====================================================
-               AGREGAR ELEMENTOS A LA TARJETA
-               ==================================================== */
+            // Agrega los elementos correspondientes a la tarjeta de la mascota.
 
             columna.append(
                 enlace,
@@ -613,10 +539,7 @@ function mostrarMascotas(mascotas) {
     );
 }
 
-
-/* ============================================================
-   BOTÓN AGREGAR MASCOTA
-   ============================================================ */
+// Configura el botón que permite abrir la ventana para agregar una mascota.
 
 function configurarBotonAgregarMascota() {
 
@@ -664,10 +587,7 @@ function configurarBotonAgregarMascota() {
     );
 }
 
-
-/* ============================================================
-   FORMULARIO AGREGAR MASCOTA
-   ============================================================ */
+// Configura el formulario utilizado para registrar una nueva mascota.
 
 function configurarFormularioMascota() {
 
@@ -690,7 +610,6 @@ function configurarFormularioMascota() {
             await guardarMascota();
         }
     );
-
 
     const inputFoto =
         document.getElementById(
@@ -756,10 +675,7 @@ function configurarFormularioMascota() {
     );
 }
 
-
-/* ============================================================
-   GUARDAR MASCOTA
-   ============================================================ */
+// Guarda una nueva mascota asociada al usuario.
 
 async function guardarMascota() {
 
@@ -860,6 +776,7 @@ async function guardarMascota() {
                     method: "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
                     },
@@ -927,10 +844,7 @@ async function guardarMascota() {
     }
 }
 
-
-/* ============================================================
-   CERRAR MODAL AGREGAR MASCOTA
-   ============================================================ */
+// Cierra la ventana utilizada para agregar una mascota.
 
 function cerrarModalAgregarMascota() {
 
@@ -966,10 +880,7 @@ function cerrarModalAgregarMascota() {
     }
 }
 
-
-/* ============================================================
-   PERFIL DE MASCOTA
-   ============================================================ */
+// Inicializa el perfil de la mascota a partir del identificador recibido en la URL.
 
 async function iniciarPerfilMascota() {
 
@@ -1026,7 +937,6 @@ async function iniciarPerfilMascota() {
 
         const parametrosEmergencia =
             new URLSearchParams({
-
                 idMascota:
                     idMascotaActual
             });
@@ -1040,10 +950,7 @@ async function iniciarPerfilMascota() {
     configurarPerfil();
 }
 
-
-/* ============================================================
-   CARGAR MASCOTA
-   ============================================================ */
+// Carga los datos de la mascota y su perfil desde el backend.
 
 async function cargarPerfilMascota() {
 
@@ -1132,10 +1039,7 @@ async function cargarPerfilMascota() {
     }
 }
 
-
-/* ============================================================
-   MOSTRAR DATOS DE MASCOTA
-   ============================================================ */
+// Muestra la información general y los datos del perfil de la mascota.
 
 function mostrarDatosMascota() {
 
@@ -1240,10 +1144,7 @@ function mostrarDatosMascota() {
     mostrarFotoMascota();
 }
 
-
-/* ============================================================
-   MOSTRAR FOTO
-   ============================================================ */
+// Muestra la fotografía actual de la mascota.
 
 function mostrarFotoMascota() {
 
@@ -1263,10 +1164,7 @@ function mostrarFotoMascota() {
         );
 }
 
-
-/* ============================================================
-   CONFIGURAR PERFIL
-   ============================================================ */
+// Configura los controles utilizados para editar el perfil de la mascota.
 
 function configurarPerfil() {
 
@@ -1323,10 +1221,7 @@ function configurarPerfil() {
     }
 }
 
-
-/* ============================================================
-   ABRIR EDICIÓN
-   ============================================================ */
+// Carga la información actual de la mascota en el formulario de edición.
 
 function abrirEdicion() {
 
@@ -1402,10 +1297,7 @@ function abrirEdicion() {
     }
 }
 
-
-/* ============================================================
-   CANCELAR EDICIÓN
-   ============================================================ */
+// Cancela la edición y muestra nuevamente la información de la mascota.
 
 function cancelarEdicion() {
 
@@ -1432,10 +1324,7 @@ function cancelarEdicion() {
     }
 }
 
-
-/* ============================================================
-   GUARDAR EDICIÓN
-   ============================================================ */
+// Guarda los cambios realizados en la mascota y en su perfil.
 
 async function guardarEdicion(evento) {
 
@@ -1519,6 +1408,7 @@ async function guardarEdicion(evento) {
                     method: "PUT",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
                     },
@@ -1558,6 +1448,7 @@ async function guardarEdicion(evento) {
                             : "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
                     },
@@ -1602,10 +1493,7 @@ async function guardarEdicion(evento) {
     }
 }
 
-
-/* ============================================================
-   CAMBIAR FOTO
-   ============================================================ */
+// Actualiza la fotografía de la mascota después de validar el archivo seleccionado.
 
 async function cambiarFoto(evento) {
 
@@ -1645,6 +1533,7 @@ async function cambiarFoto(evento) {
                     method: "PUT",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
                     },
@@ -1700,10 +1589,7 @@ async function cambiarFoto(evento) {
     }
 }
 
-
-/* ============================================================
-   SIN SESIÓN
-   ============================================================ */
+// Muestra un mensaje cuando no existe una sesión activa.
 
 function mostrarSinSesion() {
 
@@ -1721,10 +1607,7 @@ function mostrarSinSesion() {
         "Debes iniciar sesión para ver tus mascotas.";
 }
 
-
-/* ============================================================
-   FUNCIONES AUXILIARES
-   ============================================================ */
+// Obtiene y limpia el valor de un campo del formulario.
 
 function obtenerValor(
     id,
@@ -1758,6 +1641,7 @@ function obtenerValor(
     ).trim();
 }
 
+// Asigna un valor a un campo del formulario.
 
 function establecerValor(
     id,
@@ -1778,6 +1662,7 @@ function establecerValor(
         valor || "";
 }
 
+// Asigna un texto a un elemento de la interfaz.
 
 function establecerTexto(
     id,
@@ -1799,10 +1684,7 @@ function establecerTexto(
         "No registrado";
 }
 
-
-/* ============================================================
-   EDAD
-   ============================================================ */
+// Calcula la edad de la mascota a partir de su fecha de nacimiento.
 
 function calcularEdad(
     fechaNacimiento
@@ -1849,10 +1731,7 @@ function calcularEdad(
     return edad + " años";
 }
 
-
-/* ============================================================
-   FORMATO DE FECHA
-   ============================================================ */
+// Convierte la fecha de nacimiento al formato utilizado en la interfaz.
 
 function formatearFecha(
     fecha

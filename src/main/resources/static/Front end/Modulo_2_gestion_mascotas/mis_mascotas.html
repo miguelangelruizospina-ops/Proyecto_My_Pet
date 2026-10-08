@@ -3,32 +3,42 @@
 
 <head>
 
+    <!-- Carga el cliente encargado de las solicitudes a la API. -->
+
     <script src="/JS/api-client.js"></script>
+
+    <!-- Configura la codificación de caracteres y la adaptación a dispositivos móviles. -->
 
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap -->
+    <!-- Importa Bootstrap para los estilos y componentes de la interfaz. -->
+
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
-    <!-- Diseño propio de My Pet -->
+    <!-- Importa los estilos personalizados de My Pet. -->
+
     <link rel="stylesheet" href="../mi_pet.css">
+
+    <!-- Define el título que aparece en la pestaña del navegador. -->
 
     <title>Tus Mascotas</title>
 
 </head>
 
+<!-- Organiza la página verticalmente y aplica el fondo y los espacios generales. -->
 
 <body class="fondo_pata min-vh-100 d-flex flex-column align-items-center py-3">
-
 
     <!-- ===================================================== -->
     <!-- FLECHA PARA REGRESAR -->
     <!-- ===================================================== -->
+
+    <!-- Permite regresar a la página principal del usuario. -->
 
     <div class="w-100 px-4">
 
@@ -42,10 +52,11 @@
 
     </div>
 
-
     <!-- ===================================================== -->
     <!-- TÍTULO -->
     <!-- ===================================================== -->
+
+    <!-- Presenta el encabezado principal de la página. -->
 
     <header class="text-center my-2">
 
@@ -57,10 +68,11 @@
 
     </header>
 
-
     <!-- ===================================================== -->
     <!-- MASCOTAS -->
     <!-- ===================================================== -->
+
+    <!-- Contiene las tarjetas de las mascotas y el botón para agregar nuevas. -->
 
     <main class="container my-4">
 
@@ -68,20 +80,13 @@
             id="contenedorMascotas"
             class="row justify-content-center align-items-center g-4">
 
-
-            <!-- ================================================= -->
-            <!-- MASCOTAS CARGADAS POR JAVASCRIPT -->
-            <!-- ================================================= -->
-
-            <!--
-                Las mascotas serán agregadas aquí
-                automáticamente por mascota.js.
-            -->
-
+            <!-- Las tarjetas de las mascotas se generan dinámicamente con JavaScript. -->
 
             <!-- ================================================= -->
             <!-- BOTÓN AGREGAR MASCOTA -->
             <!-- ================================================= -->
+
+            <!-- Abre el formulario para registrar una nueva mascota. -->
 
             <div
                 id="columnaAgregarMascota"
@@ -100,7 +105,6 @@
 
                     </button>
 
-
                     <h2 class="nom-masco mt-3">
 
                         Agregar Mascota
@@ -115,10 +119,11 @@
 
     </main>
 
-
     <!-- ===================================================== -->
     <!-- MODAL AGREGAR MASCOTA -->
     <!-- ===================================================== -->
+
+    <!-- Ventana emergente que contiene el formulario de registro. -->
 
     <div
         class="modal fade"
@@ -127,15 +132,15 @@
         aria-labelledby="tituloAgregarMascota"
         aria-hidden="true">
 
-
         <div class="modal-dialog modal-dialog-centered">
 
             <div class="modal-content">
 
-
                 <!-- ================================================= -->
                 <!-- ENCABEZADO -->
                 <!-- ================================================= -->
+
+                <!-- Muestra el título del formulario y el botón para cerrar la ventana. -->
 
                 <div class="modal-header">
 
@@ -146,7 +151,6 @@
                         Agregar Mascota
 
                     </h5>
-
 
                     <button
                         type="button"
@@ -159,19 +163,21 @@
 
                 </div>
 
-
                 <!-- ================================================= -->
                 <!-- FORMULARIO -->
                 <!-- ================================================= -->
+
+                <!-- Recopila la información necesaria para registrar la mascota. -->
 
                 <form id="formAgregarMascota">
 
                     <div class="modal-body">
 
-
                         <!-- ================================================= -->
                         <!-- NOMBRE -->
                         <!-- ================================================= -->
+
+                        <!-- Campo para ingresar el nombre de la mascota. -->
 
                         <div class="mb-3">
 
@@ -183,7 +189,6 @@
 
                             </label>
 
-
                             <input
                                 type="text"
                                 class="form-control"
@@ -192,10 +197,11 @@
 
                         </div>
 
-
                         <!-- ================================================= -->
                         <!-- ESPECIE -->
                         <!-- ================================================= -->
+
+                        <!-- Campo para indicar la especie de la mascota. -->
 
                         <div class="mb-3">
 
@@ -207,7 +213,6 @@
 
                             </label>
 
-
                             <input
                                 type="text"
                                 class="form-control"
@@ -217,10 +222,11 @@
 
                         </div>
 
-
                         <!-- ================================================= -->
                         <!-- RAZA -->
                         <!-- ================================================= -->
+
+                        <!-- Campo para registrar la raza de la mascota. -->
 
                         <div class="mb-3">
 
@@ -232,7 +238,6 @@
 
                             </label>
 
-
                             <input
                                 type="text"
                                 class="form-control"
@@ -241,10 +246,11 @@
 
                         </div>
 
-
                         <!-- ================================================= -->
                         <!-- FECHA DE NACIMIENTO -->
                         <!-- ================================================= -->
+
+                        <!-- Permite seleccionar la fecha de nacimiento de la mascota. -->
 
                         <div class="mb-3">
 
@@ -256,7 +262,6 @@
 
                             </label>
 
-
                             <input
                                 type="date"
                                 class="form-control"
@@ -265,10 +270,11 @@
 
                         </div>
 
-
                         <!-- ================================================= -->
                         <!-- FOTO -->
                         <!-- ================================================= -->
+
+                        <!-- Permite seleccionar una imagen y mostrar su vista previa. -->
 
                         <div class="mb-3">
 
@@ -280,13 +286,13 @@
 
                             </label>
 
-
                             <input
                                 type="file"
                                 class="form-control"
                                 id="fotoMascota"
                                 accept="image/jpeg,image/png,image/webp,image/gif">
 
+                            <!-- Muestra la imagen seleccionada antes de guardar el registro. -->
 
                             <img
                                 id="previewFotoMascota"
@@ -294,6 +300,7 @@
                                 alt="Vista previa de la mascota"
                                 style="max-width: 180px; max-height: 180px; object-fit: cover;">
 
+                            <!-- Informa los formatos de imagen admitidos y el tamaño máximo permitido. -->
 
                             <div class="form-text">
 
@@ -305,13 +312,13 @@
 
                     </div>
 
-
                     <!-- ================================================= -->
                     <!-- BOTONES -->
                     <!-- ================================================= -->
 
-                    <div class="modal-footer">
+                    <!-- Ofrece las opciones para cancelar o guardar el registro. -->
 
+                    <div class="modal-footer">
 
                         <button
                             type="button"
@@ -322,7 +329,6 @@
                             Cancelar
 
                         </button>
-
 
                         <button
                             type="submit"
@@ -342,23 +348,27 @@
 
     </div>
 
-
     <!-- ===================================================== -->
     <!-- BOOTSTRAP -->
     <!-- ===================================================== -->
+
+    <!-- Carga los componentes interactivos de Bootstrap, incluidos los modales. -->
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
-
     <!-- ===================================================== -->
     <!-- JAVASCRIPT DE MASCOTAS -->
     <!-- ===================================================== -->
 
-    <script src="/JS/mascota.js"></script>
-    <script src="/JS/configuracion_global.js"></script>
+    <!-- Gestiona las operaciones relacionadas con las mascotas. -->
 
+    <script src="/JS/mascota.js"></script>
+
+    <!-- Aplica la configuración global de la aplicación. -->
+
+    <script src="/JS/configuracion_global.js"></script>
 
 </body>
 

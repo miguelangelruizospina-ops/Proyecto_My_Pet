@@ -1,6 +1,6 @@
-/* =========================================================
-   INDICADOR DE NOTIFICACIONES DE AGENDA
-   ========================================================= */
+// Muestra el indicador de notificaciones pendientes de agenda.
+
+// Inicializa el indicador de agenda cuando la página termina de cargar.
 
 document.addEventListener("DOMContentLoaded", async function () {
 
@@ -11,10 +11,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-
-    /* =====================================================
-       OBTENER USUARIO
-       ===================================================== */
+    // Obtiene la información del usuario almacenada en el navegador.
 
     const usuarioGuardado =
         localStorage.getItem("usuarioLogueado");
@@ -23,7 +20,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         indicadorAgenda.style.display = "none";
         return;
     }
-
 
     let usuario;
 
@@ -43,12 +39,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-
     const idUsuario =
         usuario.idUsuario ||
         usuario.id_usuario ||
         localStorage.getItem("idUsuario");
-
 
     if (!idUsuario) {
 
@@ -56,20 +50,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-
-    /* =====================================================
-       API
-       ===================================================== */
+    // Configura la ruta principal de la API.
 
     const apiBase =
         `${window.location.origin}/api`;
 
-
     try {
 
-        /* =================================================
-           OBTENER NOTIFICACIONES DEL USUARIO
-           ================================================= */
+        // Obtiene las notificaciones asociadas al usuario.
 
         const respuesta =
             await fetch(
@@ -79,7 +67,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             );
 
-
         if (!respuesta.ok) {
 
             throw new Error(
@@ -87,10 +74,8 @@ document.addEventListener("DOMContentLoaded", async function () {
             );
         }
 
-
         const notificaciones =
             await respuesta.json();
-
 
         if (!Array.isArray(notificaciones)) {
 
@@ -98,10 +83,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-
-        /* =================================================
-           BUSCAR NOTIFICACIONES DE AGENDA NO LEÍDAS
-           ================================================= */
+        // Filtra las notificaciones de agenda que todavía no han sido leídas.
 
         const notificacionesAgenda =
             notificaciones.filter(
@@ -134,10 +116,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 }
             );
 
-
-        /* =================================================
-           MOSTRAR U OCULTAR INDICADOR
-           ================================================= */
+        // Muestra u oculta el indicador según existan notificaciones pendientes.
 
         if (notificacionesAgenda.length > 0) {
 
@@ -148,7 +127,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             indicadorAgenda.style.display = "none";
 
         }
-
 
     } catch (error) {
 

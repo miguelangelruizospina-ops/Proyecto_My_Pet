@@ -1,13 +1,4 @@
-// ==========================================
-// FORO - MI PET
-// Publicaciones, comentarios, respuestas
-// Me gusta, editar y eliminar
-// ==========================================
-
-
-// ==========================================
-// INICIALIZACIÓN
-// ==========================================
+// Gestiona publicaciones, comentarios, respuestas y Me gusta.
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -32,10 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
-// ==========================================
-// PUBLICACIONES
-// ==========================================
+// Carga las publicaciones disponibles en el foro.
 
 async function cargarPublicaciones() {
 
@@ -92,12 +80,12 @@ async function cargarPublicaciones() {
         publicaciones.forEach(
             (publicacion) => {
 
-                // ME GUSTA DE LA PUBLICACIÓN
+                // Carga la cantidad de Me gusta y los comentarios de cada publicación.
+
                 cargarMeGustaPublicacion(
                     publicacion.idPublicacion
                 );
 
-                // COMENTARIOS
                 cargarComentarios(
                     publicacion.idPublicacion
                 );
@@ -119,10 +107,7 @@ async function cargarPublicaciones() {
     }
 }
 
-
-// ==========================================
-// TARJETA DE PUBLICACIÓN
-// ==========================================
+// Crea la tarjeta que muestra una publicación y sus acciones.
 
 function crearTarjetaPublicacion(
     publicacion
@@ -239,9 +224,7 @@ function crearTarjetaPublicacion(
 
             </div>
 
-
             <hr class="my-3 text-muted opacity-25">
-
 
             <div
                 class="d-flex align-items-center gap-3">
@@ -264,7 +247,6 @@ function crearTarjetaPublicacion(
 
             </div>
 
-
             <div
                 id="comentarios-${publicacion.idPublicacion}"
                 class="mt-4">
@@ -276,10 +258,7 @@ function crearTarjetaPublicacion(
     return tarjeta;
 }
 
-
-// ==========================================
-// EDITAR PUBLICACIÓN
-// ==========================================
+// Permite editar el título y contenido de una publicación.
 
 async function editarPublicacion(
     idPublicacion
@@ -355,10 +334,7 @@ async function editarPublicacion(
     `;
 }
 
-
-// ==========================================
-// GUARDAR EDICIÓN DE PUBLICACIÓN
-// ==========================================
+// Guarda los cambios realizados en una publicación.
 
 async function guardarEdicionPublicacion(
     idPublicacion
@@ -454,10 +430,7 @@ async function guardarEdicionPublicacion(
     }
 }
 
-
-// ==========================================
-// ELIMINAR PUBLICACIÓN
-// ==========================================
+// Elimina una publicación después de confirmar la acción.
 
 async function eliminarPublicacion(
     idPublicacion
@@ -510,10 +483,7 @@ async function eliminarPublicacion(
     }
 }
 
-
-// ==========================================
-// FORO VACÍO
-// ==========================================
+// Muestra un mensaje cuando el foro no tiene publicaciones.
 
 function mostrarForoVacio(
     contenedor
@@ -545,10 +515,7 @@ function mostrarForoVacio(
     `;
 }
 
-
-// ==========================================
-// CREAR PUBLICACIÓN
-// ==========================================
+// Registra una nueva publicación en el foro.
 
 async function crearPublicacion() {
 
@@ -663,10 +630,7 @@ async function crearPublicacion() {
     }
 }
 
-
-// ==========================================
-// COMENTARIOS
-// ==========================================
+// Carga los comentarios asociados a una publicación.
 
 async function cargarComentarios(
     idPublicacion
@@ -759,10 +723,7 @@ async function cargarComentarios(
     }
 }
 
-
-// ==========================================
-// ELEMENTO DE COMENTARIO
-// ==========================================
+// Crea el elemento visual de un comentario y sus respuestas.
 
 function crearElementoComentario(
     comentario
@@ -846,7 +807,6 @@ function crearElementoComentario(
 
         </div>
 
-
         <div class="d-flex gap-3">
 
             <button
@@ -866,7 +826,6 @@ function crearElementoComentario(
                 </span>
 
             </button>
-
 
             <button
                 type="button"
@@ -889,7 +848,6 @@ function crearElementoComentario(
             class="mt-3">
         </div>
 
-
         <div
             id="respuestas-${comentario.idComentario}"
             class="ms-4 mt-3">
@@ -908,10 +866,7 @@ function crearElementoComentario(
     return elemento;
 }
 
-
-// ==========================================
-// EDITAR COMENTARIO
-// ==========================================
+// Permite editar el contenido de un comentario.
 
 function editarComentario(
     idComentario
@@ -970,10 +925,7 @@ function editarComentario(
     }
 }
 
-
-// ==========================================
-// GUARDAR EDICIÓN DE COMENTARIO
-// ==========================================
+// Guarda los cambios realizados en un comentario.
 
 async function guardarEdicionComentario(
     idComentario
@@ -1051,10 +1003,7 @@ async function guardarEdicionComentario(
     }
 }
 
-
-// ==========================================
-// CANCELAR EDICIÓN DE COMENTARIO
-// ==========================================
+// Restaura el comentario cancelando la edición actual.
 
 async function restaurarComentario(
     idComentario
@@ -1065,10 +1014,7 @@ async function restaurarComentario(
     );
 }
 
-
-// ==========================================
-// ELIMINAR COMENTARIO
-// ==========================================
+// Elimina un comentario después de confirmar la acción.
 
 async function eliminarComentario(
     idComentario,
@@ -1131,10 +1077,7 @@ async function eliminarComentario(
     }
 }
 
-
-// ==========================================
-// FORMULARIO DE COMENTARIO
-// ==========================================
+// Muestra el formulario para escribir un comentario.
 
 function mostrarFormularioComentario(
     idPublicacion
@@ -1197,10 +1140,7 @@ function mostrarFormularioComentario(
     }
 }
 
-
-// ==========================================
-// CANCELAR COMENTARIO
-// ==========================================
+// Cierra el formulario de comentario sin enviar información.
 
 function cancelarFormularioComentario(
     idPublicacion
@@ -1216,10 +1156,7 @@ function cancelarFormularioComentario(
     }
 }
 
-
-// ==========================================
-// CREAR COMENTARIO
-// ==========================================
+// Registra un nuevo comentario en una publicación.
 
 async function crearComentario(
     idPublicacion
@@ -1297,10 +1234,7 @@ async function crearComentario(
     }
 }
 
-
-// ==========================================
-// RESPUESTAS
-// ==========================================
+// Carga las respuestas asociadas a un comentario.
 
 async function cargarRespuestas(
     idComentario
@@ -1364,10 +1298,7 @@ async function cargarRespuestas(
     }
 }
 
-
-// ==========================================
-// CREAR ELEMENTO DE RESPUESTA
-// ==========================================
+// Crea el elemento visual de una respuesta.
 
 function crearRespuesta(
     respuesta
@@ -1389,7 +1320,7 @@ function crearRespuesta(
         <div
             class="d-flex align-items-center mb-2">
 
-            <i
+            <i>
                 class="bi bi-person-circle fs-5 me-2 text-secondary">
             </i>
 
@@ -1479,10 +1410,7 @@ function crearRespuesta(
     return elemento;
 }
 
-
-// ==========================================
-// EDITAR RESPUESTA
-// ==========================================
+// Permite editar el contenido de una respuesta.
 
 function editarRespuesta(
     idComentario
@@ -1541,10 +1469,7 @@ function editarRespuesta(
     }
 }
 
-
-// ==========================================
-// GUARDAR EDICIÓN DE RESPUESTA
-// ==========================================
+// Guarda los cambios realizados en una respuesta.
 
 async function guardarEdicionRespuesta(
     idComentario
@@ -1620,10 +1545,7 @@ async function guardarEdicionRespuesta(
     }
 }
 
-
-// ==========================================
-// CANCELAR EDICIÓN DE RESPUESTA
-// ==========================================
+// Restaura la respuesta cancelando la edición actual.
 
 async function restaurarRespuesta(
     idComentario
@@ -1632,10 +1554,7 @@ async function restaurarRespuesta(
     location.reload();
 }
 
-
-// ==========================================
-// ELIMINAR RESPUESTA
-// ==========================================
+// Elimina una respuesta después de confirmar la acción.
 
 async function eliminarRespuesta(
     idComentario,
@@ -1698,10 +1617,7 @@ async function eliminarRespuesta(
     }
 }
 
-
-// ==========================================
-// FORMULARIO DE RESPUESTA
-// ==========================================
+// Muestra el formulario para escribir una respuesta.
 
 function mostrarFormularioRespuesta(
     idComentario
@@ -1764,10 +1680,7 @@ function mostrarFormularioRespuesta(
     }
 }
 
-
-// ==========================================
-// CANCELAR RESPUESTA
-// ==========================================
+// Cierra el formulario de respuesta sin enviar información.
 
 function cancelarFormularioRespuesta(
     idComentario
@@ -1783,10 +1696,7 @@ function cancelarFormularioRespuesta(
     }
 }
 
-
-// ==========================================
-// CREAR RESPUESTA
-// ==========================================
+// Registra una nueva respuesta asociada a un comentario.
 
 async function crearRespuesta(
     idComentario
@@ -1868,10 +1778,7 @@ async function crearRespuesta(
     }
 }
 
-
-// ==========================================
-// ME GUSTA DE COMENTARIOS
-// ==========================================
+// Consulta la cantidad de Me gusta y el estado del usuario en un comentario.
 
 async function cargarMeGustaComentario(
     idComentario
@@ -1925,10 +1832,7 @@ async function cargarMeGustaComentario(
     }
 }
 
-
-// ==========================================
-// ESTADO DEL ME GUSTA
-// ==========================================
+// Actualiza el estado visual del Me gusta de un comentario.
 
 async function actualizarEstadoMeGustaComentario(
     idComentario,
@@ -1963,10 +1867,7 @@ async function actualizarEstadoMeGustaComentario(
     }
 }
 
-
-// ==========================================
-// CAMBIAR ME GUSTA
-// ==========================================
+// Cambia el estado del Me gusta de un comentario.
 
 async function cambiarMeGustaComentario(
     idComentario
@@ -2036,10 +1937,7 @@ async function cambiarMeGustaComentario(
     }
 }
 
-
-// ==========================================
-// ICONO ME GUSTA DE COMENTARIOS
-// ==========================================
+// Actualiza el icono según el estado del Me gusta.
 
 function actualizarIconoMeGusta(
     boton,
@@ -2064,10 +1962,7 @@ function actualizarIconoMeGusta(
     );
 }
 
-
-// ==========================================
-// RECARGAR COMENTARIO
-// ==========================================
+// Recarga la información del comentario después de una modificación.
 
 async function recargarComentarioDesdePublicacion(
     idComentario
@@ -2086,10 +1981,7 @@ async function recargarComentarioDesdePublicacion(
     location.reload();
 }
 
-
-// ==========================================
-// UTILIDADES
-// ==========================================
+// Obtiene el nombre disponible del usuario.
 
 function obtenerNombreUsuario(
     usuario
@@ -2109,6 +2001,7 @@ function obtenerNombreUsuario(
     );
 }
 
+// Convierte la fecha recibida en un formato legible para Colombia.
 
 function formatearFecha(
     fecha
@@ -2139,6 +2032,7 @@ function formatearFecha(
     );
 }
 
+// Protege el contenido antes de insertarlo en el HTML.
 
 function escaparHTML(
     texto
@@ -2161,6 +2055,7 @@ function escaparHTML(
     return elemento.innerHTML;
 }
 
+// Protege el contenido antes de utilizarlo como atributo HTML.
 
 function escaparAtributo(
     texto
@@ -2171,10 +2066,7 @@ function escaparAtributo(
         .replace(/'/g, "&#039;");
 }
 
-
-// ==========================================
-// OBTENER ID DE PUBLICACIÓN
-// ==========================================
+// Obtiene el ID de la publicación asociada al comentario.
 
 function obtenerIdPublicacion(
     comentario
@@ -2192,10 +2084,7 @@ function obtenerIdPublicacion(
     return "null";
 }
 
-
-// ==========================================
-// OBTENER ID DEL COMENTARIO PADRE
-// ==========================================
+// Obtiene el ID del comentario padre de una respuesta.
 
 function obtenerIdComentarioPadre(
     comentario

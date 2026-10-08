@@ -1,9 +1,9 @@
+// Inicializa el mapa cuando la página termina de cargar.
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    /*
-     * Inicialización del mapa y sus elementos principales.
-     */
+    // Configura el mapa y sus elementos principales.
+
     const mapa = L.map("mapa").setView([4.5709, -74.2973], 6);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         attribution: "&copy; OpenStreetMap"
     }).addTo(mapa);
 
+    // Obtiene los elementos utilizados para buscar lugares y gestionar la ubicación.
 
     const buscador = document.getElementById("buscadorMapa");
     const botonBuscar = document.getElementById("btnBuscar");
@@ -20,11 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let marcadorUsuario = null;
     let ubicacionUsuario = null;
 
+    // Solicita permiso para acceder a la ubicación y centra el mapa cuando es autorizada.
 
-    /*
-     * Solicita permiso para acceder a la ubicación
-     * y centra el mapa cuando es autorizada.
-     */
     function obtenerUbicacion() {
 
         if (!navigator.geolocation) {
@@ -38,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
         mensaje.textContent =
             "Solicitando permiso para acceder a tu ubicación...";
 
-
         navigator.geolocation.getCurrentPosition(
 
             (posicion) => {
@@ -50,22 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 mapa.setView(ubicacionUsuario, 16);
 
-
                 if (marcadorUsuario) {
                     mapa.removeLayer(marcadorUsuario);
                 }
-
 
                 marcadorUsuario = L.marker(ubicacionUsuario)
                     .addTo(mapa)
                     .bindPopup("<strong>Tu ubicación</strong>")
                     .openPopup();
 
-
                 mensaje.textContent =
                     "Ubicación encontrada. Puedes buscar lugares cercanos.";
             },
-
 
             (error) => {
 
@@ -78,14 +71,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         break;
 
-
                     case error.POSITION_UNAVAILABLE:
 
                         mensaje.textContent =
                             "No fue posible obtener tu ubicación.";
 
                         break;
-
 
                     case error.TIMEOUT:
 
@@ -94,14 +85,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         break;
 
-
                     default:
 
                         mensaje.textContent =
                             "Ocurrió un error al obtener tu ubicación.";
                 }
             },
-
 
             {
                 enableHighAccuracy: true,
@@ -111,10 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    // Regresa el mapa a la ubicación actual del usuario.
 
-    /*
-     * Regresa el mapa a la ubicación actual.
-     */
     botonUbicacion.addEventListener("click", () => {
 
         if (ubicacionUsuario) {
@@ -132,14 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Busca lugares utilizando el servicio de OpenStreetMap.
 
-    /*
-     * Busca lugares mediante OpenStreetMap.
-     */
     async function buscarLugar() {
 
         const texto = buscador.value.trim();
-
 
         if (texto === "") {
 
@@ -149,10 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-
         mensaje.textContent =
             "Buscando...";
-
 
         try {
 
@@ -160,14 +142,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 `https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(texto)}`
             );
 
-
             if (!respuesta.ok) {
                 throw new Error("Error en la búsqueda");
             }
 
-
             const resultados = await respuesta.json();
-
 
             if (resultados.length === 0) {
 
@@ -177,25 +156,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-
             const resultado = resultados[0];
 
             const latitud = parseFloat(resultado.lat);
             const longitud = parseFloat(resultado.lon);
 
-
             mapa.setView([latitud, longitud], 16);
-
 
             L.marker([latitud, longitud])
                 .addTo(mapa)
                 .bindPopup(`<strong>${resultado.display_name}</strong>`)
                 .openPopup();
 
-
             mensaje.textContent =
                 "Resultado encontrado.";
-
 
         } catch (error) {
 
@@ -206,12 +180,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Ejecuta la búsqueda cuando se presiona el botón correspondiente.
 
-    // Ejecuta la búsqueda.
     botonBuscar.addEventListener("click", buscarLugar);
 
+    // Permite realizar la búsqueda presionando la tecla Enter.
 
-    // Permite buscar presionando Enter.
     buscador.addEventListener("keypress", (evento) => {
 
         if (evento.key === "Enter") {
@@ -219,8 +193,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // Solicita el permiso de ubicación al ingresar al mapa.
 
-    // Solicita el permiso de ubicación al entrar al mapa.
     obtenerUbicacion();
 
 });

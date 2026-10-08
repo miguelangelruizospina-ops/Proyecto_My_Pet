@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <!-- Carga el cliente utilizado para comunicarse con la API. -->
+
     <script src="/JS/api-client.js"></script>
+
+    <!-- Configuración básica del documento y adaptación a dispositivos móviles. -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Carga Bootstrap para utilizar sus estilos y componentes. -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <title>Iniciar sesión</title>
+
+    <!-- Carga los estilos generales de My Pet. -->
 
     <link rel="stylesheet" href="../mi_pet.css">
 </head>
 
 <body class="fondo_pata">
 
+    <!-- Permite regresar a la página principal de My Pet. -->
+
     <a class="flecha" href="mi_pet.html">←</a>
+
+    <!-- Contiene el encabezado y los campos de inicio de sesión. -->
 
     <header>
 
         <div class="titulo-naranja">
             <h1>Iniciar Sesión</h1>
         </div>
+
+        <!-- Permite ingresar las credenciales del usuario y acceder a la recuperación de contraseña. -->
 
         <div class="inicia_sesi">
 
@@ -38,13 +54,19 @@
 
     </header>
 
+    <!-- Permite iniciar sesión con las credenciales ingresadas. -->
+
     <div class="padre-naranja">
         <button type="button" class="boton-naranja" id="btnIniciarSesion">
             Iniciar Sesión
         </button>
     </div>
 
+    <!-- Carga las funciones de inicio de sesión y la configuración global de My Pet. -->
+
     <script src="/JS/login.js"></script>
     <script src="/JS/configuracion_global.js"></script>
+
 </body>
+
 </html>

@@ -1,17 +1,13 @@
-// =========================================================
-// ME GUSTA DE PUBLICACIONES
-// =========================================================
+// Gestiona los Me gusta de las publicaciones.
 
-
-// =========================================================
-// CARGAR ME GUSTA DE UNA PUBLICACIÓN
-// =========================================================
+// Carga la cantidad y el estado del Me gusta de una publicación.
 
 async function cargarMeGustaPublicacion(idPublicacion) {
 
     try {
 
-        // Consulta la cantidad de Me gusta de la publicación
+        // Consulta la cantidad de Me gusta de la publicación.
+
         const respuestaCantidad = await fetch(
             `/api/me-gusta/publicaciones/${idPublicacion}/cantidad`
         );
@@ -26,8 +22,8 @@ async function cargarMeGustaPublicacion(idPublicacion) {
         const datosCantidad =
             await respuestaCantidad.json();
 
+        // Busca el botón correspondiente a la publicación.
 
-        // Busca el botón correspondiente a la publicación
         const boton =
             document.querySelector(
                 `[data-boton-me-gusta-publicacion="${idPublicacion}"]`
@@ -37,22 +33,22 @@ async function cargarMeGustaPublicacion(idPublicacion) {
             return;
         }
 
+        // Busca el contador dentro del botón.
 
-        // Busca el contador dentro del botón
         const contador =
             boton.querySelector(
                 "[data-me-gusta-publicacion]"
             );
 
-        // Actualiza la cantidad
+        // Actualiza la cantidad de Me gusta.
+
         if (contador) {
             contador.textContent =
                 datosCantidad.cantidad;
         }
 
+        // Consulta si el usuario actual ya dio Me gusta.
 
-        // Consulta si el usuario actual
-        // ya dio Me gusta
         await actualizarEstadoMeGustaPublicacion(
             idPublicacion,
             boton
@@ -67,10 +63,7 @@ async function cargarMeGustaPublicacion(idPublicacion) {
     }
 }
 
-
-// =========================================================
-// VERIFICAR ESTADO DEL ME GUSTA
-// =========================================================
+// Consulta si el usuario actual dio Me gusta a la publicación.
 
 async function actualizarEstadoMeGustaPublicacion(
     idPublicacion,
@@ -93,8 +86,8 @@ async function actualizarEstadoMeGustaPublicacion(
         const datos =
             await respuesta.json();
 
+        // Actualiza el corazón según el estado del Me gusta.
 
-        // Actualiza el corazón según el estado
         actualizarIconoMeGustaPublicacion(
             boton,
             datos.meGusta
@@ -109,10 +102,7 @@ async function actualizarEstadoMeGustaPublicacion(
     }
 }
 
-
-// =========================================================
-// CAMBIAR ME GUSTA
-// =========================================================
+// Agrega o elimina el Me gusta de una publicación.
 
 async function cambiarMeGustaPublicacion(
     idPublicacion
@@ -120,8 +110,8 @@ async function cambiarMeGustaPublicacion(
 
     try {
 
-        // Envía la solicitud para agregar
-        // o quitar el Me gusta
+        // Envía la solicitud para agregar o quitar el Me gusta.
+
         const respuesta = await fetch(
             `/api/me-gusta/publicaciones/${idPublicacion}`,
             {
@@ -142,18 +132,13 @@ async function cambiarMeGustaPublicacion(
             return;
         }
 
+        // Obtiene el nuevo estado y la cantidad actualizada de Me gusta.
 
-        // Recibe:
-        //
-        // {
-        //     meGusta: true/false,
-        //     cantidad: número
-        // }
         const datos =
             await respuesta.json();
 
+        // Busca el botón correspondiente a la publicación.
 
-        // Busca el botón de la publicación
         const boton =
             document.querySelector(
                 `[data-boton-me-gusta-publicacion="${idPublicacion}"]`
@@ -163,8 +148,8 @@ async function cambiarMeGustaPublicacion(
             return;
         }
 
+        // Actualiza el contador de Me gusta.
 
-        // Actualiza el contador
         const contador =
             boton.querySelector(
                 "[data-me-gusta-publicacion]"
@@ -175,8 +160,8 @@ async function cambiarMeGustaPublicacion(
                 datos.cantidad;
         }
 
+        // Actualiza el icono según el nuevo estado.
 
-        // Actualiza el corazón
         actualizarIconoMeGustaPublicacion(
             boton,
             datos.meGusta
@@ -191,10 +176,7 @@ async function cambiarMeGustaPublicacion(
     }
 }
 
-
-// =========================================================
-// ACTUALIZAR ICONO DEL CORAZÓN
-// =========================================================
+// Actualiza el icono del botón según el estado del Me gusta.
 
 function actualizarIconoMeGustaPublicacion(
     boton,
@@ -208,15 +190,15 @@ function actualizarIconoMeGustaPublicacion(
         return;
     }
 
+    // Muestra el corazón vacío cuando el Me gusta está inactivo.
 
-    // Corazón vacío cuando NO hay Me gusta
     icono.classList.toggle(
         "bi-heart",
         !activo
     );
 
+    // Muestra el corazón lleno cuando el Me gusta está activo.
 
-    // Corazón lleno cuando SÍ hay Me gusta
     icono.classList.toggle(
         "bi-heart-fill",
         activo

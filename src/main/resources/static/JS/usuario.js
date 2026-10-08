@@ -1,10 +1,12 @@
+// Gestiona la información, edición, fotografía y sesión del usuario.
+
+// Inicializa la gestión del usuario cuando la página termina de cargar.
+
 document.addEventListener("DOMContentLoaded", function () {
 
     console.log("USUARIO.JS CARGADO");
 
-    // ==========================================
-    // SESIÓN
-    // ==========================================
+    // Obtiene la información del usuario almacenada en la sesión local.
 
     const usuarioGuardado = localStorage.getItem("usuarioLogueado");
 
@@ -29,10 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-
-    // ==========================================
-    // ID DEL USUARIO
-    // ==========================================
+    // Obtiene el ID del usuario que inició sesión.
 
     const idUsuario =
         usuario.idUsuario ||
@@ -51,10 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-
-    // ==========================================
-    // ELEMENTOS DEL HTML
-    // ==========================================
+    // Obtiene los elementos principales de la interfaz del usuario.
 
     const informacionUsuario =
         document.getElementById("informacionUsuario");
@@ -77,10 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fotoPerfil =
         document.getElementById("fotoPerfil");
 
-
-    // ==========================================
-    // BOTONES
-    // ==========================================
+    // Obtiene los botones y controles utilizados para editar el perfil.
 
     const editarInformacion =
         document.getElementById("editarInformacion");
@@ -94,7 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const cancelarEdicion =
         document.getElementById("cancelarEdicion");
 
-
     console.log(
         "Botón editar encontrado:",
         editarInformacion
@@ -105,10 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
         formularioEdicion
     );
 
-
-    // ==========================================
-    // VARIABLES DEL PERFIL
-    // ==========================================
+    // Define las variables utilizadas para controlar el perfil y su fotografía.
 
     let perfil = null;
     let perfilExiste = false;
@@ -117,10 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fotoPerfilPredeterminada =
         "/Front%20end/fotos/ana.jpg";
 
-
-    // ==========================================
-    // ACTUALIZAR BOTONES
-    // ==========================================
+    // Actualiza la visibilidad de los botones según exista información del perfil.
 
     function actualizarBotonesPerfil() {
 
@@ -133,10 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-    // ==========================================
-    // ABRIR FORMULARIO
-    // ==========================================
+    // Abre el formulario para crear o editar la información del perfil.
 
     function abrirFormularioEdicion(esNuevoPerfil = false) {
 
@@ -153,8 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-
-        // Cambiar título
+        // Actualiza el título según se cree o edite el perfil.
 
         if (tituloFormularioPerfil) {
 
@@ -164,29 +146,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     : "Editar información del perfil";
         }
 
-
-        // Ocultar información
+        // Oculta la información actual del usuario.
 
         informacionUsuario.style.display = "none";
 
-
-        // Mostrar formulario
+        // Muestra el formulario de edición.
 
         formularioEdicion.style.display = "block";
 
-
-        // Ocultar botones
+        // Oculta los botones de acciones del perfil.
 
         accionesUsuario.style.display = "none";
-
 
         console.log("FORMULARIO DE EDICIÓN ABIERTO");
     }
 
-
-    // ==========================================
-    // BOTÓN EDITAR INFORMACIÓN
-    // ==========================================
+    // Configura el botón para editar la información existente del perfil.
 
     if (editarInformacion) {
 
@@ -207,10 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // ==========================================
-    // BOTÓN AGREGAR INFORMACIÓN
-    // ==========================================
+    // Configura el botón para agregar información cuando no existe un perfil.
 
     if (agregarInformacion) {
 
@@ -225,10 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // ==========================================
-    // BOTÓN CANCELAR
-    // ==========================================
+    // Configura el botón para cancelar la edición del perfil.
 
     if (cancelarEdicion) {
 
@@ -247,10 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // ==========================================
-    // OBTENER RUTA DE FOTO
-    // ==========================================
+    // Obtiene la ruta correspondiente a la fotografía del perfil.
 
     function obtenerRutaFotoPerfil(rutaFoto) {
 
@@ -262,7 +228,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return fotoPerfilPredeterminada;
         }
 
-
         if (
             rutaFoto.startsWith("data:") ||
             rutaFoto.startsWith("/") ||
@@ -272,14 +237,10 @@ document.addEventListener("DOMContentLoaded", function () {
             return rutaFoto;
         }
 
-
         return `../fotos/${encodeURIComponent(rutaFoto)}`;
     }
 
-
-    // ==========================================
-    // CARGAR PERFIL
-    // ==========================================
+    // Carga la información del perfil desde el backend.
 
     async function cargarPerfil() {
 
@@ -290,20 +251,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 idUsuario
             );
 
-
             const respuesta =
                 await fetch(`/api/perfiles/${idUsuario}`);
-
 
             console.log(
                 "Respuesta del servidor:",
                 respuesta.status
             );
 
-
-            // ==========================================
-            // NO EXISTE PERFIL
-            // ==========================================
+            // Crea una estructura vacía cuando el usuario todavía no tiene perfil.
 
             if (respuesta.status === 404) {
 
@@ -328,10 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
             }
 
-
-            // ==========================================
-            // ERROR DEL SERVIDOR
-            // ==========================================
+            // Muestra el error cuando el servidor no puede entregar el perfil.
 
             else if (!respuesta.ok) {
 
@@ -351,10 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-
-            // ==========================================
-            // PERFIL EXISTE
-            // ==========================================
+            // Obtiene el perfil existente desde el backend.
 
             else {
 
@@ -364,19 +314,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     await respuesta.json();
             }
 
-
             actualizarBotonesPerfil();
-
 
             console.log(
                 "Perfil obtenido:",
                 perfil
             );
 
-
-            // ==========================================
-            // NOMBRE SUPERIOR
-            // ==========================================
+            // Muestra el nombre del usuario en el encabezado.
 
             document.getElementById(
                 "usu-cen-h1"
@@ -385,10 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 usuario.nombre ||
                 "Tu usuario";
 
-
-            // ==========================================
-            // INFORMACIÓN DEL USUARIO
-            // ==========================================
+            // Muestra la información general de la cuenta.
 
             document.getElementById(
                 "nombreUsuario"
@@ -400,7 +342,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     "-"
                 );
 
-
             document.getElementById(
                 "apellidosUsuario"
             ).textContent =
@@ -409,7 +350,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     usuario.apellidos ||
                     "-"
                 );
-
 
             document.getElementById(
                 "correoUsuario"
@@ -420,7 +360,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     "-"
                 );
 
-
             document.getElementById(
                 "usuarioUsuario"
             ).textContent =
@@ -429,7 +368,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     usuario.usuario ||
                     "-"
                 );
-
 
             document.getElementById(
                 "rolUsuario"
@@ -440,7 +378,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     "-"
                 );
 
-
             document.getElementById(
                 "fechaUsuario"
             ).textContent =
@@ -450,10 +387,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "-"
                 );
 
-
-            // ==========================================
-            // INFORMACIÓN DEL PERFIL
-            // ==========================================
+            // Muestra la información adicional registrada en el perfil.
 
             document.getElementById(
                 "biografiaUsuario"
@@ -464,7 +398,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     "-"
                 );
 
-
             document.getElementById(
                 "telefonoUsuario"
             ).textContent =
@@ -473,7 +406,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     perfil.telefono ||
                     "-"
                 );
-
 
             document.getElementById(
                 "ciudadUsuario"
@@ -484,7 +416,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     "-"
                 );
 
-
             document.getElementById(
                 "generoUsuario"
             ).textContent =
@@ -493,7 +424,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     perfil.genero ||
                     "-"
                 );
-
 
             document.getElementById(
                 "fechaNacimientoUsuario"
@@ -504,10 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "-"
                 );
 
-
-            // ==========================================
-            // CARGAR DATOS EN EL FORMULARIO
-            // ==========================================
+            // Carga los datos actuales del usuario y del perfil en el formulario.
 
             document.getElementById(
                 "editarNombre"
@@ -516,13 +443,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 usuario.nombre ||
                 "";
 
-
             document.getElementById(
                 "editarApellidos"
             ).value =
                 usuario.apellidos ||
                 "";
-
 
             document.getElementById(
                 "editarUsuario"
@@ -530,13 +455,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 usuario.usuario ||
                 "";
 
-
             document.getElementById(
                 "editarCorreo"
             ).value =
                 usuario.correo ||
                 "";
-
 
             document.getElementById(
                 "editarBiografia"
@@ -544,13 +467,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 perfil.biografia ||
                 "";
 
-
             document.getElementById(
                 "editarTelefono"
             ).value =
                 perfil.telefono ||
                 "";
-
 
             document.getElementById(
                 "editarCiudad"
@@ -558,13 +479,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 perfil.ciudad ||
                 "";
 
-
             document.getElementById(
                 "editarGenero"
             ).value =
                 perfil.genero ||
                 "";
-
 
             document.getElementById(
                 "editarFechaNacimiento"
@@ -572,10 +491,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 perfil.fechaNacimiento ||
                 "";
 
-
-            // ==========================================
-            // FOTO
-            // ==========================================
+            // Muestra la fotografía actual del perfil.
 
             if (fotoPerfil) {
 
@@ -584,7 +500,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         perfil.fotoPerfil
                     );
             }
-
 
             console.log(
                 "Perfil cargado correctamente."
@@ -603,10 +518,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-    // ==========================================
-    // GUARDAR CAMBIOS
-    // ==========================================
+    // Gestiona el envío del formulario para guardar los cambios del perfil.
 
     if (formulario) {
 
@@ -616,64 +528,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 event.preventDefault();
 
-
-                // ==========================================
-                // DATOS DEL FORMULARIO
-                // ==========================================
+                // Obtiene y limpia los datos ingresados en el formulario.
 
                 const nuevoNombre =
                     document.getElementById(
                         "editarNombre"
                     ).value.trim();
 
-
                 const nuevosApellidos =
                     document.getElementById(
                         "editarApellidos"
                     ).value.trim();
-
 
                 const nuevoUsuario =
                     document.getElementById(
                         "editarUsuario"
                     ).value.trim();
 
-
                 const nuevoCorreo =
                     document.getElementById(
                         "editarCorreo"
                     ).value.trim();
-
 
                 const nuevaBiografia =
                     document.getElementById(
                         "editarBiografia"
                     ).value.trim();
 
-
                 const nuevoTelefono =
                     document.getElementById(
                         "editarTelefono"
                     ).value.trim();
-
 
                 const nuevaCiudad =
                     document.getElementById(
                         "editarCiudad"
                     ).value.trim();
 
-
                 const nuevoGenero =
                     document.getElementById(
                         "editarGenero"
                     ).value.trim();
 
-
                 const nuevaFechaNacimiento =
                     document.getElementById(
                         "editarFechaNacimiento"
                     ).value;
-
 
                 try {
 
@@ -684,10 +584,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
                     }
 
-
-                    // ==========================================
-                    // ACTUALIZAR USUARIO
-                    // ==========================================
+                    // Actualiza los datos principales del usuario.
 
                     const respuestaUsuario =
                         await fetch(
@@ -726,7 +623,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         );
 
-
                     if (!respuestaUsuario.ok) {
 
                         const mensaje =
@@ -738,14 +634,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
                     }
 
-
                     usuario =
                         await respuestaUsuario.json();
 
-
-                    // ==========================================
-                    // DATOS DEL PERFIL
-                    // ==========================================
+                    // Construye los datos actualizados del perfil.
 
                     const datosPerfil = {
 
@@ -783,10 +675,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             null
                     };
 
-
-                    // ==========================================
-                    // GUARDAR PERFIL
-                    // ==========================================
+                    // Guarda o actualiza la información del perfil en el backend.
 
                     const respuestaPerfil =
                         await fetch(
@@ -811,7 +700,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                         );
 
-
                     if (!respuestaPerfil.ok) {
 
                         const mensaje =
@@ -823,7 +711,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
                     }
 
-
                     perfil =
                         await respuestaPerfil.json();
 
@@ -831,13 +718,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     fotoPerfilNueva = null;
 
-
                     actualizarBotonesPerfil();
 
-
-                    // ==========================================
-                    // ACTUALIZAR LOCAL STORAGE
-                    // ==========================================
+                    // Actualiza la información almacenada en el navegador.
 
                     localStorage.setItem(
                         "usuarioLogueado",
@@ -849,10 +732,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         idUsuario
                     );
 
-
-                    // ==========================================
-                    // CERRAR FORMULARIO
-                    // ==========================================
+                    // Cierra el formulario y vuelve a mostrar la información del perfil.
 
                     formularioEdicion.style.display =
                         "none";
@@ -863,18 +743,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     accionesUsuario.style.display =
                         "flex";
 
-
                     alert(
                         "Información actualizada correctamente."
                     );
 
-
-                    // ==========================================
-                    // RECARGAR DATOS
-                    // ==========================================
+                    // Recarga los datos actualizados del perfil.
 
                     await cargarPerfil();
-
 
                 } catch (error) {
 
@@ -892,10 +767,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // ==========================================
-    // CERRAR SESIÓN
-    // ==========================================
+    // Gestiona el cierre de sesión del usuario.
 
     if (cerrarSesion) {
 
@@ -922,7 +794,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
                 }
 
-
                 localStorage.removeItem(
                     "usuarioLogueado"
                 );
@@ -931,17 +802,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     "idUsuario"
                 );
 
-
                 window.location.href =
                     "iniciar_sesion.html";
             }
         );
     }
 
-
-    // ==========================================
-    // CAMBIAR FOTO
-    // ==========================================
+    // Gestiona la selección y validación de una nueva fotografía de perfil.
 
     if (inputFoto && fotoPerfil) {
 
@@ -955,7 +822,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!archivo) {
                     return;
                 }
-
 
                 if (
                     ![
@@ -975,7 +841,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-
                 if (archivo.size > 2 * 1024 * 1024) {
 
                     alert(
@@ -987,10 +852,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-
                 const lector =
                     new FileReader();
 
+                // Muestra la nueva fotografía y la conserva para guardarla en el perfil.
 
                 lector.onload =
                     function (event) {
@@ -1002,7 +867,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             event.target.result;
                     };
 
-
                 lector.readAsDataURL(
                     archivo
                 );
@@ -1010,10 +874,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-
-    // ==========================================
-    // CARGAR PERFIL AL ABRIR LA PÁGINA
-    // ==========================================
+    // Carga el perfil automáticamente al abrir la página.
 
     cargarPerfil();
 
