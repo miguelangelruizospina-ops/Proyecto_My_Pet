@@ -1,152 +1,93 @@
-
-// Controlador para la gestión de emergencias.
-
 package com.example.My_Pet.controller.Modulo_5_emergencia;
 
-// Librerías necesarias para el controlador y la seguridad.
+// Clases del proyecto.
 
 import com.example.My_Pet.model.Modulo_5_emergencia.Emergencia;
-
 import com.example.My_Pet.service.Modulo_5_emergencia.EmergenciaService;
 
+//Librerias del Spring.
+
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.security.access.prepost.PreAuthorize;
-
 import org.springframework.web.bind.annotation.*;
+
+//Librerias de Java
 
 import java.util.List;
 
 // Define el controlador REST de emergencias.
 
 @RestController
-
 @RequestMapping("/api/emergencias")
-
 public class EmergenciaController {
 
     // Conecta el controlador con el servicio de emergencias.
-
     @Autowired
-
     private EmergenciaService emergenciaService;
 
-    // GET - Lista todas las emergencias. Solo para administradores.
+    // Lista todas las emergencias ***SOLO PARA ADMINISTRADORES***.
 
     @GetMapping("/listar")
-
     @PreAuthorize("@autorizacion.esAdministrador()")
-
     public List<Emergencia> listarTodo() {
-
         return emergenciaService.obtenerTodas();
-
     }
 
-    // GET - Lista las emergencias de un usuario.
+    // ista las emergencias de un usuario registrado
 
     @GetMapping("/usuario/{idUsuario}")
-
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
-
     public List<Emergencia> listarPorUsuario(
-
-            // Se especifica explícitamente el nombre de la variable de la URL.
-
             @PathVariable("idUsuario") Integer idUsuario) {
-
         return emergenciaService.obtenerPorUsuario(idUsuario);
-
     }
 
-    // POST - Registra una nueva emergencia.
+    //  Registra una nueva emergencia de un usuario registrado.
 
     @PostMapping("/guardar")
-
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0.usuario?.idUsuario)")
-
     public ResponseEntity<?> crearEmergencia(
-
             @RequestBody Emergencia emergencia) {
-
         try {
-
             Emergencia nuevaEmergencia =
-
                     emergenciaService.guardar(emergencia);
-
             return ResponseEntity.ok(nuevaEmergencia);
-
         } catch (IllegalArgumentException e) {
-
             return ResponseEntity.badRequest().body(e.getMessage());
-
         }
-
     }
 
-    // PUT - Marca una emergencia como resuelta.
+    //Marca una emergencia como resuelta por el usuario y desactiva las notificaciones de emergencia.
 
     @PutMapping("/resolver/{id}")
-
     @PreAuthorize("@autorizacion.esEmergenciaPropiaOAdministrador(#p0)")
-
     public ResponseEntity<?> resolverEmergencia(
-
-            // Se especifica explícitamente el nombre de la variable de la URL.
-
             @PathVariable("id") Integer id) {
-
         try {
-
             Emergencia emergenciaResuelta =
-
                     emergenciaService.resolver(id);
-
             return ResponseEntity.ok(emergenciaResuelta);
-
         } catch (IllegalArgumentException e) {
-
             return ResponseEntity.badRequest().body(e.getMessage());
-
         }
-
     }
 
-    // DELETE - Elimina una emergencia por su ID.
+    // Elimina una emergencia registrada por su ID para el usuario y admi.
 
     @DeleteMapping("/eliminar/{id}")
-
     @PreAuthorize("@autorizacion.esEmergenciaPropiaOAdministrador(#p0)")
-
     public ResponseEntity<?> eliminarEmergencia(
-
-            // Se especifica explícitamente el nombre de la variable de la URL.
-
             @PathVariable("id") Integer id) {
-
         try {
-
             emergenciaService.eliminar(id);
-
             return ResponseEntity.ok(
-
                     "Emergencia eliminada correctamente."
-
             );
-
         } catch (IllegalArgumentException e) {
-
             return ResponseEntity.badRequest().body(
-
                     e.getMessage()
-
             );
-
         }
-
     }
-
 }

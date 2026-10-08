@@ -1,5 +1,7 @@
 package com.example.My_Pet.security;
 
+// Librerias del spring.
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,26 +15,29 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
+// Configuración de seguridad de la aplicación.
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+ // Guarda el contexto de seguridad dentro de la sesión HTTP.
 
     @Bean
     public SecurityContextRepository securityContextRepository() {
         return new HttpSessionSecurityContextRepository();
     }
 
+    // Configura las reglas de seguridad y acceso de la aplicación.
+
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             SecurityContextRepository securityContextRepository) throws Exception {
-
         return http
 
-                // ========================================================
-                // CONTEXTO DE SEGURIDAD
-                // ========================================================
+                 // Configura el almacenamiento del contexto de seguridad en la sesión.
 
                 .securityContext(context -> context
                         .securityContextRepository(
@@ -41,9 +46,7 @@ public class SecurityConfig {
                         .requireExplicitSave(true)
                 )
 
-                // ========================================================
-                // CSRF
-                // ========================================================
+                // Configura la protección CSRF y el almacenamiento del token.
 
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/api/**")
@@ -55,12 +58,9 @@ public class SecurityConfig {
                         )
                 )
 
-                // ========================================================
-                // AUTORIZACIÓN
-                // ========================================================
+                 // Define las rutas públicas y las que requieren autenticación o permisos.
 
                 .authorizeHttpRequests(authorize -> authorize
-
                         .requestMatchers(
                                 "/api/usuario/registro",
                                 "/api/usuario/login",
@@ -68,52 +68,46 @@ public class SecurityConfig {
                                 "/api/usuario/csrf",
                                 "/error"
                         ).permitAll()
-
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/servicios/**"
                         ).permitAll()
-
                         .requestMatchers(
                                 "/api/publicaciones-foro/**"
                         ).permitAll()
-
                         .requestMatchers(
                                 "/api/administradores/**"
                         ).hasRole("ADMINISTRADOR")
-
                         .requestMatchers(
                                 "/api/comentarios-foro/**"
                         ).permitAll()
-
                         .requestMatchers(
                                 "/api/**"
                         ).authenticated()
-
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/**"
                         ).permitAll()
-
                         .anyRequest().authenticated()
                 )
 
-                // ========================================================
-                // DESACTIVAR LOGIN NATIVO
-                // ========================================================
+                  // Desactiva el formulario de inicio de sesión predeterminado de Spring Security.
 
                 .formLogin(
                         AbstractHttpConfigurer::disable
                 )
 
+                // Desactiva la autenticación HTTP básica.
+
                 .httpBasic(
                         AbstractHttpConfigurer::disable
                 )
 
+                 // Desactiva el cierre de sesión predeterminado de Spring Security.
+
                 .logout(
                         AbstractHttpConfigurer::disable
                 )
-
                 .build();
     }
 }

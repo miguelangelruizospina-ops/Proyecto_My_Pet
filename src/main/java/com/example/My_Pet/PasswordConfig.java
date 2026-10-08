@@ -1,7 +1,7 @@
-// Paquete principal de la aplicación.
 package com.example.My_Pet;
 
-// Librerías necesarias para la configuración de seguridad.
+// Librerías del spring.
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,9 +12,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class PasswordConfig {
 
     // Define el método de codificación de contraseñas usando BCrypt.
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

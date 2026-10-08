@@ -1,20 +1,32 @@
 package com.example.My_Pet.model.Modulo_5_emergencia;
 
+// Librerías para relacionar las clases Java con las tablas de la base de datos.
+
 import jakarta.persistence.*;
+
+// Libreria de Java
 
 import java.time.LocalDateTime;
 
+// Clases propias del proyecto
+
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.Mascota;
+
+// Representa la tabla "emergencia" de la base de datos.
 
 @Entity
 @Table(name = "emergencia")
 public class Emergencia {
 
+    // Identificador unico de una emergencia.
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_emergencia")
     private Integer idEmergencia;
+
+    // Información de la emergencia.
 
     @Column(length = 150, nullable = false)
     private String tipo;
@@ -31,6 +43,8 @@ public class Emergencia {
     @Column(name = "ultima_notificacion")
     private LocalDateTime ultimaNotificacion;
 
+    // Relacion de la emergencia y el usuario que la registra.
+
     @ManyToOne
     @JoinColumn(
         name = "id_usuario",
@@ -39,13 +53,19 @@ public class Emergencia {
     )
     private Usuario usuario;
 
+    // Relacion entre la emergencia y la mascota asociada. 
+
     @ManyToOne
     @JoinColumn(name = "id_mascota")
     private Mascota mascota;
 
+    // Constructor vacío requerido par crear la entidad emergencia.
+
     public Emergencia() {
         this.estado = "PENDIENTE";
     }
+
+    // Constructor para crear una emergencia con sus datos.
 
     public Emergencia(
             Integer idEmergencia,
@@ -62,68 +82,54 @@ public class Emergencia {
         this.usuario = usuario;
     }
 
+    // Getters y setters de los datos de la emergencia.
+
     public Integer getIdEmergencia() {
         return idEmergencia;
     }
-
     public void setIdEmergencia(Integer idEmergencia) {
         this.idEmergencia = idEmergencia;
     }
-
     public String getTipo() {
         return tipo;
     }
-
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-
     public String getDescripcion() {
         return descripcion;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
     public LocalDateTime getFecha() {
         return fecha;
     }
-
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
-
     public String getEstado() {
         return estado;
     }
-
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
     public LocalDateTime getUltimaNotificacion() {
         return ultimaNotificacion;
     }
-
     public void setUltimaNotificacion(
             LocalDateTime ultimaNotificacion) {
-
         this.ultimaNotificacion = ultimaNotificacion;
     }
-
     public Usuario getUsuario() {
         return usuario;
     }
-
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
     public Mascota getMascota() {
         return mascota;
     }
-
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }

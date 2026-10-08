@@ -1,5 +1,7 @@
 package com.example.My_Pet.security;
 
+// Clases propias del proyecto.
+
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.Documento;
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.HistorialMedico;
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.Mascota;
@@ -11,7 +13,6 @@ import com.example.My_Pet.model.Modulo_4_servicio_comunidad.Chatbot;
 import com.example.My_Pet.model.Modulo_4_servicio_comunidad.PublicacionForo;
 import com.example.My_Pet.model.Modulo_4_servicio_comunidad.Servicio;
 import com.example.My_Pet.model.Modulo_5_emergencia.Emergencia;
-
 import com.example.My_Pet.repository.Modulo_1_gestion_usuario.ReporteRepository;
 import com.example.My_Pet.repository.Modulo_2_gestion_mascotas.DocumentoRepository;
 import com.example.My_Pet.repository.Modulo_2_gestion_mascotas.HistorialMedicoRepository;
@@ -25,14 +26,21 @@ import com.example.My_Pet.repository.Modulo_4_servicio_comunidad.PublicacionForo
 import com.example.My_Pet.repository.Modulo_4_servicio_comunidad.ServicioRepository;
 import com.example.My_Pet.repository.Modulo_5_emergencia.EmergenciaRepository;
 
+// Librerias del spring.
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+// Libreria de Java.
+
 import java.util.Objects;
 
+// Servicio encargado de validar los permisos de acceso a los recursos del sistema.
 @Component("autorizacion")
 public class AutorizacionService {
+
+    // Repositorios utilizados para validar la propiedad de los recursos.
 
     private final MascotaRepository mascotaRepository;
     private final PerfilMascotaRepository perfilMascotaRepository;
@@ -46,6 +54,8 @@ public class AutorizacionService {
     private final PublicacionForoRepository publicacionForoRepository;
     private final ServicioRepository servicioRepository;
     private final ReporteRepository reporteRepository;
+
+     // Constructor para recibir los repositorios utilizados en las validaciones
 
     public AutorizacionService(
             MascotaRepository mascotaRepository,
@@ -75,10 +85,11 @@ public class AutorizacionService {
         this.reporteRepository = reporteRepository;
     }
 
+     // Valida si el usuario que inició sesión tiene permisos de administrador.
+
     public boolean esAdministrador() {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
-
         return authentication != null
                 && authentication.getAuthorities()
                         .stream()
@@ -87,27 +98,26 @@ public class AutorizacionService {
                                         .equals("ROLE_ADMINISTRADOR"));
     }
 
+    // Valida si el usuario que inició sesión es el propietario o administrador.
+
     public boolean esUsuarioPropioOAdministrador(Integer idUsuario) {
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication == null || idUsuario == null) {
             return false;
         }
-
         if (esAdministrador()) {
             return true;
         }
-
         Object principal = authentication.getPrincipal();
-
         return principal instanceof UsuarioPrincipal usuario
                 && Objects.equals(usuario.idUsuario(), idUsuario);
     }
 
+    // Valida la propiedad de las mascotas y sus recursos relacionados
+
     public boolean esMascotaPropiaOAdministrador(Integer id) {
         if (id == null) return false;
-
         return mascotaRepository.findById(id)
                 .map(mascota ->
                         mascota.getUsuario() != null
@@ -116,19 +126,19 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida los permisos para guardar un evento asociado a una mascota.
+
     public boolean puedeGuardarEvento(Evento evento) {
         if (evento == null || evento.getMascota() == null) return false;
-
         Integer idMascota = evento.getMascota().getIdMascota();
-
         if (idMascota == null || idMascota <= 0) return false;
-
         return esMascotaPropiaOAdministrador(idMascota);
     }
 
+    // Valida si el perfil de la mascota pertenece al usuario o a un administrador.
+
     public boolean esPerfilMascotaPropioOAdministrador(Integer id) {
         if (id == null) return false;
-
         return perfilMascotaRepository.findById(id)
                 .map(perfil ->
                         perfil.getMascota() != null
@@ -137,17 +147,19 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si el documento pertenece al usuario o a un administrador.
+
     public boolean esDocumentoPropioOAdministrador(Integer id) {
         if (id == null) return false;
-
         return documentoRepository.findById(id)
                 .map(this::perteneceDocumento)
                 .orElse(false);
     }
 
+    // Valida si el historial médico pertenece a una mascota del usuario o a un administrador.
+
     public boolean esHistorialPropioOAdministrador(Integer id) {
         if (id == null) return false;
-
         return historialMedicoRepository.findById(id)
                 .map(historial ->
                         historial.getMascota() != null
@@ -156,9 +168,10 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si el evento pertenece a una mascota del usuario o a un administrador.
+
     public boolean esEventoPropioOAdministrador(Integer id) {
         if (id == null) return false;
-
         return eventoRepository.findById(id)
                 .map(evento ->
                         evento.getMascota() != null
@@ -167,9 +180,10 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si el recordatorio pertence a un usuario o a un administrador.
+
     public boolean esRecordatorioPropioOAdministrador(Integer id) {
         if (id == null) return false;
-
         return recordatorioRepository.findById(id)
                 .map(recordatorio ->
                         recordatorio.getUsuario() != null
@@ -178,24 +192,18 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si la notificacion es de  usuario o a un administrador.
+
     public boolean esNotificacionPropiaOAdministrador(Integer id) {
         if (id == null) return false;
-
         if (esAdministrador()) return true;
-
         Authentication authentication =
                 SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication == null) return false;
-
         Object principal = authentication.getPrincipal();
-
         if (!(principal instanceof UsuarioPrincipal usuario)) return false;
-
         Integer idUsuarioAutenticado = usuario.idUsuario();
-
         if (idUsuarioAutenticado == null) return false;
-
         return notificacionRepository.findById(id)
                 .map(notificacion ->
                         notificacion.getUsuario() != null
@@ -205,9 +213,9 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si la emergencia pertenece a usuario o a un administrador.
     public boolean esEmergenciaPropiaOAdministrador(Integer id) {
         if (id == null) return false;
-
         return emergenciaRepository.findById(id)
                 .map(emergencia ->
                         emergencia.getUsuario() != null
@@ -216,9 +224,10 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si conversacion pertenece a un usuario o a un administrador.
+
     public boolean esChatbotPropioOAdministrador(Integer id) {
         if (id == null) return false;
-
         return chatbotRepository.findById(id)
                 .map(chatbot ->
                         chatbot.getUsuario() != null
@@ -227,9 +236,10 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si la publicacion en el foro  es de  usuario o a un administrador.
+
     public boolean esPublicacionPropiaOAdministrador(Integer id) {
         if (id == null) return false;
-
         return publicacionForoRepository.findById(id)
                 .map(publicacion ->
                         publicacion.getUsuario() != null
@@ -238,9 +248,10 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si el servicio pertenece a un usuario o a un administrador.
+
     public boolean esServicioPropioOAdministrador(Integer id) {
         if (id == null) return false;
-
         return servicioRepository.findById(id)
                 .map(servicio ->
                         servicio.getUsuario() != null
@@ -249,29 +260,25 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
+    // Valida si el usuario puede guardar un documento asociado a una mascota.
+
     public boolean puedeGuardarDocumento(
             Integer idUsuario,
             Integer idMascota) {
-
         boolean usuarioAutorizado =
                 esUsuarioPropioOAdministrador(idUsuario);
-
         boolean mascotaAutorizada =
                 idMascota == null
                         || esMascotaPropiaOAdministrador(idMascota);
-
         return usuarioAutorizado && mascotaAutorizada;
     }
 
-    /**
-     * Verifica que el reporte pertenezca al usuario autenticado
-     * o que el usuario sea administrador.
-     */
+     //Verifica que el reporte pertenezca al usuario autenticado o que el usuario sea administrador.
+     
     public boolean esReportePropioOAdministrador(Integer id) {
         if (id == null) {
             return false;
         }
-
         return reporteRepository.findById(id)
                 .map(reporte ->
                         reporte.getUsuario() != null
@@ -282,18 +289,17 @@ public class AutorizacionService {
                 .orElse(false);
     }
 
-    private boolean perteneceDocumento(Documento documento) {
+    // Valida si el documento pertenece al usuario o a la mascota asociada.
 
+    private boolean perteneceDocumento(Documento documento) {
         boolean usuarioPropio =
                 documento.getUsuario() != null
                         && esUsuarioPropioOAdministrador(
                                 documento.getUsuario().getIdUsuario());
-
         boolean mascotaPropia =
                 documento.getMascota() != null
                         && esMascotaPropiaOAdministrador(
                                 documento.getMascota().getIdMascota());
-
         return usuarioPropio || mascotaPropia;
     }
 }

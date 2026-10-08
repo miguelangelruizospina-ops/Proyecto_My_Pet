@@ -1,126 +1,85 @@
-// Controlador para la gestión de mascotas.
-
 package com.example.My_Pet.controller.Modulo_2_gestion_mascotas;
 
+// clases propias del proyecto.
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.Mascota;
-
 import com.example.My_Pet.service.Modulo_2_gestion_mascotas.MascotaService;
 
-// Librerías necesarias para el controlador y la seguridad.
+// Librerías spring
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.security.access.prepost.PreAuthorize;
-
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+// Librerías de Java.
 
+import java.util.List;
 
 // Define el controlador REST de mascotas.
 
 @RestController
-
 @RequestMapping("/api/mascotas")
-
 public class MascotaController {
 
     // Conecta el controlador con la lógica del servicio.
-
     @Autowired
-
     private MascotaService mascotaService;
 
 
-    // GET - Lista todas las mascotas. Solo para administradores.
+    // Lista todas las mascotas existentes. ***SOLO PARA ADMINISTRADORES***
 
     @GetMapping("/listar")
-
     @PreAuthorize("@autorizacion.esAdministrador()")
-
     public List<Mascota> listarMascotas() {
-
         return mascotaService.obtenerTodasLasMascotas();
-
     }
 
 
-    // GET - Lista las mascotas de un usuario.
+    //Lista una mascota existente asociada un usuario existente. 
 
     @GetMapping("/usuario/{idUsuario}")
-
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
-
     public List<Mascota> obtenerMascotasPorUsuario(
-
             @PathVariable("idUsuario") Integer idUsuario) {
-
         return mascotaService.obtenerMascotasPorUsuario(idUsuario);
-
     }
 
 
-    // GET - Busca una mascota por su ID.
+    //Lista una mascota existente por su ID.
 
     @GetMapping("/{id}")
-
     @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0)")
-
     public Mascota obtenerMascotaPorId(
-
             @PathVariable("id") Integer id) {
-
         return mascotaService.obtenerMascotaPorId(id);
-
     }
 
-
-    // POST - Registra una nueva mascota.
+    //Registra una nueva mascota.
 
     @PostMapping("/crear")
-
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0.usuario?.idUsuario)")
-
     public Mascota crearMascota(
-
             @RequestBody Mascota mascota) {
-
         return mascotaService.guardarMascota(mascota);
-
     }
 
-
-    // PUT - Actualiza los datos de una mascota.
+    // Actualiza los datos de una mascota registrada.
 
     @PutMapping("/actualizar/{id}")
-
     @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0)")
-
     public Mascota actualizarMascota(
-
             @PathVariable("id") Integer id,
-
             @RequestBody Mascota mascota) {
-
         return mascotaService.actualizarMascota(id, mascota);
-
     }
 
-
-    // DELETE - Elimina una mascota por su ID.
+    // Elimina una mascota reigistrada. ***SOLO PARA EL ADMINISTRADOR O EL USUARIO PROPIETARIO DE LA MASCOTA***
 
     @DeleteMapping("/eliminar/{id}")
-
     @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0)")
-
     public String eliminarMascota(
-
             @PathVariable("id") Integer id) {
-
         mascotaService.eliminarMascota(id);
-
         return "Mascota eliminada correctamente";
-
     }
 
 }

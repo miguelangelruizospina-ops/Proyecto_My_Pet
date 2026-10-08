@@ -1,101 +1,72 @@
-// Servicio para la gestión de emergencias.
-
 package com.example.My_Pet.service.Modulo_5_emergencia;
 
-// Modelos y repositorios necesarios.
+// Clases propias del proyecto.
 
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
-
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.Mascota;
-
 import com.example.My_Pet.model.Modulo_5_emergencia.Emergencia;
-
 import com.example.My_Pet.repository.Modulo_1_gestion_usuario.UsuarioRepository;
-
 import com.example.My_Pet.repository.Modulo_2_gestion_mascotas.MascotaRepository;
-
 import com.example.My_Pet.repository.Modulo_5_emergencia.EmergenciaRepository;
-
 import com.example.My_Pet.service.Modulo_3_Agenda_Recordatorio.NotificacionService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+// Libreria del spring.
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+// Librerias de Java
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-// Define la clase como un servicio de Spring.
+// Gestiona las operaciones de consulta, registro, actualización y eliminación de emergencias en la base de datos.
 
 @Service
-
 public class EmergenciaService {
-
     @Autowired
-
     private EmergenciaRepository emergenciaRepository;
-
     @Autowired
-
     private UsuarioRepository usuarioRepository;
-
     @Autowired
-
     private MascotaRepository mascotaRepository;
-
     @Autowired
-
     private NotificacionService notificacionService;
 
-    // Obtiene todas las emergencias.
+    // Obtiene todas las emergencias registradas.
 
     public List<Emergencia> obtenerTodas() {
-
         return emergenciaRepository.findAll();
-
     }
 
-    // Obtiene las emergencias de un usuario.
+    // Obtiene las emergencias que estan asociadas a un usuario.
 
     public List<Emergencia> obtenerPorUsuario(Integer idUsuario) {
-
         return emergenciaRepository.findByUsuarioIdUsuario(idUsuario);
-
     }
 
     // Obtiene únicamente las emergencias pendientes.
 
     public List<Emergencia> obtenerPendientes() {
-
         return emergenciaRepository.findByEstado("PENDIENTE");
-
     }
 
-    // Guarda una emergencia nueva.
+    // Crea y guarda una emergencia nueva.
 
     public Emergencia guardar(Emergencia emergencia) {
-
         if (emergencia == null) {
-
             throw new IllegalArgumentException(
                     "La emergencia no puede estar vacía."
             );
-
         }
-
         if (emergencia.getUsuario() == null ||
             emergencia.getUsuario().getIdUsuario() <= 0) {
-
             throw new IllegalArgumentException(
                     "La emergencia debe estar asociada a un usuario válido."
             );
-
         }
-
         Integer idUsuario =
                 emergencia.getUsuario().getIdUsuario();
-
         Usuario usuarioExistente =
                 usuarioRepository.findById(idUsuario)
                         .orElseThrow(() ->
@@ -105,16 +76,11 @@ public class EmergenciaService {
                                                 + " no existe."
                                 )
                         );
-
         emergencia.setUsuario(usuarioExistente);
-
         Mascota mascotaExistente = null;
-
         if (emergencia.getMascota() != null) {
-
             Integer idMascota =
                     emergencia.getMascota().getIdMascota();
-
             mascotaExistente =
                     mascotaRepository.findById(idMascota)
                             .orElseThrow(() ->
@@ -133,38 +99,29 @@ public class EmergenciaService {
                 throw new IllegalArgumentException(
                         "La emergencia debe estar asociada a una mascota de ese usuario."
                 );
-
             }
-
             emergencia.setMascota(mascotaExistente);
         }
-
         boolean nueva =
                 emergencia.getIdEmergencia() == null;
-
         if (nueva) {
-
             emergencia.setFecha(LocalDateTime.now());
 
             // Toda emergencia nueva comienza pendiente.
 
             emergencia.setEstado("PENDIENTE");
-
             emergencia.setUltimaNotificacion(null);
         }
-
         Emergencia guardada =
                 emergenciaRepository.save(emergencia);
 
         // La primera notificación se genera inmediatamente.
 
         if (nueva) {
-
             String nombreMascota =
                     mascotaExistente != null
                     ? mascotaExistente.getNombre()
                     : "tu mascota";
-
             String mensaje =
                     "Emergencia registrada para "
                     + nombreMascota
@@ -178,17 +135,12 @@ public class EmergenciaService {
                     mensaje,
                     "EMERGENCIA"
             );
-
-            // Guarda el momento de la primera notificación.
-
             guardada.setUltimaNotificacion(
                     LocalDateTime.now()
             );
-
             guardada =
                     emergenciaRepository.save(guardada);
         }
-
         return guardada;
     }
 
@@ -197,7 +149,6 @@ public class EmergenciaService {
     public Emergencia actualizarUltimaNotificacion(
             Integer id,
             LocalDateTime fechaNotificacion) {
-
         Emergencia emergencia =
                 emergenciaRepository.findById(id)
                         .orElseThrow(() ->
@@ -209,14 +160,12 @@ public class EmergenciaService {
                         );
 
         emergencia.setUltimaNotificacion(fechaNotificacion);
-
         return emergenciaRepository.save(emergencia);
     }
 
     // Marca una emergencia como resuelta.
 
     public Emergencia resolver(Integer id) {
-
         Emergencia emergencia =
                 emergenciaRepository.findById(id)
                         .orElseThrow(() ->
@@ -231,29 +180,22 @@ public class EmergenciaService {
 
         if ("RESUELTA".equalsIgnoreCase(
                 emergencia.getEstado())) {
-
             return emergencia;
         }
-
         emergencia.setEstado("RESUELTA");
-
         return emergenciaRepository.save(emergencia);
     }
 
-    // Elimina una emergencia.
+    // Elimina una emergencia registrada.
 
     public void eliminar(Integer id) {
-
         if (!emergenciaRepository.existsById(id)) {
-
             throw new IllegalArgumentException(
                     "La emergencia con ID "
                             + id
                             + " no existe."
             );
         }
-
         emergenciaRepository.deleteById(id);
     }
-
 }

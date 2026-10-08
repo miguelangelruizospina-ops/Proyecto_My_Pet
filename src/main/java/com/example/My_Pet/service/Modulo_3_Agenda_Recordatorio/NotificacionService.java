@@ -1,95 +1,67 @@
-// Servicio encargado de gestionar las notificaciones del sistema.
-
 package com.example.My_Pet.service.Modulo_3_Agenda_Recordatorio;
 
-// Modelos necesarios para gestionar las notificaciones y usuarios.
+// Clases propias del proyecto.
 
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
-
 import com.example.My_Pet.model.Modulo_3_Agenda_Recordatorio.Notificacion;
-
-// Repositorios necesarios para consultar y guardar la información.
-
 import com.example.My_Pet.repository.Modulo_1_gestion_usuario.UsuarioRepository;
-
 import com.example.My_Pet.repository.Modulo_3_Agenda_Recordatorio.NotificacionRepository;
 
-// Librerías necesarias para el servicio y el manejo de fechas.
+// Librerías del spring
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+// Librerias de Java
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-// Define la clase como un servicio de Spring.
+// Gestiona las operaciones de consulta, registro, actualización y eliminación de notificaciones en la base 
 
 @Service
-
 public class NotificacionService {
-
-    // Conecta el servicio con la gestión de notificaciones.
-
     @Autowired
-
     private NotificacionRepository notificacionRepository;
-
-    // Conecta el servicio con la gestión de usuarios.
-
     @Autowired
-
     private UsuarioRepository usuarioRepository;
 
-
-    // Obtener todas las notificaciones
+    // Lista todas las notificaciones registradas.
 
     public List<Notificacion> obtenerTodas() {
-
         return notificacionRepository.findAll();
-
     }
 
-
-    // Obtener las notificaciones de un usuario
+    // Obtener las notificaciones registradas  de un usuario
 
     public List<Notificacion> obtenerPorUsuario(Integer idUsuario) {
-
         return notificacionRepository
                 .findByUsuarioIdUsuario(idUsuario);
-
     }
 
 
-    // Crear una notificación
+    // crea una nueva notificacion. 
 
     public Notificacion crear(
             Integer idUsuario,
             String mensaje,
             String tipo) {
 
-        // Verificar que el mensaje no esté vacío.
+        // Verifica que el mensaje de la notificación no esté vacío.
 
         if (mensaje == null || mensaje.trim().isEmpty()) {
-
             throw new IllegalArgumentException(
                     "El mensaje de la notificación no puede estar vacío."
             );
-
         }
-
 
         // Verificar que el tipo de notificación no esté vacío.
 
         if (tipo == null || tipo.trim().isEmpty()) {
-
             throw new IllegalArgumentException(
                     "El tipo de la notificación no puede estar vacío."
             );
-
         }
-
 
         // Convertir el tipo a mayúsculas para mantener un formato uniforme.
 
@@ -100,13 +72,10 @@ public class NotificacionService {
 
         if (!tipoNormalizado.equals("AGENDA")
                 && !tipoNormalizado.equals("EMERGENCIA")) {
-
             throw new IllegalArgumentException(
                     "El tipo de notificación debe ser AGENDA o EMERGENCIA."
             );
-
         }
-
 
         // Buscar el usuario al que pertenece la notificación.
 
@@ -120,39 +89,17 @@ public class NotificacionService {
                         )
                 );
 
-
-        // Crear una nueva notificación.
+       // Crea y configura la nueva notificación.
 
         Notificacion notificacion = new Notificacion();
-
-
-        // Asignar el mensaje de la notificación.
-
         notificacion.setMensaje(mensaje);
-
-
-        // Registrar la fecha y hora de creación.
-
         notificacion.setFecha(LocalDateTime.now());
-
 
         // Toda notificación nueva comienza como no leída.
 
         notificacion.setEstado("NO_LEIDA");
-
-
-        // Asignar el tipo de notificación.
-
         notificacion.setTipo(tipoNormalizado);
-
-
-        // Asociar la notificación con el usuario.
-
         notificacion.setUsuario(usuario);
-
-
-        // Guardar la notificación en la base de datos.
-
         return notificacionRepository.save(notificacion);
 
     }
@@ -162,7 +109,7 @@ public class NotificacionService {
 
     public Notificacion marcarComoLeida(Integer id) {
 
-        // Buscar la notificación por su identificador.
+        // Buscar la notificación por su ID.
 
         Notificacion notificacion =
                 notificacionRepository.findById(id)
@@ -183,7 +130,6 @@ public class NotificacionService {
         // Guardar el cambio en la base de datos.
 
         return notificacionRepository.save(notificacion);
-
     }
 
 
@@ -197,22 +143,12 @@ public class NotificacionService {
                 notificacionRepository
                         .findByUsuarioIdUsuario(idUsuario);
 
-
-        // Recorrer las notificaciones del usuario.
+        // Marca como leídas todas las notificaciones del usuario.
 
         for (Notificacion notificacion : notificaciones) {
-
-            // Cambiar el estado de cada notificación a leída.
-
             notificacion.setEstado("LEIDA");
-
         }
-
-
-        // Guardar los cambios realizados.
-
         notificacionRepository.saveAll(notificaciones);
-
     }
 
 
@@ -223,22 +159,18 @@ public class NotificacionService {
         // Verificar que la notificación exista.
 
         if (!notificacionRepository.existsById(id)) {
-
             throw new IllegalArgumentException(
                     "La notificación con ID "
                             + id
                             + " no existe."
             );
-
         }
 
 
         // Eliminar la notificación de la base de datos.
 
         notificacionRepository.deleteById(id);
-
     }
-
 
     // Eliminar todas las notificaciones de un usuario
 
@@ -250,15 +182,10 @@ public class NotificacionService {
                 notificacionRepository
                         .findByUsuarioIdUsuario(idUsuario);
 
-
         // Eliminar las notificaciones si existen.
 
         if (!notificaciones.isEmpty()) {
-
             notificacionRepository.deleteAll(notificaciones);
-
         }
-
     }
-
 }

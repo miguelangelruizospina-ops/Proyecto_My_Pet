@@ -1,24 +1,23 @@
-
-// Repositorio encargado de gestionar los documentos almacenados.
-
-// Paquete donde se encuentra el repositorio.
 package com.example.My_Pet.repository.Modulo_2_gestion_mascotas;
 
-// Librerías necesarias para el repositorio.
+// Clases propias del proyecto.
 
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.Documento;
 
+// Librerias del spring.
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+// Libreria de Java
 
 import java.util.List;
 
-// Permite realizar operaciones de persistencia sobre los documentos.
+// Repositorio para gestionar los documentos de las mascotas en la base de datos.
+
+@Repository
 public interface DocumentoRepository
         extends JpaRepository<Documento, Integer> {
-
-    // Lista los documentos asociados a un usuario.
     List<Documento> findByUsuario_IdUsuario(Integer idUsuario);
-
-    // Lista los documentos asociados a una mascota.
     List<Documento> findByMascota_IdMascota(Integer idMascota);
 }

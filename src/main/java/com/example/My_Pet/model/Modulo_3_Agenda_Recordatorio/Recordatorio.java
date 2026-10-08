@@ -1,26 +1,32 @@
-// Modelo que representa un recordatorio asociado a un usuario y una mascota.
-
 package com.example.My_Pet.model.Modulo_3_Agenda_Recordatorio;
 
-// Librerías necesarias para el mapeo de la entidad y el manejo de fechas.
+// Librerías para relacionar las clases Java con las tablas de la base de datos.
 
 import jakarta.persistence.*;
 
+//Libreria de Java
+
 import java.time.LocalDateTime;
+
+//Clases propias del proyecto.
 
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.Mascota;
 
-// Define la clase como una entidad de la base de datos.
+// Representa la tabla "recordatorio" de la base de datos.
 
 @Entity
 @Table(name = "recordatorio")
 public class Recordatorio {
 
+    // Identifcador unico del recordatorio. 
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_recordatorio")
     private Integer idRecordatorio;
+
+    // Información del recordatorio creado por el usuario.
 
     @Column(length = 300, nullable = false)
     private String mensaje;
@@ -51,7 +57,7 @@ public class Recordatorio {
     )
     private Mascota mascota;
 
-    // Constructor vacío requerido por JPA.
+    // Constructor vacío requerido para crear la entidad recordatori.
 
     public Recordatorio() {
     }
@@ -74,52 +80,41 @@ public class Recordatorio {
         this.mascota = mascota;
     }
 
-    // Getters y setters.
+    // Getters y setters de los datos del recordatorio.
 
     public Integer getIdRecordatorio() {
         return idRecordatorio;
     }
-
     public void setIdRecordatorio(Integer idRecordatorio) {
         this.idRecordatorio = idRecordatorio;
     }
-
     public String getMensaje() {
         return mensaje;
     }
-
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-
     public LocalDateTime getFecha() {
         return fecha;
     }
-
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
-
     public String getEstado() {
         return estado;
     }
-
     public void setEstado(String estado) {
         this.estado = estado;
     }
-
     public Usuario getUsuario() {
         return usuario;
     }
-
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
     public Mascota getMascota() {
         return mascota;
     }
-
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }

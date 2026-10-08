@@ -1,35 +1,42 @@
-// Controlador para la gestión de historiales médicos de las mascotas.
-
-// Paquete donde se encuentra el controlador.
 package com.example.My_Pet.controller.Modulo_2_gestion_mascotas;
 
-// Librerías necesarias para el controlador.
+// Clases del proyecto necesarias para el controlador.
+
 import com.example.My_Pet.model.Modulo_2_gestion_mascota.HistorialMedico;
 import com.example.My_Pet.service.Modulo_2_gestion_mascotas.HistorialMedicoService;
+
+// Librerías de Spring.
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+// Librerías de Java.
+
 import java.util.List;
 
-// Define el controlador REST para gestionar los historiales médicos.
+// Controlador REST para gestionar los historiales médicos de las mascotas.
+
 @RestController
 @RequestMapping("/api/historiales-medicos")
 public class HistorialMedicoController {
 
+    // Servicio encargado de gestionar el historial médico de la mascota.
+
     @Autowired
     private HistorialMedicoService historialMedicoService;
 
-    // Lista todos los historiales médicos. Solo para administradores.
+    // Lista todos los historiales médicos de la mascotas. ***SOLO PARA EL ADMINISTRADOR***
+
     @GetMapping("/listar")
     @PreAuthorize("@autorizacion.esAdministrador()")
     public List<HistorialMedico> listarTodo() {
         return historialMedicoService.obtenerTodos();
     }
 
-    // Lista los historiales médicos asociados a una mascota.
+    // Lista los historiales médicos asociados a una mascota existente.
+
     @GetMapping("/mascota/{idMascota}")
     @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0)")
     public ResponseEntity<List<HistorialMedico>> listarPorMascota(
@@ -41,7 +48,8 @@ public class HistorialMedicoController {
         return ResponseEntity.ok(historial);
     }
 
-    // Registra un nuevo historial médico para una mascota.
+    // Registra un nuevo historial médico para una mascota existente.
+
     @PostMapping("/guardar")
     @PreAuthorize(
             "@autorizacion.esMascotaPropiaOAdministrador(#p0.mascota?.idMascota)"
@@ -62,7 +70,8 @@ public class HistorialMedicoController {
         }
     }
 
-    // Actualiza la información de un historial médico existente.
+    // Actualiza la información de un historial médico de una mascota existente.
+
     @PutMapping("/actualizar/{id}")
     @PreAuthorize("@autorizacion.esHistorialPropioOAdministrador(#p0)")
     public ResponseEntity<?> actualizarHistorial(
@@ -87,7 +96,8 @@ public class HistorialMedicoController {
         }
     }
 
-    // Elimina un historial médico existente.
+    // Elimina un historial médico de una mascota existente.
+
     @DeleteMapping("/eliminar/{id}")
     @PreAuthorize("@autorizacion.esHistorialPropioOAdministrador(#p0)")
     public ResponseEntity<?> eliminarHistorial(

@@ -1,23 +1,28 @@
-// Modelo que representa la información de un administrador.
 package com.example.My_Pet.model.Modulo_1_gestion_usuario;
 
-// Librerías necesarias para el mapeo de la entidad.
+// Librerías para relacionar las clases Java con las tablas de la base de datos.
+
 import jakarta.persistence.*;
 
-// Define la clase como una entidad de la base de datos.
+// Representa la tabla "administrador" de la base de datos.
+
 @Entity
 @Table(name = "administrador")
 public class Administrador {
+
+    // Identificador único del administrador.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_admin")
     private Integer idAdmin;
 
+    // Permisos asignados al administrador.
     @Column(length = 200, nullable = false)
     private String permisos;
 
-    // Relación entre el administrador y el usuario.
+    // Relaciona el administrador con el usuario al que pertenece.
+
     @ManyToOne
     @JoinColumn(
             name = "id_usuario",
@@ -26,11 +31,13 @@ public class Administrador {
     )
     private Usuario usuario;
 
-    // Constructor vacío requerido por JPA.
+    // Constructor vacío requerido para crear la entidad.
+
     public Administrador() {
     }
 
     // Constructor para crear un administrador con sus datos.
+
     public Administrador(
             Integer idAdmin,
             String permisos,
@@ -40,7 +47,8 @@ public class Administrador {
         this.usuario = usuario;
     }
 
-    // Getters y setters.
+    // Getters y setters de los atributos del administrador.
+    
     public Integer getIdAdmin() {
         return idAdmin;
     }

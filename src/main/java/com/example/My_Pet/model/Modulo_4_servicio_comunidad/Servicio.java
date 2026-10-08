@@ -1,14 +1,20 @@
-// Modelo que representa un servicio registrado en la aplicación.
 package com.example.My_Pet.model.Modulo_4_servicio_comunidad;
 
-// Librerías necesarias para el mapeo de la entidad.
+// Clases propias del proyecto
+
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
+
+// Librerías para relacionar las clases Java con las tablas de la base de datos.
+
 import jakarta.persistence.*;
 
-// Define la clase como una entidad de la base de datos.
+//  Representa la tabla "servicio" de la base de datos.
+
 @Entity
 @Table(name = "servicio")
 public class Servicio {
+
+    // Identificador unico del servicio.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +37,7 @@ public class Servicio {
     private Integer calificacion;
 
     // Relación entre el servicio y el usuario que lo registra.
+
     @ManyToOne
     @JoinColumn(
         name = "id_usuario",
@@ -39,11 +46,12 @@ public class Servicio {
     )
     private Usuario usuario;
 
-    // Constructor vacío requerido por JPA.
+    // Constructor vacío requerido para crear la entidad servicio.
     public Servicio() {
     }
 
     // Constructor para crear un servicio con sus datos.
+
     public Servicio(
             Integer idServicio,
             String nombre,
@@ -52,6 +60,7 @@ public class Servicio {
             String descripcion,
             Integer calificacion,
             Usuario usuario) {
+
         this.idServicio = idServicio;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -61,61 +70,48 @@ public class Servicio {
         this.usuario = usuario;
     }
 
-    // Getters y setters- Métodos para obtener y modificar los datos.
+    // Getters y setters de los datos del servicio.
+
     public Integer getIdServicio() {
         return idServicio;
     }
-
     public void setIdServicio(Integer idServicio) {
         this.idServicio = idServicio;
     }
-
     public String getNombre() {
         return nombre;
     }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
     public String getTipo() {
         return tipo;
     }
-
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
-
     public String getUbicacion() {
         return ubicacion;
     }
-
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
-
     public String getDescripcion() {
         return descripcion;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
     public Integer getCalificacion() {
         return calificacion;
     }
-
     public void setCalificacion(Integer calificacion) {
         this.calificacion = calificacion;
     }
-
     public Usuario getUsuario() {
         return usuario;
     }
-
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-
 }

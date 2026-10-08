@@ -1,10 +1,13 @@
 package com.example.My_Pet.controller.Modulo_1_gestion_usuario;
 
-// LIBRERÍAS NECESARIAS PARA EL CONTROLADOR
+//librerías propias del proyecto. 
+
 import com.example.My_Pet.ReporteAdminDTO;
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Reporte;
 import com.example.My_Pet.security.UsuarioPrincipal;
 import com.example.My_Pet.service.Modulo_1_gestion_usuario.ReporteService;
+
+//Librerias de Spring.
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,47 +15,48 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+// Librerías de Java.
 import java.util.List;
 
-// CONTROLADOR PARA GESTIONAR LOS REPORTES DE AYUDA
+// Controlador para gestionar los reportes de ayuda.
+
 @RestController
 @RequestMapping("/api/reportes")
 public class ReporteController {
 
+    // Servicio encargado de gestionar los reportes de ayuda.
+
     @Autowired
     private ReporteService reporteService;
 
-    // GET PARA OBTENER TODOS LOS REPORTES
-    // Disponible únicamente para administradores.
+   // Lista todos los reportes de ayuda. ***SOLO PARA ADMINISTRADORES***
+
     @GetMapping("/listar")
     @PreAuthorize("@autorizacion.esAdministrador()")
     public List<ReporteAdminDTO> listarReportes() {
-
         return reporteService.obtenerTodosLosReportes();
     }
 
-    // GET PARA OBTENER LOS REPORTES DE UN USUARIO
-    // El usuario puede consultar sus propios reportes.
-    // El administrador puede consultar los de cualquier usuario.
+    // Busca un reporte de ayuda por su ID.
+
     @GetMapping("/usuario/{idUsuario}")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
     public List<Reporte> obtenerReportesPorUsuario(
             @PathVariable("idUsuario") Integer idUsuario) {
-
         return reporteService.obtenerReportesPorUsuario(idUsuario);
     }
 
-    // GET PARA OBTENER UN REPORTE ESPECÍFICO
+    // Lista los reportes de ayuda asociados a un usuario.
+
     @GetMapping("/{id}")
     @PreAuthorize("@autorizacion.esReportePropioOAdministrador(#p0)")
     public Reporte obtenerReportePorId(
             @PathVariable("id") Integer id) {
-
         return reporteService.obtenerReportePorId(id);
     }
 
-    // POST PARA CREAR UN NUEVO REPORTE
-    // El usuario autenticado se obtiene desde la sesión.
+    // Registra un nuevo reporte de ayuda por un usuario existente.
+
     @PostMapping("/crear")
     @PreAuthorize("isAuthenticated()")
     public Reporte crearReporte(
@@ -66,14 +70,12 @@ public class ReporteController {
         Object principal = authentication.getPrincipal();
 
         if (!(principal instanceof UsuarioPrincipal usuarioPrincipal)) {
-
             throw new RuntimeException(
                     "No se pudo identificar al usuario autenticado"
             );
         }
 
-        Integer idUsuario =
-                usuarioPrincipal.idUsuario();
+        Integer idUsuario = usuarioPrincipal.idUsuario();
 
         return reporteService.guardarReporte(
                 idUsuario,
@@ -81,8 +83,8 @@ public class ReporteController {
         );
     }
 
-    // PUT PARA ACTUALIZAR EL ESTADO Y LA RESPUESTA
-    // Disponible únicamente para administradores.
+    // Actualiza el estado de un reporte de ayuda. ***SOLO PARA ADMINISTRADORES***
+
     @PutMapping("/actualizar/{id}")
     @PreAuthorize("@autorizacion.esAdministrador()")
     public Reporte actualizarReporte(

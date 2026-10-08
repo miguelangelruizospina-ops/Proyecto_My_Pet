@@ -1,9 +1,18 @@
 package com.example.My_Pet.model.Modulo_4_servicio_comunidad;
 
+//Clase propia del proyecto.
+
 import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
 
+// Librerías para relacionar las clases Java con las tablas de la base de datos.
+
 import jakarta.persistence.*;
+
+// Libreria de Java
+
 import java.time.LocalDateTime;
+
+// Representa la tabla "me gusta comentario" de la base de datos.
 
 @Entity
 @Table(
@@ -17,19 +26,14 @@ import java.time.LocalDateTime;
 )
 public class MeGustaPublicacion {
 
-    // =========================================================
-    // ID DEL ME GUSTA
-    // =========================================================
+    // Identificador unico de un me gusta de una publicacion del foro (no comentario).
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_me_gusta")
     private Integer idMeGusta;
 
-
-    // =========================================================
-    // USUARIO QUE DIO EL ME GUSTA
-    // =========================================================
+    // Relacion del usuario que dio me gusta a la publicacion.
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -39,10 +43,7 @@ public class MeGustaPublicacion {
     )
     private Usuario usuario;
 
-
-    // =========================================================
-    // PUBLICACIÓN A LA QUE SE LE DIO ME GUSTA
-    // =========================================================
+    // Relación entre el "Me gusta" y la publicación asociada.
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
@@ -52,26 +53,17 @@ public class MeGustaPublicacion {
     )
     private PublicacionForo publicacion;
 
-
-    // =========================================================
-    // FECHA DEL ME GUSTA
-    // =========================================================
-
+    // Fecha en la que se realizó el "Me gusta".
+    
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
-
-    // =========================================================
-    // CONSTRUCTOR
-    // =========================================================
+    // Constructor vacío requerido para crear la entidad me gusta publicacion.
 
     public MeGustaPublicacion() {
     }
 
-
-    // =========================================================
-    // GETTERS Y SETTERS
-    // =========================================================
+   // Getters y setters de los datos del "Me gusta".
 
     public Integer getIdMeGusta() {
         return idMeGusta;
