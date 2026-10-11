@@ -11,13 +11,11 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Importa Bootstrap para los estilos y componentes de la interfaz. -->
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Define el título de la página en el navegador. -->
 
@@ -26,6 +24,28 @@
     <!-- Importa los estilos principales de My Pet. -->
 
     <link rel="stylesheet" href="../mi_pet.css">
+
+    <!-- Estilo propio de esta interfaz -->
+
+    <style>
+        .marco-foto-per {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .marco-foto-per img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 35%;
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 
 </head>
 
@@ -41,8 +61,7 @@
 
     <div class="w-100 px-4">
 
-        <a class="flecha text-decoration-none"
-           href="mis_mascotas.html">
+        <a class="flecha text-decoration-none" href="mis_mascotas.html">
 
             ←
 
@@ -56,8 +75,7 @@
 
     <!-- Proporciona acceso directo al módulo de emergencias. -->
 
-    <a id="enlaceEmergencia" href="/Front%20end/Modulo_5_emergencia/emergencia.html"
-       class="boton-sos">
+    <a id="enlaceEmergencia" href="/Front%20end/Modulo_5_emergencia/emergencia.html" class="boton-sos">
 
         SOS
 
@@ -73,22 +91,15 @@
 
         <!-- Permite seleccionar una fotografía nueva al hacer clic en el marco. -->
 
-        <label for="input-foto-mascota"
-               class="marco-foto-per"
-               title="Haz clic para cambiar la foto">
+        <label for="input-foto-mascota" class="marco-foto-per" title="Haz clic para cambiar la foto">
 
             <!-- Presenta la fotografía actual de la mascota. -->
 
-            <img src="fotos/anny.jpg"
-                 alt="Foto de la mascota"
-                 id="fotoMascota">
+            <img src="fotos/anny.jpg" alt="Foto de la mascota" id="fotoMascota">
 
             <!-- Campo para seleccionar una imagen desde el dispositivo. -->
 
-            <input type="file"
-                   id="input-foto-mascota"
-                   class="d-none"
-                   accept="image/*">
+            <input type="file" id="input-foto-mascota" class="d-none" accept="image/*">
 
             <!-- Muestra la indicación para cambiar la fotografía. -->
 
@@ -102,9 +113,7 @@
 
         <!-- Muestra el nombre de la mascota en el encabezado del perfil. -->
 
-        <h1 id="nombreMascotaTitulo"
-            class="mt-3"
-            style="color: white !important;">
+        <h1 id="nombreMascotaTitulo" class="mt-3" style="color: white !important;">
 
             Anny
 
@@ -118,8 +127,7 @@
 
     <!-- Presenta los datos registrados de la mascota. -->
 
-    <div id="informacionMascota"
-         class="tarjeta-mascota">
+    <div id="informacionMascota" class="tarjeta-mascota">
 
         <h2 class="titulo-perfil-mascota text-center">
 
@@ -129,8 +137,7 @@
 
         <!-- Muestra el nombre registrado. -->
 
-        <p id="nombreMascota"
-           class="dato-mascota">
+        <p id="nombreMascota" class="dato-mascota">
 
             Nombre: Anny
 
@@ -138,8 +145,7 @@
 
         <!-- Muestra la especie de la mascota. -->
 
-        <p id="especieMascota"
-           class="dato-mascota">
+        <p id="especieMascota" class="dato-mascota">
 
             Especie: Canino
 
@@ -147,8 +153,7 @@
 
         <!-- Muestra la raza registrada. -->
 
-        <p id="razaMascota"
-           class="dato-mascota">
+        <p id="razaMascota" class="dato-mascota">
 
             Raza: Poodle
 
@@ -156,8 +161,7 @@
 
         <!-- Presenta la fecha de nacimiento registrada. -->
 
-        <p id="fechaNacimientoMascota"
-           class="dato-mascota">
+        <p id="fechaNacimientoMascota" class="dato-mascota">
 
             Fecha de nacimiento: -
 
@@ -165,8 +169,7 @@
 
         <!-- Muestra la edad calculada o recuperada por JavaScript. -->
 
-        <p id="edadMascota"
-           class="dato-mascota">
+        <p id="edadMascota" class="dato-mascota">
 
             Edad: -
 
@@ -176,8 +179,7 @@
 
         <!-- Presenta las características particulares de la mascota. -->
 
-        <p id="caracteristicasInformacion"
-           class="dato-mascota">
+        <p id="caracteristicasInformacion" class="dato-mascota">
 
             Características: -
 
@@ -185,8 +187,7 @@
 
         <!-- Muestra la información relacionada con su comportamiento. -->
 
-        <p id="comportamientoInformacion"
-           class="dato-mascota">
+        <p id="comportamientoInformacion" class="dato-mascota">
 
             Comportamiento: -
 
@@ -194,8 +195,7 @@
 
         <!-- Presenta las actividades y preferencias de la mascota. -->
 
-        <p id="gustosInformacion"
-           class="dato-mascota">
+        <p id="gustosInformacion" class="dato-mascota">
 
             Gustos: -
 
@@ -203,8 +203,7 @@
 
         <!-- Muestra los cuidados especiales que necesita la mascota. -->
 
-        <p id="cuidadosInformacion"
-           class="dato-mascota">
+        <p id="cuidadosInformacion" class="dato-mascota">
 
             Cuidados especiales: -
 
@@ -218,9 +217,7 @@
 
     <!-- Permite modificar los datos de la mascota cuando se activa la edición. -->
 
-    <div id="formularioEdicion"
-         class="formulario-mascota"
-         style="display: none;">
+    <div id="formularioEdicion" class="formulario-mascota" style="display: none;">
 
         <h2 class="titulo-perfil-mascota text-center">
 
@@ -236,17 +233,13 @@
 
             <div class="mb-3">
 
-                <label for="editarNombre"
-                       class="form-label">
+                <label for="editarNombre" class="form-label">
 
                     Nombre
 
                 </label>
 
-                <input type="text"
-                       id="editarNombre"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarNombre" class="form-control" required>
 
             </div>
 
@@ -254,17 +247,13 @@
 
             <div class="mb-3">
 
-                <label for="editarEspecie"
-                       class="form-label">
+                <label for="editarEspecie" class="form-label">
 
                     Especie
 
                 </label>
 
-                <input type="text"
-                       id="editarEspecie"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarEspecie" class="form-control" required>
 
             </div>
 
@@ -272,17 +261,13 @@
 
             <div class="mb-3">
 
-                <label for="editarRaza"
-                       class="form-label">
+                <label for="editarRaza" class="form-label">
 
                     Raza
 
                 </label>
 
-                <input type="text"
-                       id="editarRaza"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarRaza" class="form-control" required>
 
             </div>
 
@@ -290,17 +275,13 @@
 
             <div class="mb-3">
 
-                <label for="editarFechaNacimiento"
-                       class="form-label">
+                <label for="editarFechaNacimiento" class="form-label">
 
                     Fecha de nacimiento
 
                 </label>
 
-                <input type="date"
-                       id="editarFechaNacimiento"
-                       class="form-control"
-                       required>
+                <input type="date" id="editarFechaNacimiento" class="form-control" required>
 
             </div>
 
@@ -308,16 +289,13 @@
 
             <div class="mb-3">
 
-                <label for="editarCaracteristicas"
-                       class="form-label">
+                <label for="editarCaracteristicas" class="form-label">
 
                     Características
 
                 </label>
 
-                <textarea id="editarCaracteristicas"
-                          class="form-control"
-                          rows="3"></textarea>
+                <textarea id="editarCaracteristicas" class="form-control" rows="3"></textarea>
 
             </div>
 
@@ -325,16 +303,13 @@
 
             <div class="mb-3">
 
-                <label for="editarComportamiento"
-                       class="form-label">
+                <label for="editarComportamiento" class="form-label">
 
                     Comportamiento
 
                 </label>
 
-                <textarea id="editarComportamiento"
-                          class="form-control"
-                          rows="3"></textarea>
+                <textarea id="editarComportamiento" class="form-control" rows="3"></textarea>
 
             </div>
 
@@ -342,16 +317,13 @@
 
             <div class="mb-3">
 
-                <label for="editarGustos"
-                       class="form-label">
+                <label for="editarGustos" class="form-label">
 
                     Gustos
 
                 </label>
 
-                <textarea id="editarGustos"
-                          class="form-control"
-                          rows="3"></textarea>
+                <textarea id="editarGustos" class="form-control" rows="3"></textarea>
 
             </div>
 
@@ -359,16 +331,13 @@
 
             <div class="mb-3">
 
-                <label for="editarCuidados"
-                       class="form-label">
+                <label for="editarCuidados" class="form-label">
 
                     Cuidados especiales
 
                 </label>
 
-                <textarea id="editarCuidados"
-                          class="form-control"
-                          rows="3"></textarea>
+                <textarea id="editarCuidados" class="form-control" rows="3"></textarea>
 
             </div>
 
@@ -376,8 +345,7 @@
 
             <div class="text-center mt-4">
 
-                <button type="submit"
-                        class="btn-guardar">
+                <button type="submit" class="btn-guardar">
 
                     Guardar cambios
 
@@ -386,9 +354,7 @@
                 <br>
                 <br>
 
-                <button type="button"
-                        id="cancelarEdicion"
-                        class="btn-cancelar">
+                <button type="button" id="cancelarEdicion" class="btn-cancelar">
 
                     Cancelar
 
@@ -406,14 +372,11 @@
 
     <!-- Agrupa las opciones disponibles para gestionar la mascota. -->
 
-    <div id="accionesMascota"
-         class="acciones-mascota">
+    <div id="accionesMascota" class="acciones-mascota">
 
         <!-- Permite activar el formulario de edición del perfil. -->
 
-        <button type="button"
-                id="editarInformacion"
-                class="btn-perfil-mascota btn-editar">
+        <button type="button" id="editarInformacion" class="btn-perfil-mascota btn-editar">
 
             Editar información
 
@@ -429,8 +392,7 @@
 
             <!-- Abre la sección de documentos de la mascota. -->
 
-            <a id="enlaceDocumentos" href="documento.html"
-               class="btn-perfil-mascota boton-grande-mascota">
+            <a id="enlaceDocumentos" href="documento.html" class="btn-perfil-mascota boton-grande-mascota">
 
                 Documentos
 
@@ -438,8 +400,7 @@
 
             <!-- Abre el historial médico de la mascota. -->
 
-            <a id="enlaceHistorial" href="Historial_medico.html"
-               class="btn-perfil-mascota boton-grande-mascota">
+            <a id="enlaceHistorial" href="Historial_medico.html" class="btn-perfil-mascota boton-grande-mascota">
 
                 Historial médico
 
@@ -455,8 +416,7 @@
 
     <!-- Proporciona acceso al chatbot del módulo de comunidad. -->
 
-    <a href="/Front%20end/Modulo_4_servicio_comunidad/chat_bot.html"
-       class="boton-chatbot">
+    <a href="/Front%20end/Modulo_4_servicio_comunidad/chat_bot.html" class="boton-chatbot">
 
         Chatbot
 

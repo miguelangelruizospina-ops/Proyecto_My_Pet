@@ -87,15 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const cancelarEdicion =
         document.getElementById("cancelarEdicion");
 
-    console.log(
-        "Botón editar encontrado:",
-        editarInformacion
-    );
-
-    console.log(
-        "Formulario encontrado:",
-        formularioEdicion
-    );
+    console.log("Botón editar encontrado:", editarInformacion);
+    console.log("Formulario encontrado:", formularioEdicion);
 
     // Define las variables utilizadas para controlar el perfil y su fotografía.
 
@@ -125,9 +118,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("SE HIZO CLIC EN EDITAR");
 
-        if (!informacionUsuario ||
+        if (
+            !informacionUsuario ||
             !formularioEdicion ||
-            !accionesUsuario) {
+            !accionesUsuario
+        ) {
 
             console.error(
                 "No se encontraron los elementos necesarios."
@@ -135,8 +130,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return;
         }
-
-        // Actualiza el título según se cree o edite el perfil.
 
         if (tituloFormularioPerfil) {
 
@@ -146,16 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     : "Editar información del perfil";
         }
 
-        // Oculta la información actual del usuario.
-
         informacionUsuario.style.display = "none";
-
-        // Muestra el formulario de edición.
-
         formularioEdicion.style.display = "block";
-
-        // Oculta los botones de acciones del perfil.
-
         accionesUsuario.style.display = "none";
 
         console.log("FORMULARIO DE EDICIÓN ABIERTO");
@@ -177,9 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     } else {
 
-        console.error(
-            "NO SE ENCONTRÓ #editarInformacion"
-        );
+        console.error("NO SE ENCONTRÓ #editarInformacion");
     }
 
     // Configura el botón para agregar información cuando no existe un perfil.
@@ -208,9 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 event.preventDefault();
 
                 formularioEdicion.style.display = "none";
-
                 informacionUsuario.style.display = "block";
-
                 accionesUsuario.style.display = "flex";
             }
         );
@@ -259,37 +240,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 respuesta.status
             );
 
-            // Crea una estructura vacía cuando el usuario todavía no tiene perfil.
-
             if (respuesta.status === 404) {
 
                 perfilExiste = false;
 
                 perfil = {
-
-                    nombreUsuario:
-                        usuario.nombre || "",
-
+                    nombreUsuario: usuario.nombre || "",
                     fotoPerfil: "",
-
                     biografia: "",
-
                     telefono: "",
-
                     ciudad: "",
-
                     genero: "",
-
                     fechaNacimiento: ""
                 };
-            }
 
-            // Muestra el error cuando el servidor no puede entregar el perfil.
+            } else if (!respuesta.ok) {
 
-            else if (!respuesta.ok) {
-
-                const mensaje =
-                    await respuesta.text();
+                const mensaje = await respuesta.text();
 
                 console.error(
                     "Error obteniendo el perfil:",
@@ -302,39 +269,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
                 return;
-            }
 
-            // Obtiene el perfil existente desde el backend.
-
-            else {
+            } else {
 
                 perfilExiste = true;
 
-                perfil =
-                    await respuesta.json();
+                perfil = await respuesta.json();
             }
 
             actualizarBotonesPerfil();
 
-            console.log(
-                "Perfil obtenido:",
-                perfil
-            );
+            console.log("Perfil obtenido:", perfil);
 
             // Muestra el nombre del usuario en el encabezado.
 
-            document.getElementById(
-                "usu-cen-h1"
-            ).textContent =
+            document.getElementById("usu-cen-h1").textContent =
                 perfil.nombreUsuario ||
                 usuario.nombre ||
                 "Tu usuario";
 
             // Muestra la información general de la cuenta.
 
-            document.getElementById(
-                "nombreUsuario"
-            ).textContent =
+            document.getElementById("nombreUsuario").textContent =
                 "Nombre: " +
                 (
                     perfil.nombreUsuario ||
@@ -342,45 +298,35 @@ document.addEventListener("DOMContentLoaded", function () {
                     "-"
                 );
 
-            document.getElementById(
-                "apellidosUsuario"
-            ).textContent =
+            document.getElementById("apellidosUsuario").textContent =
                 "Apellidos: " +
                 (
                     usuario.apellidos ||
                     "-"
                 );
 
-            document.getElementById(
-                "correoUsuario"
-            ).textContent =
+            document.getElementById("correoUsuario").textContent =
                 "Correo: " +
                 (
                     usuario.correo ||
                     "-"
                 );
 
-            document.getElementById(
-                "usuarioUsuario"
-            ).textContent =
+            document.getElementById("usuarioUsuario").textContent =
                 "Usuario: " +
                 (
                     usuario.usuario ||
                     "-"
                 );
 
-            document.getElementById(
-                "rolUsuario"
-            ).textContent =
+            document.getElementById("rolUsuario").textContent =
                 "Rol: " +
                 (
                     usuario.rol ||
                     "-"
                 );
 
-            document.getElementById(
-                "fechaUsuario"
-            ).textContent =
+            document.getElementById("fechaUsuario").textContent =
                 "Fecha de creación: " +
                 (
                     usuario.fechaCreacion ||
@@ -389,45 +335,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Muestra la información adicional registrada en el perfil.
 
-            document.getElementById(
-                "biografiaUsuario"
-            ).textContent =
+            document.getElementById("biografiaUsuario").textContent =
                 "Biografía: " +
                 (
                     perfil.biografia ||
                     "-"
                 );
 
-            document.getElementById(
-                "telefonoUsuario"
-            ).textContent =
+            document.getElementById("telefonoUsuario").textContent =
                 "Teléfono: " +
                 (
                     perfil.telefono ||
                     "-"
                 );
 
-            document.getElementById(
-                "ciudadUsuario"
-            ).textContent =
+            document.getElementById("ciudadUsuario").textContent =
                 "Ciudad: " +
                 (
                     perfil.ciudad ||
                     "-"
                 );
 
-            document.getElementById(
-                "generoUsuario"
-            ).textContent =
+            document.getElementById("generoUsuario").textContent =
                 "Género: " +
                 (
                     perfil.genero ||
                     "-"
                 );
 
-            document.getElementById(
-                "fechaNacimientoUsuario"
-            ).textContent =
+            document.getElementById("fechaNacimientoUsuario").textContent =
                 "Fecha de nacimiento: " +
                 (
                     perfil.fechaNacimiento ||
@@ -436,58 +372,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Carga los datos actuales del usuario y del perfil en el formulario.
 
-            document.getElementById(
-                "editarNombre"
-            ).value =
+            document.getElementById("editarNombre").value =
                 perfil.nombreUsuario ||
                 usuario.nombre ||
                 "";
 
-            document.getElementById(
-                "editarApellidos"
-            ).value =
+            document.getElementById("editarApellidos").value =
                 usuario.apellidos ||
                 "";
 
-            document.getElementById(
-                "editarUsuario"
-            ).value =
+            document.getElementById("editarUsuario").value =
                 usuario.usuario ||
                 "";
 
-            document.getElementById(
-                "editarCorreo"
-            ).value =
+            document.getElementById("editarCorreo").value =
                 usuario.correo ||
                 "";
 
-            document.getElementById(
-                "editarBiografia"
-            ).value =
+            document.getElementById("editarBiografia").value =
                 perfil.biografia ||
                 "";
 
-            document.getElementById(
-                "editarTelefono"
-            ).value =
+            document.getElementById("editarTelefono").value =
                 perfil.telefono ||
                 "";
 
-            document.getElementById(
-                "editarCiudad"
-            ).value =
+            document.getElementById("editarCiudad").value =
                 perfil.ciudad ||
                 "";
 
-            document.getElementById(
-                "editarGenero"
-            ).value =
+            document.getElementById("editarGenero").value =
                 perfil.genero ||
                 "";
 
-            document.getElementById(
-                "editarFechaNacimiento"
-            ).value =
+            document.getElementById("editarFechaNacimiento").value =
                 perfil.fechaNacimiento ||
                 "";
 
@@ -496,21 +414,14 @@ document.addEventListener("DOMContentLoaded", function () {
             if (fotoPerfil) {
 
                 fotoPerfil.src =
-                    obtenerRutaFotoPerfil(
-                        perfil.fotoPerfil
-                    );
+                    obtenerRutaFotoPerfil(perfil.fotoPerfil);
             }
 
-            console.log(
-                "Perfil cargado correctamente."
-            );
+            console.log("Perfil cargado correctamente.");
 
         } catch (error) {
 
-            console.error(
-                "Error cargando perfil:",
-                error
-            );
+            console.error("Error cargando perfil:", error);
 
             alert(
                 "No se pudo conectar con el servidor."
@@ -531,49 +442,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Obtiene y limpia los datos ingresados en el formulario.
 
                 const nuevoNombre =
-                    document.getElementById(
-                        "editarNombre"
-                    ).value.trim();
+                    document.getElementById("editarNombre").value.trim();
 
                 const nuevosApellidos =
-                    document.getElementById(
-                        "editarApellidos"
-                    ).value.trim();
+                    document.getElementById("editarApellidos").value.trim();
 
                 const nuevoUsuario =
-                    document.getElementById(
-                        "editarUsuario"
-                    ).value.trim();
+                    document.getElementById("editarUsuario").value.trim();
 
                 const nuevoCorreo =
-                    document.getElementById(
-                        "editarCorreo"
-                    ).value.trim();
+                    document.getElementById("editarCorreo").value.trim();
 
                 const nuevaBiografia =
-                    document.getElementById(
-                        "editarBiografia"
-                    ).value.trim();
+                    document.getElementById("editarBiografia").value.trim();
 
                 const nuevoTelefono =
-                    document.getElementById(
-                        "editarTelefono"
-                    ).value.trim();
+                    document.getElementById("editarTelefono").value.trim();
 
                 const nuevaCiudad =
-                    document.getElementById(
-                        "editarCiudad"
-                    ).value.trim();
+                    document.getElementById("editarCiudad").value.trim();
 
                 const nuevoGenero =
-                    document.getElementById(
-                        "editarGenero"
-                    ).value.trim();
+                    document.getElementById("editarGenero").value.trim();
 
                 const nuevaFechaNacimiento =
-                    document.getElementById(
-                        "editarFechaNacimiento"
-                    ).value;
+                    document.getElementById("editarFechaNacimiento").value;
 
                 try {
 
@@ -593,32 +486,24 @@ document.addEventListener("DOMContentLoaded", function () {
                                 method: "PUT",
 
                                 headers: {
-                                    "Content-Type":
-                                        "application/json"
+                                    "Content-Type": "application/json"
                                 },
 
                                 body: JSON.stringify({
 
-                                    nombre:
-                                        nuevoNombre,
+                                    nombre: nuevoNombre,
 
-                                    apellidos:
-                                        nuevosApellidos,
+                                    apellidos: nuevosApellidos,
 
-                                    usuario:
-                                        nuevoUsuario,
+                                    usuario: nuevoUsuario,
 
-                                    correo:
-                                        nuevoCorreo,
+                                    correo: nuevoCorreo,
 
-                                    contrasena:
-                                        usuario.contrasena,
+                                    contrasena: usuario.contrasena,
 
-                                    rol:
-                                        usuario.rol,
+                                    rol: usuario.rol,
 
-                                    fechaCreacion:
-                                        usuario.fechaCreacion
+                                    fechaCreacion: usuario.fechaCreacion
                                 })
                             }
                         );
@@ -634,44 +519,35 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
                     }
 
-                    usuario =
-                        await respuestaUsuario.json();
+                    usuario = await respuestaUsuario.json();
 
                     // Construye los datos actualizados del perfil.
 
                     const datosPerfil = {
 
-                        idUsuario:
-                            Number(idUsuario),
+                        idUsuario: Number(idUsuario),
 
                         usuario: {
-                            idUsuario:
-                                Number(idUsuario)
+                            idUsuario: Number(idUsuario)
                         },
 
-                        nombreUsuario:
-                            nuevoNombre,
+                        nombreUsuario: nuevoNombre,
 
                         fotoPerfil:
                             fotoPerfilNueva ||
-                            obtenerRutaFotoPerfil(
-                                perfil.fotoPerfil
-                            ),
+                            obtenerRutaFotoPerfil(perfil.fotoPerfil),
 
-                        biografia:
-                            nuevaBiografia,
+                        biografia: nuevaBiografia,
 
-                        telefono:
-                            nuevoTelefono,
+                        telefono: nuevoTelefono,
 
-                        ciudad:
-                            nuevaCiudad,
+                        ciudad: nuevaCiudad,
 
-                        genero:
-                            nuevoGenero,
+                        genero: nuevoGenero,
 
                         fechaNacimiento:
                             nuevaFechaNacimiento ||
+                            perfil.fechaNacimiento ||
                             null
                     };
 
@@ -683,20 +559,13 @@ document.addEventListener("DOMContentLoaded", function () {
                                 ? `/api/perfiles/actualizar/${idUsuario}`
                                 : "/api/perfiles/crear",
                             {
-                                method:
-                                    perfilExiste
-                                        ? "PUT"
-                                        : "POST",
+                                method: perfilExiste ? "PUT" : "POST",
 
                                 headers: {
-                                    "Content-Type":
-                                        "application/json"
+                                    "Content-Type": "application/json"
                                 },
 
-                                body:
-                                    JSON.stringify(
-                                        datosPerfil
-                                    )
+                                body: JSON.stringify(datosPerfil)
                             }
                         );
 
@@ -711,11 +580,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
                     }
 
-                    perfil =
-                        await respuestaPerfil.json();
+                    perfil = await respuestaPerfil.json();
 
                     perfilExiste = true;
-
                     fotoPerfilNueva = null;
 
                     actualizarBotonesPerfil();
@@ -734,14 +601,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Cierra el formulario y vuelve a mostrar la información del perfil.
 
-                    formularioEdicion.style.display =
-                        "none";
-
-                    informacionUsuario.style.display =
-                        "block";
-
-                    accionesUsuario.style.display =
-                        "flex";
+                    formularioEdicion.style.display = "none";
+                    informacionUsuario.style.display = "block";
+                    accionesUsuario.style.display = "flex";
 
                     alert(
                         "Información actualizada correctamente."
@@ -753,10 +615,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 } catch (error) {
 
-                    console.error(
-                        "Error actualizando:",
-                        error
-                    );
+                    console.error("Error actualizando:", error);
 
                     alert(
                         error.message ||
@@ -794,30 +653,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
                 }
 
-                localStorage.removeItem(
-                    "usuarioLogueado"
-                );
+                localStorage.removeItem("usuarioLogueado");
+                localStorage.removeItem("idUsuario");
 
-                localStorage.removeItem(
-                    "idUsuario"
-                );
-
-                window.location.href =
-                    "iniciar_sesion.html";
+                window.location.href = "iniciar_sesion.html";
             }
         );
     }
 
-    // Gestiona la selección y validación de una nueva fotografía de perfil.
+    // Gestiona la selección, validación y guardado inmediato de la fotografía.
 
     if (inputFoto && fotoPerfil) {
 
         inputFoto.addEventListener(
             "change",
-            function () {
+            async function () {
 
-                const archivo =
-                    inputFoto.files[0];
+                const archivo = inputFoto.files[0];
 
                 if (!archivo) {
                     return;
@@ -852,24 +704,128 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                const lector =
-                    new FileReader();
+                if (!perfilExiste || !perfil) {
 
-                // Muestra la nueva fotografía y la conserva para guardarla en el perfil.
+                    alert(
+                        "Primero debes completar y guardar la información de tu perfil."
+                    );
 
-                lector.onload =
-                    function (event) {
+                    inputFoto.value = "";
 
-                        fotoPerfil.src =
-                            event.target.result;
+                    return;
+                }
 
-                        fotoPerfilNueva =
-                            event.target.result;
+                try {
+
+                    // Convierte la imagen seleccionada a Base64.
+
+                    const lector = new FileReader();
+
+                    const fotoDataUrl = await new Promise(
+                        (resolve, reject) => {
+
+                            lector.onload = function () {
+                                resolve(lector.result);
+                            };
+
+                            lector.onerror = function () {
+
+                                reject(
+                                    new Error(
+                                        "No se pudo leer la fotografía."
+                                    )
+                                );
+                            };
+
+                            lector.readAsDataURL(archivo);
+                        }
+                    );
+
+                    // Conserva los datos existentes y sustituye únicamente la fotografía.
+
+                    const datosPerfil = {
+
+                        idUsuario: Number(idUsuario),
+
+                        usuario: {
+                            idUsuario: Number(idUsuario)
+                        },
+
+                        nombreUsuario:
+                            perfil.nombreUsuario ||
+                            usuario.nombre ||
+                            "",
+
+                        fotoPerfil: fotoDataUrl,
+
+                        biografia: perfil.biografia || "",
+
+                        telefono: perfil.telefono || "",
+
+                        ciudad: perfil.ciudad || "",
+
+                        genero: perfil.genero || "",
+
+                        fechaNacimiento:
+                            perfil.fechaNacimiento || null
                     };
 
-                lector.readAsDataURL(
-                    archivo
-                );
+                    // Envía la fotografía al backend para guardarla en la base de datos.
+
+                    const respuesta = await fetch(
+                        `/api/perfiles/actualizar/${idUsuario}`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify(datosPerfil)
+                        }
+                    );
+
+                    if (!respuesta.ok) {
+
+                        const mensaje = await respuesta.text();
+
+                        throw new Error(
+                            mensaje ||
+                            "No se pudo guardar la fotografía."
+                        );
+                    }
+
+                    // Actualiza el perfil con la respuesta del servidor.
+
+                    perfil = await respuesta.json();
+
+                    fotoPerfilNueva = null;
+
+                    fotoPerfil.src =
+                        obtenerRutaFotoPerfil(perfil.fotoPerfil);
+
+                    alert(
+                        "Fotografía del perfil guardada correctamente."
+                    );
+
+                } catch (error) {
+
+                    console.error(
+                        "Error guardando la fotografía:",
+                        error
+                    );
+
+                    alert(
+                        error.message ||
+                        "No se pudo guardar la fotografía del perfil."
+                    );
+
+                    await cargarPerfil();
+
+                } finally {
+
+                    inputFoto.value = "";
+                }
             }
         );
     }

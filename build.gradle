@@ -48,3 +48,9 @@ dependencies {
 
     runtimeOnly 'com.mysql:mysql-connector-j'
 }
+
+    // Configuración para ejecutar las pruebas automatizadas con JUnit 5.
+
+    tasks.named('test') {
+    useJUnitPlatform()
+}

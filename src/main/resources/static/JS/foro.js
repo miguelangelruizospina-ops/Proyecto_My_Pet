@@ -23,6 +23,72 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// Envía una publicación nueva al backend y actualiza el foro.
+
+async function crearPublicacion() {
+
+    const campoTitulo = document.getElementById("titulo-publicacion");
+    const campoContenido = document.getElementById("contenido-publicacion");
+    const formulario = document.getElementById("formulario-nueva-publicacion");
+    const dialogo = document.getElementById("dialogo_nuevo_post");
+
+    const titulo = campoTitulo.value.trim();
+    const contenido = campoContenido.value.trim();
+
+    if (!titulo || !contenido) {
+        alert("Debes ingresar el título y el contenido de la publicación.");
+        return;
+    }
+
+    try {
+
+        const respuesta = await fetch("/api/publicaciones-foro/guardar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                titulo: titulo,
+                contenido: contenido
+            })
+        });
+
+        if (!respuesta.ok) {
+            const mensaje = await respuesta.text();
+
+            console.error(
+                "Error al guardar la publicación:",
+                respuesta.status,
+                mensaje
+            );
+
+            alert(
+                `No se pudo guardar la publicación.\n` +
+                `Código HTTP: ${respuesta.status}\n` +
+                `Detalle: ${mensaje || "Sin información adicional."}`
+            );
+
+            return;
+        }
+
+        await respuesta.json();
+
+        formulario.reset();
+        dialogo.close();
+
+        await cargarPublicaciones();
+
+    } catch (error) {
+
+        console.error("Error al enviar la publicación:", error);
+
+        alert(
+            "No se pudo conectar con el servidor. Revisa la consola del navegador."
+        );
+    }
+}
+
+
 // Carga las publicaciones disponibles en el foro.
 
 async function cargarPublicaciones() {
@@ -515,120 +581,91 @@ function mostrarForoVacio(
     `;
 }
 
-// Registra una nueva publicación en el foro.
+// Registra un comentario y muestra el resultado del guardado.
 
-async function crearPublicacion() {
+async function crearComentario(idPublicacion) {
 
-    const campoTitulo =
-        document.getElementById(
-            "titulo-publicacion"
+    const textarea = document.getElementById(
+        `texto-comentario-${idPublicacion}`
+    );
+
+    if (!textarea) {
+        console.error(
+            "No se encontró el campo del comentario.",
+            idPublicacion
         );
-
-    const campoContenido =
-        document.getElementById(
-            "contenido-publicacion"
-        );
-
-    if (
-        !campoTitulo ||
-        !campoContenido
-    ) {
         return;
     }
 
-    const titulo =
-        campoTitulo.value.trim();
-
-    const contenido =
-        campoContenido.value.trim();
-
-    if (!titulo) {
-
-        alert(
-            "Debes escribir un título."
-        );
-
-        campoTitulo.focus();
-
-        return;
-    }
+    const contenido = textarea.value.trim();
 
     if (!contenido) {
+        alert("Escribe un comentario antes de enviarlo.");
+        textarea.focus();
+        return;
+    }
 
-        alert(
-            "Debes escribir el contenido de la publicación."
-        );
-
-        campoContenido.focus();
-
+    if (contenido.length > 1000) {
+        alert("El comentario no puede superar los 1.000 caracteres.");
+        textarea.focus();
         return;
     }
 
     try {
 
-        const respuesta =
-            await fetch(
-                "/api/publicaciones-foro/guardar",
-                {
+        const respuesta = await fetch(
+            `/api/comentarios-foro/publicacion/${idPublicacion}`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    contenido: contenido
+                })
+            }
+        );
 
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        titulo: titulo,
-                        contenido: contenido
-                    })
-                }
-            );
+        const resultado = await respuesta.text();
 
         if (!respuesta.ok) {
-
-            const mensaje =
-                await respuesta.text();
+            console.error(
+                "Error al guardar el comentario:",
+                respuesta.status,
+                resultado
+            );
 
             alert(
-                mensaje ||
-                "No se pudo crear la publicación."
+                `No se pudo guardar el comentario.\n` +
+                `Código HTTP: ${respuesta.status}\n` +
+                `Detalle: ${resultado || "Sin información adicional."}`
             );
 
             return;
         }
 
-        const formulario =
-            document.getElementById(
-                "formulario-nueva-publicacion"
-            );
+        console.log(
+            "Comentario guardado correctamente:",
+            resultado
+        );
 
-        if (formulario) {
-            formulario.reset();
-        }
-
-        const dialogo =
-            document.getElementById(
-                "dialogo_nuevo_post"
-            );
-
-        if (dialogo) {
-            dialogo.close();
-        }
-
-        await cargarPublicaciones();
+        await cargarComentarios(idPublicacion);
 
     } catch (error) {
 
         console.error(
-            "Error al crear publicación:",
+            "Error de conexión al guardar el comentario:",
             error
         );
 
         alert(
-            "Ocurrió un error al crear la publicación."
+            "No se pudo completar la solicitud. " +
+            "Revisa la consola del navegador."
         );
     }
 }
+
+
 
 // Carga los comentarios asociados a una publicación.
 
@@ -759,8 +796,8 @@ function crearElementoComentario(
                     class="text-muted d-block">
 
                     ${formatearFecha(
-                        comentario.fecha
-                    )}
+        comentario.fecha
+    )}
 
                 </small>
 
@@ -775,8 +812,8 @@ function crearElementoComentario(
             <p class="mb-2 text-dark">
 
                 ${escaparHTML(
-                    comentario.contenido
-                )}
+        comentario.contenido
+    )}
 
             </p>
 
@@ -1334,8 +1371,8 @@ function crearRespuesta(
                     class="text-muted d-block">
 
                     ${formatearFecha(
-                        respuesta.fecha
-                    )}
+        respuesta.fecha
+    )}
 
                 </small>
 
@@ -1350,8 +1387,8 @@ function crearRespuesta(
             <p class="mb-2 text-dark">
 
                 ${escaparHTML(
-                    respuesta.contenido
-                )}
+        respuesta.contenido
+    )}
 
             </p>
 

@@ -6,13 +6,15 @@ import com.example.My_Pet.model.Modulo_2_gestion_mascota.Mascota;
 import com.example.My_Pet.model.Modulo_3_Agenda_Recordatorio.Evento;
 import com.example.My_Pet.repository.Modulo_2_gestion_mascotas.MascotaRepository;
 import com.example.My_Pet.repository.Modulo_3_Agenda_Recordatorio.EventoRepository;
+import com.example.My_Pet.service.Modulo_3_Agenda_Recordatorio.NotificacionService;
 
-// Librerias del spring.
+// Librerias de Spring.
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-// Libreria de Java
+// Libreria de Java.
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,10 +23,15 @@ import java.util.List;
 
 @Service
 public class EventoService {
+
     @Autowired
     private EventoRepository eventoRepository;
+
     @Autowired
     private MascotaRepository mascotaRepository;
+
+    @Autowired
+    private NotificacionService notificacionService;
 
     // Lista todos los eventos registrados o creados en la base de datos.
 
@@ -46,8 +53,9 @@ public class EventoService {
         return eventoRepository.findByMascotaIdMascota(idMascota);
     }
 
-    // Guarda un nuevo evento en la base de datos.
+    // Guarda un nuevo evento en la base de datos y crea su notificación.
 
+    @Transactional
     public Evento guardar(Evento evento) {
 
         // Verifica que el evento sea válido.
@@ -73,6 +81,7 @@ public class EventoService {
             throw new IllegalArgumentException(
                     "El evento debe estar asociado a una mascota válida.");
         }
+
         Integer idMascota = evento.getMascota().getIdMascota();
 
         // Verifica que la mascota exista en la base de datos.
@@ -80,6 +89,9 @@ public class EventoService {
         Mascota mascotaExistente = mascotaRepository.findById(idMascota)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "La mascota con ID " + idMascota + " no existe."));
+
+        // Asocia el evento con la mascota registrada.
+
         evento.setMascota(mascotaExistente);
 
         // Utiliza la fecha y hora actual si no se proporciona una fecha.
@@ -87,7 +99,29 @@ public class EventoService {
         if (evento.getFecha() == null) {
             evento.setFecha(LocalDateTime.now());
         }
-        return eventoRepository.save(evento);
+
+        // Guarda el evento en la base de datos.
+
+        Evento eventoGuardado = eventoRepository.save(evento);
+
+        // Obtiene el identificador del propietario de la mascota.
+
+        Integer idUsuario = mascotaExistente.getUsuario().getIdUsuario();
+
+        // Construye el mensaje de la notificación del evento registrado.
+
+        String mensaje = "Nuevo evento para "
+                + mascotaExistente.getNombre() + ": "
+                + eventoGuardado.getTipoEvento()
+                + ". Fecha: " + eventoGuardado.getFecha();
+
+        // Guarda la notificación asociada al propietario de la mascota.
+
+        notificacionService.crear(idUsuario, mensaje, "AGENDA");
+
+        // Retorna el evento guardado correctamente.
+
+        return eventoGuardado;
     }
 
     // Actualiza un evento existente.
@@ -123,17 +157,24 @@ public class EventoService {
             throw new IllegalArgumentException(
                     "El evento debe estar asociado a una mascota válida.");
         }
+
         Integer idMascota = evento.getMascota().getIdMascota();
 
-        // Verifica que la mascota exista.
+        // Verifica que la mascota exista en la base de datos.
 
         Mascota mascotaExistente = mascotaRepository.findById(idMascota)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "La mascota con ID " + idMascota + " no existe."));
+
+        // Actualiza la información del evento.
+
         eventoExistente.setTipoEvento(evento.getTipoEvento().trim());
         eventoExistente.setDescripcion(evento.getDescripcion());
         eventoExistente.setFecha(evento.getFecha());
         eventoExistente.setMascota(mascotaExistente);
+
+        // Guarda los cambios del evento en la base de datos.
+
         return eventoRepository.save(eventoExistente);
     }
 
@@ -147,6 +188,9 @@ public class EventoService {
             throw new IllegalArgumentException(
                     "El evento con ID " + id + " no existe.");
         }
+
+        // Elimina el evento registrado.
+
         eventoRepository.deleteById(id);
     }
 }

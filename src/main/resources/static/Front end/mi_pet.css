@@ -868,19 +868,33 @@ input[type="submit"].btn {
     cursor: pointer;
 }
 
-.marco-foto-perfil {
+.marco-foto-per {
     width: 300px;
     height: 300px;
+    min-width: 300px;
     border-radius: 50%;
     border: 4px solid var(--mypet-orange);
     box-shadow: 0 0 30px rgba(254, 128, 1, 0.70);
     overflow: hidden;
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    padding: 0;
+    line-height: 0;
+    cursor: pointer;
 }
 
-.marco-foto-perfil img {
+.marco-foto-per img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
+    display: block;
+    margin: 0;
+    padding: 0;
 }
 
 .detalles-texto {
@@ -2338,7 +2352,7 @@ label,
     -webkit-backdrop-filter: blur(5px);
 }
 
-.table > :not(caption) > * > * {
+.table> :not(caption)>*>* {
     color: var(--mypet-black) !important;
     border-color: rgba(0, 0, 0, 0.10);
 }
@@ -2837,112 +2851,113 @@ label,
         font-size: 38px;
     }
 
-/* =========================================================
+    /* =========================================================
    LEGIBILIDAD GLOBAL SOBRE FONDOS TRANSPARENTES
    ========================================================= */
 
-/* Todo texto normal de la aplicación */
-body {
-    color: #111 !important;
+    /* Todo texto normal de la aplicación */
+    body {
+        color: #111 !important;
+    }
+
+    /* Texto dentro de tarjetas, cuadros y contenedores */
+    .tarjeta_agenda,
+    .tarjeta-mascota,
+    .informacion-mascota,
+    .informacion-historial,
+    .campo-historial,
+    #usu-corre,
+    .formulario-mascota,
+    .formulario-historial,
+    .notificaciones-contenedor,
+    .notificacion-item,
+    .contenedor_mascotas,
+    .perfil_detalle,
+    .contenedor_agenda_personalizada,
+    .recuadro_gestion_evento,
+    .chatbot-card,
+    .chatbot-contenedor {
+        color: #111 !important;
+    }
+
+    /* Párrafos, datos y textos informativos */
+    .tarjeta_agenda p,
+    .tarjeta-mascota p,
+    .informacion-mascota p,
+    .informacion-mascota span,
+    .informacion-mascota div,
+    .informacion-historial p,
+    .informacion-historial span,
+    .informacion-historial div,
+    .campo-historial p,
+    .campo-historial span,
+    #usu-corre p,
+    #usu-corre span,
+    #usu-corre div,
+    #usu-corre small,
+    #usu-corre strong {
+        color: #111 !important;
+        opacity: 1 !important;
+    }
+
+    /* Etiquetas y nombres de campos */
+    label,
+    .form-label {
+        color: #111 !important;
+        font-weight: 700 !important;
+        opacity: 1 !important;
+    }
+
+    /* Texto de campos */
+    input,
+    select,
+    textarea {
+        color: #111 !important;
+        opacity: 1 !important;
+    }
+
+    /* Placeholders */
+    input::placeholder,
+    textarea::placeholder {
+        color: #444 !important;
+        opacity: 1 !important;
+    }
+
+    /* Texto de tablas */
+    .table td,
+    .table th {
+        color: #111 !important;
+        opacity: 1 !important;
+    }
+
+    /* Títulos importantes siguen siendo naranja */
+    .titulo-naranja,
+    .titulo-naranja h1,
+    .titulo-naranja h2,
+    .titulo-naranja h3,
+    .titulo-perfil-mascota,
+    .encabezado-historial h1,
+    .informacion-mascota h2,
+    #usu-cen-h1,
+    #usu-corre h2,
+    #editar-per {
+        color: #F7931E !important;
+        opacity: 1 !important;
+    }
+
+    /* Los cuadros no deben volver opaco el texto */
+    .tarjeta_agenda,
+    .tarjeta-mascota,
+    .informacion-mascota,
+    .informacion-historial,
+    .campo-historial,
+    #usu-corre,
+    .formulario-mascota,
+    .formulario-historial {
+        opacity: 1 !important;
+    }
 }
 
-/* Texto dentro de tarjetas, cuadros y contenedores */
-.tarjeta_agenda,
-.tarjeta-mascota,
-.informacion-mascota,
-.informacion-historial,
-.campo-historial,
-#usu-corre,
-.formulario-mascota,
-.formulario-historial,
-.notificaciones-contenedor,
-.notificacion-item,
-.contenedor_mascotas,
-.perfil_detalle,
-.contenedor_agenda_personalizada,
-.recuadro_gestion_evento,
-.chatbot-card,
-.chatbot-contenedor {
-    color: #111 !important;
-}
-
-/* Párrafos, datos y textos informativos */
-.tarjeta_agenda p,
-.tarjeta-mascota p,
-.informacion-mascota p,
-.informacion-mascota span,
-.informacion-mascota div,
-.informacion-historial p,
-.informacion-historial span,
-.informacion-historial div,
-.campo-historial p,
-.campo-historial span,
-#usu-corre p,
-#usu-corre span,
-#usu-corre div,
-#usu-corre small,
-#usu-corre strong {
-    color: #111 !important;
-    opacity: 1 !important;
-}
-
-/* Etiquetas y nombres de campos */
-label,
-.form-label {
-    color: #111 !important;
-    font-weight: 700 !important;
-    opacity: 1 !important;
-}
-
-/* Texto de campos */
-input,
-select,
-textarea {
-    color: #111 !important;
-    opacity: 1 !important;
-}
-
-/* Placeholders */
-input::placeholder,
-textarea::placeholder {
-    color: #444 !important;
-    opacity: 1 !important;
-}
-
-/* Texto de tablas */
-.table td,
-.table th {
-    color: #111 !important;
-    opacity: 1 !important;
-}
-
-/* Títulos importantes siguen siendo naranja */
-.titulo-naranja,
-.titulo-naranja h1,
-.titulo-naranja h2,
-.titulo-naranja h3,
-.titulo-perfil-mascota,
-.encabezado-historial h1,
-.informacion-mascota h2,
-#usu-cen-h1,
-#usu-corre h2,
-#editar-per {
-    color: #F7931E !important;
-    opacity: 1 !important;
-}
-
-/* Los cuadros no deben volver opaco el texto */
-.tarjeta_agenda,
-.tarjeta-mascota,
-.informacion-mascota,
-.informacion-historial,
-.campo-historial,
-#usu-corre,
-.formulario-mascota,
-.formulario-historial {
-    opacity: 1 !important;
-}
-}
 /* Botones de comentarios del foro */
 
 .btn-foro-formulario {
@@ -3517,7 +3532,7 @@ body.tema-oscuro #editar-per {
     color: var(--mypet-orange) !important;
 }
 
- /* =========================================================
+/* =========================================================
     TEMA OSCURO - PERFIL DEL USUARIO
     ========================================================= */
 
@@ -3580,6 +3595,7 @@ body.tema-oscuro .enlace-perfil {
 body.tema-oscuro .btn-cancelar {
     color: #ffffff !important;
 }
+
 /* =========================================================
    MY PET - TEXTO VISIBLE EN TEMA OSCURO
    ========================================================= */

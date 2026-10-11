@@ -172,7 +172,7 @@ function crearTarjetaReporte(reporte) {
 
                 <strong>Página:</strong>
 
-                <span>
+                <span style="overflow-wrap: anywhere; word-break: break-word;">
                     ${pagina}
                 </span>
 
@@ -194,9 +194,8 @@ function crearTarjetaReporte(reporte) {
         </div>
 
 
-        ${
-            reporte.respuesta
-                ? `
+        ${reporte.respuesta
+            ? `
                     <div class="mb-3">
 
                         <strong>
@@ -209,7 +208,7 @@ function crearTarjetaReporte(reporte) {
 
                     </div>
                   `
-                : ""
+            : ""
         }
 
 
