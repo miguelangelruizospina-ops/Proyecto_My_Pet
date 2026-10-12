@@ -62,30 +62,39 @@ public class Evento {
     public Integer getIdEvento() {
         return idEvento;
     }
+
     public void setIdEvento(Integer idEvento) {
         this.idEvento = idEvento;
     }
+
     public String getTipoEvento() {
         return tipoEvento;
     }
+
     public void setTipoEvento(String tipoEvento) {
         this.tipoEvento = tipoEvento;
     }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
+
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
+
     public String getDescripcion() {
         return descripcion;
     }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
     public Mascota getMascota() {
         return mascota;
     }
+
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }

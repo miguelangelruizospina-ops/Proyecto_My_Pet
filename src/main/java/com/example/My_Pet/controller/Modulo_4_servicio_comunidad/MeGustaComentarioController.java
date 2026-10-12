@@ -24,124 +24,105 @@ import java.util.Map;
 @RequestMapping("/api/me-gusta/comentarios")
 public class MeGustaComentarioController {
 
-    // Servicio encargado de gestionar los "Me gusta" de los comentarios.
+        // Servicio encargado de gestionar los "Me gusta" de los comentarios.
 
-    @Autowired
-    private MeGustaComentarioService meGustaService;
+        @Autowired
+        private MeGustaComentarioService meGustaService;
 
-    // Agrega o quita el "Me gusta" de un comentario y devuelve la cantidad actual.
+        // Agrega o quita el "Me gusta" de un comentario y devuelve la cantidad actual.
 
-    @PostMapping("/{idComentario}")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> cambiarMeGusta(
-            @PathVariable("idComentario") Integer idComentario) {
-        UsuarioPrincipal usuarioPrincipal =
-                obtenerUsuarioAutenticado();
+        @PostMapping("/{idComentario}")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> cambiarMeGusta(
+                        @PathVariable("idComentario") Integer idComentario) {
+                UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
 
-        // Verifica que se pueda identificar al usuario que inició sesión.
+                // Verifica que se pueda identificar al usuario que inició sesión.
 
-        if (usuarioPrincipal == null) {
-            return ResponseEntity.status(401)
-                    .body(
-                            "No se pudo identificar al usuario autenticado."
-                    );
+                if (usuarioPrincipal == null) {
+                        return ResponseEntity.status(401)
+                                        .body(
+                                                        "No se pudo identificar al usuario autenticado.");
+                }
+                try {
+                        Integer idUsuario = usuarioPrincipal.idUsuario();
+                        boolean dado = meGustaService.cambiarMeGusta(
+                                        idUsuario,
+                                        idComentario);
+                        long cantidad = meGustaService.contarMeGustas(
+                                        idComentario);
+                        return ResponseEntity.ok(
+                                        Map.of(
+                                                        "meGusta", dado,
+                                                        "cantidad", cantidad));
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-        try {
-            Integer idUsuario =
-                    usuarioPrincipal.idUsuario();
-            boolean dado =
-                    meGustaService.cambiarMeGusta(
-                            idUsuario,
-                            idComentario
-                    );
-            long cantidad =
-                    meGustaService.contarMeGustas(
-                            idComentario
-                    );
-            return ResponseEntity.ok(
-                    Map.of(
-                            "meGusta", dado,
-                            "cantidad", cantidad
-                    )
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
+
+        // Consulta la cantidad de "Me gusta" de un comentario registrado en el foro.
+
+        @GetMapping("/{idComentario}/cantidad")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> contarMeGustas(
+                        @PathVariable("idComentario") Integer idComentario) {
+                try {
+                        long cantidad = meGustaService.contarMeGustas(
+                                        idComentario);
+                        return ResponseEntity.ok(
+                                        Map.of("cantidad", cantidad));
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-    }
 
-    // Consulta la cantidad de "Me gusta" de un comentario registrado en el foro.
+        // Verifica si el usuario que inició sesión dio "Me gusta" a un comentario
+        // registrado en el foro.
 
-    @GetMapping("/{idComentario}/cantidad")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> contarMeGustas(
-            @PathVariable("idComentario") Integer idComentario) {
-        try {
-            long cantidad =
-                    meGustaService.contarMeGustas(
-                            idComentario
-                    );
-            return ResponseEntity.ok(
-                    Map.of("cantidad", cantidad)
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
+        @GetMapping("/{idComentario}/mi-me-gusta")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> verificarMeGusta(
+                        @PathVariable("idComentario") Integer idComentario) {
+
+                // Obtiene el usuario que inició sesión.
+
+                UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
+
+                // Verifica que se pueda identificar al usuario que inició sesión.
+
+                if (usuarioPrincipal == null) {
+                        return ResponseEntity.status(401)
+                                        .body(
+                                                        "No se pudo identificar al usuario autenticado.");
+                }
+                try {
+                        Integer idUsuario = usuarioPrincipal.idUsuario();
+                        boolean meGusta = meGustaService.usuarioDioMeGusta(
+                                        idUsuario,
+                                        idComentario);
+                        return ResponseEntity.ok(
+                                        Map.of("meGusta", meGusta));
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-    }
 
-    // Verifica si el usuario que inició sesión dio "Me gusta" a un comentario registrado en el foro.
+        // Obtiene la autenticacion del usuario que inició sesión.
 
-    @GetMapping("/{idComentario}/mi-me-gusta")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> verificarMeGusta(
-            @PathVariable("idComentario") Integer idComentario) {
-
-        // Obtiene el usuario que inició sesión.
-
-        UsuarioPrincipal usuarioPrincipal =
-                obtenerUsuarioAutenticado();
-
-        // Verifica que se pueda identificar al usuario que inició sesión.
-
-        if (usuarioPrincipal == null) {
-            return ResponseEntity.status(401)
-                    .body(
-                            "No se pudo identificar al usuario autenticado."
-                    );
+        private UsuarioPrincipal obtenerUsuarioAutenticado() {
+                Authentication authentication = SecurityContextHolder
+                                .getContext()
+                                .getAuthentication();
+                if (authentication == null) {
+                        return null;
+                }
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof UsuarioPrincipal usuarioPrincipal) {
+                        return usuarioPrincipal;
+                }
+                return null;
         }
-        try {
-            Integer idUsuario =
-                    usuarioPrincipal.idUsuario();
-            boolean meGusta =
-                    meGustaService.usuarioDioMeGusta(
-                            idUsuario,
-                            idComentario
-                    );
-            return ResponseEntity.ok(
-                    Map.of("meGusta", meGusta)
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
-        }
-    }
-
-    // Obtiene la autenticacion del usuario que inició sesión.
-
-    private UsuarioPrincipal obtenerUsuarioAutenticado() {
-        Authentication authentication =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        Object principal =
-                authentication.getPrincipal();
-        if (principal instanceof UsuarioPrincipal usuarioPrincipal) {
-            return usuarioPrincipal;
-        }
-        return null;
-    }
 }

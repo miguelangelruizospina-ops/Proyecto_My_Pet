@@ -26,127 +26,117 @@ import java.util.List;
 @RequestMapping("/api/publicaciones-foro")
 public class PublicacionForoController {
 
- // Servicio encargado de gestionar las publicaciones del foro.
+        // Servicio encargado de gestionar las publicaciones del foro.
 
-    @Autowired
-    private PublicacionForoService forumService;
+        @Autowired
+        private PublicacionForoService forumService;
 
-   //Lista todas las publicaciones (no comentarios) en el foro.
+        // Lista todas las publicaciones (no comentarios) en el foro.
 
-    @GetMapping("/listar")
-    public List<PublicacionForo> listarTodo() {
-        return forumService.obtenerTodas();
-    }
-
-    //Lista todas las publicaciones (no comentarios) del foro por su ID para el usuario y adminsitradores.
-
-    @GetMapping("/usuario/{idUsuario}")
-    @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
-    public List<PublicacionForo> listarPorUsuario(
-            @PathVariable("idUsuario") Integer idUsuario) {
-        return forumService.obtenerPorUsuario(idUsuario);
-    }
-
-    
-    // Crea una publicacion nueva de un usario existente.
-   
-    @PostMapping("/guardar")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> crearPublicacion(
-            @RequestBody PublicacionForo publicacion) {
-        try {
-            UsuarioPrincipal usuarioPrincipal =
-                    obtenerUsuarioAutenticado();
-            if (usuarioPrincipal == null) {
-                return ResponseEntity.status(401)
-                        .body("No se pudo identificar al usuario autenticado.");
-            }
-            Integer idUsuario =
-                    usuarioPrincipal.idUsuario();
-            Usuario usuario = new Usuario();
-            usuario.setIdUsuario(idUsuario);
-            publicacion.setUsuario(usuario);
-            PublicacionForo nuevaPublicacion =
-                    forumService.guardar(publicacion);
-            return ResponseEntity.ok(nuevaPublicacion);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
+        @GetMapping("/listar")
+        public List<PublicacionForo> listarTodo() {
+                return forumService.obtenerTodas();
         }
-    }
 
-    //Editar una  publicacion ya creada por el usuario existente
+        // Lista todas las publicaciones (no comentarios) del foro por su ID para el
+        // usuario y adminsitradores.
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarPublicacion(
-            @PathVariable("id") Integer id,
-            @RequestBody PublicacionForo publicacion) {
-        UsuarioPrincipal usuarioPrincipal =
-                obtenerUsuarioAutenticado();
-        if (usuarioPrincipal == null) {
-            return ResponseEntity.status(401)
-                    .body("No se pudo identificar al usuario autenticado.");
+        @GetMapping("/usuario/{idUsuario}")
+        @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
+        public List<PublicacionForo> listarPorUsuario(
+                        @PathVariable("idUsuario") Integer idUsuario) {
+                return forumService.obtenerPorUsuario(idUsuario);
         }
-        try {
-            PublicacionForo actualizada =
-                    forumService.actualizar(
-                            id,
-                            publicacion,
-                            usuarioPrincipal
-                    );
-            return ResponseEntity.ok(actualizada);
-        } catch (SecurityException e) {
-            return ResponseEntity.status(403)
-                    .body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
-        }
-    }
 
-    // Elimina las publicaciones creadas  en el foro
+        // Crea una publicacion nueva de un usario existente.
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminarPublicacion(
-            @PathVariable("id") Integer id) {
-        UsuarioPrincipal usuarioPrincipal =
-                obtenerUsuarioAutenticado();
-        if (usuarioPrincipal == null) {
-            return ResponseEntity.status(401)
-                    .body("No se pudo identificar al usuario autenticado.");
+        @PostMapping("/guardar")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> crearPublicacion(
+                        @RequestBody PublicacionForo publicacion) {
+                try {
+                        UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
+                        if (usuarioPrincipal == null) {
+                                return ResponseEntity.status(401)
+                                                .body("No se pudo identificar al usuario autenticado.");
+                        }
+                        Integer idUsuario = usuarioPrincipal.idUsuario();
+                        Usuario usuario = new Usuario();
+                        usuario.setIdUsuario(idUsuario);
+                        publicacion.setUsuario(usuario);
+                        PublicacionForo nuevaPublicacion = forumService.guardar(publicacion);
+                        return ResponseEntity.ok(nuevaPublicacion);
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-        try {
-            forumService.eliminar(
-                    id,
-                    usuarioPrincipal
-            );
-            return ResponseEntity.ok(
-                    "Publicación eliminada correctamente."
-            );
-        } catch (SecurityException e) {
-            return ResponseEntity.status(403)
-                    .body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
-        }
-    }
 
-    //Se obtiene la autenticacion del usuario que va a crear la publicacion en el foro.
+        // Editar una publicacion ya creada por el usuario existente
 
-    private UsuarioPrincipal obtenerUsuarioAutenticado() {
-        Authentication authentication =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
-        if (authentication == null) {
-            return null;
+        @PutMapping("/{id}")
+        public ResponseEntity<?> actualizarPublicacion(
+                        @PathVariable("id") Integer id,
+                        @RequestBody PublicacionForo publicacion) {
+                UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
+                if (usuarioPrincipal == null) {
+                        return ResponseEntity.status(401)
+                                        .body("No se pudo identificar al usuario autenticado.");
+                }
+                try {
+                        PublicacionForo actualizada = forumService.actualizar(
+                                        id,
+                                        publicacion,
+                                        usuarioPrincipal);
+                        return ResponseEntity.ok(actualizada);
+                } catch (SecurityException e) {
+                        return ResponseEntity.status(403)
+                                        .body(e.getMessage());
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-        Object principal =
-                authentication.getPrincipal();
-        if (principal instanceof UsuarioPrincipal usuarioPrincipal) {
-            return usuarioPrincipal;
+
+        // Elimina las publicaciones creadas en el foro
+
+        @DeleteMapping("/{id}")
+        public ResponseEntity<?> eliminarPublicacion(
+                        @PathVariable("id") Integer id) {
+                UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
+                if (usuarioPrincipal == null) {
+                        return ResponseEntity.status(401)
+                                        .body("No se pudo identificar al usuario autenticado.");
+                }
+                try {
+                        forumService.eliminar(
+                                        id,
+                                        usuarioPrincipal);
+                        return ResponseEntity.ok(
+                                        "Publicación eliminada correctamente.");
+                } catch (SecurityException e) {
+                        return ResponseEntity.status(403)
+                                        .body(e.getMessage());
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-        return null;
-    }
+
+        // Se obtiene la autenticacion del usuario que va a crear la publicacion en el
+        // foro.
+
+        private UsuarioPrincipal obtenerUsuarioAutenticado() {
+                Authentication authentication = SecurityContextHolder
+                                .getContext()
+                                .getAuthentication();
+                if (authentication == null) {
+                        return null;
+                }
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof UsuarioPrincipal usuarioPrincipal) {
+                        return usuarioPrincipal;
+                }
+                return null;
+        }
 }

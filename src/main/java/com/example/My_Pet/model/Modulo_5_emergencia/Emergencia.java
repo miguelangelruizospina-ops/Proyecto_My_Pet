@@ -46,14 +46,10 @@ public class Emergencia {
     // Relacion de la emergencia y el usuario que la registra.
 
     @ManyToOne
-    @JoinColumn(
-        name = "id_usuario",
-        referencedColumnName = "id_usuario",
-        nullable = false
-    )
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
     private Usuario usuario;
 
-    // Relacion entre la emergencia y la mascota asociada. 
+    // Relacion entre la emergencia y la mascota asociada.
 
     @ManyToOne
     @JoinColumn(name = "id_mascota")
@@ -87,49 +83,64 @@ public class Emergencia {
     public Integer getIdEmergencia() {
         return idEmergencia;
     }
+
     public void setIdEmergencia(Integer idEmergencia) {
         this.idEmergencia = idEmergencia;
     }
+
     public String getTipo() {
         return tipo;
     }
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
     public String getDescripcion() {
         return descripcion;
     }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
+
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
+
     public String getEstado() {
         return estado;
     }
+
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
     public LocalDateTime getUltimaNotificacion() {
         return ultimaNotificacion;
     }
+
     public void setUltimaNotificacion(
             LocalDateTime ultimaNotificacion) {
         this.ultimaNotificacion = ultimaNotificacion;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
     public Mascota getMascota() {
         return mascota;
     }
+
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }

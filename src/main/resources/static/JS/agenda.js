@@ -1,4 +1,4 @@
- // Configuración y elementos principales de la agenda.
+// Configuración y elementos principales de la agenda.
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Obtiene el identificador del usuario desde la sesión almacenada.
-    
+
     const idUsuario = usuario.idUsuario || usuario.id_usuario || localStorage.getItem("idUsuario");
     if (!idUsuario) {
         if (estadoAgenda) estadoAgenda.textContent = "No se pudo identificar al usuario.";
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Obtiene la fecha actual en formato local.
-    
+
     function fechaLocal(fecha) {
         const ahora = new Date();
         const anio = ahora.getFullYear();
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Gestiona las solicitudes a la API y procesa las respuestas.
-    
+
     async function solicitar(url, opciones = {}) {
         const respuesta = await fetch(`${apiBase}${url}`, {
             ...opciones,
@@ -74,14 +74,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Muestra el mensaje correspondiente cuando ocurre un error en la agenda.
-    
+
     function mostrarError(error) {
         console.error("Error en agenda:", error);
         if (estadoAgenda) estadoAgenda.textContent = "No se pudo cargar o guardar la agenda.";
     }
 
     // Crea una tarjeta para mostrar la información de un evento.
-    
+
     function crearTarjeta(evento, incluirMascota) {
         const tarjeta = document.createElement("article");
         tarjeta.className = "tarjeta_agenda p-3 text-start";
@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Carga y muestra los eventos de la agenda general o personalizada.
-    
+
     async function cargarEventos() {
         const fechaSeleccionada = document.getElementById("calendario_principal")?.value;
         let eventos;
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Muestra las mascotas disponibles para consultar o asociar eventos.
-    
+
     function mostrarMascotas() {
         if (mascotasAgenda) {
             mascotasAgenda.replaceChildren();
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Carga la información inicial del usuario, sus mascotas y sus eventos.
-    
+
     async function iniciar() {
         try {
             mascotas = await solicitar(`/mascotas/usuario/${encodeURIComponent(idUsuario)}`);
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Abre el formulario para registrar un nuevo evento.
-    
+
     document.getElementById("btnNuevoEvento")?.addEventListener("click", function () {
         if (!mascotas.length) {
             if (estadoAgenda) estadoAgenda.textContent = "Registra una mascota antes de crear un evento.";
@@ -240,13 +240,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Cierra el formulario de registro de eventos.
-    
+
     document.getElementById("cerrarDialogoEvento")?.addEventListener("click", function () {
         dialogo.close();
     });
 
     // Registra un nuevo evento asociado a una mascota.
-    
+
     formulario?.addEventListener("submit", async function (event) {
         event.preventDefault();
         const fecha = document.getElementById("fechaEvento").value;

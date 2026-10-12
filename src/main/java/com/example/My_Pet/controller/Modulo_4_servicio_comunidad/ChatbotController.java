@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-
 // Librerías de Java.
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class ChatbotController {
     @Autowired
     private ChatbotService chatbotService;
 
-    //Envía un mensaje al chatbot y procesa la respuesta para el usuario.
+    // Envía un mensaje al chatbot y procesa la respuesta para el usuario.
 
     @PostMapping("/mensaje")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")

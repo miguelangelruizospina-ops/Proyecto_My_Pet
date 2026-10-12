@@ -17,7 +17,7 @@ public class PerfilMascota {
     @Column(name = "id_perfil_mascota")
     private Integer idPerfilMascota;
 
-    //Informacion del perfil de usuario.
+    // Informacion del perfil de usuario.
 
     @Column(length = 300)
     private String caracteristicas;
@@ -34,12 +34,7 @@ public class PerfilMascota {
     // Relación uno a uno entre el perfil y la mascota.
 
     @OneToOne
-    @JoinColumn(
-            name = "id_mascota",
-            referencedColumnName = "id_mascota",
-            nullable = false,
-            unique = true
-    )
+    @JoinColumn(name = "id_mascota", referencedColumnName = "id_mascota", nullable = false, unique = true)
     private Mascota mascota;
 
     // Constructor vacío requerido para crear la entidad perfil de mascota
@@ -69,36 +64,47 @@ public class PerfilMascota {
     public Integer getIdPerfilMascota() {
         return idPerfilMascota;
     }
+
     public void setIdPerfilMascota(Integer idPerfilMascota) {
         this.idPerfilMascota = idPerfilMascota;
     }
+
     public String getCaracteristicas() {
         return caracteristicas;
     }
+
     public void setCaracteristicas(String caracteristicas) {
         this.caracteristicas = caracteristicas;
     }
+
     public String getComportamiento() {
         return comportamiento;
     }
+
     public void setComportamiento(String comportamiento) {
         this.comportamiento = comportamiento;
     }
+
     public String getGustos() {
         return gustos;
     }
+
     public void setGustos(String gustos) {
         this.gustos = gustos;
     }
+
     public String getCuidadosEspeciales() {
         return cuidadosEspeciales;
     }
+
     public void setCuidadosEspeciales(String cuidadosEspeciales) {
         this.cuidadosEspeciales = cuidadosEspeciales;
     }
+
     public Mascota getMascota() {
         return mascota;
     }
+
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }

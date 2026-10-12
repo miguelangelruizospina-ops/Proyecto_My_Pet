@@ -46,13 +46,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const flechaVolverPerfil =
         document.getElementById(
             "flechaVolverPerfil"
-         );
+        );
 
     if (flechaVolverPerfil) {
 
         flechaVolverPerfil.href =
             `perfil_mascota.html?id=${encodeURIComponent(
-                 idMascotaHistorial
+                idMascotaHistorial
             )}`;
     }
 
@@ -315,6 +315,14 @@ function mostrarHistorial() {
         "No se han registrado antecedentes médicos."
     );
 
+    // Muestra las enfermedades actuales registradas.
+
+    mostrarTexto(
+        "mostrarEnfermedadesActuales",
+        historialActual.enfermedadesActuales,
+        "No se han registrado enfermedades actuales."
+    );
+
     // Muestra las alergias registradas.
 
     mostrarTexto(
@@ -538,6 +546,11 @@ function cargarDatosFormulario() {
         historialActual.antecedentesMedicos || "";
 
     document.getElementById(
+        "enfermedadesActuales"
+    ).value =
+        historialActual.enfermedadesActuales || "";
+
+    document.getElementById(
         "alergias"
     ).value =
         historialActual.alergias || "";
@@ -569,6 +582,10 @@ function limpiarFormulario() {
 
     document.getElementById(
         "antecedentes"
+    ).value = "";
+
+    document.getElementById(
+        "enfermedadesActuales"
     ).value = "";
 
     document.getElementById(
@@ -629,6 +646,11 @@ async function guardarHistorial(evento) {
             antecedentesMedicos:
                 obtenerValor(
                     "antecedentes"
+                ),
+
+            enfermedadesActuales:
+                obtenerValor(
+                    "enfermedadesActuales"
                 ),
 
             alergias:
@@ -889,42 +911,47 @@ function obtenerValorPorTipo(tipo) {
         case "Peso":
 
             return
-                historialActual.peso || "";
+            historialActual.peso || "";
 
         case "Enfermedad":
 
             return
-                historialActual.diagnosticos || "";
+            historialActual.diagnosticos || "";
+
+        case "Enfermedad actual":
+
+            return
+            historialActual.enfermedadesActuales || "";
 
         case "Antecedente":
 
             return
-                historialActual.antecedentesMedicos || "";
+            historialActual.antecedentesMedicos || "";
 
         case "Alergia":
 
             return
-                historialActual.alergias || "";
+            historialActual.alergias || "";
 
         case "Medicamento":
 
             return
-                historialActual.tratamientos || "";
+            historialActual.tratamientos || "";
 
         case "Cirugía":
 
             return
-                historialActual.cirugiasProcedimientos || "";
+            historialActual.cirugiasProcedimientos || "";
 
         case "Vacuna":
 
             return
-                historialActual.vacunacion || "";
+            historialActual.vacunacion || "";
 
         case "Consulta":
 
             return
-                historialActual.consultasAtenciones || "";
+            historialActual.consultasAtenciones || "";
 
         default:
 
@@ -951,6 +978,13 @@ function asignarValorHistorial(
         case "Enfermedad":
 
             historialActual.diagnosticos =
+                valor;
+
+            break;
+
+        case "Enfermedad actual":
+
+            historialActual.enfermedadesActuales =
                 valor;
 
             break;
@@ -1014,6 +1048,14 @@ function asignarValorFormulario(
 ) {
 
     switch (tipo) {
+
+        case "Enfermedad actual":
+
+            document.getElementById(
+                "enfermedadesActuales"
+            ).value = valor;
+
+            break;
 
         case "Antecedente":
 
@@ -1097,6 +1139,9 @@ async function actualizarHistorial() {
 
             antecedentesMedicos:
                 historialActual.antecedentesMedicos || "",
+
+            enfermedadesActuales:
+                historialActual.enfermedadesActuales || "",
 
             alergias:
                 historialActual.alergias || "",

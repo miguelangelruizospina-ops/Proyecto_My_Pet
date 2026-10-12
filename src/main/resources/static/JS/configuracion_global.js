@@ -3,7 +3,7 @@
 (function () {
 
     // Aplica la configuración general de la aplicación.
-   
+
     function aplicarConfiguracionGlobal() {
 
         const body = document.body;
@@ -13,7 +13,7 @@
         }
 
         // Aplica el tema seleccionado por el usuario.
-       
+
         let tema =
             localStorage.getItem("temaMyPet") || "claro";
 
@@ -41,7 +41,7 @@
         );
 
         // Aplica el tamaño de letra seleccionado por el usuario.
-       
+
         let tamanoLetra =
             localStorage.getItem("tamanoLetraMyPet")
             || "normal";
@@ -74,7 +74,7 @@
         );
 
         // Aplica el color principal seleccionado por el usuario.
-       
+
         let color =
             localStorage.getItem("colorMyPet")
             || "naranja";
@@ -107,7 +107,7 @@
         );
 
         // Aplica la configuración de alto contraste.
-        
+
         const altoContraste =
             localStorage.getItem(
                 "altoContrasteMyPet"
@@ -126,7 +126,7 @@
         );
 
         // Verifica y configura el estado de las notificaciones.
-       
+
         const notificaciones =
             localStorage.getItem(
                 "notificacionesMyPet"
@@ -134,7 +134,7 @@
 
         // Si nunca se ha configurado,
         // las notificaciones quedan activadas.
-       
+
         if (notificaciones === null) {
 
             localStorage.setItem(
@@ -145,7 +145,7 @@
         }
 
         // Marca que la configuración global de My Pet ya fue aplicada.
-        
+
         body.classList.add(
             "configuracion-mypet-aplicada"
         );
@@ -153,7 +153,7 @@
     }
 
     // Ejecuta la configuración cuando termina de cargar la página.
-    
+
     if (document.readyState === "loading") {
 
         document.addEventListener(

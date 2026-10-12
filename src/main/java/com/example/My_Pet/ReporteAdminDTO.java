@@ -39,8 +39,7 @@ public class ReporteAdminDTO {
                     usuarioReporte.getIdUsuario(),
                     usuarioReporte.getNombre(),
                     usuarioReporte.getApellidos(),
-                    usuarioReporte.getUsuario()
-            );
+                    usuarioReporte.getUsuario());
         }
     }
 
@@ -49,24 +48,31 @@ public class ReporteAdminDTO {
     public Integer getIdReporte() {
         return idReporte;
     }
+
     public UsuarioResumen getUsuario() {
         return usuario;
     }
+
     public String getDescripcion() {
         return descripcion;
     }
+
     public String getPagina() {
         return pagina;
     }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
+
     public String getNavegador() {
         return navegador;
     }
+
     public String getEstado() {
         return estado;
     }
+
     public String getRespuesta() {
         return respuesta;
     }
@@ -77,7 +83,6 @@ public class ReporteAdminDTO {
             Integer idUsuario,
             String nombre,
             String apellidos,
-            String usuario
-    ) {
+            String usuario) {
     }
 }

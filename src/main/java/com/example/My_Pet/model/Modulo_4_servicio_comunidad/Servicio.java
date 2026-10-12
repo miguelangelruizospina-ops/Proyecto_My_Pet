@@ -39,11 +39,7 @@ public class Servicio {
     // Relación entre el servicio y el usuario que lo registra.
 
     @ManyToOne
-    @JoinColumn(
-        name = "id_usuario",
-        referencedColumnName = "id_usuario",
-        nullable = false
-    )
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
     private Usuario usuario;
 
     // Constructor vacío requerido para crear la entidad servicio.
@@ -75,42 +71,55 @@ public class Servicio {
     public Integer getIdServicio() {
         return idServicio;
     }
+
     public void setIdServicio(Integer idServicio) {
         this.idServicio = idServicio;
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     public String getTipo() {
         return tipo;
     }
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
     public String getUbicacion() {
         return ubicacion;
     }
+
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
+
     public String getDescripcion() {
         return descripcion;
     }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
     public Integer getCalificacion() {
         return calificacion;
     }
+
     public void setCalificacion(Integer calificacion) {
         this.calificacion = calificacion;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }

@@ -24,7 +24,6 @@ public class MascotaController {
     @Autowired
     private MascotaService mascotaService;
 
-
     // Lista todas las mascotas existentes. ***SOLO PARA ADMINISTRADORES***
 
     @GetMapping("/listar")
@@ -33,8 +32,7 @@ public class MascotaController {
         return mascotaService.obtenerTodasLasMascotas();
     }
 
-
-    //Lista una mascota existente asociada un usuario existente. 
+    // Lista una mascota existente asociada un usuario existente.
 
     @GetMapping("/usuario/{idUsuario}")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0)")
@@ -43,8 +41,7 @@ public class MascotaController {
         return mascotaService.obtenerMascotasPorUsuario(idUsuario);
     }
 
-
-    //Lista una mascota existente por su ID.
+    // Lista una mascota existente por su ID.
 
     @GetMapping("/{id}")
     @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0)")
@@ -53,7 +50,7 @@ public class MascotaController {
         return mascotaService.obtenerMascotaPorId(id);
     }
 
-    //Registra una nueva mascota.
+    // Registra una nueva mascota.
 
     @PostMapping("/crear")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0.usuario?.idUsuario)")
@@ -72,7 +69,8 @@ public class MascotaController {
         return mascotaService.actualizarMascota(id, mascota);
     }
 
-    // Elimina una mascota reigistrada. ***SOLO PARA EL ADMINISTRADOR O EL USUARIO PROPIETARIO DE LA MASCOTA***
+    // Elimina una mascota reigistrada. ***SOLO PARA EL ADMINISTRADOR O EL USUARIO
+    // PROPIETARIO DE LA MASCOTA***
 
     @DeleteMapping("/eliminar/{id}")
     @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0)")

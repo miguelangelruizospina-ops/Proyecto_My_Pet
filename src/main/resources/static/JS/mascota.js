@@ -346,9 +346,9 @@ function mostrarMascotas(mascotas) {
 
             imagen.src =
                 rutaFoto.startsWith("data:") ||
-                rutaFoto.startsWith("/") ||
-                rutaFoto.startsWith("http://") ||
-                rutaFoto.startsWith("https://")
+                    rutaFoto.startsWith("/") ||
+                    rutaFoto.startsWith("http://") ||
+                    rutaFoto.startsWith("https://")
                     ? rutaFoto
                     : `../fotos/${encodeURIComponent(rutaFoto)}`;
 
@@ -403,9 +403,8 @@ function mostrarMascotas(mascotas) {
                 "text-white mb-1";
 
             especie.textContent =
-                `Especie: ${
-                    mascota.especie ||
-                    "No registrada"
+                `Especie: ${mascota.especie ||
+                "No registrada"
                 }`;
 
             // Muestra la raza registrada de la mascota.
@@ -417,9 +416,8 @@ function mostrarMascotas(mascotas) {
                 "text-white mb-2";
 
             raza.textContent =
-                `Raza: ${
-                    mascota.raza ||
-                    "No registrada"
+                `Raza: ${mascota.raza ||
+                "No registrada"
                 }`;
 
             // Configura el botón para acceder al perfil de la mascota.
@@ -1051,94 +1049,94 @@ function mostrarDatosMascota() {
     establecerTexto(
         "nombreMascotaTitulo",
         mascotaActual.nombre ||
-            "Mascota"
+        "Mascota"
     );
 
     establecerTexto(
         "nombreMascota",
         "Nombre: " +
-            (
-                mascotaActual.nombre ||
-                "No registrado"
-            )
+        (
+            mascotaActual.nombre ||
+            "No registrado"
+        )
     );
 
     establecerTexto(
         "especieMascota",
         "Especie: " +
-            (
-                mascotaActual.especie ||
-                "No registrada"
-            )
+        (
+            mascotaActual.especie ||
+            "No registrada"
+        )
     );
 
     establecerTexto(
         "razaMascota",
         "Raza: " +
-            (
-                mascotaActual.raza ||
-                "No registrada"
-            )
+        (
+            mascotaActual.raza ||
+            "No registrada"
+        )
     );
 
     establecerTexto(
         "fechaNacimientoMascota",
         "Fecha de nacimiento: " +
-            (
-                mascotaActual.fechaNacimiento
-                    ? formatearFecha(
-                        mascotaActual.fechaNacimiento
-                    )
-                    : "No registrada"
-            )
+        (
+            mascotaActual.fechaNacimiento
+                ? formatearFecha(
+                    mascotaActual.fechaNacimiento
+                )
+                : "No registrada"
+        )
     );
 
     establecerTexto(
         "edadMascota",
         "Edad: " +
-            (
-                mascotaActual.fechaNacimiento
-                    ? calcularEdad(
-                        mascotaActual.fechaNacimiento
-                    )
-                    : "No registrada"
-            )
+        (
+            mascotaActual.fechaNacimiento
+                ? calcularEdad(
+                    mascotaActual.fechaNacimiento
+                )
+                : "No registrada"
+        )
     );
 
     establecerTexto(
         "caracteristicasInformacion",
         "Características: " +
-            (
-                perfilMascotaActual?.caracteristicas ||
-                "No registradas"
-            )
+        (
+            perfilMascotaActual?.caracteristicas ||
+            "No registradas"
+        )
     );
 
     establecerTexto(
         "comportamientoInformacion",
         "Comportamiento: " +
-            (
-                perfilMascotaActual?.comportamiento ||
-                "No registrado"
-            )
+        (
+            perfilMascotaActual?.comportamiento ||
+            "No registrado"
+        )
     );
 
     establecerTexto(
         "gustosInformacion",
         "Gustos: " +
-            (
-                perfilMascotaActual?.gustos ||
-                "No registrados"
-            )
+        (
+            perfilMascotaActual?.gustos ||
+            "No registrados"
+        )
     );
 
     establecerTexto(
         "cuidadosInformacion",
         "Cuidados especiales: " +
-            (
-                perfilMascotaActual?.cuidadosEspeciales ||
-                "No registrados"
-            )
+        (
+            perfilMascotaActual?.cuidadosEspeciales ||
+            "No registrados"
+        )
     );
 
     mostrarFotoMascota();
@@ -1253,25 +1251,25 @@ function abrirEdicion() {
     establecerValor(
         "editarCaracteristicas",
         perfilMascotaActual?.caracteristicas ||
-            ""
+        ""
     );
 
     establecerValor(
         "editarComportamiento",
         perfilMascotaActual?.comportamiento ||
-            ""
+        ""
     );
 
     establecerValor(
         "editarGustos",
         perfilMascotaActual?.gustos ||
-            ""
+        ""
     );
 
     establecerValor(
         "editarCuidados",
         perfilMascotaActual?.cuidadosEspeciales ||
-            ""
+        ""
     );
 
     const informacion =
@@ -1711,7 +1709,7 @@ function calcularEdad(
         (
             diferenciaMes === 0 &&
             hoy.getDate() <
-                nacimiento.getDate()
+            nacimiento.getDate()
         )
     ) {
 

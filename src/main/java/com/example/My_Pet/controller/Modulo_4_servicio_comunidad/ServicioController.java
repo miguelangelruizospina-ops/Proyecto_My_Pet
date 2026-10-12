@@ -26,13 +26,13 @@ public class ServicioController {
     @Autowired
     private ServicioService servicioService;
 
-    //Lista todos los servicios de todos los usuarios registrados.
+    // Lista todos los servicios de todos los usuarios registrados.
     @GetMapping("/listar")
     public List<Servicio> listarTodo() {
         return servicioService.obtenerTodos();
     }
 
-    // Lista los servicios  según su tipo de un usuario registrado.
+    // Lista los servicios según su tipo de un usuario registrado.
     @GetMapping("/tipo/{tipo}")
     public List<Servicio> listarPorTipo(@PathVariable String tipo) {
         return servicioService.obtenerPorTipo(tipo);
@@ -50,7 +50,7 @@ public class ServicioController {
         }
     }
 
-    //Regitra un nuvo servicio de un usuario registrado.
+    // Regitra un nuvo servicio de un usuario registrado.
 
     @PostMapping("/guardar")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0.usuario?.idUsuario)")
@@ -79,7 +79,7 @@ public class ServicioController {
     }
 
     // Elimina un servicio registrado por su ID lo puede realizar el usuario o Admi.
-    
+
     @DeleteMapping("/{id}")
     @PreAuthorize("@autorizacion.esServicioPropioOAdministrador(#p0)")
     public ResponseEntity<?> eliminarServicio(@PathVariable Integer id) {

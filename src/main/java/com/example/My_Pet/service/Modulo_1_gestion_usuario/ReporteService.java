@@ -28,7 +28,7 @@ public class ReporteService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-     // Lista todos los reportes registrados solo *** PARA LOS ADMINISTRADORES***
+    // Lista todos los reportes registrados solo *** PARA LOS ADMINISTRADORES***
     public List<ReporteAdminDTO> obtenerTodosLosReportes() {
         return reporteRepository.findAll()
                 .stream()
@@ -36,7 +36,7 @@ public class ReporteService {
                 .toList();
     }
 
-     // Lista los reportes asociados a un usuario.
+    // Lista los reportes asociados a un usuario.
 
     public List<Reporte> obtenerReportesPorUsuario(Integer idUsuario) {
         return reporteRepository.findByUsuarioIdUsuario(idUsuario);
@@ -47,11 +47,10 @@ public class ReporteService {
     public Reporte obtenerReportePorId(Integer idReporte) {
         return reporteRepository.findById(idReporte)
                 .orElseThrow(() -> new RuntimeException(
-                        "Reporte no encontrado con ID: " + idReporte
-                ));
+                        "Reporte no encontrado con ID: " + idReporte));
     }
 
-     // Registra un nuevo reporte asociado a un usuario.
+    // Registra un nuevo reporte asociado a un usuario.
 
     @Transactional
     public Reporte guardarReporte(
@@ -59,12 +58,11 @@ public class ReporteService {
             Reporte reporte) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException(
-                        "El usuario con ID " + idUsuario + " no existe"
-                ));
+                        "El usuario con ID " + idUsuario + " no existe"));
         reporte.setUsuario(usuario);
         reporte.setFecha(LocalDateTime.now());
 
-       // Reportes nuevos siempre su estado es pendiente.
+        // Reportes nuevos siempre su estado es pendiente.
 
         reporte.setEstado("pendiente");
 
@@ -74,7 +72,7 @@ public class ReporteService {
         return reporteRepository.save(reporte);
     }
 
-       // Actualiza el estado y la respuesta de un reporte existente.
+    // Actualiza el estado y la respuesta de un reporte existente.
 
     @Transactional
     public Reporte actualizarReporte(
@@ -83,17 +81,16 @@ public class ReporteService {
             String respuesta) {
         Reporte reporte = obtenerReportePorId(idReporte);
 
-          // Verifica que el estado recibido sea válido.
+        // Verifica que el estado recibido sea válido.
 
         if (!estado.equals("pendiente")
                 && !estado.equals("en_revision")
                 && !estado.equals("solucionado")) {
             throw new IllegalArgumentException(
-                    "Estado de reporte no válido: " + estado
-            );
+                    "Estado de reporte no válido: " + estado);
         }
 
-         // Actualiza el estado del reporte.
+        // Actualiza el estado del reporte.
 
         reporte.setEstado(estado);
 

@@ -19,109 +19,92 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MeGustaPublicacionService {
-    @Autowired
-    private MeGustaPublicacionRepository meGustaRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private PublicacionForoRepository publicacionRepository;
+        @Autowired
+        private MeGustaPublicacionRepository meGustaRepository;
+        @Autowired
+        private UsuarioRepository usuarioRepository;
+        @Autowired
+        private PublicacionForoRepository publicacionRepository;
 
-    // Agrega o elimina el "Me gusta" de una publicación.
+        // Agrega o elimina el "Me gusta" de una publicación.
 
-    @Transactional
-    public boolean cambiarMeGusta(
-            Integer idUsuario,
-            Integer idPublicacion) {
+        @Transactional
+        public boolean cambiarMeGusta(
+                        Integer idUsuario,
+                        Integer idPublicacion) {
 
-        // Verifica que el usuario exista
+                // Verifica que el usuario exista
 
-        Usuario usuario =
-                usuarioRepository.findById(idUsuario)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "El usuario no existe."
-                                )
-                        );
+                Usuario usuario = usuarioRepository.findById(idUsuario)
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "El usuario no existe."));
 
-        // Verifica que la publicación exista
+                // Verifica que la publicación exista
 
-        PublicacionForo publicacion =
-                publicacionRepository.findById(idPublicacion)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "La publicación no existe."
-                                )
-                        );
+                PublicacionForo publicacion = publicacionRepository.findById(idPublicacion)
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "La publicación no existe."));
 
-        // Busca si el usuario ya había dado Me gusta
+                // Busca si el usuario ya había dado Me gusta
 
-        var meGustaExistente =
-                meGustaRepository
-                        .findByUsuarioIdUsuarioAndPublicacionIdPublicacion(
-                                idUsuario,
-                                idPublicacion
-                        );
+                var meGustaExistente = meGustaRepository
+                                .findByUsuarioIdUsuarioAndPublicacionIdPublicacion(
+                                                idUsuario,
+                                                idPublicacion);
 
-        // Si ya existe el Me gusta lo elimina.
+                // Si ya existe el Me gusta lo elimina.
 
-        if (meGustaExistente.isPresent()) {
-            meGustaRepository.delete(
-                    meGustaExistente.get()
-            );
-            return false;
+                if (meGustaExistente.isPresent()) {
+                        meGustaRepository.delete(
+                                        meGustaExistente.get());
+                        return false;
+                }
+
+                // Si no existía el me gusta crea un nuevo Me gusta.
+
+                MeGustaPublicacion meGusta = new MeGustaPublicacion();
+                meGusta.setUsuario(usuario);
+                meGusta.setPublicacion(publicacion);
+                meGusta.setFecha(
+                                java.time.LocalDateTime.now());
+
+                // Guarda el nuevo Me gusta de la publicacion.
+
+                meGustaRepository.save(meGusta);
+                return true;
         }
 
-        // Si no existía el me gusta crea un nuevo Me gusta.
+        // Consulta la cantidad de "Me gusta" de una publicación.
 
-        MeGustaPublicacion meGusta =
-                new MeGustaPublicacion();
-        meGusta.setUsuario(usuario);
-        meGusta.setPublicacion(publicacion);
-        meGusta.setFecha(
-                java.time.LocalDateTime.now()
-        );
+        public long contarMeGustas(
+                        Integer idPublicacion) {
 
+                // Verifica que la publicación exista
 
-        // Guarda el nuevo Me gusta de la publicacion.
+                if (!publicacionRepository.existsById(idPublicacion)) {
+                        throw new IllegalArgumentException(
+                                        "La publicación no existe.");
+                }
 
-        meGustaRepository.save(meGusta);
-        return true;
-    }
+                // Devuelve la cantidad total de Me gusta de la publicación
 
-    // Consulta la cantidad de "Me gusta" de una publicación.
-
-    public long contarMeGustas(
-            Integer idPublicacion) {
-
-        // Verifica que la publicación exista
-
-        if (!publicacionRepository.existsById(idPublicacion)) {
-            throw new IllegalArgumentException(
-                    "La publicación no existe."
-            );
+                return meGustaRepository
+                                .countByPublicacionIdPublicacion(
+                                                idPublicacion);
         }
 
-        // Devuelve la cantidad total de Me gusta de la publicación
+        // Verifica si el usuario dio "Me gusta" a una publicación.
 
-        return meGustaRepository
-                .countByPublicacionIdPublicacion(
-                        idPublicacion
-                );
-    }
+        public boolean usuarioDioMeGusta(
+                        Integer idUsuario,
+                        Integer idPublicacion) {
 
-    // Verifica si el usuario dio "Me gusta" a una publicación.
+                // Comprueba si existe un registro para ese usuario y esa publicación.
 
-    public boolean usuarioDioMeGusta(
-            Integer idUsuario,
-            Integer idPublicacion) {
-
-        // Comprueba si existe un registro para ese usuario y esa publicación.
-
-        return meGustaRepository
-                .findByUsuarioIdUsuarioAndPublicacionIdPublicacion(
-                        idUsuario,
-                        idPublicacion
-                )
-                .isPresent();
-    }
+                return meGustaRepository
+                                .findByUsuarioIdUsuarioAndPublicacionIdPublicacion(
+                                                idUsuario,
+                                                idPublicacion)
+                                .isPresent();
+        }
 }

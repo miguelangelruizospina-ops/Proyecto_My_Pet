@@ -18,7 +18,7 @@ import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
 @Table(name = "notificacion")
 public class Notificacion {
 
-    //  Identificador unico de la notificacion.
+    // Identificador unico de la notificacion.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +35,10 @@ public class Notificacion {
     @Column(length = 100)
     private String estado;
 
-
     // Tipo de notificación que permite diferenciar su origen.
 
     @Column(length = 50, nullable = false)
     private String tipo;
-
 
     // Relación entre la notificación y el usuario al que pertenece.
 
@@ -72,41 +70,53 @@ public class Notificacion {
         this.usuario = usuario;
     }
 
-    // Getters y setters- Métodos para obtener y modificar los datos de la entidad notificacion.
+    // Getters y setters- Métodos para obtener y modificar los datos de la entidad
+    // notificacion.
 
     public Integer getIdNotificacion() {
         return idNotificacion;
     }
+
     public void setIdNotificacion(Integer idNotificacion) {
         this.idNotificacion = idNotificacion;
     }
+
     public String getMensaje() {
         return mensaje;
     }
+
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
+
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
+
     public String getEstado() {
         return estado;
     }
+
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
     public String getTipo() {
         return tipo;
     }
+
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }

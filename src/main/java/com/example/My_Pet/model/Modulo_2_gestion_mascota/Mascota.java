@@ -18,14 +18,14 @@ import com.example.My_Pet.model.Modulo_1_gestion_usuario.Usuario;
 @Table(name = "mascota")
 public class Mascota {
 
-    //Identificador unico de una mascota registrada.
+    // Identificador unico de una mascota registrada.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_mascota")
     private Integer idMascota;
 
-    //Informacion de la mascota registrada.
+    // Informacion de la mascota registrada.
 
     @Column(nullable = false, length = 100)
     private String nombre;
@@ -56,8 +56,8 @@ public class Mascota {
     // Constructor para crear una nueva mascota con sus datos.
 
     public Mascota(Integer idMascota, String nombre, String especie,
-                   String raza, LocalDate fechaNacimiento,
-                   String foto, Usuario usuario) {
+            String raza, LocalDate fechaNacimiento,
+            String foto, Usuario usuario) {
         this.idMascota = idMascota;
         this.nombre = nombre;
         this.especie = especie;
@@ -72,42 +72,55 @@ public class Mascota {
     public Integer getIdMascota() {
         return idMascota;
     }
+
     public void setIdMascota(Integer idMascota) {
         this.idMascota = idMascota;
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     public String getEspecie() {
         return especie;
     }
+
     public void setEspecie(String especie) {
         this.especie = especie;
     }
+
     public String getRaza() {
         return raza;
     }
+
     public void setRaza(String raza) {
         this.raza = raza;
     }
+
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
+
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
     public String getFoto() {
         return foto;
     }
+
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }

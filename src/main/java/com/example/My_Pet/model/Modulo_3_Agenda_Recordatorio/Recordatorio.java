@@ -19,8 +19,8 @@ import com.example.My_Pet.model.Modulo_2_gestion_mascota.Mascota;
 @Table(name = "recordatorio")
 public class Recordatorio {
 
-    // Identifcador unico del recordatorio. 
-    
+    // Identifcador unico del recordatorio.
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_recordatorio")
@@ -40,21 +40,13 @@ public class Recordatorio {
     // Relación entre el recordatorio y el usuario al que pertenece.
 
     @ManyToOne
-    @JoinColumn(
-        name = "id_usuario",
-        referencedColumnName = "id_usuario",
-        nullable = false
-    )
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
     private Usuario usuario;
 
     // Relación entre el recordatorio y la mascota a la que pertenece.
 
     @ManyToOne
-    @JoinColumn(
-        name = "id_mascota",
-        referencedColumnName = "id_mascota",
-        nullable = false
-    )
+    @JoinColumn(name = "id_mascota", referencedColumnName = "id_mascota", nullable = false)
     private Mascota mascota;
 
     // Constructor vacío requerido para crear la entidad recordatori.
@@ -85,36 +77,47 @@ public class Recordatorio {
     public Integer getIdRecordatorio() {
         return idRecordatorio;
     }
+
     public void setIdRecordatorio(Integer idRecordatorio) {
         this.idRecordatorio = idRecordatorio;
     }
+
     public String getMensaje() {
         return mensaje;
     }
+
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
+
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
+
     public String getEstado() {
         return estado;
     }
+
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
     public Mascota getMascota() {
         return mascota;
     }
+
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }

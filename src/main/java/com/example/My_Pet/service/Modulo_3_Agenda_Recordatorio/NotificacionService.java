@@ -32,15 +32,14 @@ public class NotificacionService {
         return notificacionRepository.findAll();
     }
 
-    // Obtener las notificaciones registradas  de un usuario
+    // Obtener las notificaciones registradas de un usuario
 
     public List<Notificacion> obtenerPorUsuario(Integer idUsuario) {
         return notificacionRepository
                 .findByUsuarioIdUsuario(idUsuario);
     }
 
-
-    // crea una nueva notificacion. 
+    // crea una nueva notificacion.
 
     public Notificacion crear(
             Integer idUsuario,
@@ -51,45 +50,38 @@ public class NotificacionService {
 
         if (mensaje == null || mensaje.trim().isEmpty()) {
             throw new IllegalArgumentException(
-                    "El mensaje de la notificación no puede estar vacío."
-            );
+                    "El mensaje de la notificación no puede estar vacío.");
         }
 
         // Verificar que el tipo de notificación no esté vacío.
 
         if (tipo == null || tipo.trim().isEmpty()) {
             throw new IllegalArgumentException(
-                    "El tipo de la notificación no puede estar vacío."
-            );
+                    "El tipo de la notificación no puede estar vacío.");
         }
 
         // Convertir el tipo a mayúsculas para mantener un formato uniforme.
 
         String tipoNormalizado = tipo.trim().toUpperCase();
 
-
         // Verificar que el tipo corresponda a una agenda o emergencia.
 
         if (!tipoNormalizado.equals("AGENDA")
                 && !tipoNormalizado.equals("EMERGENCIA")) {
             throw new IllegalArgumentException(
-                    "El tipo de notificación debe ser AGENDA o EMERGENCIA."
-            );
+                    "El tipo de notificación debe ser AGENDA o EMERGENCIA.");
         }
 
         // Buscar el usuario al que pertenece la notificación.
 
         Usuario usuario = usuarioRepository
                 .findById(idUsuario)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "El usuario con ID "
-                                        + idUsuario
-                                        + " no existe."
-                        )
-                );
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "El usuario con ID "
+                                + idUsuario
+                                + " no existe."));
 
-       // Crea y configura la nueva notificación.
+        // Crea y configura la nueva notificación.
 
         Notificacion notificacion = new Notificacion();
         notificacion.setMensaje(mensaje);
@@ -104,34 +96,26 @@ public class NotificacionService {
 
     }
 
-
     // Marcar una notificación como leída
 
     public Notificacion marcarComoLeida(Integer id) {
 
         // Buscar la notificación por su ID.
 
-        Notificacion notificacion =
-                notificacionRepository.findById(id)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "La notificación con ID "
-                                                + id
-                                                + " no existe."
-                                )
-                        );
-
+        Notificacion notificacion = notificacionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "La notificación con ID "
+                                + id
+                                + " no existe."));
 
         // Cambiar el estado de la notificación a leída.
 
         notificacion.setEstado("LEIDA");
 
-
         // Guardar el cambio en la base de datos.
 
         return notificacionRepository.save(notificacion);
     }
-
 
     // Marcar todas las notificaciones de un usuario como leídas
 
@@ -139,9 +123,8 @@ public class NotificacionService {
 
         // Obtener todas las notificaciones del usuario.
 
-        List<Notificacion> notificaciones =
-                notificacionRepository
-                        .findByUsuarioIdUsuario(idUsuario);
+        List<Notificacion> notificaciones = notificacionRepository
+                .findByUsuarioIdUsuario(idUsuario);
 
         // Marca como leídas todas las notificaciones del usuario.
 
@@ -150,7 +133,6 @@ public class NotificacionService {
         }
         notificacionRepository.saveAll(notificaciones);
     }
-
 
     // Eliminar una notificación
 
@@ -162,10 +144,8 @@ public class NotificacionService {
             throw new IllegalArgumentException(
                     "La notificación con ID "
                             + id
-                            + " no existe."
-            );
+                            + " no existe.");
         }
-
 
         // Eliminar la notificación de la base de datos.
 
@@ -178,9 +158,8 @@ public class NotificacionService {
 
         // Obtener todas las notificaciones pertenecientes al usuario.
 
-        List<Notificacion> notificaciones =
-                notificacionRepository
-                        .findByUsuarioIdUsuario(idUsuario);
+        List<Notificacion> notificaciones = notificacionRepository
+                .findByUsuarioIdUsuario(idUsuario);
 
         // Eliminar las notificaciones si existen.
 

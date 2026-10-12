@@ -20,150 +20,121 @@ import java.util.List;
 
 @Service
 public class ServicioService {
-    @Autowired
-    private ServicioRepository servicioRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+        @Autowired
+        private ServicioRepository servicioRepository;
+        @Autowired
+        private UsuarioRepository usuarioRepository;
 
-    //Obteniene todos los servicios registrados
+        // Obteniene todos los servicios registrados
 
-    public List<Servicio> obtenerTodos() {
-        return servicioRepository.findAll();
-    }
-
-    // Obtiene los  servicios  reigstrados por tipo.
-
-    public List<Servicio> obtenerPorTipo(String tipo) {
-        return servicioRepository.findByTipo(tipo);
-    }
-
-
-    // Obtiene un servicio registrado por su ID.
-
-    public Servicio obtenerPorId(Integer id) {
-        return servicioRepository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "El servicio con ID " + id +
-                                " no existe."
-                        )
-                );
-    }
-
-
-    // Crear un servicio
-    public Servicio guardar(Servicio servicio) {
-
-        // Verificar que tenga un usuario
-
-        if (servicio.getUsuario() == null ||
-            servicio.getUsuario().getIdUsuario() <= 0) {
-            throw new IllegalArgumentException(
-                    "El servicio debe estar asociado a un usuario válido."
-            );
+        public List<Servicio> obtenerTodos() {
+                return servicioRepository.findAll();
         }
 
-        // Obtener el ID del usuario
+        // Obtiene los servicios reigstrados por tipo.
 
-        Integer idUsuario =
-                servicio.getUsuario().getIdUsuario();
+        public List<Servicio> obtenerPorTipo(String tipo) {
+                return servicioRepository.findByTipo(tipo);
+        }
 
-        // Verificar que el usuario exista
-        Usuario usuarioExistente =
-                usuarioRepository.findById(idUsuario)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "El usuario con ID " +
-                                        idUsuario +
-                                        " no existe."
-                                )
-                        );
+        // Obtiene un servicio registrado por su ID.
 
-       // Asocia el servicio con el usuario existente en la base de datos.
+        public Servicio obtenerPorId(Integer id) {
+                return servicioRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "El servicio con ID " + id +
+                                                                " no existe."));
+        }
 
-        servicio.setUsuario(usuarioExistente);
-        return servicioRepository.save(servicio);
-    }
+        // Crear un servicio
+        public Servicio guardar(Servicio servicio) {
 
- // Actualiza un servicio existente.
+                // Verificar que tenga un usuario
 
-    public Servicio actualizar(
-            Integer id,
-            Servicio servicio) {
+                if (servicio.getUsuario() == null ||
+                                servicio.getUsuario().getIdUsuario() <= 0) {
+                        throw new IllegalArgumentException(
+                                        "El servicio debe estar asociado a un usuario válido.");
+                }
 
-         // Busca el servicio existente en la base de datos.
+                // Obtener el ID del usuario
 
-        Servicio servicioExistente =
-                servicioRepository.findById(id)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
+                Integer idUsuario = servicio.getUsuario().getIdUsuario();
+
+                // Verificar que el usuario exista
+                Usuario usuarioExistente = usuarioRepository.findById(idUsuario)
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "El usuario con ID " +
+                                                                idUsuario +
+                                                                " no existe."));
+
+                // Asocia el servicio con el usuario existente en la base de datos.
+
+                servicio.setUsuario(usuarioExistente);
+                return servicioRepository.save(servicio);
+        }
+
+        // Actualiza un servicio existente.
+
+        public Servicio actualizar(
+                        Integer id,
+                        Servicio servicio) {
+
+                // Busca el servicio existente en la base de datos.
+
+                Servicio servicioExistente = servicioRepository.findById(id)
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "El servicio con ID " +
+                                                                id +
+                                                                " no existe."));
+
+                // Actualiza los datos del servicio
+
+                servicioExistente.setNombre(
+                                servicio.getNombre());
+                servicioExistente.setTipo(
+                                servicio.getTipo());
+                servicioExistente.setUbicacion(
+                                servicio.getUbicacion());
+                servicioExistente.setDescripcion(
+                                servicio.getDescripcion());
+                servicioExistente.setCalificacion(
+                                servicio.getCalificacion());
+                if (servicio.getUsuario() != null) {
+                        Integer idUsuario = servicio.getUsuario().getIdUsuario();
+
+                        // Verifica que el usuario exista en la base de datos.
+
+                        Usuario usuarioExistente = usuarioRepository.findById(idUsuario)
+                                        .orElseThrow(() -> new IllegalArgumentException(
+                                                        "El usuario con ID " +
+                                                                        idUsuario +
+                                                                        " no existe."));
+
+                        // Asocia el usuario existente al servicio.
+
+                        servicioExistente.setUsuario(
+                                        usuarioExistente);
+                }
+                return servicioRepository.save(
+                                servicioExistente);
+        }
+
+        // Elimina un servicio existente.
+
+        public void eliminar(Integer id) {
+
+                // Verificar que el servicio exista antes de eliminarlo.
+
+                if (!servicioRepository.existsById(id)) {
+                        throw new IllegalArgumentException(
                                         "El servicio con ID " +
-                                        id +
-                                        " no existe."
-                                )
-                        );
+                                                        id +
+                                                        " no existe.");
+                }
 
+                // Elimina el servicio de la base de datos.
 
-        // Actualiza los datos del servicio
-
-        servicioExistente.setNombre(
-                servicio.getNombre()
-        );
-        servicioExistente.setTipo(
-                servicio.getTipo()
-        );
-        servicioExistente.setUbicacion(
-                servicio.getUbicacion()
-        );
-        servicioExistente.setDescripcion(
-                servicio.getDescripcion()
-        );
-        servicioExistente.setCalificacion(
-                servicio.getCalificacion()
-        );
-        if (servicio.getUsuario() != null) {
-            Integer idUsuario =
-                    servicio.getUsuario().getIdUsuario();
-
-             // Verifica que el usuario exista en la base de datos.
-
-            Usuario usuarioExistente =
-                    usuarioRepository.findById(idUsuario)
-                            .orElseThrow(() ->
-                                    new IllegalArgumentException(
-                                            "El usuario con ID " +
-                                            idUsuario +
-                                            " no existe."
-                                    )
-                            );
-
-             // Asocia el usuario existente al servicio.
-
-            servicioExistente.setUsuario(
-                    usuarioExistente
-            );
+                servicioRepository.deleteById(id);
         }
-        return servicioRepository.save(
-                servicioExistente
-        );
-    }
-
-    // Elimina un servicio existente.
-
-    public void eliminar(Integer id) {
-
-        // Verificar que el servicio exista antes de eliminarlo.
-
-        if (!servicioRepository.existsById(id)) {
-            throw new IllegalArgumentException(
-                    "El servicio con ID " +
-                    id +
-                    " no existe."
-            );
-        }
-
-        // Elimina el servicio de la base de datos.
-
-        servicioRepository.deleteById(id);
-    }
 }

@@ -15,18 +15,13 @@ import java.time.LocalDateTime;
 // Representa la tabla "me gusta comentario" de la base de datos.
 
 @Entity
-@Table(
-    name = "me_gusta_publicacion",
-    uniqueConstraints = {
-        @UniqueConstraint(
-            name = "uk_like_publicacion_usuario",
-            columnNames = {"id_usuario", "id_publicacion"}
-        )
-    }
-)
+@Table(name = "me_gusta_publicacion", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_like_publicacion_usuario", columnNames = { "id_usuario", "id_publicacion" })
+})
 public class MeGustaPublicacion {
 
-    // Identificador unico de un me gusta de una publicacion del foro (no comentario).
+    // Identificador unico de un me gusta de una publicacion del foro (no
+    // comentario).
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,25 +31,17 @@ public class MeGustaPublicacion {
     // Relacion del usuario que dio me gusta a la publicacion.
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-        name = "id_usuario",
-        referencedColumnName = "id_usuario",
-        nullable = false
-    )
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
     private Usuario usuario;
 
     // Relación entre el "Me gusta" y la publicación asociada.
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-        name = "id_publicacion",
-        referencedColumnName = "id_publicacion",
-        nullable = false
-    )
+    @JoinColumn(name = "id_publicacion", referencedColumnName = "id_publicacion", nullable = false)
     private PublicacionForo publicacion;
 
     // Fecha en la que se realizó el "Me gusta".
-    
+
     @Column(name = "fecha", nullable = false)
     private LocalDateTime fecha;
 
@@ -63,7 +50,7 @@ public class MeGustaPublicacion {
     public MeGustaPublicacion() {
     }
 
-   // Getters y setters de los datos del "Me gusta".
+    // Getters y setters de los datos del "Me gusta".
 
     public Integer getIdMeGusta() {
         return idMeGusta;

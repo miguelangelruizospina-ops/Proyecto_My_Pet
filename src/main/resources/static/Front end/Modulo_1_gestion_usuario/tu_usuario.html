@@ -13,8 +13,7 @@
 
     <!-- Carga Bootstrap para utilizar sus estilos y componentes. -->
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <title>Tu usuario</title>
 
@@ -25,7 +24,6 @@
     <!-- Define los estilos específicos de la vista del usuario. -->
 
     <style>
-
         .tarjeta-usuario {
             width: 100%;
             max-width: 500px;
@@ -46,7 +44,7 @@
         }
 
         .dato-usuario {
-            color: #000000  !important;
+            color: #000000 !important;
             font-size: 17px;
             margin: 10px 0;
         }
@@ -122,7 +120,6 @@
             margin-top: 18px;
             margin-bottom: 25px;
         }
-
     </style>
 
 </head>
@@ -133,8 +130,7 @@
 
     <div class="w-100 px-4">
 
-        <a class="flecha text-decoration-none"
-           href="home.html">
+        <a class="flecha text-decoration-none" href="home.html">
 
             ←
 
@@ -146,18 +142,11 @@
 
     <header class="text-center d-flex flex-column align-items-center my-2">
 
-        <label for="input-foto-perfil"
-               class="marco-foto-per"
-               title="Haz clic para cambiar tu foto">
+        <label for="input-foto-perfil" class="marco-foto-per" title="Haz clic para cambiar tu foto">
 
-            <img src="../fotos/ana.jpg"
-                 alt="Foto de perfil"
-                 id="fotoPerfil">
+            <img src="../fotos/ana.jpg" alt="Foto de perfil" id="fotoPerfil">
 
-            <input type="file"
-                   id="input-foto-perfil"
-                   class="d-none"
-                   accept="image/*">
+            <input type="file" id="input-foto-perfil" class="d-none" accept="image/*">
 
             <div class="overlay-cambiar-foto">
 
@@ -167,9 +156,7 @@
 
         </label>
 
-        <h1 id="usu-cen-h1"
-            class="mt-3"
-            style="color: white !important;">
+        <h1 id="usu-cen-h1" class="mt-3" style="color: white !important;">
 
         </h1>
 
@@ -177,50 +164,43 @@
 
     <!-- Muestra la información personal y los datos de la cuenta. -->
 
-    <div id="informacionUsuario"
-         class="tarjeta-usuario">
+    <div id="informacionUsuario" class="tarjeta-usuario">
 
         <h2 class="titulo-perfil text-center">
             Información de usuario
         </h2>
 
-        <p id="nombreUsuario"
-           class="dato-usuario">
+        <p id="nombreUsuario" class="dato-usuario">
 
             Nombre: -
 
         </p>
 
-        <p id="apellidosUsuario"
-           class="dato-usuario">
+        <p id="apellidosUsuario" class="dato-usuario">
 
             Apellidos: -
 
         </p>
 
-        <p id="correoUsuario"
-           class="dato-usuario">
+        <p id="correoUsuario" class="dato-usuario">
 
             Correo: -
 
         </p>
 
-        <p id="usuarioUsuario"
-           class="dato-usuario">
+        <p id="usuarioUsuario" class="dato-usuario">
 
             Usuario: -
 
         </p>
 
-        <p id="rolUsuario"
-           class="dato-usuario">
+        <p id="rolUsuario" class="dato-usuario">
 
             Rol: -
 
         </p>
 
-        <p id="fechaUsuario"
-           class="dato-usuario">
+        <p id="fechaUsuario" class="dato-usuario">
 
             Fecha de creación: -
 
@@ -228,36 +208,31 @@
 
         <hr>
 
-        <p id="biografiaUsuario"
-           class="dato-usuario">
+        <p id="biografiaUsuario" class="dato-usuario">
 
             Biografía: -
 
         </p>
 
-        <p id="telefonoUsuario"
-           class="dato-usuario">
+        <p id="telefonoUsuario" class="dato-usuario">
 
             Teléfono: -
 
         </p>
 
-        <p id="ciudadUsuario"
-           class="dato-usuario">
+        <p id="ciudadUsuario" class="dato-usuario">
 
             Ciudad: -
 
         </p>
 
-        <p id="generoUsuario"
-           class="dato-usuario">
+        <p id="generoUsuario" class="dato-usuario">
 
             Género: -
 
         </p>
 
-        <p id="fechaNacimientoUsuario"
-           class="dato-usuario">
+        <p id="fechaNacimientoUsuario" class="dato-usuario">
 
             Fecha de nacimiento: -
 
@@ -267,9 +242,7 @@
 
     <!-- Contiene los campos para editar la información personal. -->
 
-    <div id="formularioEdicion"
-         class="formulario-usuario"
-         style="display: none;">
+    <div id="formularioEdicion" class="formulario-usuario" style="display: none;">
 
         <h2 id="tituloFormularioPerfil" class="titulo-perfil text-center">
 
@@ -283,17 +256,13 @@
 
             <div class="mb-3">
 
-                <label for="editarNombre"
-                       class="form-label">
+                <label for="editarNombre" class="form-label">
 
                     Nombre
 
                 </label>
 
-                <input type="text"
-                       id="editarNombre"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarNombre" class="form-control" required>
 
             </div>
 
@@ -301,17 +270,13 @@
 
             <div class="mb-3">
 
-                <label for="editarApellidos"
-                       class="form-label">
+                <label for="editarApellidos" class="form-label">
 
                     Apellidos
 
                 </label>
 
-                <input type="text"
-                       id="editarApellidos"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarApellidos" class="form-control" required>
 
             </div>
 
@@ -319,17 +284,13 @@
 
             <div class="mb-3">
 
-                <label for="editarUsuario"
-                       class="form-label">
+                <label for="editarUsuario" class="form-label">
 
                     Usuario
 
                 </label>
 
-                <input type="text"
-                       id="editarUsuario"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarUsuario" class="form-control" required>
 
             </div>
 
@@ -337,17 +298,13 @@
 
             <div class="mb-3">
 
-                <label for="editarCorreo"
-                       class="form-label">
+                <label for="editarCorreo" class="form-label">
 
                     Correo
 
                 </label>
 
-                <input type="email"
-                       id="editarCorreo"
-                       class="form-control"
-                       required>
+                <input type="email" id="editarCorreo" class="form-control" required>
 
             </div>
 
@@ -355,17 +312,13 @@
 
             <div class="mb-3">
 
-                <label for="editarBiografia"
-                       class="form-label">
+                <label for="editarBiografia" class="form-label">
 
                     Biografía
 
                 </label>
 
-                <textarea id="editarBiografia"
-                          class="form-control"
-                          rows="3"
-                          required></textarea>
+                <textarea id="editarBiografia" class="form-control" rows="3" required></textarea>
 
             </div>
 
@@ -373,17 +326,13 @@
 
             <div class="mb-3">
 
-                <label for="editarTelefono"
-                       class="form-label">
+                <label for="editarTelefono" class="form-label">
 
                     Teléfono
 
                 </label>
 
-                <input type="text"
-                       id="editarTelefono"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarTelefono" class="form-control" required>
 
             </div>
 
@@ -391,17 +340,13 @@
 
             <div class="mb-3">
 
-                <label for="editarCiudad"
-                       class="form-label">
+                <label for="editarCiudad" class="form-label">
 
                     Ciudad
 
                 </label>
 
-                <input type="text"
-                       id="editarCiudad"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarCiudad" class="form-control" required>
 
             </div>
 
@@ -409,17 +354,13 @@
 
             <div class="mb-3">
 
-                <label for="editarGenero"
-                       class="form-label">
+                <label for="editarGenero" class="form-label">
 
                     Género
 
                 </label>
 
-                <input type="text"
-                       id="editarGenero"
-                       class="form-control"
-                       required>
+                <input type="text" id="editarGenero" class="form-control" required>
 
             </div>
 
@@ -427,17 +368,13 @@
 
             <div class="mb-3">
 
-                <label for="editarFechaNacimiento"
-                       class="form-label">
+                <label for="editarFechaNacimiento" class="form-label">
 
                     Fecha de nacimiento
 
                 </label>
 
-                <input type="date"
-                       id="editarFechaNacimiento"
-                       class="form-control"
-                       required>
+                <input type="date" id="editarFechaNacimiento" class="form-control" required>
 
             </div>
 
@@ -445,8 +382,7 @@
 
             <div class="text-center mt-4">
 
-                <button type="submit"
-                        class="btn-guardar">
+                <button type="submit" class="btn-guardar">
 
                     Guardar cambios
 
@@ -455,9 +391,7 @@
                 <br>
                 <br>
 
-                <button type="button"
-                        id="cancelarEdicion"
-                        class="btn-cancelar">
+                <button type="button" id="cancelarEdicion" class="btn-cancelar">
 
                     Cancelar
 
@@ -471,14 +405,11 @@
 
     <!-- Agrupa las acciones disponibles para gestionar la cuenta. -->
 
-    <div id="accionesUsuario"
-         class="d-flex flex-column align-items-center gap-2 acciones-perfil">
+    <div id="accionesUsuario" class="d-flex flex-column align-items-center gap-2 acciones-perfil">
 
         <!-- Permite editar la información del usuario. -->
 
-        <button type="button"
-                id="editarInformacion"
-                class="btn-perfil">
+        <button type="button" id="editarInformacion" class="btn-perfil">
 
             Editar información
 
@@ -486,10 +417,7 @@
 
         <!-- Permite agregar información cuando está disponible la opción. -->
 
-        <button type="button"
-                id="agregarInformacion"
-                class="btn-perfil"
-                hidden>
+        <button type="button" id="agregarInformacion" class="btn-perfil" hidden>
 
             Agregar información
 
@@ -497,9 +425,7 @@
 
         <!-- Dirige a la sección de mascotas registradas. -->
 
-        <a href="../Modulo_2_gestion_mascotas/mis_mascotas.html"
-           id="verMascotas"
-           class="btn-perfil">
+        <a href="../Modulo_2_gestion_mascotas/mis_mascotas.html" id="verMascotas" class="btn-perfil">
 
             Ver mis mascotas
 
@@ -507,8 +433,7 @@
 
         <!-- Dirige a la página para cambiar la contraseña. -->
 
-        <a href="recu_contrasena.html"
-           class="enlace-perfil">
+        <a href="recu_contrasena.html" class="enlace-perfil">
 
             Cambiar contraseña
 
@@ -516,9 +441,7 @@
 
         <!-- Dirige a la página de inicio de sesión para cerrar la sesión. -->
 
-        <a href="iniciar_sesion.html"
-           id="cerrarSesion"
-           class="enlace-perfil">
+        <a href="iniciar_sesion.html" id="cerrarSesion" class="enlace-perfil">
 
             Cerrar sesión
 

@@ -48,80 +48,67 @@ public class RecordatorioService {
         return recordatorioRepository.findByMascotaIdMascota(idMascota);
     }
 
-   // Lista los recordatorios pendientes cuya fecha ya se cumplió.
+    // Lista los recordatorios pendientes cuya fecha ya se cumplió.
 
     public List<Recordatorio> obtenerPendientesParaNotificar() {
         return recordatorioRepository.findByEstadoAndFechaLessThanEqual(
                 "PENDIENTE",
-                LocalDateTime.now()
-        );
+                LocalDateTime.now());
     }
 
- // Registra un nuevo recordatorio en la base de datos.
+    // Registra un nuevo recordatorio en la base de datos.
 
     public Recordatorio guardar(Recordatorio recordatorio) {
         if (recordatorio == null) {
             throw new IllegalArgumentException(
-                "El recordatorio no puede estar vacío."
-            );
+                    "El recordatorio no puede estar vacío.");
         }
 
         // Verifica que el usuario esté asociado al recordatorio.
 
         if (recordatorio.getUsuario() == null ||
-            recordatorio.getUsuario().getIdUsuario() <= 0) {
+                recordatorio.getUsuario().getIdUsuario() <= 0) {
             throw new IllegalArgumentException(
-                "El recordatorio debe estar asociado a un usuario válido."
-            );
+                    "El recordatorio debe estar asociado a un usuario válido.");
         }
 
         // Verifica que el recordatorio tenga fecha y hora.
 
         if (recordatorio.getFecha() == null) {
             throw new IllegalArgumentException(
-                "El recordatorio debe tener una fecha y hora."
-            );
+                    "El recordatorio debe tener una fecha y hora.");
         }
 
         // Verifica que el recordatorio tenga una mascota.
 
         if (recordatorio.getMascota() == null ||
-            recordatorio.getMascota().getIdMascota() == null ||
-            recordatorio.getMascota().getIdMascota() <= 0) {
+                recordatorio.getMascota().getIdMascota() == null ||
+                recordatorio.getMascota().getIdMascota() <= 0) {
             throw new IllegalArgumentException(
-                "El recordatorio debe estar asociado a una mascota válida."
-            );
+                    "El recordatorio debe estar asociado a una mascota válida.");
         }
-        Integer idUsuario =
-                recordatorio.getUsuario().getIdUsuario();
-        Integer idMascota =
-                recordatorio.getMascota().getIdMascota();
+        Integer idUsuario = recordatorio.getUsuario().getIdUsuario();
+        Integer idMascota = recordatorio.getMascota().getIdMascota();
 
         // Busca el usuario existente en la base de datos.
 
-        Usuario usuarioExistente =
-                usuarioRepository.findById(idUsuario)
-                    .orElseThrow(() -> new IllegalArgumentException(
-                        "El usuario con ID " + idUsuario + " no existe."
-                    ));
+        Usuario usuarioExistente = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "El usuario con ID " + idUsuario + " no existe."));
 
         // Busca la mascota existente en la base de datos.
 
-        Mascota mascotaExistente =
-                mascotaRepository.findById(idMascota)
-                    .orElseThrow(() -> new IllegalArgumentException(
-                        "La mascota con ID " + idMascota + " no existe."
-                    ));
+        Mascota mascotaExistente = mascotaRepository.findById(idMascota)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "La mascota con ID " + idMascota + " no existe."));
 
         // Verifica que la mascota pertenezca al usuario.
 
         if (mascotaExistente.getUsuario() == null ||
-            !idUsuario.equals(
-                mascotaExistente.getUsuario().getIdUsuario()
-            )) {
+                !idUsuario.equals(
+                        mascotaExistente.getUsuario().getIdUsuario())) {
             throw new IllegalArgumentException(
-                "El recordatorio debe estar asociado a una mascota del usuario."
-            );
+                    "El recordatorio debe estar asociado a una mascota del usuario.");
         }
         recordatorio.setUsuario(usuarioExistente);
         recordatorio.setMascota(mascotaExistente);
@@ -139,22 +126,18 @@ public class RecordatorioService {
             Recordatorio recordatorio) {
         if (recordatorio == null) {
             throw new IllegalArgumentException(
-                "El recordatorio no puede estar vacío."
-            );
+                    "El recordatorio no puede estar vacío.");
         }
         if (recordatorio.getFecha() == null) {
             throw new IllegalArgumentException(
-                "El recordatorio debe tener una fecha y hora."
-            );
+                    "El recordatorio debe tener una fecha y hora.");
         }
 
         // Busca el recordatorio que se desea actualizar.
 
-        Recordatorio existente =
-                recordatorioRepository.findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException(
-                        "El recordatorio con ID " + id + " no existe."
-                    ));
+        Recordatorio existente = recordatorioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "El recordatorio con ID " + id + " no existe."));
 
         // Actualiza los datos del recordatorio.
 
@@ -170,11 +153,9 @@ public class RecordatorioService {
     // Marca el recordatorio como notificado.
 
     public Recordatorio marcarComoNotificado(Integer id) {
-        Recordatorio existente =
-                recordatorioRepository.findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException(
-                        "El recordatorio con ID " + id + " no existe."
-                    ));
+        Recordatorio existente = recordatorioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "El recordatorio con ID " + id + " no existe."));
         existente.setEstado("NOTIFICADO");
         return recordatorioRepository.save(existente);
     }
@@ -184,8 +165,7 @@ public class RecordatorioService {
     public void eliminar(Integer id) {
         if (!recordatorioRepository.existsById(id)) {
             throw new IllegalArgumentException(
-                "El recordatorio con ID " + id + " no existe."
-            );
+                    "El recordatorio con ID " + id + " no existe.");
         }
         recordatorioRepository.deleteById(id);
     }

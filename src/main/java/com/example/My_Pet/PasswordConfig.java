@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 // Configuración para la encriptación de contraseñas.
+
 @Configuration
 public class PasswordConfig {
 

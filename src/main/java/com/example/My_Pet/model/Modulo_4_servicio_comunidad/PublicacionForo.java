@@ -43,12 +43,8 @@ public class PublicacionForo {
     // Relación entre la publicación y el usuario que la creó.
 
     @ManyToOne
-    @JoinColumn(
-        name = "id_usuario",
-        referencedColumnName = "id_usuario",
-        nullable = false
-    )
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Usuario usuario;
 
     // Constructor vacío requerido para crear la publicacion en el foro.
@@ -77,30 +73,39 @@ public class PublicacionForo {
     public Integer getIdPublicacion() {
         return idPublicacion;
     }
+
     public void setIdPublicacion(Integer idPublicacion) {
         this.idPublicacion = idPublicacion;
     }
+
     public String getTitulo() {
         return titulo;
     }
+
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+
     public String getContenido() {
         return contenido;
     }
+
     public void setContenido(String contenido) {
         this.contenido = contenido;
     }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
+
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }

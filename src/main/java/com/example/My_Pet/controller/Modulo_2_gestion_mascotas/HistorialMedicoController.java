@@ -27,7 +27,8 @@ public class HistorialMedicoController {
     @Autowired
     private HistorialMedicoService historialMedicoService;
 
-    // Lista todos los historiales médicos de la mascotas. ***SOLO PARA EL ADMINISTRADOR***
+    // Lista todos los historiales médicos de la mascotas. ***SOLO PARA EL
+    // ADMINISTRADOR***
 
     @GetMapping("/listar")
     @PreAuthorize("@autorizacion.esAdministrador()")
@@ -42,8 +43,7 @@ public class HistorialMedicoController {
     public ResponseEntity<List<HistorialMedico>> listarPorMascota(
             @PathVariable("idMascota") Integer idMascota) {
 
-        List<HistorialMedico> historial =
-                historialMedicoService.obtenerPorMascota(idMascota);
+        List<HistorialMedico> historial = historialMedicoService.obtenerPorMascota(idMascota);
 
         return ResponseEntity.ok(historial);
     }
@@ -51,15 +51,12 @@ public class HistorialMedicoController {
     // Registra un nuevo historial médico para una mascota existente.
 
     @PostMapping("/guardar")
-    @PreAuthorize(
-            "@autorizacion.esMascotaPropiaOAdministrador(#p0.mascota?.idMascota)"
-    )
+    @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0.mascota?.idMascota)")
     public ResponseEntity<?> crearHistorial(
             @RequestBody HistorialMedico historial) {
 
         try {
-            HistorialMedico nuevoHistorial =
-                    historialMedicoService.guardar(historial);
+            HistorialMedico nuevoHistorial = historialMedicoService.guardar(historial);
 
             return ResponseEntity.ok(nuevoHistorial);
 
@@ -79,8 +76,7 @@ public class HistorialMedicoController {
             @RequestBody HistorialMedico datos) {
 
         try {
-            HistorialMedico historialActualizado =
-                    historialMedicoService.actualizar(id, datos);
+            HistorialMedico historialActualizado = historialMedicoService.actualizar(id, datos);
 
             return ResponseEntity.ok(historialActualizado);
 
@@ -107,8 +103,7 @@ public class HistorialMedicoController {
             historialMedicoService.eliminar(id);
 
             return ResponseEntity.ok(
-                    "Historial médico eliminado correctamente"
-            );
+                    "Historial médico eliminado correctamente");
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity

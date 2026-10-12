@@ -16,7 +16,7 @@ public class HistorialMedico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_historial")
     private Integer idHistorial;
-   
+
     // Información del historial médico de la mascota.
 
     @Column(length = 100)
@@ -34,30 +34,22 @@ public class HistorialMedico {
     @Column(length = 50)
     private String peso;
 
-    
     @Column(name = "cirugias_procedimientos", length = 500)
     private String cirugiasProcedimientos;
 
-    
     @Column(length = 500)
     private String vacunacion;
 
-    
     @Column(name = "consultas_atenciones", length = 1000)
     private String consultasAtenciones;
 
     @Column(name = "enfermedades_actuales", length = 1000)
     private String enfermedadesActuales;
 
-
     // Relación entre el historial médico y la mascota.
 
     @ManyToOne
-    @JoinColumn(
-        name = "id_mascota",
-        referencedColumnName = "id_mascota",
-        nullable = false
-    )
+    @JoinColumn(name = "id_mascota", referencedColumnName = "id_mascota", nullable = false)
     private Mascota mascota;
 
     // Constructor vacío requerido para crear la entidad historial medico.
@@ -98,66 +90,87 @@ public class HistorialMedico {
     public Integer getIdHistorial() {
         return idHistorial;
     }
+
     public void setIdHistorial(Integer idHistorial) {
         this.idHistorial = idHistorial;
     }
+
     public String getDiagnosticos() {
         return diagnosticos;
     }
+
     public void setDiagnosticos(String diagnosticos) {
         this.diagnosticos = diagnosticos;
     }
+
     public String getAntecedentesMedicos() {
         return antecedentesMedicos;
     }
+
     public void setAntecedentesMedicos(String antecedentesMedicos) {
         this.antecedentesMedicos = antecedentesMedicos;
     }
+
     public String getAlergias() {
         return alergias;
     }
+
     public void setAlergias(String alergias) {
         this.alergias = alergias;
     }
+
     public String getTratamientos() {
         return tratamientos;
     }
+
     public void setTratamientos(String tratamientos) {
         this.tratamientos = tratamientos;
     }
+
     public String getPeso() {
         return peso;
     }
+
     public void setPeso(String peso) {
         this.peso = peso;
     }
+
     public String getCirugiasProcedimientos() {
         return cirugiasProcedimientos;
     }
+
     public void setCirugiasProcedimientos(String cirugiasProcedimientos) {
         this.cirugiasProcedimientos = cirugiasProcedimientos;
     }
+
     public String getVacunacion() {
         return vacunacion;
     }
+
     public void setVacunacion(String vacunacion) {
         this.vacunacion = vacunacion;
     }
+
     public String getConsultasAtenciones() {
         return consultasAtenciones;
     }
+
     public void setConsultasAtenciones(String consultasAtenciones) {
         this.consultasAtenciones = consultasAtenciones;
     }
+
     public String getEnfermedadesActuales() {
         return enfermedadesActuales;
     }
+
     public void setEnfermedadesActuales(String enfermedadesActuales) {
         this.enfermedadesActuales = enfermedadesActuales;
     }
+
     public Mascota getMascota() {
         return mascota;
     }
+
     public void setMascota(Mascota mascota) {
         this.mascota = mascota;
     }

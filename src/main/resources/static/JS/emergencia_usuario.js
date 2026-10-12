@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .get("idMascota");
 
     // Verifica que exista una sesión de usuario.
-    
+
     if (!usuarioGuardado) {
 
         window.location.href =
@@ -473,8 +473,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         nombreMascota,
                         emergencia.fecha
                     ]
-                    .filter(Boolean)
-                    .join(" · ");
+                        .filter(Boolean)
+                        .join(" · ");
 
                 // Configura el botón para solucionar la emergencia.
 
@@ -727,7 +727,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 formulario.reset();
 
                 // Conserva la mascota seleccionada cuando se abrió desde su perfil.
-                
+
                 if (
                     idMascotaUrl &&
                     selectorMascota

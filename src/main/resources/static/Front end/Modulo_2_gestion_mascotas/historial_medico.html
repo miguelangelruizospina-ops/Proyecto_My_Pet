@@ -1,8 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
     <!-- Configuración básica del documento y adaptación a dispositivos móviles. -->
+
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,9 +20,12 @@
     <!-- Carga la hoja de estilos principal de My Pet. -->
 
     <link rel="stylesheet" href="../mi_pet.css">
+
+
 </head>
 
 <body class="fondo_pata min-vh-100 d-flex flex-column align-items-center py-3">
+
 
     <!-- Contenedor principal de la página del historial médico. -->
 
@@ -77,6 +82,15 @@
                     <label for="antecedentes" class="form-label">Antecedentes médicos</label>
                     <textarea id="antecedentes" class="form-control" rows="4"
                         placeholder="Ingrese los antecedentes médicos de la mascota"></textarea>
+                </div>
+
+                <!-- Permite registrar las enfermedades que presenta actualmente la mascota. -->
+
+                <div class="mb-3">
+
+                    <label for="enfermedadesActuales" class="form-label">Enfermedades actuales</label>
+                    <textarea id="enfermedadesActuales" class="form-control" rows="3"
+                        placeholder="Ingrese las enfermedades actuales de la mascota"></textarea>
                 </div>
 
                 <!-- Permite registrar las alergias conocidas de la mascota. -->
@@ -152,6 +166,14 @@
                 <p id="mostrarAntecedentes"></p>
             </div>
 
+            <!-- Muestra las enfermedades actuales registradas. -->
+
+            <div class="campo-historial">
+
+                <h3>Enfermedades actuales</h3>
+                <p id="mostrarEnfermedadesActuales"></p>
+            </div>
+
             <!-- Muestra las alergias registradas. -->
 
             <div class="campo-historial">
@@ -215,6 +237,7 @@
     <!-- Carga la configuración global de la aplicación. -->
 
     <script src="/JS/configuracion_global.js"></script>
+
 
 </body>
 

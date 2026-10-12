@@ -24,11 +24,7 @@ public class Administrador {
     // Relaciona el administrador con el usuario al que pertenece.
 
     @ManyToOne
-    @JoinColumn(
-            name = "id_usuario",
-            referencedColumnName = "id_usuario",
-            nullable = false
-    )
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", nullable = false)
     private Usuario usuario;
 
     // Constructor vacío requerido para crear la entidad.
@@ -48,7 +44,7 @@ public class Administrador {
     }
 
     // Getters y setters de los atributos del administrador.
-    
+
     public Integer getIdAdmin() {
         return idAdmin;
     }

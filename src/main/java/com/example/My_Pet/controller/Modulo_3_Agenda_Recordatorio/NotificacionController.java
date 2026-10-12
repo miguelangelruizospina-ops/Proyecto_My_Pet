@@ -41,10 +41,8 @@ public class NotificacionController {
     @GetMapping("/usuario/{idUsuario}")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
     public ResponseEntity<List<Notificacion>> listarPorUsuario(
-            @PathVariable("idUsuario")
-            @P("idUsuario") Integer idUsuario) {
-        List<Notificacion> notificaciones =
-                notificacionService.obtenerPorUsuario(idUsuario);
+            @PathVariable("idUsuario") @P("idUsuario") Integer idUsuario) {
+        List<Notificacion> notificaciones = notificacionService.obtenerPorUsuario(idUsuario);
         return ResponseEntity.ok(notificaciones);
     }
 
@@ -53,21 +51,14 @@ public class NotificacionController {
     @PostMapping("/crear")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
     public ResponseEntity<?> crear(
-            @RequestParam
-            @P("idUsuario") Integer idUsuario,
+            @RequestParam @P("idUsuario") Integer idUsuario,
             @RequestParam String mensaje,
-            @RequestParam(
-                    required = false,
-                    defaultValue = "EMERGENCIA"
-            )
-            String tipo) {
+            @RequestParam(required = false, defaultValue = "EMERGENCIA") String tipo) {
         try {
-            Notificacion notificacion =
-                    notificacionService.crear(
-                            idUsuario,
-                            mensaje,
-                            tipo
-                    );
+            Notificacion notificacion = notificacionService.crear(
+                    idUsuario,
+                    mensaje,
+                    tipo);
             return ResponseEntity.ok(notificacion);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
@@ -81,11 +72,9 @@ public class NotificacionController {
     @PutMapping("/leer/{id}")
     @PreAuthorize("@autorizacion.esNotificacionPropiaOAdministrador(#id)")
     public ResponseEntity<?> marcarComoLeida(
-            @PathVariable("id")
-            @P("id") Integer id) {
+            @PathVariable("id") @P("id") Integer id) {
         try {
-            Notificacion notificacion =
-                    notificacionService.marcarComoLeida(id);
+            Notificacion notificacion = notificacionService.marcarComoLeida(id);
             return ResponseEntity.ok(notificacion);
         } catch (IllegalArgumentException e) {
             return ResponseEntity
@@ -99,13 +88,11 @@ public class NotificacionController {
     @PutMapping("/leer-todas/{idUsuario}")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
     public ResponseEntity<?> marcarTodasComoLeidas(
-            @PathVariable("idUsuario")
-            @P("idUsuario") Integer idUsuario) {
+            @PathVariable("idUsuario") @P("idUsuario") Integer idUsuario) {
         try {
             notificacionService.marcarTodasComoLeidas(idUsuario);
             return ResponseEntity.ok(
-                    "Todas las notificaciones fueron marcadas como leídas."
-            );
+                    "Todas las notificaciones fueron marcadas como leídas.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -118,13 +105,11 @@ public class NotificacionController {
     @DeleteMapping("/{id}")
     @PreAuthorize("@autorizacion.esNotificacionPropiaOAdministrador(#id)")
     public ResponseEntity<?> eliminarNotificacion(
-            @PathVariable("id")
-            @P("id") Integer id) {
+            @PathVariable("id") @P("id") Integer id) {
         try {
             notificacionService.eliminar(id);
             return ResponseEntity.ok(
-                    "Notificación eliminada correctamente."
-            );
+                    "Notificación eliminada correctamente.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()
@@ -137,13 +122,11 @@ public class NotificacionController {
     @DeleteMapping("/usuario/{idUsuario}")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
     public ResponseEntity<?> eliminarTodas(
-            @PathVariable("idUsuario")
-            @P("idUsuario") Integer idUsuario) {
+            @PathVariable("idUsuario") @P("idUsuario") Integer idUsuario) {
         try {
             notificacionService.eliminarTodas(idUsuario);
             return ResponseEntity.ok(
-                    "Todas las notificaciones fueron eliminadas correctamente."
-            );
+                    "Todas las notificaciones fueron eliminadas correctamente.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity
                     .badRequest()

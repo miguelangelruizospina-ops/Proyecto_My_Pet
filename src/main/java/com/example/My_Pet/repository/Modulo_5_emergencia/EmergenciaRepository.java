@@ -19,5 +19,6 @@ import java.util.List;
 public interface EmergenciaRepository
         extends JpaRepository<Emergencia, Integer> {
     List<Emergencia> findByUsuarioIdUsuario(Integer idUsuario);
+
     List<Emergencia> findByEstado(String estado);
 }

@@ -43,8 +43,7 @@ public class AdministradorController {
         try {
 
             return ResponseEntity.ok(
-                    administradorService.obtenerPorId(id)
-            );
+                    administradorService.obtenerPorId(id));
 
         } catch (RuntimeException e) {
 
@@ -61,8 +60,7 @@ public class AdministradorController {
         try {
 
             return ResponseEntity.ok(
-                    administradorService.obtenerPorUsuario(idUsuario)
-            );
+                    administradorService.obtenerPorUsuario(idUsuario));
 
         } catch (RuntimeException e) {
 
@@ -78,8 +76,7 @@ public class AdministradorController {
 
         try {
 
-            Administrador nuevoAdministrador =
-                    administradorService.guardar(administrador);
+            Administrador nuevoAdministrador = administradorService.guardar(administrador);
 
             return ResponseEntity.ok(nuevoAdministrador);
 
@@ -100,11 +97,9 @@ public class AdministradorController {
 
         try {
 
-            Administrador administradorActualizado =
-                    administradorService.actualizar(
-                            id,
-                            administrador
-                    );
+            Administrador administradorActualizado = administradorService.actualizar(
+                    id,
+                    administrador);
 
             return ResponseEntity.ok(administradorActualizado);
 
@@ -133,8 +128,7 @@ public class AdministradorController {
             administradorService.eliminar(id);
 
             return ResponseEntity.ok(
-                    "Administrador eliminado correctamente"
-            );
+                    "Administrador eliminado correctamente");
 
         } catch (RuntimeException e) {
 

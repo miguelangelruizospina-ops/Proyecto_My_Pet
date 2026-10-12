@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
- // Gestiona las operaciones de consulta, registro, actualización y eliminación de perfiles de usuario en la base de datos.
+// Gestiona las operaciones de consulta, registro, actualización y eliminación de perfiles de usuario en la base de datos.
 
 @Service
 public class PerfilUsuarioService {
@@ -34,7 +34,8 @@ public class PerfilUsuarioService {
     @PersistenceContext
     private EntityManager entityManager;
 
-   // Gestiona las operaciones de consulta, registro, actualización y eliminación de perfiles de usuario en la base de datos. 
+    // Gestiona las operaciones de consulta, registro, actualización y eliminación
+    // de perfiles de usuario en la base de datos.
 
     @Transactional
     public PerfilUsuario guardarPerfil(PerfilUsuario perfilUsuario) {
@@ -43,8 +44,7 @@ public class PerfilUsuarioService {
         }
         if (perfilUsuario.getFechaNacimiento() == null) {
             throw new IllegalArgumentException(
-                    "La fecha de nacimiento es obligatoria"
-            );
+                    "La fecha de nacimiento es obligatoria");
         }
         int idUsuario = perfilUsuario.getUsuario().getIdUsuario();
 
@@ -52,15 +52,13 @@ public class PerfilUsuarioService {
 
         Usuario usuarioBD = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException(
-                        "El usuario con ID " + idUsuario + " no existe"
-                ));
-        
-         // Verifica que el usuario no tenga ya un perfil.
+                        "El usuario con ID " + idUsuario + " no existe"));
+
+        // Verifica que el usuario no tenga ya un perfil.
 
         if (perfilUsuarioRepository.existsById(idUsuario)) {
             throw new IllegalArgumentException(
-                    "El usuario con ID " + idUsuario + " ya tiene un perfil"
-            );
+                    "El usuario con ID " + idUsuario + " ya tiene un perfil");
         }
 
         // Asocia el perfil al usuario existente y lo guarda en la base de datos.
@@ -71,20 +69,23 @@ public class PerfilUsuarioService {
         return perfilUsuario;
     }
 
-    // Gestiona la consulta y actualización de los perfiles de usuario en la base de datos.
+    // Gestiona la consulta y actualización de los perfiles de usuario en la base de
+    // datos.
 
     public Optional<PerfilUsuario> buscarPerfilPorId(int id) {
         return perfilUsuarioRepository.findById(id);
     }
+
     public List<PerfilUsuario> obtenerTodosLosPerfiles() {
         return perfilUsuarioRepository.findAll();
     }
+
     public PerfilUsuario obtenerPerfilPorId(int id) {
         return perfilUsuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(
-                        "Perfil de usuario no encontrado con ID: " + id
-                ));
+                        "Perfil de usuario no encontrado con ID: " + id));
     }
+
     @Transactional
     public PerfilUsuario actualizarPerfil(
             int id,
@@ -95,11 +96,11 @@ public class PerfilUsuarioService {
 
         if (datosPerfil.getFechaNacimiento() == null) {
             throw new IllegalArgumentException(
-                    "La fecha de nacimiento es obligatoria"
-            );
+                    "La fecha de nacimiento es obligatoria");
         }
 
-        // Actualiza los datos del perfil existente y guarda los cambios en la base de datos.
+        // Actualiza los datos del perfil existente y guarda los cambios en la base de
+        // datos.
 
         perfilExistente.setNombreUsuario(datosPerfil.getNombreUsuario());
         perfilExistente.setFotoPerfil(datosPerfil.getFotoPerfil());

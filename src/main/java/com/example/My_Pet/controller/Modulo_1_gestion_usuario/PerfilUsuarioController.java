@@ -60,8 +60,7 @@ public class PerfilUsuarioController {
             throw new org.springframework.web.server.ResponseStatusException(
                     org.springframework.http.HttpStatus.BAD_REQUEST,
                     error.getMessage(),
-                    error
-            );
+                    error);
         }
     }
 
@@ -74,8 +73,7 @@ public class PerfilUsuarioController {
             @RequestBody PerfilUsuario perfilUsuario) {
         return perfilUsuarioService.actualizarPerfil(
                 id,
-                perfilUsuario
-        );
+                perfilUsuario);
     }
 
     // Elimina un perfil de usuario existente.

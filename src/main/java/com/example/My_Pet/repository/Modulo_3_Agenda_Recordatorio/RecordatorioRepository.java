@@ -18,10 +18,12 @@ import java.util.List;
 
 @Repository
 public interface RecordatorioRepository
-        extends JpaRepository<Recordatorio, Integer> {
-    List<Recordatorio> findByUsuarioIdUsuario(Integer idUsuario);
-    List<Recordatorio> findByMascotaIdMascota(Integer idMascota);
-    List<Recordatorio> findByEstadoAndFechaLessThanEqual(
-            String estado,
-            LocalDateTime fecha);
+                extends JpaRepository<Recordatorio, Integer> {
+        List<Recordatorio> findByUsuarioIdUsuario(Integer idUsuario);
+
+        List<Recordatorio> findByMascotaIdMascota(Integer idMascota);
+
+        List<Recordatorio> findByEstadoAndFechaLessThanEqual(
+                        String estado,
+                        LocalDateTime fecha);
 }

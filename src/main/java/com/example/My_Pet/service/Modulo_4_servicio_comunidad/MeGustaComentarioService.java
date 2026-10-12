@@ -19,83 +19,69 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MeGustaComentarioService {
-    @Autowired
-    private MeGustaComentarioRepository meGustaRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private ComentarioForoRepository comentarioRepository;
+        @Autowired
+        private MeGustaComentarioRepository meGustaRepository;
+        @Autowired
+        private UsuarioRepository usuarioRepository;
+        @Autowired
+        private ComentarioForoRepository comentarioRepository;
 
-   // Agrega o elimina el "Me gusta" de un comentario.
+        // Agrega o elimina el "Me gusta" de un comentario.
 
-    @Transactional
-    public boolean cambiarMeGusta(
-            Integer idUsuario,
-            Integer idComentario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "El usuario no existe."
-                        )
-                );
-        ComentarioForo comentario =
-                comentarioRepository.findById(idComentario)
-                        .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "El comentario no existe."
-                                )
-                        );
-        var meGustaExistente =
-                meGustaRepository
-                        .findByUsuarioIdUsuarioAndComentarioIdComentario(
-                                idUsuario,
-                                idComentario
-                        );
+        @Transactional
+        public boolean cambiarMeGusta(
+                        Integer idUsuario,
+                        Integer idComentario) {
+                Usuario usuario = usuarioRepository.findById(idUsuario)
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "El usuario no existe."));
+                ComentarioForo comentario = comentarioRepository.findById(idComentario)
+                                .orElseThrow(() -> new IllegalArgumentException(
+                                                "El comentario no existe."));
+                var meGustaExistente = meGustaRepository
+                                .findByUsuarioIdUsuarioAndComentarioIdComentario(
+                                                idUsuario,
+                                                idComentario);
 
-        // Si ya existe el me gusta lo elimina.
+                // Si ya existe el me gusta lo elimina.
 
-        if (meGustaExistente.isPresent()) {
-            meGustaRepository.delete(
-                    meGustaExistente.get()
-            );
-            return false;
+                if (meGustaExistente.isPresent()) {
+                        meGustaRepository.delete(
+                                        meGustaExistente.get());
+                        return false;
+                }
+
+                // Si no existe el me gusta lo crea.
+
+                MeGustaComentario meGusta = new MeGustaComentario();
+                meGusta.setUsuario(usuario);
+                meGusta.setComentario(comentario);
+                meGusta.setFecha(java.time.LocalDateTime.now());
+                meGustaRepository.save(meGusta);
+                return true;
         }
 
-        // Si no existe el me gusta lo  crea.
-
-        MeGustaComentario meGusta =
-                new MeGustaComentario();
-        meGusta.setUsuario(usuario);
-        meGusta.setComentario(comentario);
-        meGusta.setFecha(java.time.LocalDateTime.now());
-        meGustaRepository.save(meGusta);
-        return true;
-    }
-
- // Consulta la cantidad de "Me gusta" de un comentario.
-    public long contarMeGustas(
-            Integer idComentario) {
-        if (!comentarioRepository.existsById(idComentario)) {
-            throw new IllegalArgumentException(
-                    "El comentario no existe."
-            );
+        // Consulta la cantidad de "Me gusta" de un comentario.
+        public long contarMeGustas(
+                        Integer idComentario) {
+                if (!comentarioRepository.existsById(idComentario)) {
+                        throw new IllegalArgumentException(
+                                        "El comentario no existe.");
+                }
+                return meGustaRepository
+                                .countByComentarioIdComentario(
+                                                idComentario);
         }
-        return meGustaRepository
-                .countByComentarioIdComentario(
-                        idComentario
-                );
-    }
 
-    // Verifica si el usuario dio "Me gusta" a un comentario.
+        // Verifica si el usuario dio "Me gusta" a un comentario.
 
-    public boolean usuarioDioMeGusta(
-            Integer idUsuario,
-            Integer idComentario) {
-        return meGustaRepository
-                .findByUsuarioIdUsuarioAndComentarioIdComentario(
-                        idUsuario,
-                        idComentario
-                )
-                .isPresent();
-    }
+        public boolean usuarioDioMeGusta(
+                        Integer idUsuario,
+                        Integer idComentario) {
+                return meGustaRepository
+                                .findByUsuarioIdUsuarioAndComentarioIdComentario(
+                                                idUsuario,
+                                                idComentario)
+                                .isPresent();
+        }
 }

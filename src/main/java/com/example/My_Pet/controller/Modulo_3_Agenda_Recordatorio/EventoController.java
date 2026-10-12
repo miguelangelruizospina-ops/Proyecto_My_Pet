@@ -26,7 +26,6 @@ public class EventoController {
     @Autowired
     private EventoService eventoService;
 
-
     // Lista todos los eventos registrados. ***SOLO PARA ADMINISTRADORES***
 
     @GetMapping("/listar")
@@ -35,15 +34,13 @@ public class EventoController {
         return eventoService.obtenerTodos();
     }
 
-
     // Lista los eventos asociados a una mascota existente.
 
     @GetMapping("/mascota/{idMascota}")
     @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0)")
     public ResponseEntity<List<Evento>> listarPorMascota(
             @PathVariable("idMascota") Integer idMascota) {
-        List<Evento> eventos =
-                eventoService.obtenerPorMascota(idMascota);
+        List<Evento> eventos = eventoService.obtenerPorMascota(idMascota);
         return ResponseEntity.ok(eventos);
     }
 
@@ -54,17 +51,15 @@ public class EventoController {
     public ResponseEntity<?> crearEvento(
             @RequestBody Evento evento) {
         try {
-            Evento nuevoEvento =
-                    eventoService.guardar(evento);
+            Evento nuevoEvento = eventoService.guardar(evento);
             return ResponseEntity.ok(nuevoEvento);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(
-                    e.getMessage()
-            );
+                    e.getMessage());
         }
     }
 
-    //Actualiza un evento existente asociado  a una mascot existente.
+    // Actualiza un evento existente asociado a una mascot existente.
 
     @PutMapping("/actualizar/{id}")
     @PreAuthorize("@autorizacion.esEventoPropioOAdministrador(#p0)")
@@ -72,20 +67,17 @@ public class EventoController {
             @PathVariable("id") Integer id,
             @RequestBody Evento evento) {
         try {
-            Evento eventoActualizado =
-                    eventoService.actualizar(
-                            id,
-                            evento
-                    );
+            Evento eventoActualizado = eventoService.actualizar(
+                    id,
+                    evento);
             return ResponseEntity.ok(eventoActualizado);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(
-                    e.getMessage()
-            );
+                    e.getMessage());
         }
     }
 
-    // Elimina un evento existente  por su ID.
+    // Elimina un evento existente por su ID.
 
     @DeleteMapping("/eliminar/{id}")
     @PreAuthorize("@autorizacion.esEventoPropioOAdministrador(#p0)")
@@ -94,12 +86,10 @@ public class EventoController {
         try {
             eventoService.eliminar(id);
             return ResponseEntity.ok(
-                    "Evento eliminado correctamente"
-            );
+                    "Evento eliminado correctamente");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(
-                    e.getMessage()
-            );
+                    e.getMessage());
         }
     }
 }

@@ -26,13 +26,13 @@ public class Reporte {
     private Integer idReporte;
 
     // Usuario que crea el reporte.
-    
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 
-  // Datos principales del reporte.
+    // Datos principales del reporte.
 
     @Column(nullable = false, length = 1000)
     private String descripcion;
@@ -52,58 +52,73 @@ public class Reporte {
     @Column(length = 2000)
     private String respuesta;
 
-    // Constructor vacio para crear la entidad. 
+    // Constructor vacio para crear la entidad.
 
     public Reporte() {
     }
 
-     // // Getters y setters de los datos del reporte.
+    // // Getters y setters de los datos del reporte.
 
     public Integer getIdReporte() {
         return idReporte;
     }
+
     public void setIdReporte(Integer idReporte) {
         this.idReporte = idReporte;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
     public String getDescripcion() {
         return descripcion;
     }
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
     public String getPagina() {
         return pagina;
     }
+
     public void setPagina(String pagina) {
         this.pagina = pagina;
     }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
+
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
+
     public String getNavegador() {
         return navegador;
     }
+
     public void setNavegador(String navegador) {
         this.navegador = navegador;
     }
+
     public String getEstado() {
         return estado;
     }
+
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
     public String getRespuesta() {
         return respuesta;
     }
+
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }

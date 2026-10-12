@@ -29,7 +29,7 @@ public class ReporteController {
     @Autowired
     private ReporteService reporteService;
 
-   // Lista todos los reportes de ayuda. ***SOLO PARA ADMINISTRADORES***
+    // Lista todos los reportes de ayuda. ***SOLO PARA ADMINISTRADORES***
 
     @GetMapping("/listar")
     @PreAuthorize("@autorizacion.esAdministrador()")
@@ -62,25 +62,22 @@ public class ReporteController {
     public Reporte crearReporte(
             @RequestBody Reporte reporte) {
 
-        Authentication authentication =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
 
         Object principal = authentication.getPrincipal();
 
         if (!(principal instanceof UsuarioPrincipal usuarioPrincipal)) {
             throw new RuntimeException(
-                    "No se pudo identificar al usuario autenticado"
-            );
+                    "No se pudo identificar al usuario autenticado");
         }
 
         Integer idUsuario = usuarioPrincipal.idUsuario();
 
         return reporteService.guardarReporte(
                 idUsuario,
-                reporte
-        );
+                reporte);
     }
 
     // Actualiza el estado de un reporte de ayuda. ***SOLO PARA ADMINISTRADORES***
@@ -90,15 +87,11 @@ public class ReporteController {
     public Reporte actualizarReporte(
             @PathVariable("id") Integer id,
             @RequestParam("estado") String estado,
-            @RequestParam(
-                    value = "respuesta",
-                    required = false
-            ) String respuesta) {
+            @RequestParam(value = "respuesta", required = false) String respuesta) {
 
         return reporteService.actualizarReporte(
                 id,
                 estado,
-                respuesta
-        );
+                respuesta);
     }
 }

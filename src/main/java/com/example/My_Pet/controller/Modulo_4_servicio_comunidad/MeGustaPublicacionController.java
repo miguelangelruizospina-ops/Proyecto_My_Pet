@@ -24,134 +24,116 @@ import java.util.Map;
 @RequestMapping("/api/me-gusta/publicaciones")
 public class MeGustaPublicacionController {
 
-    // Servicio encargado de agregar, quitar y consultar los Me gusta de las publicaciones del foro (no comentarios).
+        // Servicio encargado de agregar, quitar y consultar los Me gusta de las
+        // publicaciones del foro (no comentarios).
 
-    @Autowired
-    private MeGustaPublicacionService meGustaService;
+        @Autowired
+        private MeGustaPublicacionService meGustaService;
 
-// Agrega o quita el "Me gusta" de una publicación del foro (no comentarios) y devuelve la cantidad actual.
+        // Agrega o quita el "Me gusta" de una publicación del foro (no comentarios) y
+        // devuelve la cantidad actual.
 
-    @PostMapping("/{idPublicacion}")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> cambiarMeGusta(
-            @PathVariable("idPublicacion") Integer idPublicacion) {
+        @PostMapping("/{idPublicacion}")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> cambiarMeGusta(
+                        @PathVariable("idPublicacion") Integer idPublicacion) {
 
-        // Obtiene la autenticacion del usuario que inició sesión.
+                // Obtiene la autenticacion del usuario que inició sesión.
 
-        UsuarioPrincipal usuarioPrincipal =
-                obtenerUsuarioAutenticado();
-        if (usuarioPrincipal == null) {
-            return ResponseEntity.status(401)
-                    .body(
-                            "No se pudo identificar al usuario autenticado."
-                    );
+                UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
+                if (usuarioPrincipal == null) {
+                        return ResponseEntity.status(401)
+                                        .body(
+                                                        "No se pudo identificar al usuario autenticado.");
+                }
+                try {
+                        Integer idUsuario = usuarioPrincipal.idUsuario();
+                        boolean dado = meGustaService.cambiarMeGusta(
+                                        idUsuario,
+                                        idPublicacion);
+
+                        // Obtiene la cantidad actual de Me gusta.
+
+                        long cantidad = meGustaService.contarMeGustas(
+                                        idPublicacion);
+
+                        // Devuelve al JavaScript el estado y la cantidad actual.
+
+                        return ResponseEntity.ok(
+                                        Map.of(
+                                                        "meGusta", dado,
+                                                        "cantidad", cantidad));
+
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-        try {
-            Integer idUsuario =
-                    usuarioPrincipal.idUsuario();
-            boolean dado =
-                    meGustaService.cambiarMeGusta(
-                            idUsuario,
-                            idPublicacion
-                    );
 
-            // Obtiene la cantidad actual de Me gusta.
+        // Consulta únicamente el total de "Me gusta" de una publicación en el foro (no
+        // comentarios).
 
-            long cantidad =
-                    meGustaService.contarMeGustas(
-                            idPublicacion
-                    );
-
-            // Devuelve al JavaScript el estado  y la cantidad actual.
-
-            return ResponseEntity.ok(
-                    Map.of(
-                            "meGusta", dado,
-                            "cantidad", cantidad
-                    )
-            );
-
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
+        @GetMapping("/{idPublicacion}/cantidad")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> contarMeGustas(
+                        @PathVariable("idPublicacion") Integer idPublicacion) {
+                try {
+                        long cantidad = meGustaService.contarMeGustas(
+                                        idPublicacion);
+                        return ResponseEntity.ok(
+                                        Map.of(
+                                                        "cantidad",
+                                                        cantidad));
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-    }
 
-    // Consulta únicamente el total de "Me gusta" de una publicación en el foro (no comentarios).
+        // Permite saber si el usuario actual ya dio Me gusta a una publicación
+        // determinada en el foro.
 
-    @GetMapping("/{idPublicacion}/cantidad")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> contarMeGustas(
-            @PathVariable("idPublicacion") Integer idPublicacion) {
-        try {
-            long cantidad =
-                    meGustaService.contarMeGustas(
-                            idPublicacion
-                    );
-            return ResponseEntity.ok(
-                    Map.of(
-                            "cantidad",
-                            cantidad
-                    )
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
+        @GetMapping("/{idPublicacion}/mi-me-gusta")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> verificarMeGusta(
+                        @PathVariable("idPublicacion") Integer idPublicacion) {
+                UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
+                if (usuarioPrincipal == null) {
+                        return ResponseEntity.status(401)
+                                        .body(
+                                                        "No se pudo identificar al usuario autenticado.");
+                }
+                try {
+                        Integer idUsuario = usuarioPrincipal.idUsuario();
+                        boolean meGusta = meGustaService.usuarioDioMeGusta(
+                                        idUsuario,
+                                        idPublicacion);
+                        return ResponseEntity.ok(
+                                        Map.of(
+                                                        "meGusta",
+                                                        meGusta));
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity.badRequest()
+                                        .body(e.getMessage());
+                }
         }
-    }
 
-    // Permite saber si el usuario actual ya dio Me gusta  a una publicación determinada en el foro.
+        // Obtiene el UsuarioPrincipal almacenado en la sesión de Spring Security.
 
-    @GetMapping("/{idPublicacion}/mi-me-gusta")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> verificarMeGusta(
-            @PathVariable("idPublicacion") Integer idPublicacion) {
-        UsuarioPrincipal usuarioPrincipal =
-                obtenerUsuarioAutenticado();
-        if (usuarioPrincipal == null) {
-            return ResponseEntity.status(401)
-                    .body(
-                            "No se pudo identificar al usuario autenticado."
-                    );
+        private UsuarioPrincipal obtenerUsuarioAutenticado() {
+
+                // Obtiene la autenticación actual.
+
+                Authentication authentication = SecurityContextHolder
+                                .getContext()
+                                .getAuthentication();
+                if (authentication == null) {
+                        return null;
+                }
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof UsuarioPrincipal usuarioPrincipal) {
+                        return usuarioPrincipal;
+                }
+                return null;
         }
-        try {
-            Integer idUsuario =
-                    usuarioPrincipal.idUsuario();
-            boolean meGusta =
-                    meGustaService.usuarioDioMeGusta(
-                            idUsuario,
-                            idPublicacion
-                    );
-            return ResponseEntity.ok(
-                    Map.of(
-                            "meGusta",
-                            meGusta
-                    )
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest()
-                    .body(e.getMessage());
-        }
-    }
-
-    // Obtiene el UsuarioPrincipal almacenado  en la sesión de Spring Security.
-
-    private UsuarioPrincipal obtenerUsuarioAutenticado() {
-
-        // Obtiene la autenticación actual.
-
-        Authentication authentication =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        Object principal =
-                authentication.getPrincipal();
-        if (principal instanceof UsuarioPrincipal usuarioPrincipal) {
-            return usuarioPrincipal;
-        }
-        return null;
-    }
 }

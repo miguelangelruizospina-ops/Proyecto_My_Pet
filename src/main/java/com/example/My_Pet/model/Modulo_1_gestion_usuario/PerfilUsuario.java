@@ -27,11 +27,11 @@ public class PerfilUsuario {
     @Column(name = "id_usuario")
     private Integer idUsuario;
 
-   // Datos principales del perfil del usuario.
+    // Datos principales del perfil del usuario.
 
     @Column(name = "nombre_usuario", nullable = false, length = 100)
     private String nombreUsuario;
-    
+
     @Lob
     @Column(name = "foto_perfil", nullable = false)
     private String fotoPerfil;
@@ -68,54 +68,71 @@ public class PerfilUsuario {
     public Integer getIdUsuario() {
         return idUsuario;
     }
+
     public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
+
     public String getNombreUsuario() {
         return nombreUsuario;
     }
+
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
+
     public String getFotoPerfil() {
         return fotoPerfil;
     }
+
     public void setFotoPerfil(String fotoPerfil) {
         this.fotoPerfil = fotoPerfil;
     }
+
     public String getBiografia() {
         return biografia;
     }
+
     public void setBiografia(String biografia) {
         this.biografia = biografia;
     }
+
     public String getTelefono() {
         return telefono;
     }
+
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
     public String getCiudad() {
         return ciudad;
     }
+
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
     }
+
     public String getGenero() {
         return genero;
     }
+
     public void setGenero(String genero) {
         this.genero = genero;
     }
+
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
+
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }

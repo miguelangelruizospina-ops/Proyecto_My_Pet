@@ -43,7 +43,7 @@ public class Chatbot {
     private LocalDateTime fecha;
 
     // Constructor vacío requerido para crear la conversacion.
-    
+
     public Chatbot() {
     }
 
@@ -52,30 +52,39 @@ public class Chatbot {
     public Integer getIdChatbot() {
         return idChatbot;
     }
+
     public void setIdChatbot(Integer idChatbot) {
         this.idChatbot = idChatbot;
     }
+
     public Usuario getUsuario() {
         return usuario;
     }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
     public String getMensaje() {
         return mensaje;
     }
+
     public void setMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
+
     public String getRespuesta() {
         return respuesta;
     }
+
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
+
     public LocalDateTime getFecha() {
         return fecha;
     }
+
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }

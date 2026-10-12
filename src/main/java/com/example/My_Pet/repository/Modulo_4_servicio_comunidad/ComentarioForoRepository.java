@@ -19,5 +19,6 @@ import java.util.List;
 public interface ComentarioForoRepository
         extends JpaRepository<ComentarioForo, Integer> {
     List<ComentarioForo> findByPublicacionIdPublicacion(Integer idPublicacion);
+
     List<ComentarioForo> findByComentarioPadreIdComentario(Integer idComentarioPadre);
 }

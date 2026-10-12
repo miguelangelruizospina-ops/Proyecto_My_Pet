@@ -273,16 +273,15 @@ function mostrarDocumentos(
                         ${escaparHTML(fechaDocumento)}
                     </p>
 
-                    ${
-                        archivo
-                            ? `
+                    ${archivo
+                    ? `
                                 <p>
                                     <strong>Archivo:</strong>
                                     ${escaparHTML(archivo)}
                                 </p>
                             `
-                            : ""
-                    }
+                    : ""
+                }
 
                     <div class="text-center mt-3">
 

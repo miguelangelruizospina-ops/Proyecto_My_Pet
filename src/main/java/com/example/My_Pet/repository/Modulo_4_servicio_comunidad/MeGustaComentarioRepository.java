@@ -17,11 +17,10 @@ import java.util.Optional;
 
 @Repository
 public interface MeGustaComentarioRepository
-        extends JpaRepository<MeGustaComentario, Integer> {
-    Optional<MeGustaComentario>
-    findByUsuarioIdUsuarioAndComentarioIdComentario(
-            Integer idUsuario,
-            Integer idComentario
-    );
-    long countByComentarioIdComentario(Integer idComentario);
+                extends JpaRepository<MeGustaComentario, Integer> {
+        Optional<MeGustaComentario> findByUsuarioIdUsuarioAndComentarioIdComentario(
+                        Integer idUsuario,
+                        Integer idComentario);
+
+        long countByComentarioIdComentario(Integer idComentario);
 }

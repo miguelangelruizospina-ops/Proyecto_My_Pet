@@ -23,98 +23,89 @@ import java.util.List;
 
 @Service
 public class MascotaService {
-    @Autowired
-    private MascotaRepository mascotaRepository;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+        @Autowired
+        private MascotaRepository mascotaRepository;
+        @Autowired
+        private UsuarioRepository usuarioRepository;
         @Autowired
         private PerfilMascotaRepository perfilMascotaRepository;
 
-    // Método para listar todas las mascotas registradas en la base de datos.
+        // Método para listar todas las mascotas registradas en la base de datos.
 
-    public List<Mascota> obtenerTodasLasMascotas() {
-        return mascotaRepository.findAll();
-    }
+        public List<Mascota> obtenerTodasLasMascotas() {
+                return mascotaRepository.findAll();
+        }
 
-    // Método para listar las mascotas de un usuario específico que estan registrados en la base de datos.
+        // Método para listar las mascotas de un usuario específico que estan
+        // registrados en la base de datos.
 
-    public List<Mascota> obtenerMascotasPorUsuario(Integer idUsuario) {
-        return mascotaRepository.findByUsuarioIdUsuario(idUsuario);
-    }
+        public List<Mascota> obtenerMascotasPorUsuario(Integer idUsuario) {
+                return mascotaRepository.findByUsuarioIdUsuario(idUsuario);
+        }
 
-    // Método para buscar una mascota por su ID
+        // Método para buscar una mascota por su ID
 
-    public Mascota obtenerMascotaPorId(Integer idMascota) {
-        return mascotaRepository.findById(idMascota)
-                .orElseThrow(() -> new RuntimeException(
-                        "Mascota no encontrada con ID: " + idMascota
-                ));
-    }
+        public Mascota obtenerMascotaPorId(Integer idMascota) {
+                return mascotaRepository.findById(idMascota)
+                                .orElseThrow(() -> new RuntimeException(
+                                                "Mascota no encontrada con ID: " + idMascota));
+        }
 
-    // Método para guardar una mascota nueva en la base de datos.
+        // Método para guardar una mascota nueva en la base de datos.
 
         @Transactional
-    public Mascota guardarMascota(Mascota mascota) {
-        if (mascota.getUsuario() == null) {
-            throw new RuntimeException(
-                    "La mascota debe tener un usuario"
-            );
+        public Mascota guardarMascota(Mascota mascota) {
+                if (mascota.getUsuario() == null) {
+                        throw new RuntimeException(
+                                        "La mascota debe tener un usuario");
+                }
+                Integer idUsuario = mascota.getUsuario().getIdUsuario();
+
+                // Verifica que el usuario exista en la base de datos.
+
+                Usuario usuario = usuarioRepository.findById(idUsuario)
+                                .orElseThrow(() -> new RuntimeException(
+                                                "El usuario con ID " + idUsuario + " no existe"));
+
+                // Asocia la mascota con el usuario existente en la base de datos.
+
+                mascota.setUsuario(usuario);
+                Mascota mascotaGuardada = mascotaRepository.save(mascota);
+                PerfilMascota perfil = new PerfilMascota();
+                perfil.setMascota(mascotaGuardada);
+                perfilMascotaRepository.save(perfil);
+                return mascotaGuardada;
         }
-        Integer idUsuario = mascota.getUsuario().getIdUsuario();
 
-        // Verifica que el usuario exista en la base de datos.
+        // Método para actualizar una mascota registrada.
 
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new RuntimeException(
-                        "El usuario con ID " + idUsuario + " no existe"
-                ));
+        public Mascota actualizarMascota(
+                        Integer idMascota,
+                        Mascota datosMascota) {
+                Mascota mascotaExistente = obtenerMascotaPorId(idMascota);
 
-       // Asocia la mascota con el usuario existente en la base de datos.
+                // Actualizamos los datos de la mascota registrada en la base de datos.
 
-        mascota.setUsuario(usuario);
-        Mascota mascotaGuardada = mascotaRepository.save(mascota);
-        PerfilMascota perfil = new PerfilMascota();
-        perfil.setMascota(mascotaGuardada);
-        perfilMascotaRepository.save(perfil);
-        return mascotaGuardada;
-    }
+                mascotaExistente.setNombre(
+                                datosMascota.getNombre());
+                mascotaExistente.setEspecie(
+                                datosMascota.getEspecie());
+                mascotaExistente.setRaza(
+                                datosMascota.getRaza());
+                mascotaExistente.setFechaNacimiento(
+                                datosMascota.getFechaNacimiento());
+                mascotaExistente.setFoto(
+                                datosMascota.getFoto());
 
-    // Método para actualizar una mascota registrada.
+                // Mantiene el usuario propietario original durante la actualización.
 
-    public Mascota actualizarMascota(
-            Integer idMascota,
-            Mascota datosMascota) {
-        Mascota mascotaExistente =
-                obtenerMascotaPorId(idMascota);
+                return mascotaRepository.save(mascotaExistente);
+        }
 
-        // Actualizamos los datos de la mascota registrada en la base de datos.
+        // Método para eliminar una mascota de la base de datos.
 
-        mascotaExistente.setNombre(
-                datosMascota.getNombre()
-        );
-        mascotaExistente.setEspecie(
-                datosMascota.getEspecie()
-        );
-        mascotaExistente.setRaza(
-                datosMascota.getRaza()
-        );
-        mascotaExistente.setFechaNacimiento(
-                datosMascota.getFechaNacimiento()
-        );
-        mascotaExistente.setFoto(
-                datosMascota.getFoto()
-        );
-
-        // Mantiene el usuario propietario original durante la actualización.
-
-        return mascotaRepository.save(mascotaExistente);
-    }
-
-    // Método para eliminar una mascota de la base de datos.
-
-    public void eliminarMascota(Integer idMascota) {
-        Mascota mascotaExistente =
-                obtenerMascotaPorId(idMascota);
-        mascotaRepository.delete(mascotaExistente);
-    }
+        public void eliminarMascota(Integer idMascota) {
+                Mascota mascotaExistente = obtenerMascotaPorId(idMascota);
+                mascotaRepository.delete(mascotaExistente);
+        }
 }

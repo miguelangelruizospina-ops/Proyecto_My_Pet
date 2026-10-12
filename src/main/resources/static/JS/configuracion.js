@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cargarNotificaciones();
 
     // Gestiona el cambio del tema de la aplicación.
-    
+
     if (tema) {
 
         tema.addEventListener("change", function () {
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Carga el tema almacenado y lo aplica a la página.
-    
+
     function cargarTema() {
 
         const valor =
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Aplica el tema seleccionado a la interfaz.
-   
+
     function aplicarTema(valor) {
 
         document.body.classList.remove(
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Carga el tamaño de letra almacenado y lo aplica a la página.
-    
+
     function cargarTamanoLetra() {
 
         const valor =
@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Aplica el tamaño de letra seleccionado a la interfaz.
-    
+
     function aplicarTamanoLetra(valor) {
 
         document.body.classList.remove(
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Gestiona la selección del color principal de la interfaz.
-    
+
     botonesColor.forEach(function (boton) {
 
         boton.addEventListener(
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Carga el color almacenado y lo aplica a la interfaz.
-    
+
     function cargarColor() {
 
         const color =
@@ -225,11 +225,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Valida y aplica el color seleccionado a la interfaz.
-    
+
     function aplicarColor(color) {
 
         // Valida que el color seleccionado pertenezca a las opciones disponibles.
-        
+
         const coloresValidos = [
             "naranja",
             "azul",
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Aplica la clase correspondiente al color seleccionado.
-        
+
         document.body.classList.remove(
             "color-naranja-activo",
             "color-azul-activo",
@@ -258,14 +258,14 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         // Identifica el color activo en la configuración de la página.
-        
+
         document.documentElement.setAttribute(
             "data-color",
             color
         );
 
         // Actualiza el botón que corresponde al color seleccionado.
-       
+
         botonesColor.forEach(function (boton) {
 
             boton.classList.remove(
@@ -290,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Gestiona el cambio de la configuración de alto contraste.
-    
+
     if (altoContraste) {
 
         altoContraste.addEventListener(
@@ -315,7 +315,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Carga la configuración de contraste almacenada y la aplica.
-   
+
     function cargarContraste() {
 
         const guardado =
@@ -340,7 +340,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Aplica o desactiva el modo de alto contraste.
-    
+
     function aplicarContraste(activado) {
 
         document.body.classList.toggle(
@@ -358,7 +358,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Gestiona el cambio de la configuración de notificaciones.
-    
+
     if (notificaciones) {
 
         notificaciones.addEventListener(
@@ -379,7 +379,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Carga el estado de las notificaciones almacenado por el usuario.
-    
+
     function cargarNotificaciones() {
 
         const guardado =
@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Gestiona la eliminación de la cuenta y el cierre de la sesión local.
-    
+
     if (btnEliminarCuenta) {
 
         btnEliminarCuenta.addEventListener(

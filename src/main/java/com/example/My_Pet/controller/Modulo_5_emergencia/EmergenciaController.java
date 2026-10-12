@@ -43,30 +43,29 @@ public class EmergenciaController {
         return emergenciaService.obtenerPorUsuario(idUsuario);
     }
 
-    //  Registra una nueva emergencia de un usuario registrado.
+    // Registra una nueva emergencia de un usuario registrado.
 
     @PostMapping("/guardar")
     @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#p0.usuario?.idUsuario)")
     public ResponseEntity<?> crearEmergencia(
             @RequestBody Emergencia emergencia) {
         try {
-            Emergencia nuevaEmergencia =
-                    emergenciaService.guardar(emergencia);
+            Emergencia nuevaEmergencia = emergenciaService.guardar(emergencia);
             return ResponseEntity.ok(nuevaEmergencia);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    //Marca una emergencia como resuelta por el usuario y desactiva las notificaciones de emergencia.
+    // Marca una emergencia como resuelta por el usuario y desactiva las
+    // notificaciones de emergencia.
 
     @PutMapping("/resolver/{id}")
     @PreAuthorize("@autorizacion.esEmergenciaPropiaOAdministrador(#p0)")
     public ResponseEntity<?> resolverEmergencia(
             @PathVariable("id") Integer id) {
         try {
-            Emergencia emergenciaResuelta =
-                    emergenciaService.resolver(id);
+            Emergencia emergenciaResuelta = emergenciaService.resolver(id);
             return ResponseEntity.ok(emergenciaResuelta);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -82,12 +81,10 @@ public class EmergenciaController {
         try {
             emergenciaService.eliminar(id);
             return ResponseEntity.ok(
-                    "Emergencia eliminada correctamente."
-            );
+                    "Emergencia eliminada correctamente.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(
-                    e.getMessage()
-            );
+                    e.getMessage());
         }
     }
 }

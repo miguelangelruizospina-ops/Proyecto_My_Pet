@@ -27,8 +27,8 @@ public class PerfilMascotaController {
     @Autowired
     private PerfilMascotaService perfilMascotaService;
 
-
-   //Lista todos los perfiles de mascotas existentes. ***SOLO PARA ADMINISTRADORES***
+    // Lista todos los perfiles de mascotas existentes. ***SOLO PARA
+    // ADMINISTRADORES***
 
     @GetMapping("/listar")
     @PreAuthorize("@autorizacion.esAdministrador()")
@@ -36,8 +36,8 @@ public class PerfilMascotaController {
         return perfilMascotaService.obtenerTodos();
     }
 
-
-    // BUsca el perfil de una mascota existente por su ID. ***SOLO PARA EL ADMINISTRADOR O EL USUARIO PROPIETARIO DE LA MASCOTA***
+    // BUsca el perfil de una mascota existente por su ID. ***SOLO PARA EL
+    // ADMINISTRADOR O EL USUARIO PROPIETARIO DE LA MASCOTA***
 
     @GetMapping("/{id}")
     @PreAuthorize("@autorizacion.esPerfilMascotaPropioOAdministrador(#p0)")
@@ -45,14 +45,14 @@ public class PerfilMascotaController {
             @PathVariable("id") Integer id) {
         try {
             return ResponseEntity.ok(
-                    perfilMascotaService.obtenerPorId(id)
-            );
+                    perfilMascotaService.obtenerPorId(id));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    //  Busca el perfil asociado a una mascota existente por su ID. ***SOLO PARA EL ADMINISTRADOR O EL USUARIO PROPIETARIO DE LA MASCOTA***
+    // Busca el perfil asociado a una mascota existente por su ID. ***SOLO PARA EL
+    // ADMINISTRADOR O EL USUARIO PROPIETARIO DE LA MASCOTA***
 
     @GetMapping("/mascota/{idMascota}")
     @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#p0)")
@@ -60,8 +60,7 @@ public class PerfilMascotaController {
             @PathVariable("idMascota") Integer idMascota) {
         try {
             return ResponseEntity.ok(
-                    perfilMascotaService.obtenerPorMascota(idMascota)
-            );
+                    perfilMascotaService.obtenerPorMascota(idMascota));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
@@ -74,15 +73,14 @@ public class PerfilMascotaController {
     public ResponseEntity<?> crearPerfil(
             @RequestBody PerfilMascota perfil) {
         try {
-            PerfilMascota nuevoPerfil =
-                    perfilMascotaService.guardar(perfil);
+            PerfilMascota nuevoPerfil = perfilMascotaService.guardar(perfil);
             return ResponseEntity.ok(nuevoPerfil);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // PActualiza los datos del  perfil de mascota existente.
+    // PActualiza los datos del perfil de mascota existente.
 
     @PutMapping("/actualizar/{id}")
     @PreAuthorize("@autorizacion.esPerfilMascotaPropioOAdministrador(#p0)")
@@ -90,15 +88,14 @@ public class PerfilMascotaController {
             @PathVariable("id") Integer id,
             @RequestBody PerfilMascota perfil) {
         try {
-            PerfilMascota perfilActualizado =
-                    perfilMascotaService.actualizar(id, perfil);
+            PerfilMascota perfilActualizado = perfilMascotaService.actualizar(id, perfil);
             return ResponseEntity.ok(perfilActualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    // Elimina un perfil de mascota  existente por su ID.
+    // Elimina un perfil de mascota existente por su ID.
 
     @DeleteMapping("/eliminar/{id}")
     @PreAuthorize("@autorizacion.esPerfilMascotaPropioOAdministrador(#p0)")
@@ -107,8 +104,7 @@ public class PerfilMascotaController {
         try {
             perfilMascotaService.eliminar(id);
             return ResponseEntity.ok(
-                    "Perfil de mascota eliminado correctamente"
-            );
+                    "Perfil de mascota eliminado correctamente");
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }

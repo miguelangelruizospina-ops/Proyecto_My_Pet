@@ -31,206 +31,150 @@ import java.util.List;
 @RequestMapping("/api/documentos")
 public class DocumentoController {
 
-    // Servicio encargado de gestionar los documentos de las mascotas.
+        // Servicio encargado de gestionar los documentos de las mascotas.
 
-    @Autowired
-    private DocumentoService documentoService;
+        @Autowired
+        private DocumentoService documentoService;
 
-    // Lista todos los documentos. ***SOLO PARA ADMINISTRADORES***
+        // Lista todos los documentos. ***SOLO PARA ADMINISTRADORES***
 
-    @GetMapping("/listar")
-    @PreAuthorize("@autorizacion.esAdministrador()")
-    public List<Documento> listarTodo() {
-        return documentoService.obtenerTodos();
-    }
-    // Lista los documentos asociados a un usuario que tenga una mascota registrada.
-
-    @GetMapping("/usuario/{idUsuario}")
-    @PreAuthorize(
-            "@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)"
-    )
-    public ResponseEntity<List<Documento>> listarPorUsuario(
-            @PathVariable("idUsuario")
-            Integer idUsuario) {
-        return ResponseEntity.ok(
-                documentoService.obtenerPorUsuario(idUsuario)
-        );
-    }
-
-    // Lista los documentos asociados a una mascota.
-    
-    @GetMapping("/mascota/{idMascota}")
-    @PreAuthorize(
-            "@autorizacion.esMascotaPropiaOAdministrador(#idMascota)"
-    )
-    public ResponseEntity<List<Documento>> listarPorMascota(
-            @PathVariable("idMascota")
-            @P("idMascota")
-            Integer idMascota) {
-        return ResponseEntity.ok(
-                documentoService.obtenerPorMascota(idMascota)
-        );
-    }
-
-    // Registra un documento y almacena el archivo seleccionado.
-    
-    @PostMapping(
-            value = "/guardar",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
-    )
-    @PreAuthorize(
-            "@autorizacion.puedeGuardarDocumento(#idUsuario, #idMascota)"
-    )
-    public ResponseEntity<?> crearDocumento(
-            @RequestParam("tipoDocumento")
-            String tipoDocumento,
-            @RequestParam("nombreDocumento")
-            String nombreDocumento,
-            @RequestParam(
-                    value = "fechaDocumento",
-                    required = false
-            )
-            String fechaDocumento,
-            @RequestParam("archivo")
-            MultipartFile archivo,
-            @RequestParam("idUsuario")
-            @P("idUsuario")
-            Integer idUsuario,
-            @RequestParam("idMascota")
-            @P("idMascota")
-            Integer idMascota) {
-        try {
-            LocalDate fecha = null;
-            if (fechaDocumento != null &&
-                    !fechaDocumento.isBlank()) {
-                fecha = LocalDate.parse(fechaDocumento);
-            }
-            Documento nuevoDocumento =
-                    documentoService.guardar(
-                            tipoDocumento,
-                            nombreDocumento,
-                            fecha,
-                            archivo,
-                            idUsuario,
-                            idMascota
-                    );
-            return ResponseEntity.ok(nuevoDocumento);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        } catch (RuntimeException e) {
-            return ResponseEntity
-                    .internalServerError()
-                    .body(e.getMessage());
+        @GetMapping("/listar")
+        @PreAuthorize("@autorizacion.esAdministrador()")
+        public List<Documento> listarTodo() {
+                return documentoService.obtenerTodos();
         }
-    }
+        // Lista los documentos asociados a un usuario que tenga una mascota registrada.
 
-    // Permite visualizar un documento almacenado en el navegador.
-    
-    @GetMapping("/ver/{id}")
-    @PreAuthorize(
-            "@autorizacion.esDocumentoPropioOAdministrador(#id)"
-    )
-    public ResponseEntity<Resource> verDocumento(
-            @PathVariable("id")
-            @P("id")
-            Integer id) {
-        try {
-            Documento documento =
-                    documentoService.obtenerPorId(id);
-            Path ruta =
-                    documentoService.obtenerRutaArchivo(id);
-            Resource recurso =
-                    new UrlResource(ruta.toUri());
-            String tipoContenido =
-                    Files.probeContentType(ruta);
-            if (tipoContenido == null) {
-                tipoContenido =
-                        MediaType.APPLICATION_OCTET_STREAM_VALUE;
-            }
-            return ResponseEntity.ok()
-                    .contentType(
-                            MediaType.parseMediaType(
-                                    tipoContenido
-                            )
-                    )
-                    .header(
-                            HttpHeaders.CONTENT_DISPOSITION,
-                            "inline; filename=\"" +
-                                    documento.getNombreDocumento() +
-                                    "\""
-                    )
-                    .body(recurso);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .notFound()
-                    .build();
+        @GetMapping("/usuario/{idUsuario}")
+        @PreAuthorize("@autorizacion.esUsuarioPropioOAdministrador(#idUsuario)")
+        public ResponseEntity<List<Documento>> listarPorUsuario(
+                        @PathVariable("idUsuario") Integer idUsuario) {
+                return ResponseEntity.ok(
+                                documentoService.obtenerPorUsuario(idUsuario));
         }
-    }
 
-    // Permite descargar un documento almacenado de una mascota.
-    
-    @GetMapping("/descargar/{id}")
-    @PreAuthorize(
-            "@autorizacion.esDocumentoPropioOAdministrador(#id)"
-    )
-    public ResponseEntity<Resource> descargarDocumento(
-            @PathVariable("id")
-            @P("id")
-            Integer id) {
-        try {
-            Documento documento =
-                    documentoService.obtenerPorId(id);
-            Path ruta =
-                    documentoService.obtenerRutaArchivo(id);
-            Resource recurso =
-                    new UrlResource(ruta.toUri());
-            String tipoContenido =
-                    Files.probeContentType(ruta);
-            if (tipoContenido == null) {
-                tipoContenido =
-                        MediaType.APPLICATION_OCTET_STREAM_VALUE;
-            }
-            return ResponseEntity.ok()
-                    .contentType(
-                            MediaType.parseMediaType(
-                                    tipoContenido
-                            )
-                    )
-                    .header(
-                            HttpHeaders.CONTENT_DISPOSITION,
-                            "attachment; filename=\"" +
-                                    documento.getNombreDocumento() +
-                                    "\""
-                    )
-                    .body(recurso);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .notFound()
-                    .build();
-        }
-    }
+        // Lista los documentos asociados a una mascota.
 
-    // Elimina un documento y su archivo almacenado.
-    
-    @DeleteMapping("/eliminar/{id}")
-    @PreAuthorize(
-            "@autorizacion.esDocumentoPropioOAdministrador(#id)"
-    )
-    public ResponseEntity<String> eliminarDocumento(
-            @PathVariable("id")
-            @P("id")
-            Integer id) {
-        try {
-            documentoService.eliminar(id);
-            return ResponseEntity.ok(
-                    "Documento eliminado correctamente"
-            );
-        } catch (RuntimeException e) {
-            return ResponseEntity
-                    .notFound()
-                    .build();
+        @GetMapping("/mascota/{idMascota}")
+        @PreAuthorize("@autorizacion.esMascotaPropiaOAdministrador(#idMascota)")
+        public ResponseEntity<List<Documento>> listarPorMascota(
+                        @PathVariable("idMascota") @P("idMascota") Integer idMascota) {
+                return ResponseEntity.ok(
+                                documentoService.obtenerPorMascota(idMascota));
         }
-    }
+
+        // Registra un documento y almacena el archivo seleccionado.
+
+        @PostMapping(value = "/guardar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        @PreAuthorize("@autorizacion.puedeGuardarDocumento(#idUsuario, #idMascota)")
+        public ResponseEntity<?> crearDocumento(
+                        @RequestParam("tipoDocumento") String tipoDocumento,
+                        @RequestParam("nombreDocumento") String nombreDocumento,
+                        @RequestParam(value = "fechaDocumento", required = false) String fechaDocumento,
+                        @RequestParam("archivo") MultipartFile archivo,
+                        @RequestParam("idUsuario") @P("idUsuario") Integer idUsuario,
+                        @RequestParam("idMascota") @P("idMascota") Integer idMascota) {
+                try {
+                        LocalDate fecha = null;
+                        if (fechaDocumento != null &&
+                                        !fechaDocumento.isBlank()) {
+                                fecha = LocalDate.parse(fechaDocumento);
+                        }
+                        Documento nuevoDocumento = documentoService.guardar(
+                                        tipoDocumento,
+                                        nombreDocumento,
+                                        fecha,
+                                        archivo,
+                                        idUsuario,
+                                        idMascota);
+                        return ResponseEntity.ok(nuevoDocumento);
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity
+                                        .badRequest()
+                                        .body(e.getMessage());
+                } catch (RuntimeException e) {
+                        return ResponseEntity
+                                        .internalServerError()
+                                        .body(e.getMessage());
+                }
+        }
+
+        // Permite visualizar un documento almacenado en el navegador.
+
+        @GetMapping("/ver/{id}")
+        @PreAuthorize("@autorizacion.esDocumentoPropioOAdministrador(#id)")
+        public ResponseEntity<Resource> verDocumento(
+                        @PathVariable("id") @P("id") Integer id) {
+                try {
+                        Documento documento = documentoService.obtenerPorId(id);
+                        Path ruta = documentoService.obtenerRutaArchivo(id);
+                        Resource recurso = new UrlResource(ruta.toUri());
+                        String tipoContenido = Files.probeContentType(ruta);
+                        if (tipoContenido == null) {
+                                tipoContenido = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+                        }
+                        return ResponseEntity.ok()
+                                        .contentType(
+                                                        MediaType.parseMediaType(
+                                                                        tipoContenido))
+                                        .header(
+                                                        HttpHeaders.CONTENT_DISPOSITION,
+                                                        "inline; filename=\"" +
+                                                                        documento.getNombreDocumento() +
+                                                                        "\"")
+                                        .body(recurso);
+                } catch (Exception e) {
+                        return ResponseEntity
+                                        .notFound()
+                                        .build();
+                }
+        }
+
+        // Permite descargar un documento almacenado de una mascota.
+
+        @GetMapping("/descargar/{id}")
+        @PreAuthorize("@autorizacion.esDocumentoPropioOAdministrador(#id)")
+        public ResponseEntity<Resource> descargarDocumento(
+                        @PathVariable("id") @P("id") Integer id) {
+                try {
+                        Documento documento = documentoService.obtenerPorId(id);
+                        Path ruta = documentoService.obtenerRutaArchivo(id);
+                        Resource recurso = new UrlResource(ruta.toUri());
+                        String tipoContenido = Files.probeContentType(ruta);
+                        if (tipoContenido == null) {
+                                tipoContenido = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+                        }
+                        return ResponseEntity.ok()
+                                        .contentType(
+                                                        MediaType.parseMediaType(
+                                                                        tipoContenido))
+                                        .header(
+                                                        HttpHeaders.CONTENT_DISPOSITION,
+                                                        "attachment; filename=\"" +
+                                                                        documento.getNombreDocumento() +
+                                                                        "\"")
+                                        .body(recurso);
+                } catch (Exception e) {
+                        return ResponseEntity
+                                        .notFound()
+                                        .build();
+                }
+        }
+
+        // Elimina un documento y su archivo almacenado.
+
+        @DeleteMapping("/eliminar/{id}")
+        @PreAuthorize("@autorizacion.esDocumentoPropioOAdministrador(#id)")
+        public ResponseEntity<String> eliminarDocumento(
+                        @PathVariable("id") @P("id") Integer id) {
+                try {
+                        documentoService.eliminar(id);
+                        return ResponseEntity.ok(
+                                        "Documento eliminado correctamente");
+                } catch (RuntimeException e) {
+                        return ResponseEntity
+                                        .notFound()
+                                        .build();
+                }
+        }
 }

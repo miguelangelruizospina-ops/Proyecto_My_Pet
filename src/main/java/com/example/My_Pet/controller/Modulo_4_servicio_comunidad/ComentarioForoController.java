@@ -26,151 +26,131 @@ import java.util.Map;
 @RequestMapping("/api/comentarios-foro")
 public class ComentarioForoController {
 
-// Conecta el controlador con el servicio de comentarios del foro.
+        // Conecta el controlador con el servicio de comentarios del foro.
 
-    @Autowired
-    private ComentarioForoService comentarioService;
+        @Autowired
+        private ComentarioForoService comentarioService;
 
-    //Lista todos los comentarios asociados a una publicación específica del foro.
+        // Lista todos los comentarios asociados a una publicación específica del foro.
 
-    @GetMapping("/publicacion/{idPublicacion}")
-    public ResponseEntity<?> listarPorPublicacion(
-            @PathVariable("idPublicacion") Integer idPublicacion) {
-        try {
-            List<ComentarioForo> comentarios =
-                    comentarioService.obtenerPorPublicacion(
-                            idPublicacion
-                    );
-            return ResponseEntity.ok(comentarios);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+        @GetMapping("/publicacion/{idPublicacion}")
+        public ResponseEntity<?> listarPorPublicacion(
+                        @PathVariable("idPublicacion") Integer idPublicacion) {
+                try {
+                        List<ComentarioForo> comentarios = comentarioService.obtenerPorPublicacion(
+                                        idPublicacion);
+                        return ResponseEntity.ok(comentarios);
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity
+                                        .badRequest()
+                                        .body(e.getMessage());
+                }
         }
-    }
 
-    //Crea un nuevo comentario en una publicación específica del foro.
+        // Crea un nuevo comentario en una publicación específica del foro.
 
-    @PostMapping("/publicacion/{idPublicacion}")
-    public ResponseEntity<?> crearComentario(
-            @PathVariable("idPublicacion") Integer idPublicacion,
-            @RequestBody Map<String, String> datos) {
-        UsuarioPrincipal usuarioPrincipal =
-                obtenerUsuarioAutenticado();
-        if (usuarioPrincipal == null) {
-            return ResponseEntity
-                    .status(401)
-                    .body(
-                            "No se pudo identificar al usuario autenticado."
-                    );
+        @PostMapping("/publicacion/{idPublicacion}")
+        public ResponseEntity<?> crearComentario(
+                        @PathVariable("idPublicacion") Integer idPublicacion,
+                        @RequestBody Map<String, String> datos) {
+                UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
+                if (usuarioPrincipal == null) {
+                        return ResponseEntity
+                                        .status(401)
+                                        .body(
+                                                        "No se pudo identificar al usuario autenticado.");
+                }
+                try {
+                        Integer idUsuario = usuarioPrincipal.idUsuario();
+                        String contenido = datos.get("contenido");
+                        ComentarioForo comentario = comentarioService.guardar(
+                                        idUsuario,
+                                        idPublicacion,
+                                        contenido);
+                        return ResponseEntity.ok(comentario);
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity
+                                        .badRequest()
+                                        .body(e.getMessage());
+                }
         }
-        try {
-            Integer idUsuario =
-                    usuarioPrincipal.idUsuario();
-            String contenido =
-                    datos.get("contenido");
-            ComentarioForo comentario =
-                    comentarioService.guardar(
-                            idUsuario,
-                            idPublicacion,
-                            contenido
-                    );
-            return ResponseEntity.ok(comentario);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+
+        // crea una respuesta a un comentario existente en el foro.
+
+        @PostMapping("/{idComentario}/responder")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> responderComentario(
+                        @PathVariable("idComentario") Integer idComentario,
+                        @RequestBody Map<String, String> datos) {
+                UsuarioPrincipal usuarioPrincipal = obtenerUsuarioAutenticado();
+                if (usuarioPrincipal == null) {
+                        return ResponseEntity
+                                        .status(401)
+                                        .body(
+                                                        "No se pudo identificar al usuario autenticado.");
+                }
+                try {
+                        Integer idUsuario = usuarioPrincipal.idUsuario();
+                        String contenido = datos.get("contenido");
+                        ComentarioForo respuesta = comentarioService.responder(
+                                        idUsuario,
+                                        idComentario,
+                                        contenido);
+                        return ResponseEntity.ok(respuesta);
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity
+                                        .badRequest()
+                                        .body(e.getMessage());
+                }
         }
-    }
 
-    //crea una respuesta a un comentario existente en el foro.
+        // Lista todas las respuestas asociadas a un comentario específico del foro.
 
-    @PostMapping("/{idComentario}/responder")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> responderComentario(
-            @PathVariable("idComentario") Integer idComentario,
-            @RequestBody Map<String, String> datos) {
-        UsuarioPrincipal usuarioPrincipal =
-                obtenerUsuarioAutenticado();
-        if (usuarioPrincipal == null) {
-            return ResponseEntity
-                    .status(401)
-                    .body(
-                            "No se pudo identificar al usuario autenticado."
-                    );
+        @GetMapping("/{idComentario}/respuestas")
+        public ResponseEntity<?> listarRespuestas(
+                        @PathVariable("idComentario") Integer idComentario) {
+                try {
+                        List<ComentarioForo> respuestas = comentarioService.obtenerRespuestas(
+                                        idComentario);
+                        return ResponseEntity.ok(respuestas);
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity
+                                        .badRequest()
+                                        .body(e.getMessage());
+                }
         }
-        try {
-            Integer idUsuario =
-                    usuarioPrincipal.idUsuario();
-            String contenido =
-                    datos.get("contenido");
-            ComentarioForo respuesta =
-                    comentarioService.responder(
-                            idUsuario,
-                            idComentario,
-                            contenido
-                    );
-            return ResponseEntity.ok(respuesta);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+
+        // Elimina un comentario específico del foro.
+
+        @DeleteMapping("/{idComentario}")
+        @PreAuthorize("isAuthenticated()")
+        public ResponseEntity<?> eliminarComentario(
+                        @PathVariable("idComentario") Integer idComentario) {
+                try {
+                        comentarioService.eliminar(
+                                        idComentario);
+                        return ResponseEntity.ok(
+                                        "Comentario eliminado correctamente.");
+                } catch (IllegalArgumentException e) {
+                        return ResponseEntity
+                                        .badRequest()
+                                        .body(e.getMessage());
+                }
         }
-    }
 
-    //Lista todas las respuestas asociadas a un comentario específico del foro.
+        // Obtiene el usuario que inició sesión.
 
-    @GetMapping("/{idComentario}/respuestas")
-    public ResponseEntity<?> listarRespuestas(
-            @PathVariable("idComentario") Integer idComentario) {
-        try {
-            List<ComentarioForo> respuestas =
-                    comentarioService.obtenerRespuestas(
-                            idComentario
-                    );
-            return ResponseEntity.ok(respuestas);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
+        private UsuarioPrincipal obtenerUsuarioAutenticado() {
+                Authentication authentication = SecurityContextHolder
+                                .getContext()
+                                .getAuthentication();
+                if (authentication == null) {
+                        return null;
+                }
+                Object principal = authentication.getPrincipal();
+                if (principal instanceof UsuarioPrincipal usuarioPrincipal) {
+                        return usuarioPrincipal;
+                }
+                return null;
         }
-    }
-
-   // Elimina un comentario específico del foro.
-
-    @DeleteMapping("/{idComentario}")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> eliminarComentario(
-            @PathVariable("idComentario") Integer idComentario) {
-        try {
-            comentarioService.eliminar(
-                    idComentario
-            );
-            return ResponseEntity.ok(
-                    "Comentario eliminado correctamente."
-            );
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(e.getMessage());
-        }
-    }
-
-   // Obtiene el usuario que inició sesión.
-
-    private UsuarioPrincipal obtenerUsuarioAutenticado() {
-        Authentication authentication =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-        Object principal =
-                authentication.getPrincipal();
-        if (principal instanceof UsuarioPrincipal usuarioPrincipal) {
-            return usuarioPrincipal;
-        }
-        return null;
-    }
 }
